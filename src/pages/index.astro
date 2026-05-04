@@ -1,17 +1,668 @@
 ---
-
+import '../styles/global.css'
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="generator" content={Astro.generator} />
+  <title>FlipSplit — Sell Your Home For More, Without the Hassle</title>
+  <meta name="description" content="FlipSplit renovates your home before it hits the market. Get a guaranteed cash offer today plus a share of the upside when it sells for more. No repairs, no stress." />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand-cyan: #41ebd6;
+      --brand-dark: #0C3034;
+      --brand-body: #34313D;
+    }
+    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
+    h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
+    details > summary { list-style: none; }
+    details > summary::-webkit-details-marker { display: none; }
+    .faq-icon { transition: transform 0.2s ease; display: inline-block; }
+    details[open] .faq-icon { transform: rotate(45deg); }
+    .btn-primary { background: var(--brand-cyan); color: var(--brand-dark); font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary:hover { filter: brightness(1.08); }
+    .text-brand-dark { color: var(--brand-dark); }
+    .text-brand-cyan { color: var(--brand-cyan); }
+    .bg-brand-dark { background: var(--brand-dark); }
+    input::placeholder { color: #9ca3af; }
+    .dark-placeholder::placeholder { color: rgba(255,255,255,0.35); }
+    select option { background: #fff; color: #34313D; }
+    .deal-slider {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 6px; border-radius: 3px;
+      background: linear-gradient(to right, #41ebd6 var(--fill, 50%), #e2e8f0 var(--fill, 50%));
+      outline: none; cursor: pointer;
+    }
+    .deal-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
+      background: #41ebd6; border: 3px solid white; box-shadow: 0 1px 6px rgba(0,0,0,0.2); cursor: pointer;
+    }
+    .deal-slider::-moz-range-thumb {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: #41ebd6; border: 3px solid white; box-shadow: 0 1px 6px rgba(0,0,0,0.2); cursor: pointer;
+    }
+  </style>
+</head>
+<body class="bg-white antialiased">
+
+  <!-- ─── NAV ─── -->
+  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <img src="/wordmark.png" alt="FlipSplit" class="h-9" />
+      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
+        <a href="#how-it-works" class="hover:text-brand-dark transition-colors">How It Works</a>
+        <a href="#why-flipsplit" class="hover:text-brand-dark transition-colors">Why FlipSplit</a>
+        <a href="#faq" class="hover:text-brand-dark transition-colors">FAQ</a>
+      </div>
+      <a href="#get-offer" class="btn-primary text-sm px-5 py-2.5 rounded-lg">
+        Get My Offer
+      </a>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="relative overflow-hidden pt-16 pb-28 px-6 bg-white">
+    <div class="relative max-w-6xl mx-auto flex flex-col lg:flex-row items-start gap-12 xl:gap-20">
+
+      <!-- Left: copy + form -->
+      <div class="flex-1 pt-4">
+        <span class="inline-block text-xs font-semibold tracking-wide mb-5 px-4 py-1.5 rounded-full text-brand-dark" style="background: rgba(65,235,214,0.2); border: 1px solid rgba(65,235,214,0.4);">Southern California — Now Accepting Homeowners</span>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08] mb-6 text-brand-dark">
+          Choose your home offer <span style="color: var(--brand-cyan);">with FlipSplit.</span>
+        </h1>
+        <p class="text-lg text-slate-500 mb-8 leading-relaxed max-w-lg">
+          FlipSplit lets you unlock your home equity fast with a cash offer while allowing you to still benefit from a newly renovated home later.
+        </p>
+        <form
+          id="hero-form"
+          action="https://formspree.io/f/YOUR_FORM_ID"
+          method="POST"
+          class="flex flex-col sm:flex-row gap-2 max-w-lg mb-4"
+        >
+          <input
+            type="text"
+            name="address"
+            required
+            placeholder="Enter your property address..."
+            class="flex-1 border border-slate-300 rounded-xl px-5 py-3.5 text-brand-dark text-sm focus:outline-none focus:border-[#41ebd6] transition-colors"
+          />
+          <button type="submit" class="btn-primary text-sm px-6 py-3.5 rounded-xl whitespace-nowrap">
+            Get My Free Offer →
+          </button>
+        </form>
+        <p class="text-xs text-slate-400">No obligation. No repairs needed. Results in 24–48 hours.</p>
+
+        <!-- Review badges -->
+        <div class="flex flex-wrap items-center gap-4 mt-6">
+          <!-- Google -->
+          <div class="flex items-center gap-2">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+              <path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
+              <path d="M3.964 10.707A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.039l3.007-2.332z" fill="#FBBC05"/>
+              <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z" fill="#EA4335"/>
+            </svg>
+            <div class="flex gap-px" style="color: #FBBC05; font-size: 12px; line-height:1;">★★★★★</div>
+            <span class="text-xs font-bold text-brand-dark">4.9</span>
+            <span class="text-xs text-slate-400">· 120+ reviews</span>
+          </div>
+
+          <span class="text-slate-200 select-none">|</span>
+
+          <!-- Reviews.io -->
+          <div class="flex items-center gap-2">
+            <svg width="18" height="18" viewBox="0 0 29 29" xmlns="http://www.w3.org/2000/svg" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+              <g><g><path d="M22.835,5.616l-1.206,0.604c2.351,1.899 3.5,4.351 3.713,7.317c-0.178,5.727 -2.88,9.408 -7.521,10.986c-5.363,1.616 -8.76,0.309 -12.048,-3.042l-0.208,1.288l1.337,1.393c4.65,4.846 12.36,5.005 17.205,0.355c4.846,-4.65 5.005,-12.359 0.355,-17.205l-1.627,-1.696Z" style="fill:#feef7c;"/><path d="M4.904,22.052l0.808,-0.706c-3.357,-4.756 -3.497,-11.72 1.096,-15.553c3.405,-2.842 10.161,-4.315 15.566,0.444l0.404,-0.709l-1.318,-1.373c-4.65,-4.846 -12.359,-5.005 -17.205,-0.355c-4.846,4.65 -5.005,12.36 -0.355,17.205l1.004,1.047Z" style="fill:#5cd3cb;"/></g><circle cx="14.192" cy="14.193" r="11.192" style="fill:#fff;"/><path d="M2,14.193c-0,6.733 5.459,12.192 12.192,12.192c6.734,0 12.193,-5.459 12.193,-12.192c-0,-6.734 -5.459,-12.193 -12.193,-12.193c-6.733,0 -12.192,5.459 -12.192,12.193Zm8.486,2.205c0.128,-0.405 -0.014,-0.847 -0.355,-1.102c-0.902,-0.674 -2.682,-2.003 -3.877,-2.895c-0.173,-0.129 -0.243,-0.354 -0.175,-0.559c0.068,-0.204 0.259,-0.342 0.474,-0.342l4.634,-0c0.431,-0 0.814,-0.276 0.949,-0.686c0.365,-1.103 1.091,-3.296 1.573,-4.749c0.067,-0.204 0.258,-0.342 0.474,-0.343c0.215,-0 0.406,0.138 0.475,0.342c0.486,1.454 1.221,3.65 1.59,4.753c0.136,0.408 0.518,0.683 0.948,0.683c1.096,0 3.208,-0 4.645,0c0.215,-0 0.406,0.137 0.474,0.341c0.068,0.204 -0.001,0.429 -0.173,0.558c-1.192,0.898 -2.972,2.239 -3.873,2.917c-0.338,0.255 -0.479,0.696 -0.351,1.101c0.348,1.1 1.046,3.305 1.518,4.794c0.066,0.209 -0.011,0.436 -0.19,0.561c-0.178,0.125 -0.418,0.12 -0.591,-0.013c-1.198,-0.919 -2.947,-2.262 -3.863,-2.965c-0.36,-0.276 -0.861,-0.275 -1.22,0.002c-0.908,0.702 -2.633,2.036 -3.82,2.954c-0.173,0.134 -0.413,0.14 -0.592,0.015c-0.18,-0.126 -0.257,-0.353 -0.191,-0.561c0.472,-1.494 1.169,-3.703 1.517,-4.806Z" style="fill-rule:nonzero;"/></g>
+            </svg>
+            <div class="flex gap-px" style="color: #FBBC05; font-size: 12px; line-height:1;">★★★★★</div>
+            <span class="text-xs font-bold text-brand-dark">4.8</span>
+            <span class="text-xs text-slate-400">· Reviews.io</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: Design Your Deal calculator -->
+      <div class="w-full lg:w-[440px] shrink-0 bg-white rounded-2xl shadow-md border border-slate-200 p-7">
+        <h3 class="text-lg font-black text-brand-dark mb-1">Design Your Deal</h3>
+        <p class="text-slate-400 text-sm mb-5">Adjust upfront cash vs. backend upside.</p>
+
+        <div class="flex justify-between text-xs font-medium text-slate-400 mb-2">
+          <span>Max Upfront Cash</span>
+          <span>Max Backend Upside</span>
+        </div>
+        <input type="range" id="deal-slider" min="0" max="100" value="50" class="deal-slider mb-5" />
+
+        <div class="grid grid-cols-2 gap-3 mb-5">
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+            <div class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Upfront Offer</div>
+            <div class="flex items-center gap-0.5 border border-slate-200 hover:border-[#41ebd6] focus-within:border-[#41ebd6] rounded-lg px-2 py-1 bg-white transition-colors">
+              <span class="text-xl font-black text-brand-dark">$</span>
+              <input
+                id="offer-amount"
+                type="text"
+                inputmode="numeric"
+                value="415,000"
+                class="text-xl font-black text-brand-dark bg-transparent w-full focus:outline-none min-w-0"
+              />
+            </div>
+            <div class="text-xs text-slate-400 mt-1.5">Cash at closing</div>
+          </div>
+          <div class="rounded-xl p-4 border" style="background:#41ebd608; border-color:#41ebd640;">
+            <div class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Backend Split</div>
+            <div id="split-pct" class="text-xl font-black" style="color:var(--brand-cyan);">50%</div>
+            <div class="text-xs text-slate-400 mt-1.5">Of profit above offer</div>
+          </div>
+        </div>
+
+        <div class="border-t border-slate-100 pt-4">
+          <div class="flex justify-between items-center mb-3">
+            <span class="text-sm font-black text-brand-dark">Your Potential Earnings</span>
+            <span id="split-badge" class="text-xs font-semibold" style="color:var(--brand-cyan);">50% split</span>
+          </div>
+          <div class="grid grid-cols-3 gap-x-2 text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2 px-1">
+            <span>Resale</span>
+            <span class="text-center">Backend</span>
+            <span class="text-right">Total</span>
+          </div>
+          <div id="earnings-table" class="space-y-1"></div>
+          <p class="text-xs text-slate-400 mt-3">* Resale price not guaranteed.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── PRESS LOGOS ─── -->
+  <section class="py-10 px-6 border-b border-slate-100">
+    <div class="max-w-4xl mx-auto">
+      <p class="text-center text-slate-400 text-xs uppercase tracking-widest font-medium mb-7">As seen in</p>
+      <div class="flex flex-wrap items-center justify-center gap-10 md:gap-16 opacity-25">
+        <svg viewBox="0 0 80 28" class="h-6" fill="#0C3034"><text x="0" y="22" font-family="Georgia,serif" font-weight="700" font-size="22">CBS</text></svg>
+        <svg viewBox="0 0 60 28" class="h-6" fill="#0C3034"><text x="0" y="22" font-family="Arial,sans-serif" font-weight="900" font-size="22">FOX</text></svg>
+        <svg viewBox="0 0 80 28" class="h-6" fill="#0C3034"><text x="0" y="22" font-family="Arial,sans-serif" font-weight="700" font-size="22">NBC</text></svg>
+        <svg viewBox="0 0 100 28" class="h-6" fill="#0C3034"><text x="0" y="22" font-family="Georgia,serif" font-weight="700" font-size="18">Forbes</text></svg>
+        <svg viewBox="0 0 100 28" class="h-6" fill="#0C3034"><text x="0" y="22" font-family="Arial,sans-serif" font-weight="700" font-size="18">Yahoo!</text></svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CASE STUDIES ─── -->
+  <section class="py-28 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">Real case studies</p>
+        <h2 class="text-4xl font-black text-brand-dark">When it gets complicated,<br class="hidden md:block" /> we get to work.</h2>
+      </div>
+
+      <!-- Case study card -->
+      <div class="rounded-2xl overflow-hidden shadow-md border border-slate-200 grid md:grid-cols-[1fr_320px]">
+
+        <!-- Left: story -->
+        <div class="p-8 md:p-10 bg-white flex flex-col gap-6">
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-red-50 text-red-500">Hostile tenant</span>
+            <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 text-amber-600">Non-standard layout</span>
+            <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-500">Eviction moratorium</span>
+          </div>
+
+          <div>
+            <p class="text-slate-600 leading-relaxed text-sm">
+              Mursalin had been subletting to a rental company that added extra walls to maximize rooms — making the home nearly unsellable on the open market. Tenants turned hostile mid-eviction, blocking inspections and appraisals. No traditional transaction was going to work.
+            </p>
+          </div>
+
+          <ul class="space-y-2.5 text-sm text-slate-600">
+            {[
+              'Resolved hostile tenant situation and handled full eviction',
+              'Removed added walls to restore open-concept living space',
+              'Full kitchen & bathroom renovation',
+              'Exterior and interior repaint + new appliances',
+            ].map((item) => (
+              <li class="flex items-start gap-2.5">
+                <span class="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center shrink-0 text-xs font-bold" style="background: rgba(65,235,214,0.2); color: var(--brand-cyan);">✓</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <div class="border-t border-slate-100 pt-5 mt-auto">
+            <p class="text-brand-dark italic leading-relaxed mb-3">"Selling a house is stressful — none of the stress came from FlipSplit."</p>
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-brand-dark shrink-0" style="background: rgba(65,235,214,0.2);">M</div>
+              <div>
+                <span class="text-sm font-bold text-brand-dark">Mursalin H.</span>
+                <span class="text-xs text-slate-400 ml-1.5">San Diego, CA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: numbers -->
+        <div class="p-8 flex flex-col gap-5 border-t md:border-t-0 md:border-l border-slate-200" style="background: var(--brand-dark);">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-widest" style="color: var(--brand-cyan);">Deal snapshot</span>
+            <span class="text-xs font-semibold px-2.5 py-1 rounded-full" style="background: rgba(65,235,214,0.15); color: var(--brand-cyan);">Closed in 10 days</span>
+          </div>
+
+          <div class="space-y-3">
+            {[
+              { label: 'Offer price', value: '$1,101,000' },
+              { label: 'Benchmark price', value: '$1,300,000' },
+              { label: 'Split agreement', value: '40%' },
+            ].map(({ label, value }) => (
+              <div class="flex justify-between items-center py-3 border-b border-white/10">
+                <span class="text-sm text-slate-400">{label}</span>
+                <span class="text-sm font-bold text-white">{value}</span>
+              </div>
+            ))}
+          </div>
+
+          <div class="rounded-xl p-5 mt-auto" style="background: rgba(65,235,214,0.1); border: 1px solid rgba(65,235,214,0.3);">
+            <div class="text-xs font-semibold uppercase tracking-widest mb-1.5" style="color: var(--brand-cyan);">Bonus check</div>
+            <div class="text-3xl font-black text-white">$43,167</div>
+            <div class="text-xs text-slate-400 mt-1">Paid on top of the guaranteed offer</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HOW IT WORKS ─── -->
+  <section id="how-it-works" class="py-28 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="mb-16 text-center">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">The process</p>
+        <h2 class="text-4xl md:text-5xl font-black text-brand-dark">Three steps to a better sale.</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-10">
+        {[
+          {
+            step: '01',
+            title: 'Get your offer',
+            body: 'Share your address. We analyze your home and come back within 24–48 hours with a guaranteed cash offer plus a renovation upside projection.',
+          },
+          {
+            step: '02',
+            title: 'We renovate',
+            body: "FlipSplit manages everything — contractors, materials, permits, and timeline. You don't spend a dollar or lift a finger.",
+          },
+          {
+            step: '03',
+            title: 'You get paid more',
+            body: 'Your renovated home sells at a higher price. You receive your guaranteed cash offer at close plus your share of the profit above that.',
+          },
+        ].map(({ step, title, body }) => (
+          <div class="text-center">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center text-xl font-black mx-auto mb-6 text-brand-dark" style="background: rgba(65,235,214,0.12); border: 2px solid rgba(65,235,214,0.4);">{step}</div>
+            <h3 class="text-xl font-black mb-3 text-brand-dark">{title}</h3>
+            <p class="text-slate-500 leading-relaxed">{body}</p>
+          </div>
+        ))}
+      </div>
+      <div class="mt-14 text-center">
+        <a href="#get-offer" class="btn-primary inline-flex items-center gap-2 px-7 py-3.5 rounded-xl">
+          Start My Free Offer →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SITUATION TARGETING ─── -->
+  <section class="py-20 px-6" style="background: #f0faf9;">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">We help in any situation</p>
+        <h2 class="text-4xl font-black text-brand-dark mb-4">Whatever brought you here.</h2>
+        <p class="text-slate-500 leading-relaxed max-w-md mx-auto">We work with homeowners in every situation — no judgment, no pressure.</p>
+      </div>
+      <div class="flex flex-wrap gap-3 justify-center">
+        {[
+          'Need to downsize',
+          'Relocating for work',
+          'Inherited a property',
+          'Behind on payments',
+          'Going through divorce',
+          'Home needs major repairs',
+          'Tired of being a landlord',
+          'Need to sell fast',
+          'Avoiding foreclosure',
+        ].map((label) => (
+          <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-sm font-medium text-brand-dark shadow-sm" style="border: 1px solid rgba(65,235,214,0.35);">
+            <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background: var(--brand-cyan);"></span>
+            {label}
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── COMPARISON ─── -->
+  <section id="why-flipsplit" class="py-28 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="mb-14 text-center">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">Why FlipSplit</p>
+        <h2 class="text-4xl md:text-5xl font-black text-brand-dark">Not all home sales are equal.</h2>
+      </div>
+      <div class="rounded-2xl overflow-hidden shadow-md border border-slate-200 grid md:grid-cols-2">
+        <div class="p-8 bg-white border-b md:border-b-0 md:border-r border-slate-200">
+          <h3 class="font-black text-sm uppercase tracking-widest text-slate-400 mb-7">Traditional sale</h3>
+          <ul class="space-y-5">
+            {[
+              'Pay $15k–$60k+ in repairs upfront',
+              'Wait 60–90 days on market',
+              'Lose $3k–6k/mo in holding costs',
+              'Deals fall through on contingencies',
+              'Sell as-is or with cheap patches',
+              'No share of the upside — buyer keeps it all',
+            ].map((item) => (
+              <li class="flex items-start gap-3 text-slate-500">
+                <span class="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-red-400 shrink-0 text-xs bg-red-50">✕</span>
+                <span class="text-sm">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="p-8" style="background: var(--brand-dark);">
+          <h3 class="font-black text-sm uppercase tracking-widest mb-7" style="color: var(--brand-cyan);">FlipSplit</h3>
+          <ul class="space-y-5">
+            {[
+              '$0 out of pocket — we front all repair costs',
+              'Faster close: 30–45 days average',
+              'Minimized holding period cuts carrying costs',
+              'Guaranteed cash offer, no contingency risk',
+              'Fully renovated, top-of-market sale price',
+              'You keep a share of the profit above your offer',
+            ].map((item) => (
+              <li class="flex items-start gap-3">
+                <span class="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-xs font-bold" style="background: rgba(65,235,214,0.2); color: var(--brand-cyan);">✓</span>
+                <span class="text-sm font-medium text-slate-200">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TESTIMONIALS ─── -->
+  <section class="py-28 px-6 bg-slate-50">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-14">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">What homeowners say</p>
+        <h2 class="text-4xl font-black text-brand-dark">Real results, real people.</h2>
+      </div>
+
+      <div class="relative">
+        <div class="overflow-hidden">
+          <div id="testimonial-inner" class="flex transition-transform duration-500 ease-in-out">
+            {[
+              {
+                quote: "I was dreading the whole process. FlipSplit handled everything — I just moved out and a few months later I got a check for way more than I expected.",
+                name: "Maria T.", location: "Phoenix, AZ",
+              },
+              {
+                quote: "The profit participation model was a game-changer. We took a 60/40 split and ended up netting $40k more than we would have with any cash buyer.",
+                name: "James & Keiko R.", location: "Tempe, AZ",
+              },
+              {
+                quote: "After my divorce I needed a fast, clean sale. FlipSplit gave me a fair number, handled every repair, and closed on my timeline. Zero stress.",
+                name: "Denise M.", location: "Scottsdale, AZ",
+              },
+              {
+                quote: "I inherited my mom's house and had no idea what to do. FlipSplit walked me through everything and I walked away with more than I thought possible.",
+                name: "Robert S.", location: "Mesa, AZ",
+              },
+            ].map(({ quote, name, location }) => (
+              <div class="w-full shrink-0">
+                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-10">
+                  <div class="flex gap-0.5 mb-5">
+                    {Array(5).fill(null).map(() => <span class="text-yellow-400">★</span>)}
+                  </div>
+                  <p class="text-brand-dark leading-relaxed mb-8 text-lg">"{quote}"</p>
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-brand-dark shrink-0" style="background: rgba(65,235,214,0.2);">
+                      {name.charAt(0)}
+                    </div>
+                    <div>
+                      <div class="text-sm font-bold text-brand-dark">{name}</div>
+                      <div class="text-xs text-slate-400">{location}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <button id="testimonial-prev" class="absolute -left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-brand-dark hover:border-[#41ebd6] transition-colors">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button id="testimonial-next" class="absolute -right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-brand-dark hover:border-[#41ebd6] transition-colors">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <div id="testimonial-dots" class="flex justify-center gap-2 mt-8"></div>
+    </div>
+  </section>
+
+
+  <!-- ─── FAQ ─── -->
+  <section id="faq" class="py-28 px-6">
+    <div class="max-w-3xl mx-auto">
+      <div class="mb-14 text-center">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">FAQ</p>
+        <h2 class="text-4xl font-black text-brand-dark">Common questions.</h2>
+      </div>
+      <div>
+        {[
+          { q: "Do I have to pay anything upfront?", a: "No. FlipSplit covers 100% of renovation costs. You don't pay anything until the home sells, and even then it comes out of proceeds — never out of your pocket." },
+          { q: "What if the home doesn't sell for more than expected?", a: "Your guaranteed cash offer is locked in regardless of how the market performs. If the home sells below our projection, you still get your guaranteed amount. FlipSplit absorbs the renovation risk." },
+          { q: "How long does the renovation take?", a: "Most renovations take 4–8 weeks depending on scope. We target a 30–45 day total close timeline — significantly faster than the 60–90 day traditional sale." },
+          { q: "Can I stay in the home during renovation?", a: "In most cases we ask that the home be vacated during active renovation work. We can work around your schedule as part of your offer review." },
+          { q: "Is FlipSplit the same as iBuying?", a: "No. iBuyers give you a discounted cash offer and keep all the upside. FlipSplit renovates your home to maximize its value — and gives you a share of that upside through profit participation." },
+          { q: "What types of homes does FlipSplit work with?", a: "Single-family homes in Southern California. Condition doesn't matter — that's the point. Whether it needs cosmetic updates or significant repairs, we'll make it work." },
+        ].map(({ q, a }) => (
+          <details class="group border-b border-slate-200 py-1">
+            <summary class="flex justify-between items-center py-5 cursor-pointer font-semibold text-brand-dark hover:text-brand-cyan transition-colors">
+              {q}
+              <span class="faq-icon text-slate-400 text-2xl leading-none ml-6 shrink-0">+</span>
+            </summary>
+            <div class="pb-5 text-slate-500 leading-relaxed">
+              {a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── LEAD CAPTURE FORM ─── -->
+  <section id="get-offer" class="py-28 px-6 bg-slate-50">
+    <div class="max-w-xl mx-auto">
+      <div class="text-center mb-10">
+        <p class="text-sm font-semibold tracking-wide mb-4" style="color: #4B5563;">Free. No obligation.</p>
+        <h2 class="text-4xl md:text-5xl font-black mb-4 text-brand-dark">Get your free offer today.</h2>
+        <p class="text-slate-500 text-lg leading-relaxed">
+          Takes 2 minutes. We'll follow up with your cash offer amount, renovation plan, and profit participation projection.
+        </p>
+      </div>
+      <form
+        id="lead-form"
+        class="space-y-4 bg-white rounded-2xl shadow-sm border border-slate-100 p-8"
+        action="https://formspree.io/f/YOUR_FORM_ID"
+        method="POST"
+      >
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-brand-dark mb-1.5">First name</label>
+            <input type="text" name="first_name" required placeholder="Jane"
+              class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3.5 text-brand-dark text-sm focus:outline-none focus:border-[#41ebd6] transition-colors" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-brand-dark mb-1.5">Last name</label>
+            <input type="text" name="last_name" required placeholder="Smith"
+              class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3.5 text-brand-dark text-sm focus:outline-none focus:border-[#41ebd6] transition-colors" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">Property address</label>
+          <input type="text" name="address" required placeholder="123 Main St, Anaheim, CA 92801"
+            class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3.5 text-brand-dark text-sm focus:outline-none focus:border-[#41ebd6] transition-colors" />
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-brand-dark mb-1.5">Phone</label>
+            <input type="tel" name="phone" required placeholder="(555) 000-0000"
+              class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3.5 text-brand-dark text-sm focus:outline-none focus:border-[#41ebd6] transition-colors" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-brand-dark mb-1.5">Email</label>
+            <input type="email" name="email" required placeholder="jane@email.com"
+              class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3.5 text-brand-dark text-sm focus:outline-none focus:border-[#41ebd6] transition-colors" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-brand-dark mb-1.5">Timeline to sell</label>
+          <select name="timeline"
+            class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3.5 text-brand-dark text-sm focus:outline-none focus:border-[#41ebd6] transition-colors appearance-none">
+            <option value="" disabled selected>Select one...</option>
+            <option value="asap">As soon as possible</option>
+            <option value="1-3mo">1–3 months</option>
+            <option value="3-6mo">3–6 months</option>
+            <option value="exploring">Just exploring options</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary w-full text-base py-4 rounded-xl">
+          Get My Free Offer →
+        </button>
+        <p class="text-slate-400 text-xs text-center">Your info is never sold or shared. No spam, ever.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="bg-brand-dark py-12 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-slate-500">
+      <img src="/wordmark.png" alt="FlipSplit" class="h-9" />
+      <div class="flex gap-8">
+        <a href="#how-it-works" class="hover:text-white transition-colors">How It Works</a>
+        <a href="#why-flipsplit" class="hover:text-white transition-colors">Why FlipSplit</a>
+        <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+        <a href="mailto:hello@flipsplit.com" class="hover:text-white transition-colors">Contact</a>
+      </div>
+      <p>© 2026 FlipSplit. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const slider  = document.getElementById('deal-slider');
+    const offerEl = document.getElementById('offer-amount');
+    const splitEl = document.getElementById('split-pct');
+    const badgeEl = document.getElementById('split-badge');
+    const tableEl = document.getElementById('earnings-table');
+
+    let baseOffer = 415000;
+
+    function fmt(n) {
+      return '$' + Math.round(n).toLocaleString('en-US');
+    }
+
+    function updateTable(offer, pct) {
+      const projected  = Math.round(offer * 1.2);
+      const steps      = [0, 25000, 50000, 100000, 150000, 250000];
+      const resaleRows = steps.map(s => projected + s);
+
+      splitEl.textContent = pct + '%';
+      badgeEl.textContent = pct + '% split';
+      slider.style.setProperty('--fill', pct + '%');
+
+      tableEl.innerHTML = resaleRows.map((resale, i) => {
+        const above   = Math.max(0, resale - projected);
+        const backend = above * (pct / 100);
+        const total   = offer + backend;
+        const isBase  = i === 0;
+        return `
+          <div class="grid grid-cols-3 gap-x-2 px-1 py-1.5 rounded-lg ${isBase ? 'bg-slate-50' : ''}">
+            <span class="text-brand-dark font-semibold text-xs">
+              ${fmt(resale)}${isBase ? '<span class="ml-1 text-slate-400 font-normal">proj.</span>' : ''}
+            </span>
+            <span class="text-center text-xs ${backend > 0 ? 'font-semibold' : 'text-slate-400'}" style="${backend > 0 ? 'color:var(--brand-cyan)' : ''}">
+              ${backend > 0 ? '+' + fmt(backend) : '—'}
+            </span>
+            <span class="text-right font-bold text-xs text-brand-dark">${fmt(total)}</span>
+          </div>`;
+      }).join('');
+    }
+
+    offerEl.addEventListener('input', () => {
+      const raw = offerEl.value.replace(/[^0-9]/g, '');
+      offerEl.value = parseInt(raw || '0').toLocaleString('en-US');
+      baseOffer = parseInt(raw) || 415000;
+      slider.value = 50;
+      updateTable(baseOffer, 50);
+    });
+
+    slider.addEventListener('input', () => {
+      const pct   = parseInt(slider.value);
+      const offer = baseOffer + (50 - pct) * 1000;
+      offerEl.value = Math.max(0, offer).toLocaleString('en-US');
+      updateTable(Math.max(0, offer), pct);
+    });
+
+    updateTable(baseOffer, 50);
+
+    // ── Testimonial carousel ──
+    const inner   = document.getElementById('testimonial-inner');
+    const dotsEl  = document.getElementById('testimonial-dots');
+    const total   = inner.children.length;
+    let current   = 0;
+    let autoTimer;
+
+    const dots = Array.from({ length: total }, (_, i) => {
+      const d = document.createElement('button');
+      d.className = 'w-2 h-2 rounded-full transition-colors duration-300';
+      d.style.background = i === 0 ? 'var(--brand-cyan)' : '#e2e8f0';
+      d.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(d);
+      return d;
+    });
+
+    function goTo(index) {
+      current = (index + total) % total;
+      inner.style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((d, i) => d.style.background = i === current ? 'var(--brand-cyan)' : '#e2e8f0');
+      resetTimer();
+    }
+
+    function resetTimer() {
+      clearInterval(autoTimer);
+      autoTimer = setInterval(() => goTo(current + 1), 5000);
+    }
+
+    document.getElementById('testimonial-prev').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('testimonial-next').addEventListener('click', () => goTo(current + 1));
+
+    // Touch swipe support
+    let touchStartX = 0;
+    inner.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    inner.addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) goTo(current + (diff > 0 ? 1 : -1));
+    });
+
+    resetTimer();
+  </script>
+
+</body>
 </html>

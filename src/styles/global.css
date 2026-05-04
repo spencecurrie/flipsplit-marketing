@@ -1,0 +1,26 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Blog prose overrides */
+.prose {
+  --tw-prose-body: #34313D;
+  --tw-prose-headings: #0C3034;
+  --tw-prose-links: #0C3034;
+  --tw-prose-bold: #0C3034;
+  --tw-prose-bullets: #41ebd6;
+  --tw-prose-counters: #41ebd6;
+  --tw-prose-hr: #e2e8f0;
+  --tw-prose-quotes: #0C3034;
+  --tw-prose-quote-borders: #41ebd6;
+  --tw-prose-th-borders: #e2e8f0;
+  --tw-prose-td-borders: #f1f5f9;
+}
+
+.prose h2 { scroll-margin-top: 96px; }
+.prose h3 { scroll-margin-top: 96px; }
+
+.prose a {
+  text-decoration-color: #41ebd6;
+  text-decoration-thickness: 2px;
+}
+.prose a:hover { color: #41ebd6; }

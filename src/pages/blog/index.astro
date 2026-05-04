@@ -1,0 +1,255 @@
+---
+import { getCollection } from 'astro:content';
+import '../../styles/global.css';
+
+const allPosts = await getCollection('blog');
+allPosts.sort((a, b) => +new Date(b.data.pubDate) - +new Date(a.data.pubDate));
+
+const homeSelling = allPosts.filter(p => p.data.category === 'Home Selling');
+const localTrends = allPosts.filter(p => p.data.category === 'Local Trends');
+const other = allPosts.filter(p => p.data.category !== 'Home Selling' && p.data.category !== 'Local Trends');
+
+function formatDate(d: Date) {
+  return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog — FlipSplit</title>
+  <meta name="description" content="Home selling guides, market trends, and expert advice from the FlipSplit team." />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand-cyan: #41ebd6;
+      --brand-dark: #0C3034;
+      --brand-body: #34313D;
+    }
+    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
+    h1, h2, h3 { font-family: 'sahar', 'Open Sans', sans-serif; }
+    .btn-primary { background: var(--brand-cyan); color: var(--brand-dark); font-weight: 700; transition: filter 0.15s; }
+    .btn-primary:hover { filter: brightness(1.08); }
+    .card-img { transition: transform 0.4s ease; }
+    .card-img:hover { transform: scale(1.03); }
+    .post-card:hover h3 { color: var(--brand-cyan); }
+  </style>
+</head>
+<body class="bg-white antialiased">
+
+  <!-- ─── NAV ─── -->
+  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-9" /></a>
+      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
+        <a href="/#how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
+        <a href="/#why-flipsplit" class="hover:text-[#0C3034] transition-colors">Why FlipSplit</a>
+        <a href="/blog" class="text-[#0C3034] font-semibold">Blog</a>
+        <a href="/#faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
+      </div>
+      <a href="/#get-offer" class="btn-primary text-sm px-5 py-2.5 rounded-lg">Get My Offer</a>
+    </div>
+  </nav>
+
+  <!-- ─── PAGE HEADER ─── -->
+  <div class="border-b border-slate-100 py-10 px-6">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-xs font-semibold tracking-widest uppercase mb-2 text-slate-500">FlipSplit Resources</p>
+      <h1 class="text-4xl font-black text-[#0C3034]">Real Estate Articles &amp; Resources</h1>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 py-12 space-y-20">
+
+    <!-- ─── HOME SELLING ─── -->
+    {homeSelling.length > 0 && (() => {
+      const [hero, ...rest] = homeSelling;
+      const secondary = rest.slice(0, 2);
+      const grid = rest.slice(2, 8);
+      return (
+        <section>
+          <div class="flex items-center justify-between mb-7">
+            <h2 class="text-xl font-black text-[#0C3034]">Home Selling</h2>
+            <a href="/blog/category/home-selling" class="text-xs font-semibold text-slate-400 hover:text-[#41ebd6] transition-colors">View all →</a>
+          </div>
+
+          {/* Hero row: large card left + 2 stacked right */}
+          <div class="grid md:grid-cols-[3fr_2fr] gap-5 mb-5">
+
+            {/* Large featured card */}
+            <a href={`/blog/${hero.id}`} class="post-card group block rounded-2xl overflow-hidden border border-slate-200 relative">
+              <div class="aspect-[16/9] overflow-hidden bg-slate-100">
+                {hero.data.heroImage
+                  ? <img src={hero.data.heroImage} alt={hero.data.title} class="card-img w-full h-full object-cover" />
+                  : <div class="w-full h-full" style="background: linear-gradient(135deg,#0C3034,#1a5c66);" />
+                }
+              </div>
+              <div class="p-6">
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-full mb-3 inline-block" style="background:rgba(65,235,214,0.1);color:#0C3034;">{hero.data.category}</span>
+                <h3 class="text-xl font-black text-[#0C3034] leading-snug mb-2 transition-colors">{hero.data.title}</h3>
+                {hero.data.description && <p class="text-sm text-slate-500 line-clamp-2 leading-relaxed mb-3">{hero.data.description}</p>}
+                <span class="text-xs text-slate-400">{formatDate(hero.data.pubDate)}</span>
+              </div>
+            </a>
+
+            {/* 2 stacked secondary cards */}
+            <div class="flex flex-col gap-5">
+              {secondary.map(post => (
+                <a href={`/blog/${post.id}`} class="post-card group flex gap-4 rounded-2xl border border-slate-200 overflow-hidden p-4 hover:shadow-sm transition-shadow flex-1">
+                  <div class="w-24 shrink-0 rounded-xl overflow-hidden bg-slate-100 self-stretch">
+                    {post.data.heroImage
+                      ? <img src={post.data.heroImage} alt={post.data.title} class="card-img w-full h-full object-cover" />
+                      : <div class="w-full h-full" style="background: linear-gradient(135deg,#0C3034,#1a5c66);" />
+                    }
+                  </div>
+                  <div class="flex flex-col justify-center min-w-0">
+                    <span class="text-xs font-semibold mb-1.5 text-slate-500">{post.data.category}</span>
+                    <h3 class="text-sm font-black text-[#0C3034] leading-snug line-clamp-3 transition-colors">{post.data.title}</h3>
+                    <span class="text-xs text-slate-400 mt-2">{formatDate(post.data.pubDate)}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* 3-col grid */}
+          {grid.length > 0 && (
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {grid.map(post => (
+                <a href={`/blog/${post.id}`} class="post-card group block rounded-2xl border border-slate-200 overflow-hidden hover:shadow-sm transition-shadow">
+                  <div class="aspect-[16/9] overflow-hidden bg-slate-100">
+                    {post.data.heroImage
+                      ? <img src={post.data.heroImage} alt={post.data.title} class="card-img w-full h-full object-cover" loading="lazy" />
+                      : <div class="w-full h-full" style="background: linear-gradient(135deg,#0C3034,#1a5c66);" />
+                    }
+                  </div>
+                  <div class="p-5">
+                    <h3 class="text-sm font-black text-[#0C3034] leading-snug line-clamp-2 mb-2 transition-colors">{post.data.title}</h3>
+                    <span class="text-xs text-slate-400">{formatDate(post.data.pubDate)}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          )}
+        </section>
+      );
+    })()}
+
+    <!-- ─── INLINE CTA BANNER ─── -->
+    <div class="rounded-2xl px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-6" style="background:var(--brand-dark);">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:var(--brand-cyan);">Free. No obligation.</p>
+        <p class="text-2xl font-black text-white leading-tight">Wondering what your home is worth?</p>
+        <p class="text-slate-400 text-sm mt-1">Get a free cash offer and renovation projection in 24–48 hours.</p>
+      </div>
+      <a href="/#get-offer" class="btn-primary shrink-0 px-7 py-3.5 rounded-xl text-sm whitespace-nowrap">Get My Free Offer →</a>
+    </div>
+
+    <!-- ─── LOCAL TRENDS ─── -->
+    {localTrends.length > 0 && (() => {
+      const [hero, ...rest] = localTrends;
+      const grid = rest.slice(0, 5);
+      return (
+        <section>
+          <div class="flex items-center justify-between mb-7">
+            <h2 class="text-xl font-black text-[#0C3034]">Local Trends</h2>
+            <a href="/blog/category/local-trends" class="text-xs font-semibold text-slate-400 hover:text-[#41ebd6] transition-colors">View all →</a>
+          </div>
+
+          <div class="grid md:grid-cols-[2fr_3fr] gap-5">
+            {/* Tall featured card */}
+            <a href={`/blog/${hero.id}`} class="post-card group block rounded-2xl overflow-hidden border border-slate-200">
+              <div class="h-56 overflow-hidden bg-slate-100">
+                {hero.data.heroImage
+                  ? <img src={hero.data.heroImage} alt={hero.data.title} class="card-img w-full h-full object-cover" />
+                  : <div class="w-full h-full" style="background: linear-gradient(135deg,#0C3034,#1a5c66);" />
+                }
+              </div>
+              <div class="p-6">
+                <span class="text-xs font-semibold mb-2 inline-block text-slate-500">{hero.data.category}</span>
+                <h3 class="text-lg font-black text-[#0C3034] leading-snug mb-2 transition-colors">{hero.data.title}</h3>
+                {hero.data.description && <p class="text-sm text-slate-500 line-clamp-2">{hero.data.description}</p>}
+              </div>
+            </a>
+
+            {/* Right: compact list */}
+            <div class="flex flex-col gap-0 divide-y divide-slate-100">
+              {grid.map(post => (
+                <a href={`/blog/${post.id}`} class="post-card group flex items-start gap-4 py-4 first:pt-0 last:pb-0">
+                  <div class="w-20 h-14 shrink-0 rounded-xl overflow-hidden bg-slate-100">
+                    {post.data.heroImage
+                      ? <img src={post.data.heroImage} alt={post.data.title} class="card-img w-full h-full object-cover" loading="lazy" />
+                      : <div class="w-full h-full" style="background: linear-gradient(135deg,#0C3034,#1a5c66);" />
+                    }
+                  </div>
+                  <div class="min-w-0">
+                    <h3 class="text-sm font-black text-[#0C3034] leading-snug line-clamp-2 mb-1 transition-colors">{post.data.title}</h3>
+                    <span class="text-xs text-slate-400">{formatDate(post.data.pubDate)}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    })()}
+
+    <!-- ─── RECENT (overflow) ─── -->
+    {allPosts.length > 10 && (() => {
+      const recent = allPosts.slice(0, 12);
+      return (
+        <section>
+          <div class="flex items-center justify-between mb-7">
+            <h2 class="text-xl font-black text-[#0C3034]">Recent Articles</h2>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {recent.map(post => (
+              <a href={`/blog/${post.id}`} class="post-card group block rounded-2xl border border-slate-200 overflow-hidden hover:shadow-sm transition-shadow">
+                <div class="aspect-[16/9] overflow-hidden bg-slate-100">
+                  {post.data.heroImage
+                    ? <img src={post.data.heroImage} alt={post.data.title} class="card-img w-full h-full object-cover" loading="lazy" />
+                    : <div class="w-full h-full" style="background: linear-gradient(135deg,#0C3034,#1a5c66);" />
+                  }
+                </div>
+                <div class="p-4">
+                  <h3 class="text-sm font-black text-[#0C3034] leading-snug line-clamp-2 mb-1.5 transition-colors">{post.data.title}</h3>
+                  <span class="text-xs text-slate-400">{formatDate(post.data.pubDate)}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      );
+    })()}
+
+  </div>
+
+  <!-- ─── FOOTER CTA ─── -->
+  <section style="background:var(--brand-dark);" class="mt-20 py-20 px-6 text-center">
+    <p class="text-sm font-semibold tracking-widest uppercase mb-4" style="color:var(--brand-cyan);">Ready to sell?</p>
+    <h2 class="text-4xl font-black text-white mb-5">Get your free offer today.</h2>
+    <p class="text-slate-300 mb-8 max-w-md mx-auto">No repairs needed. No obligation. Results in 24–48 hours.</p>
+    <a href="/#get-offer" class="btn-primary inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base">Get My Free Offer →</a>
+  </section>
+
+  <footer style="background:#081e21;" class="py-10 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+      <img src="/wordmark.png" alt="FlipSplit" class="h-8" />
+      <div class="flex gap-6">
+        <a href="/blog" class="hover:text-white transition-colors">Blog</a>
+        <a href="/#how-it-works" class="hover:text-white transition-colors">How It Works</a>
+        <a href="/#faq" class="hover:text-white transition-colors">FAQ</a>
+        <a href="mailto:hello@flipsplit.com" class="hover:text-white transition-colors">Contact</a>
+      </div>
+      <p>© 2026 FlipSplit. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

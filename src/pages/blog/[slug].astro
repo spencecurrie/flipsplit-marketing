@@ -1,0 +1,308 @@
+---
+import { getCollection, render } from 'astro:content';
+import '../../styles/global.css';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+
+const { title, description, pubDate, updatedDate, category, reviewer, heroImage, readingTime } = post.data;
+
+// Top-level headings only for TOC (h2 and h3)
+const tocHeadings = headings.filter(h => h.depth <= 3);
+
+// Related posts (same category, excluding current)
+const allPosts = await getCollection('blog');
+const related = allPosts
+  .filter(p => p.id !== post.id && p.data.category === category)
+  .sort((a, b) => +new Date(b.data.pubDate) - +new Date(a.data.pubDate))
+  .slice(0, 3);
+
+function formatDate(d: Date) {
+  return new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title} — FlipSplit</title>
+  {description && <meta name="description" content={description} />}
+  <link rel="canonical" href={`https://www.flipsplit.com/blog/${post.slug}`} />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  {description && <meta property="og:description" content={description} />}
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content={`https://www.flipsplit.com/blog/${post.slug}`} />
+  {heroImage && <meta property="og:image" content={heroImage} />}
+
+  <style>
+    :root {
+      --brand-cyan: #41ebd6;
+      --brand-dark: #0C3034;
+      --brand-body: #34313D;
+    }
+    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
+    h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
+    .btn-primary { background: var(--brand-cyan); color: var(--brand-dark); font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary:hover { filter: brightness(1.08); }
+
+    /* Reading progress bar */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      width: 0%;
+      background: var(--brand-cyan);
+      z-index: 100;
+      transition: width 0.1s linear;
+    }
+
+    /* TOC active link */
+    .toc-link { transition: color 0.15s, border-color 0.15s; }
+    .toc-link.active { color: var(--brand-cyan); border-left-color: var(--brand-cyan); }
+
+    /* Hide WordPress CTA banner images embedded in post content */
+    .prose img[src*="wp-content"][src*="CTA"],
+    .prose img[src*="wp-content"][src*="cta"],
+    .prose img[src*="wp-content"][src*="banner"],
+    .prose img[src*="wp-content"][src*="Banner"],
+    .prose img[src*="wp-content"][src*="offer"],
+    .prose img[src*="wp-content"][src*="Offer"] {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-white antialiased">
+
+  <!-- Reading progress bar -->
+  <div id="progress-bar"></div>
+
+  <!-- ─── NAV ─── -->
+  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-9" /></a>
+      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
+        <a href="/#how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
+        <a href="/#why-flipsplit" class="hover:text-[#0C3034] transition-colors">Why FlipSplit</a>
+        <a href="/blog" class="hover:text-[#0C3034] transition-colors">Blog</a>
+        <a href="/#faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
+      </div>
+      <a href="/#get-offer" class="btn-primary text-sm px-5 py-2.5 rounded-lg">Get My Offer</a>
+    </div>
+  </nav>
+
+  <!-- ─── ARTICLE HEADER ─── -->
+  <header class="border-b border-slate-100 px-6 pt-10 pb-8">
+    <div class="max-w-3xl mx-auto">
+
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-1.5 text-xs text-slate-400 mb-5">
+        <a href="/" class="hover:text-[#0C3034] transition-colors">Home</a>
+        <span>›</span>
+        <a href="/blog" class="hover:text-[#0C3034] transition-colors">Blog</a>
+        <span>›</span>
+        <span class="text-slate-500 font-medium">{category}</span>
+      </nav>
+
+      <!-- Title -->
+      <h1 class="text-3xl sm:text-4xl lg:text-[2.75rem] font-black text-[#0C3034] leading-tight mb-5" style="font-family:'sahar','Open Sans',sans-serif;">
+        {title}
+      </h1>
+
+      <!-- Meta row -->
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background:rgba(65,235,214,0.12);color:#0C3034;">{category}</span>
+        <span class="text-xs text-slate-400">{formatDate(pubDate)}</span>
+        {readingTime && <span class="text-xs text-slate-400">{readingTime} min read</span>}
+        {reviewer && <span class="text-xs text-slate-400">Reviewed by <span class="font-semibold text-slate-500">{reviewer}</span></span>}
+        {updatedDate && <span class="text-xs text-slate-400">Updated {formatDate(updatedDate)}</span>}
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ─── CONTENT + SIDEBAR ─── -->
+  <div class="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-16 items-start">
+
+    <!-- Main article -->
+    <article id="article-body">
+
+      <!-- Mobile TOC (collapsible) -->
+      {tocHeadings.length > 2 && (
+        <details class="lg:hidden mb-10 rounded-xl border border-slate-200 overflow-hidden">
+          <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-semibold text-sm text-[#0C3034] bg-slate-50 select-none">
+            <span class="flex items-center gap-2">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              In this article
+            </span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="transition-transform duration-200 [[open]_&]:rotate-180"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <nav class="px-5 py-4 bg-white">
+            <ul class="space-y-2">
+              {tocHeadings.map(h => (
+                <li style={`padding-left: ${(h.depth - 2) * 12}px`}>
+                  <a href={`#${h.slug}`} class="text-sm text-slate-600 hover:text-[#41ebd6] transition-colors">
+                    {h.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </details>
+      )}
+
+      <!-- Prose content -->
+      <div class="prose prose-lg max-w-none">
+        <Content />
+      </div>
+
+      <!-- Author / Reviewer bio -->
+      <div class="mt-14 pt-10 border-t border-slate-100">
+        <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-5">About the reviewer</p>
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-black text-[#0C3034] shrink-0" style="background: rgba(65,235,214,0.2);">BB</div>
+          <div>
+            <p class="font-bold text-[#0C3034]">Brandon Brown</p>
+            <p class="text-xs text-slate-400 mb-2">Licensed Real Estate Agent · Southern California</p>
+            <p class="text-sm text-slate-500 leading-relaxed">
+              Brandon is a licensed real estate professional with years of experience in the Southern California market. He reviews all FlipSplit content for accuracy, market relevance, and compliance.
+            </p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─── SIDEBAR ─── -->
+    <aside class="hidden lg:flex flex-col gap-6" style="position: sticky; top: 88px;">
+
+      <!-- Get Offer card -->
+      <div class="rounded-2xl p-6" style="background: var(--brand-dark);">
+        <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color: var(--brand-cyan);">Free. No obligation.</p>
+        <h3 class="text-xl font-black text-white mb-3 leading-tight">Get your free offer today.</h3>
+        <p class="text-slate-400 text-sm mb-5 leading-relaxed">Share your address. We'll respond in 24–48 hours with a cash offer and renovation projection.</p>
+        <a href="/#get-offer" class="btn-primary block text-center text-sm px-5 py-3 rounded-xl">
+          Get My Free Offer →
+        </a>
+        <p class="text-slate-500 text-xs text-center mt-3">Serving Southern California</p>
+      </div>
+
+      <!-- Table of contents -->
+      {tocHeadings.length > 2 && (
+        <div class="rounded-2xl border border-slate-200 p-6">
+          <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-4">In this article</p>
+          <nav id="toc-nav">
+            <ul class="space-y-2">
+              {tocHeadings.map(h => (
+                <li style={`padding-left: ${(h.depth - 2) * 10}px`}>
+                  <a
+                    href={`#${h.slug}`}
+                    data-heading={h.slug}
+                    class="toc-link text-sm text-slate-500 hover:text-[#41ebd6] block py-0.5 border-l-2 border-transparent pl-3 transition-colors"
+                  >
+                    {h.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      )}
+    </aside>
+  </div>
+
+  <!-- ─── RELATED POSTS ─── -->
+  {related.length > 0 && (
+    <section class="border-t border-slate-100 py-20 px-6">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-2xl font-black text-[#0C3034] mb-10">Keep reading</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {related.map(p => (
+            <a href={`/blog/${p.id}`} class="group flex flex-col rounded-2xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
+              <div class="aspect-[16/9] bg-slate-100 overflow-hidden shrink-0">
+                {p.data.heroImage
+                  ? <img src={p.data.heroImage} alt={p.data.title} class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" loading="lazy" />
+                  : <div class="w-full h-full" style="background: linear-gradient(135deg, #0C3034 0%, #134a52 100%);"></div>
+                }
+              </div>
+              <div class="p-6 flex flex-col flex-1">
+                <span class="text-xs text-slate-400 mb-2">{formatDate(p.data.pubDate)}</span>
+                <h3 class="font-black text-[#0C3034] leading-snug group-hover:text-[#41ebd6] transition-colors line-clamp-3">{p.data.title}</h3>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ─── FOOTER ─── -->
+  <footer style="background: #081e21;" class="py-10 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+      <img src="/wordmark.png" alt="FlipSplit" class="h-8" />
+      <div class="flex gap-6">
+        <a href="/blog" class="hover:text-white transition-colors">Blog</a>
+        <a href="/#how-it-works" class="hover:text-white transition-colors">How It Works</a>
+        <a href="/#faq" class="hover:text-white transition-colors">FAQ</a>
+        <a href="mailto:hello@flipsplit.com" class="hover:text-white transition-colors">Contact</a>
+      </div>
+      <p>© 2026 FlipSplit. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ── Reading progress bar ──
+    const bar = document.getElementById('progress-bar')!;
+    const article = document.getElementById('article-body')!;
+
+    function updateProgress() {
+      const rect = article.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      const scrolled = Math.max(0, -rect.top);
+      const pct = total > 0 ? Math.min(100, (scrolled / total) * 100) : 0;
+      bar.style.width = pct + '%';
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    // ── Active TOC highlight ──
+    const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-link[data-heading]');
+    if (tocLinks.length) {
+      const headingEls = Array.from(tocLinks)
+        .map(a => document.getElementById(a.dataset.heading!))
+        .filter(Boolean) as HTMLElement[];
+
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              tocLinks.forEach(l => l.classList.remove('active'));
+              const active = document.querySelector<HTMLAnchorElement>(
+                `.toc-link[data-heading="${entry.target.id}"]`
+              );
+              active?.classList.add('active');
+            }
+          });
+        },
+        { rootMargin: '-80px 0px -60% 0px' }
+      );
+
+      headingEls.forEach(el => observer.observe(el));
+    }
+  </script>
+
+</body>
+</html>
