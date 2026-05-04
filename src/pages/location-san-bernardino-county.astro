@@ -1,0 +1,42 @@
+---
+import LocationLayout from '../layouts/LocationLayout.astro';
+
+const props = {
+  title: "We Buy Houses in San Bernardino County, CA | FlipSplit",
+  description: "FlipSplit buys homes in San Bernardino County. Get a guaranteed cash offer in 24–48 hours, we renovate at no cost to you, and you keep a share of the profit.",
+  slug: "location-san-bernardino-county",
+  city: "San Bernardino County",
+  shortName: "San Bernardino County",
+  heroHeadline: "We buy houses in San Bernardino, CA.",
+  heroSub: "FlipSplit offers a guaranteed cash price for your Inland Empire home and handles every renovation. You keep a share of the profit when it sells for more. Zero upfront costs.",
+  stats: [
+    { label: "Close in as few as", value: "7–10 days" },
+    { label: "Transfer Tax Rate", value: "$0.55/$500" },
+    { label: "Renovation costs", value: "$0 to you" },
+    { label: "SoCal homes bought", value: "500+" },
+  ],
+  step1Body: "Takes 2 minutes. We analyze your SB County home with local market data and respond in 24–48 hours with a guaranteed cash offer.",
+  testimonials: [
+    { quote: "The Inland Empire market is competitive and FlipSplit knew exactly what my home was worth. Offer was fair, process was painless.", name: "Robert G.", location: "San Bernardino, CA" },
+    { quote: "I had a rental property in Fontana that needed significant work. FlipSplit handled it all and I got a bonus on top of the sale. Incredible.", name: "Maria C.", location: "Fontana, CA" },
+    { quote: "Rancho Cucamonga home values are high right now. FlipSplit made sure I captured that with a competitive offer AND a split on the backend.", name: "Brian T.", location: "Rancho Cucamonga, CA" },
+    { quote: "Easy, fast, professional. They closed in 9 days and the renovation they did was beautiful. My split check was more than I expected.", name: "Angela P.", location: "Ontario, CA" },
+  ],
+  faqs: [
+    { q: "What areas of San Bernardino County does FlipSplit serve?", a: "We serve the full San Bernardino County market including the Pomona Valley, the Victor Valley, the San Bernardino Valley, the Pass Area, and all communities in between." },
+    { q: "What is the transfer tax in San Bernardino County?", a: "The county Documentary Transfer Tax is $0.55 per $500 of value. Unlike some counties, most San Bernardino County cities don't impose an additional city-level transfer tax, which is favorable for sellers." },
+    { q: "How fast can FlipSplit close in San Bernardino County?", a: "We can close the cash purchase in as few as 7–10 days. If you need more time to move, we can accommodate a longer closing timeline as well." },
+    { q: "Does FlipSplit work with homes that have deferred maintenance?", a: "Yes — that's our specialty. Deferred maintenance, outdated kitchens and baths, structural issues — none of it disqualifies your home. We specialize in turning these properties around." },
+    { q: "I own a rental property in SB County. Can FlipSplit buy it with tenants?", a: "We evaluate tenant-occupied properties case by case. In some situations we can work with you and your tenants to coordinate a clean transition. Contact us to discuss your specific situation." },
+    { q: "Are there any cities in SB County you don't buy in?", a: "We buy homes throughout all of San Bernardino County. If your city isn't listed below, reach out anyway — we evaluate every request individually." },
+  ],
+  places: [
+    "San Bernardino", "Fontana", "Rancho Cucamonga", "Ontario", "Rialto",
+    "Colton", "Redlands", "Upland", "Chino", "Chino Hills",
+    "Victorville", "Apple Valley", "Hesperia", "Yucaipa", "Highland",
+    "Loma Linda", "Montclair", "Pomona area", "Claremont", "San Dimas",
+    "Big Bear Lake", "Barstow", "Yucca Valley", "Twentynine Palms",
+  ],
+};
+---
+<LocationLayout {...props} />

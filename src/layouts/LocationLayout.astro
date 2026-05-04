@@ -1,0 +1,541 @@
+---
+import '../styles/global.css';
+
+interface CaseStudy {
+  tag: string;
+  headline: string;
+  body: string;
+  result: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  slug: string;
+  city: string;
+  shortName: string;
+  testimonialsName?: string;
+  heroHeadline: string;
+  heroSub: string;
+  stats: Array<{ label: string; value: string }>;
+  step1Body: string;
+  testimonials?: Array<{ quote: string; name: string; location: string }>;
+  faqs: Array<{ q: string; a: string }>;
+  places: string[];
+  placesHeading?: string;
+  placesDescription?: string;
+  caseStudies?: CaseStudy[];
+  showComparison?: boolean;
+  showValueProp?: boolean;
+}
+
+const {
+  title, description, slug, city, shortName,
+  testimonialsName = shortName,
+  heroHeadline, heroSub, stats, step1Body,
+  testimonials = [],
+  faqs, places,
+  placesHeading = `Serving all of ${city}.`,
+  placesDescription = `We buy homes in every city and neighborhood across ${city}.`,
+  caseStudies,
+  showComparison = true,
+  showValueProp = false,
+} = Astro.props;
+
+const displayComparison = !(caseStudies && caseStudies.length > 0) && showComparison;
+const displayTestimonials = !(caseStudies && caseStudies.length > 0) && testimonials.length > 0;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={`https://www.flipsplit.com/${slug}`} />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style is:global>
+    :root { --brand-cyan: #41ebd6; --brand-dark: #0C3034; --brand-body: #34313D; }
+    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
+    h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
+    .btn-primary { background: var(--brand-cyan); color: var(--brand-dark); font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary:hover { filter: brightness(1.08); }
+    details > summary { list-style: none; }
+    details > summary::-webkit-details-marker { display: none; }
+    .faq-icon { transition: transform 0.2s ease; display: inline-block; }
+    details[open] .faq-icon { transform: rotate(45deg); }
+    #address-wrap { position: relative; }
+    #fs-pac-input-wrap { display:flex; align-items:center; background:rgba(255,255,255,0.97); border-radius:12px; position:relative; }
+    #fs-pac-input { width:100%; padding:14px 44px 14px 44px; font-size:15px; font-family:'Open Sans',sans-serif; color:#0C3034; background:transparent; border:none; border-radius:12px; outline:none; }
+    #fs-pac-input::placeholder { color:#94a3b8; }
+    #fs-pac-input:focus { box-shadow:0 0 0 2px #41ebd6; border-radius:12px; }
+    #fs-pac-dropdown { position:absolute; left:0; right:0; top:calc(100% + 6px); background:#fff; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.12); z-index:9999; display:none; overflow:hidden; border:1px solid rgba(0,0,0,0.06); }
+    .fs-pac-item { padding:12px 16px; cursor:pointer; font-size:14px; color:#0C3034; font-family:'Open Sans',sans-serif; border-bottom:1px solid #f4f4f4; }
+    .fs-pac-item:last-child { border-bottom:none; }
+    .fs-pac-item:hover { background:rgba(65,235,214,0.1); }
+  </style>
+</head>
+<body class="bg-white antialiased">
+
+  <!-- NAV -->
+  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-9" /></a>
+      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
+        <a href="/#how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
+        <a href="/#why-flipsplit" class="hover:text-[#0C3034] transition-colors">Why FlipSplit</a>
+        <a href="/blog" class="hover:text-[#0C3034] transition-colors">Blog</a>
+        <a href="/#faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
+      </div>
+      <a href="#get-offer" class="btn-primary text-sm px-5 py-2.5 rounded-lg">Get My Offer</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="py-20 px-6" style="background: linear-gradient(135deg, #0C3034 0%, #134a52 100%);">
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
+      <div>
+        <span class="inline-block text-xs font-semibold tracking-wide mb-5 px-4 py-1.5 rounded-full text-[#0C3034]" style="background: rgba(65,235,214,0.85);">{city}</span>
+        <h1 class="text-4xl sm:text-5xl font-black leading-tight mb-6" style="color: white; font-family:'sahar','Open Sans',sans-serif;">
+          {heroHeadline}
+        </h1>
+        <p class="text-slate-300 text-lg leading-relaxed mb-8">{heroSub}</p>
+        <div id="address-wrap" class="max-w-lg w-full"></div>
+        <p class="text-slate-400 text-xs mt-3">No obligation · No repairs needed · Results in 24–48 hours</p>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        {stats.map(s => (
+          <div class="rounded-2xl p-6" style="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);">
+            <div class="text-3xl font-black mb-1" style="color: var(--brand-cyan);">{s.value}</div>
+            <div class="text-sm text-slate-400">{s.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works" class="py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14">
+        <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">The process</p>
+        <h2 class="text-4xl font-black text-[#0C3034]">How FlipSplit works in {city}.</h2>
+      </div>
+      <div class="grid md:grid-cols-4 gap-6">
+        {[
+          { step: "01", title: "Share your address", body: step1Body },
+          { step: "02", title: "Review your offer", body: "We walk through the offer, your renovation plan, and your profit participation percentage. No pressure — take the time you need." },
+          { step: "03", title: "We renovate", body: "FlipSplit manages every contractor, permit, and material. You move out; we handle the rest at zero cost to you." },
+          { step: "04", title: "You get paid twice", body: "You receive your guaranteed cash at closing. When the renovated home sells above your price, you get your agreed share on top." },
+        ].map(({ step, title, body }) => (
+          <div class="text-center">
+            <div class="w-14 h-14 rounded-full flex items-center justify-center text-lg font-black mx-auto mb-5 text-[#0C3034]" style="background: rgba(65,235,214,0.15); border: 2px solid rgba(65,235,214,0.4);">{step}</div>
+            <h3 class="text-base font-black mb-2 text-[#0C3034]">{title}</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">{body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUE PROP CALLOUT (Anaheim) -->
+  {showValueProp && (
+    <section class="py-16 px-6" style="background: #f0faf9;">
+      <div class="max-w-4xl mx-auto">
+        <div class="grid md:grid-cols-3 gap-6">
+          {[
+            { stat: "0", label: "Upfront costs to you", sub: "We fund 100% of all renovation work" },
+            { stat: "30–50%", label: "Profit split for you", sub: "Of the amount above your guaranteed offer" },
+            { stat: "7 days", label: "Minimum close time", sub: "Cash in hand in as little as 7 days" },
+          ].map(({ stat, label, sub }) => (
+            <div class="text-center bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
+              <div class="text-4xl font-black mb-2 text-[#0C3034]">{stat}</div>
+              <div class="font-bold text-[#0C3034] mb-1">{label}</div>
+              <div class="text-xs text-slate-400">{sub}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CASE STUDIES (Long Beach) -->
+  {caseStudies && caseStudies.length > 0 && (
+    <section class="py-20 px-6 bg-slate-50">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+          <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">Real cases</p>
+          <h2 class="text-4xl font-black text-[#0C3034]">{city} homes we've bought.</h2>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          {caseStudies.map(c => (
+            <div class="bg-white rounded-2xl border border-slate-200 p-8">
+              <span class="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4" style="background: rgba(65,235,214,0.12); color: #0C3034;">{c.tag}</span>
+              <h3 class="text-xl font-black text-[#0C3034] mb-3">{c.headline}</h3>
+              <p class="text-slate-500 text-sm leading-relaxed mb-5">{c.body}</p>
+              <div class="rounded-xl px-5 py-4" style="background: #0C3034;">
+                <span class="text-xs font-semibold uppercase tracking-widest" style="color: var(--brand-cyan);">Result</span>
+                <p class="text-white font-bold mt-1">{c.result}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- COMPARISON TABLE (default) -->
+  {displayComparison && (
+    <section class="py-20 px-6 bg-slate-50">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+          <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">Compare your options</p>
+          <h2 class="text-4xl font-black text-[#0C3034]">The smarter way to sell in {shortName}.</h2>
+        </div>
+        <div class="rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+          <div class="grid grid-cols-4 text-xs font-bold uppercase tracking-widest text-center" style="background: #0C3034;">
+            <div class="p-4 text-left text-slate-400"></div>
+            <div class="p-4 text-white">Traditional</div>
+            <div class="p-4 text-white">Cash Buyer</div>
+            <div class="p-4" style="color: var(--brand-cyan);">FlipSplit</div>
+          </div>
+          {[
+            { label: "Upfront repair costs", traditional: "$15k–$60k+", cash: "None", flip: "None" },
+            { label: "Days to close", traditional: "60–90 days", cash: "7–14 days", flip: "7–30 days" },
+            { label: "Share of upside", traditional: "0%", cash: "0%", flip: "30–50%" },
+            { label: "Contingency risk", traditional: "High", cash: "Low", flip: "None" },
+            { label: "Renovation managed", traditional: "You", cash: "Buyer", flip: "FlipSplit" },
+            { label: "Net to seller", traditional: "Below market", cash: "Deeply discounted", flip: "Competitive + upside" },
+          ].map((row, i) => (
+            <div class={`grid grid-cols-4 text-sm text-center items-center ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
+              <div class="p-4 text-left font-medium text-slate-600">{row.label}</div>
+              <div class="p-4 text-slate-500">{row.traditional}</div>
+              <div class="p-4 text-slate-500">{row.cash}</div>
+              <div class="p-4 font-semibold text-[#0C3034]">{row.flip}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- TESTIMONIALS -->
+  {displayTestimonials && (
+    <section class="py-24 px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+          <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">What homeowners say</p>
+          <h2 class="text-4xl font-black text-[#0C3034]">Real {testimonialsName} homeowners, real results.</h2>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {testimonials.map(t => (
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col">
+              <div class="flex gap-0.5 mb-4" style="color: #FBBC05;">★★★★★</div>
+              <p class="text-sm text-slate-600 leading-relaxed flex-1 mb-5">"{t.quote}"</p>
+              <div class="flex items-center gap-3 mt-auto">
+                <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-[#0C3034] shrink-0" style="background: rgba(65,235,214,0.2);">{t.name.charAt(0)}</div>
+                <div>
+                  <div class="text-sm font-bold text-[#0C3034]">{t.name}</div>
+                  <div class="text-xs text-slate-400">{t.location}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- FAQ -->
+  <section class="py-20 px-6 bg-slate-50">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">FAQ</p>
+        <h2 class="text-4xl font-black text-[#0C3034]">Questions about selling in {city}.</h2>
+      </div>
+      <div>
+        {faqs.map(({ q, a }) => (
+          <details class="group border-b border-slate-200 py-1">
+            <summary class="flex justify-between items-center py-5 cursor-pointer font-semibold text-[#0C3034]">
+              {q}
+              <span class="faq-icon text-slate-400 text-2xl leading-none ml-6 shrink-0">+</span>
+            </summary>
+            <div class="pb-5 text-slate-500 leading-relaxed text-sm">{a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PLACES (cities / neighborhoods) -->
+  <section class="py-20 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-black text-[#0C3034] mb-3">{placesHeading}</h2>
+        <p class="text-slate-500">{placesDescription}</p>
+      </div>
+      <div class="flex flex-wrap gap-2 justify-center">
+        {places.map(p => (
+          <span class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 text-sm font-medium">{p}</span>
+        ))}
+        <span class="px-4 py-2 rounded-full text-sm font-medium" style="background: rgba(65,235,214,0.12); color: #0C3034;">+ many more</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- GET OFFER -->
+  <section id="get-offer" class="py-24 px-6" style="background: #0C3034;">
+    <div class="max-w-xl mx-auto">
+      <div class="text-center mb-10">
+        <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color: var(--brand-cyan);">Free. No obligation.</p>
+        <h2 class="text-4xl font-black text-white mb-4">Get your free {shortName} offer today.</h2>
+        <p class="text-slate-300 leading-relaxed">Share your address. We'll respond within 24–48 hours with a cash offer, renovation plan, and profit projection.</p>
+      </div>
+      <form class="space-y-4 bg-white rounded-2xl p-8" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <input type="hidden" name="location" value={city} />
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-[#0C3034] mb-1.5">First name</label>
+            <input type="text" name="first_name" required placeholder="Jane" class="w-full border border-slate-300 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-[#41ebd6] transition-colors" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-[#0C3034] mb-1.5">Last name</label>
+            <input type="text" name="last_name" required placeholder="Smith" class="w-full border border-slate-300 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-[#41ebd6] transition-colors" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-[#0C3034] mb-1.5">Property address</label>
+          <input type="text" name="address" required placeholder={`123 Main St, ${city}`} class="w-full border border-slate-300 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-[#41ebd6] transition-colors" />
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-[#0C3034] mb-1.5">Phone</label>
+            <input type="tel" name="phone" required placeholder="(555) 000-0000" class="w-full border border-slate-300 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-[#41ebd6] transition-colors" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-[#0C3034] mb-1.5">Email</label>
+            <input type="email" name="email" required placeholder="jane@email.com" class="w-full border border-slate-300 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-[#41ebd6] transition-colors" />
+          </div>
+        </div>
+        <button type="submit" class="btn-primary w-full text-base py-4 rounded-xl">Get My Free Offer →</button>
+        <p class="text-slate-400 text-xs text-center">Your info is never sold or shared. No spam, ever.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background: #081e21;" class="py-10 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+      <img src="/wordmark.png" alt="FlipSplit" class="h-8" />
+      <div class="flex gap-6">
+        <a href="/blog" class="hover:text-white transition-colors">Blog</a>
+        <a href="/#how-it-works" class="hover:text-white transition-colors">How It Works</a>
+        <a href="/#faq" class="hover:text-white transition-colors">FAQ</a>
+        <a href="mailto:hello@flipsplit.com" class="hover:text-white transition-colors">Contact</a>
+      </div>
+      <p>© 2026 FlipSplit. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Address confirmation modal -->
+  <div id="addr-modal" class="hidden fixed inset-0 z-[200] flex items-center justify-center p-4" style="background: rgba(0,0,0,0.6);">
+    <div class="bg-white w-full max-w-md p-8 relative shadow-2xl" style="border-radius:28px; font-family:'Open Sans',sans-serif;">
+      <!-- Close button: outlined circle -->
+      <button id="modal-close" class="absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 transition-colors" style="border:1.5px solid #0C3034;">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 1l11 11M12 1L1 12" stroke="#0C3034" stroke-width="1.75" stroke-linecap="round"/></svg>
+      </button>
+      <!-- Heading -->
+      <h3 class="text-3xl font-black leading-tight mb-6 pr-12" style="font-family:'sahar','Open Sans',sans-serif; color:#0C3034;">Is this the correct home address?</h3>
+      <!-- Address box -->
+      <div class="rounded-2xl px-5 py-4 flex items-start justify-between gap-4 mb-6" style="background:#f2f2f2;">
+        <p id="modal-addr" class="text-base leading-snug flex-1" style="color:#0C3034;"></p>
+        <button id="modal-edit" class="text-sm font-bold shrink-0 hover:opacity-70 transition-opacity" style="color:#41ebd6;">Edit</button>
+      </div>
+      <!-- Ownership question -->
+      <p class="text-base font-bold mb-3" style="color:#0C3034;">Are you the owner of this home? <span style="color:#ef4444;">*</span></p>
+      <div class="relative mb-6">
+        <select id="ownership" class="w-full appearance-none bg-white border rounded-2xl px-5 py-4 text-base focus:outline-none focus:border-[#41ebd6] transition-colors pr-12" style="border-color:#e2e8f0; color:#94a3b8;">
+          <option value="" disabled selected>Select</option>
+          <option style="color:#0C3034;">Yes</option>
+          <option style="color:#0C3034;">No</option>
+          <option style="color:#0C3034;">Agent</option>
+          <option style="color:#0C3034;">Other</option>
+        </select>
+        <span class="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2" style="color:#9ca3af;">
+          <svg width="16" height="16" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+      <button id="modal-continue" class="w-full py-4 rounded-2xl font-bold text-base transition-opacity hover:opacity-90" style="background:#41ebd6; color:#0C3034;">Confirm</button>
+    </div>
+  </div>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', function () {
+      var modal = document.getElementById('addr-modal');
+
+      document.getElementById('modal-close').onclick = function () {
+        modal.classList.add('hidden');
+      };
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) modal.classList.add('hidden');
+      });
+      document.getElementById('modal-edit').onclick = function () {
+        modal.classList.add('hidden');
+        var wrap = document.getElementById('address-wrap');
+        if (wrap) wrap.innerHTML = '';
+        initPAC();
+      };
+      document.getElementById('ownership').onchange = function () {
+        this.style.borderColor = '#e2e8f0';
+        this.style.color = '#0C3034';
+      };
+      document.getElementById('modal-continue').onclick = function () {
+        var sel = document.getElementById('ownership');
+        if (!sel.value) { sel.style.borderColor = '#ef4444'; return; }
+        var addr = document.getElementById('modal-addr').textContent;
+        var addrField = document.querySelector('#get-offer input[name="address"]');
+        if (addrField) addrField.value = addr;
+        modal.classList.add('hidden');
+        document.getElementById('get-offer').scrollIntoView({ behavior: 'smooth' });
+      };
+
+      function initPAC() {
+        var wrap = document.getElementById('address-wrap');
+
+        // Build custom input UI
+        var inputWrap = document.createElement('div');
+        inputWrap.id = 'fs-pac-input-wrap';
+
+        var searchIcon = document.createElement('span');
+        searchIcon.style.cssText = 'position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;display:flex;';
+        searchIcon.innerHTML = '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="7.5" cy="7.5" r="5" stroke="#41ebd6" stroke-width="1.6"/><path d="M12 12l3 3" stroke="#41ebd6" stroke-width="1.6" stroke-linecap="round"/></svg>';
+
+        var input = document.createElement('input');
+        input.id = 'fs-pac-input';
+        input.type = 'text';
+        input.placeholder = 'Enter your home address...';
+        input.autocomplete = 'off';
+
+        inputWrap.appendChild(searchIcon);
+        inputWrap.appendChild(input);
+
+        var dropdown = document.createElement('div');
+        dropdown.id = 'fs-pac-dropdown';
+
+        wrap.appendChild(inputWrap);
+        wrap.appendChild(dropdown);
+
+        // Re-populate the form address field if user edits the input
+        document.getElementById('modal-edit').onclick = function () {
+          modal.classList.add('hidden');
+          input.value = '';
+          dropdown.innerHTML = '';
+          dropdown.style.display = 'none';
+          input.focus();
+        };
+
+        google.maps.importLibrary('places').then(function (lib) {
+          console.log('[FS] places lib loaded, keys:', Object.keys(lib).join(', '));
+          var debounce;
+
+          function fetchSuggestions(query, cb) {
+            if (lib.AutocompleteService) {
+              new lib.AutocompleteService().getPlacePredictions(
+                { input: query, types: ['address'], componentRestrictions: { country: 'us' } },
+                function (preds, status) {
+                  console.log('[FS] AutocompleteService status:', status, 'count:', preds && preds.length);
+                  cb(status === 'OK' && preds ? preds.map(function (p) { return p.description; }) : []);
+                }
+              );
+            } else if (lib.AutocompleteSuggestion && lib.AutocompleteSuggestion.fetchAutocompleteSuggestions) {
+              lib.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+                input: query,
+                includedRegionCodes: ['us'],
+                includedPrimaryTypes: ['address']
+              }).then(function (res) {
+                cb((res.suggestions || []).map(function (s) {
+                  return s.placePrediction && s.placePrediction.text
+                    ? (s.placePrediction.text.text || s.placePrediction.text.toString())
+                    : '';
+                }).filter(Boolean));
+              }).catch(function (err) { console.error('[FS] AutocompleteSuggestion error:', err); cb([]); });
+            } else {
+              console.warn('[FS] No autocomplete API available in lib');
+              cb([]);
+            }
+          }
+
+          function selectAddress(addr) {
+            input.value = addr;
+            dropdown.innerHTML = '';
+            dropdown.style.display = 'none';
+            document.getElementById('modal-addr').textContent = addr;
+            document.getElementById('ownership').value = '';
+            document.getElementById('ownership').style.borderColor = '#e2e8f0';
+            modal.classList.remove('hidden');
+          }
+
+          function renderDropdown(suggestions) {
+            dropdown.innerHTML = '';
+            if (!suggestions.length) { dropdown.style.display = 'none'; return; }
+            suggestions.forEach(function (addr) {
+              var item = document.createElement('div');
+              item.className = 'fs-pac-item';
+              item.textContent = addr;
+              item.addEventListener('mousedown', function (e) {
+                e.preventDefault();
+                selectAddress(addr);
+              });
+              dropdown.appendChild(item);
+            });
+            dropdown.style.display = 'block';
+          }
+
+          input.addEventListener('input', function () {
+            clearTimeout(debounce);
+            if (!input.value.trim()) { dropdown.innerHTML = ''; dropdown.style.display = 'none'; return; }
+            debounce = setTimeout(function () { fetchSuggestions(input.value, renderDropdown); }, 250);
+          });
+
+          input.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') { dropdown.innerHTML = ''; dropdown.style.display = 'none'; }
+          });
+
+          input.addEventListener('blur', function () {
+            setTimeout(function () { dropdown.style.display = 'none'; }, 200);
+          });
+
+          input.addEventListener('focus', function () {
+            if (dropdown.children.length) dropdown.style.display = 'block';
+          });
+
+        }).catch(function (err) { console.error('Places load error:', err); });
+      }
+
+      // Bootstrap Loader — required for PlaceAutocompleteElement (new Places API)
+      (function(g){
+        var h,a,k,p='The Google Maps JavaScript API',c='google',l='importLibrary',q='__ib__',m=document,b=window;
+        b=b[c]||(b[c]={});
+        var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams;
+        var u=function(){return h||(h=new Promise(function(f,n){
+          a=m.createElement('script');
+          e.set('libraries',Array.from(r).join(','));
+          for(k in g)e.set(k.replace(/[A-Z]/g,function(t){return '_'+t[0].toLowerCase();}),g[k]);
+          e.set('callback',c+'.maps.'+q);
+          a.src='https://maps.googleapis.com/maps/api/js?'+e;
+          d[q]=f;a.onerror=function(){h=n(new Error(p+' could not load.'));};
+          m.head.append(a);
+        }));};
+        d[l]?console.warn(p+' only loads once. Ignoring:',g):d[l]=function(f){r.add(f);return u().then(function(){return d[l](f);});};
+      })({ key: 'AIzaSyArzPR5lnfheBpgpS98ZrQWO949cB1ty30', v: 'weekly' });
+
+      initPAC();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+---
+import LocationLayout from '../layouts/LocationLayout.astro';
+
+const caseStudies = [
+  {
+    tag: "Inherited House",
+    headline: "From probate to profit in 90 days.",
+    body: "A family inherited a Long Beach home that had been vacant for years. The property needed major repairs but the family had no time or budget to tackle them. FlipSplit purchased the home as-is, managed a complete renovation, and the family received a split check on top of their guaranteed offer.",
+    result: "$41,200 bonus check on top of guaranteed offer",
+  },
+  {
+    tag: "Heavy-Condition Home",
+    headline: "What looked like a teardown, wasn't.",
+    body: "A Long Beach homeowner had accumulated significant clutter and deferred maintenance over two decades. Traditional buyers wouldn't touch it — FlipSplit saw the opportunity. We cleared the property, renovated every room, and delivered a check the seller never expected.",
+    result: "$38,500 bonus check on top of guaranteed offer",
+  },
+];
+
+const props = {
+  title: "We Buy Houses in Long Beach and Split Resale Profits | FlipSplit",
+  description: "FlipSplit buys homes in Long Beach, CA. Get a guaranteed cash offer, we handle the renovation, and you keep a share of the profit when it sells. No repairs needed.",
+  slug: "location-long-beach",
+  city: "Long Beach",
+  shortName: "Long Beach",
+  heroHeadline: "We buy houses in Long Beach and split the resale profits with you.",
+  heroSub: "Get a guaranteed cash offer on your Long Beach home. FlipSplit renovates it, lists it, and splits the profit with you when it sells for more. Zero upfront costs.",
+  stats: [
+    { label: "Median Home Price", value: "$767K" },
+    { label: "Avg Days on Market", value: "22" },
+    { label: "Close in as few as", value: "7 days" },
+    { label: "SoCal homes bought", value: "500+" },
+  ],
+  step1Body: "Takes 2 minutes. We analyze your Long Beach home and respond within 24–48 hours with a guaranteed cash offer and renovation projection.",
+  testimonials: [],
+  faqs: [
+    { q: "Which Long Beach neighborhoods does FlipSplit serve?", a: "We serve all Long Beach neighborhoods including Bixby Knolls, Belmont Shore, Park Estates, Signal Hill, Lakewood Village, East Long Beach, North Long Beach, Wrigley, and more." },
+    { q: "How does the profit split work in Long Beach?", a: "You receive a guaranteed cash offer at closing. If the renovated home sells above that amount, you keep your agreed percentage — typically 30–50% — of the profit above your offer price." },
+    { q: "Will FlipSplit buy a Long Beach home in poor condition?", a: "Yes — that's our specialty. Deferred maintenance, outdated interiors, major repairs needed — none of that disqualifies you. We price based on after-renovation value." },
+    { q: "What if I inherited a Long Beach property and don't know its condition?", a: "We can work with inherited properties in any condition. We'll do our own assessment and make you an offer based on what we can do with the home." },
+    { q: "How does Long Beach's transfer tax affect my sale?", a: "Long Beach has both a county rate ($0.55/$500) and a city rate ($2.20/$500 for sales over $1.5M). Our offer factors in all applicable transfer taxes so there are no surprises at closing." },
+    { q: "What's the timeline from offer to close in Long Beach?", a: "We can close the cash purchase in as few as 7 days. Full cycle — cash purchase, renovation, and final resale — typically takes 4–6 months depending on renovation scope." },
+  ],
+  places: [
+    "Bixby Knolls", "Belmont Shore", "Belmont Heights", "Park Estates",
+    "Signal Hill", "Lakewood Village", "East Long Beach", "North Long Beach",
+    "Wrigley", "California Heights", "Los Cerritos", "Poly High",
+    "Downtown Long Beach", "Naples", "Alamitos Beach", "Rose Park",
+    "Willmore", "West Long Beach", "Zaferia", "Central Long Beach",
+  ],
+  placesHeading: "Every Long Beach neighborhood.",
+  placesDescription: "We buy homes across all Long Beach communities.",
+  caseStudies,
+};
+---
+<LocationLayout {...props} />

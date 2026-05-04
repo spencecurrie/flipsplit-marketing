@@ -74,14 +74,21 @@ function formatDate(d: Date) {
     .toc-link { transition: color 0.15s, border-color 0.15s; }
     .toc-link.active { color: var(--brand-cyan); border-left-color: var(--brand-cyan); }
 
-    /* Hide WordPress CTA banner images embedded in post content */
-    .prose img[src*="wp-content"][src*="CTA"],
-    .prose img[src*="wp-content"][src*="cta"],
-    .prose img[src*="wp-content"][src*="banner"],
-    .prose img[src*="wp-content"][src*="Banner"],
-    .prose img[src*="wp-content"][src*="offer"],
-    .prose img[src*="wp-content"][src*="Offer"] {
-      display: none;
+    /* Hide all WordPress CTA banners embedded in post content */
+    .prose img[src*="Flip-Split-CTA"],
+    .prose img[src*="flip-split-cta"],
+    .prose img[src*="icon-build"],
+    .prose img[src*="icon-Home"],
+    .prose a[href*="request-offer"] img,
+    .prose a[href*="request-offer"] {
+      display: none !important;
+    }
+    /* Hide the parent paragraph/heading of a hidden CTA link */
+    .prose p:has(> a[href*="request-offer"]:only-child),
+    .prose h2:has(> a[href*="request-offer"]),
+    .prose h3:has(> a[href*="request-offer"]),
+    .prose h4:has(> a[href*="request-offer"]) {
+      display: none !important;
     }
   </style>
 </head>
@@ -105,32 +112,37 @@ function formatDate(d: Date) {
   </nav>
 
   <!-- ─── ARTICLE HEADER ─── -->
-  <header class="border-b border-slate-100 px-6 pt-10 pb-8">
-    <div class="max-w-3xl mx-auto">
+  <header class="px-6 pt-10 pb-10 border-b border-slate-200" style="background: linear-gradient(135deg, rgba(65,235,214,0.08) 0%, rgba(65,235,214,0.02) 50%, transparent 100%);">
+    <div class="max-w-6xl mx-auto">
+      <div class="lg:grid lg:grid-cols-[1fr_300px] lg:gap-16">
+        <div>
 
-      <!-- Breadcrumb -->
-      <nav class="flex items-center gap-1.5 text-xs text-slate-400 mb-5">
-        <a href="/" class="hover:text-[#0C3034] transition-colors">Home</a>
-        <span>›</span>
-        <a href="/blog" class="hover:text-[#0C3034] transition-colors">Blog</a>
-        <span>›</span>
-        <span class="text-slate-500 font-medium">{category}</span>
-      </nav>
+          <!-- Breadcrumb -->
+          <nav class="flex items-center gap-1.5 text-xs text-slate-400 mb-5">
+            <a href="/" class="hover:text-[#0C3034] transition-colors">Home</a>
+            <span>›</span>
+            <a href="/blog" class="hover:text-[#0C3034] transition-colors">Blog</a>
+            <span>›</span>
+            <span class="text-slate-500 font-medium">{category}</span>
+          </nav>
 
-      <!-- Title -->
-      <h1 class="text-3xl sm:text-4xl lg:text-[2.75rem] font-black text-[#0C3034] leading-tight mb-5" style="font-family:'sahar','Open Sans',sans-serif;">
-        {title}
-      </h1>
+          <!-- Title -->
+          <h1 class="text-3xl sm:text-4xl lg:text-[2.75rem] font-black text-[#0C3034] leading-tight mb-5" style="font-family:'sahar','Open Sans',sans-serif; color:#0C3034;">
+            {title}
+          </h1>
 
-      <!-- Meta row -->
-      <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background:rgba(65,235,214,0.12);color:#0C3034;">{category}</span>
-        <span class="text-xs text-slate-400">{formatDate(pubDate)}</span>
-        {readingTime && <span class="text-xs text-slate-400">{readingTime} min read</span>}
-        {reviewer && <span class="text-xs text-slate-400">Reviewed by <span class="font-semibold text-slate-500">{reviewer}</span></span>}
-        {updatedDate && <span class="text-xs text-slate-400">Updated {formatDate(updatedDate)}</span>}
+          <!-- Meta row -->
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background:rgba(65,235,214,0.15);color:#0C3034;">{category}</span>
+            <span class="text-xs text-slate-400">{formatDate(pubDate)}</span>
+            {readingTime && <span class="text-xs text-slate-400">{readingTime} min read</span>}
+            {reviewer && <span class="text-xs text-slate-400">Reviewed by <span class="font-semibold text-slate-500">{reviewer}</span></span>}
+            {updatedDate && <span class="text-xs text-slate-400">Updated {formatDate(updatedDate)}</span>}
+          </div>
+
+        </div>
+        <!-- Right col intentionally empty — keeps title aligned with article body below -->
       </div>
-
     </div>
   </header>
 
@@ -191,7 +203,7 @@ function formatDate(d: Date) {
       <!-- Get Offer card -->
       <div class="rounded-2xl p-6" style="background: var(--brand-dark);">
         <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color: var(--brand-cyan);">Free. No obligation.</p>
-        <h3 class="text-xl font-black text-white mb-3 leading-tight">Get your free offer today.</h3>
+        <h3 class="text-xl font-black mb-3 leading-tight" style="color: white;">Choose your home offer price.</h3>
         <p class="text-slate-400 text-sm mb-5 leading-relaxed">Share your address. We'll respond in 24–48 hours with a cash offer and renovation projection.</p>
         <a href="/#get-offer" class="btn-primary block text-center text-sm px-5 py-3 rounded-xl">
           Get My Free Offer →

@@ -200,33 +200,46 @@ function formatDate(d: Date) {
       );
     })()}
 
-    <!-- ─── RECENT (overflow) ─── -->
-    {allPosts.length > 10 && (() => {
-      const recent = allPosts.slice(0, 12);
-      return (
-        <section>
-          <div class="flex items-center justify-between mb-7">
-            <h2 class="text-xl font-black text-[#0C3034]">Recent Articles</h2>
-          </div>
-          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {recent.map(post => (
-              <a href={`/blog/${post.id}`} class="post-card group block rounded-2xl border border-slate-200 overflow-hidden hover:shadow-sm transition-shadow">
-                <div class="aspect-[16/9] overflow-hidden bg-slate-100">
-                  {post.data.heroImage
-                    ? <img src={post.data.heroImage} alt={post.data.title} class="card-img w-full h-full object-cover" loading="lazy" />
-                    : <div class="w-full h-full" style="background: linear-gradient(135deg,#0C3034,#1a5c66);" />
-                  }
-                </div>
-                <div class="p-4">
-                  <h3 class="text-sm font-black text-[#0C3034] leading-snug line-clamp-2 mb-1.5 transition-colors">{post.data.title}</h3>
-                  <span class="text-xs text-slate-400">{formatDate(post.data.pubDate)}</span>
-                </div>
-              </a>
-            ))}
-          </div>
-        </section>
-      );
-    })()}
+    <!-- ─── RECENT (all posts, load more) ─── -->
+    {allPosts.length > 10 && (
+      <section>
+        <div class="flex items-center justify-between mb-7">
+          <h2 class="text-xl font-black text-[#0C3034]">Recent Articles</h2>
+          <span class="text-xs text-slate-400">{allPosts.length} articles</span>
+        </div>
+        <div id="recent-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {allPosts.map((post, i) => (
+            <a
+              href={`/blog/${post.id}`}
+              class={`post-card group block rounded-2xl border border-slate-200 overflow-hidden hover:shadow-sm transition-shadow${i >= 12 ? ' hidden' : ''}`}
+              data-index={i}
+            >
+              <div class="aspect-[16/9] overflow-hidden bg-slate-100">
+                {post.data.heroImage
+                  ? <img src={post.data.heroImage} alt={post.data.title} class="card-img w-full h-full object-cover" loading="lazy" />
+                  : <div class="w-full h-full" style="background: linear-gradient(135deg,#0C3034,#1a5c66);" />
+                }
+              </div>
+              <div class="p-4">
+                <h3 class="text-sm font-black text-[#0C3034] leading-snug line-clamp-2 mb-1.5 transition-colors">{post.data.title}</h3>
+                <span class="text-xs text-slate-400">{formatDate(post.data.pubDate)}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <!-- Load more button -->
+        <div id="load-more-wrap" class="mt-10 text-center">
+          <button
+            id="load-more-btn"
+            class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl border-2 border-[#0C3034] text-[#0C3034] font-bold text-sm hover:bg-[#0C3034] hover:text-white transition-colors"
+          >
+            Load more articles
+          </button>
+          <p id="load-more-count" class="text-xs text-slate-400 mt-3">Showing 12 of {allPosts.length}</p>
+        </div>
+      </section>
+    )}
 
   </div>
 
@@ -250,6 +263,25 @@ function formatDate(d: Date) {
       <p>© 2026 FlipSplit. All rights reserved.</p>
     </div>
   </footer>
+
+  <script>
+    const BATCH = 12;
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('#recent-grid [data-index]'));
+    const btn = document.getElementById('load-more-btn');
+    const wrap = document.getElementById('load-more-wrap');
+    const countEl = document.getElementById('load-more-count');
+    let shown = BATCH;
+
+    btn?.addEventListener('click', () => {
+      const next = Math.min(shown + BATCH, cards.length);
+      for (let i = shown; i < next; i++) {
+        cards[i].classList.remove('hidden');
+      }
+      shown = next;
+      countEl!.textContent = `Showing ${shown} of ${cards.length}`;
+      if (shown >= cards.length) wrap!.remove();
+    });
+  </script>
 
 </body>
 </html>

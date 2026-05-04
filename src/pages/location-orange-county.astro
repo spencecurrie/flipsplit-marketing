@@ -1,0 +1,44 @@
+---
+import LocationLayout from '../layouts/LocationLayout.astro';
+
+const props = {
+  title: "We Buy Houses for Cash in Orange County | FlipSplit",
+  description: "FlipSplit buys homes in Orange County. Get a guaranteed cash offer, we renovate, and you keep a share of the upside. No repairs, no stress. Serving all of OC.",
+  slug: "location-orange-county",
+  city: "Orange County",
+  shortName: "OC",
+  heroHeadline: "We buy houses for cash in Orange County the easy way.",
+  heroSub: "Get a competitive cash offer on your OC home, we handle every renovation detail, and you participate in the profit when it sells for more. Zero upfront costs.",
+  stats: [
+    { label: "Median Home Price", value: ">$1M" },
+    { label: "Property Tax Rate", value: "~0.69%" },
+    { label: "Close in as few as", value: "7 days" },
+    { label: "SoCal homes bought", value: "500+" },
+  ],
+  step1Body: "Takes 2 minutes. We analyze your Orange County home and respond within 24–48 hours with a guaranteed cash offer and renovation projection.",
+  testimonials: [
+    { quote: "The OC market moves fast and FlipSplit kept up every step of the way. Fair offer, smooth process, and I walked away with way more than I expected.", name: "Erin S.", location: "Irvine, CA" },
+    { quote: "I was skeptical of the profit-split model at first. After working with FlipSplit I'm a total convert. They delivered on everything they promised.", name: "William Campbell", location: "Huntington Beach, CA" },
+    { quote: "My home needed a full kitchen remodel. FlipSplit took it on without hesitation and the end result was stunning. Got my split check 4 months later.", name: "Sandra K.", location: "Fullerton, CA" },
+    { quote: "Relocating out of state meant I needed certainty. FlipSplit gave me a locked-in price and stuck to it. That peace of mind was worth everything.", name: "Marcus T.", location: "Anaheim, CA" },
+  ],
+  faqs: [
+    { q: "Does FlipSplit serve all cities in Orange County?", a: "Yes — we buy homes across all of Orange County, from Anaheim and Fullerton in the north to San Clemente and Dana Point in the south." },
+    { q: "Orange County homes are expensive. Do you have a max price?", a: "We regularly work with homes in the $800K–$2M+ range throughout OC. Our cash offer model scales with your home's market value." },
+    { q: "How does FlipSplit's profit participation work?", a: "You get a guaranteed cash offer at closing. If the renovated home sells above that price, you keep your agreed percentage (typically 30–50%) of everything above your offer amount." },
+    { q: "Will you buy a condo or townhome in OC?", a: "We focus on single-family homes. If you have a condo or townhome, reach out anyway — we evaluate every property on a case-by-case basis." },
+    { q: "I've already listed my home. Can FlipSplit still make an offer?", a: "In many cases yes. Contact us and we'll review your situation. Active listings aren't automatically disqualified." },
+    { q: "What's the transfer tax situation in Orange County?", a: "OC transfer taxes are relatively low — the county rate is $0.55 per $500 of value, and most OC cities don't add an additional city transfer tax on top of that." },
+  ],
+  places: [
+    "Anaheim", "Santa Ana", "Irvine", "Huntington Beach", "Garden Grove",
+    "Orange", "Fullerton", "Costa Mesa", "Mission Viejo", "Westminster",
+    "Buena Park", "Lake Forest", "Tustin", "Newport Beach", "Laguna Niguel",
+    "Yorba Linda", "San Clemente", "Fountain Valley", "Placentia", "Brea",
+    "Aliso Viejo", "Laguna Hills", "Laguna Beach", "Dana Point", "San Juan Capistrano",
+    "Cypress", "La Palma", "Stanton", "Seal Beach", "Los Alamitos",
+  ],
+  placesDescription: "We buy homes in every city and neighborhood across Orange County.",
+};
+---
+<LocationLayout {...props} />

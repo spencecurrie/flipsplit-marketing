@@ -1,0 +1,43 @@
+---
+import LocationLayout from '../layouts/LocationLayout.astro';
+
+const props = {
+  title: "Sell Your Anaheim Home to FlipSplit and Share in the Flip Profits",
+  description: "FlipSplit buys homes in Anaheim, CA. Get a guaranteed cash offer, we handle the renovation, and you share in the profit when it sells for more. No repairs needed.",
+  slug: "location-anaheim",
+  city: "Anaheim",
+  shortName: "Anaheim",
+  heroHeadline: "Sell your Anaheim home to FlipSplit and share in the flip profits.",
+  heroSub: "FlipSplit buys your Anaheim home as-is, renovates it top-to-bottom, and gives you a share of the profit when it sells. Guaranteed offer. Zero upfront costs.",
+  stats: [
+    { label: "Avg Anaheim Home Price", value: "~$800K" },
+    { label: "YoY Price Growth", value: "+13%" },
+    { label: "Close in as few as", value: "7 days" },
+    { label: "SoCal homes bought", value: "500+" },
+  ],
+  step1Body: "Takes 2 minutes. We analyze your Anaheim home using current OC market data and respond within 24–48 hours with a guaranteed offer.",
+  testimonials: [
+    { quote: "Anaheim homes are appreciating fast. FlipSplit captured that upside and split it with me. I walked away with way more than a standard sale would have netted.", name: "Carlos R.", location: "Anaheim, CA" },
+    { quote: "We had a home near Disneyland that needed major updates. FlipSplit was incredibly professional and delivered on every promise.", name: "Jennifer K.", location: "Anaheim Hills, CA" },
+    { quote: "From first contact to final check — FlipSplit made a complex situation completely manageable. Highly recommend to any Anaheim homeowner.", name: "Mike S.", location: "Anaheim, CA" },
+    { quote: "I called three cash buyers. FlipSplit's offer was the most competitive AND I still got upside from the resale. It wasn't even close.", name: "Donna L.", location: "Anaheim, CA" },
+  ],
+  faqs: [
+    { q: "Does FlipSplit buy homes in all Anaheim neighborhoods?", a: "Yes — we serve all Anaheim areas including Anaheim Hills, West Anaheim, Central Anaheim, South Anaheim, and all neighborhoods in between." },
+    { q: "Anaheim home prices have risen significantly. Does that affect FlipSplit's offer?", a: "Our offers are based on current market data including comparable recent sales. Rising prices mean rising offers — your guaranteed cash offer reflects today's market." },
+    { q: "I'm near Disneyland/the Resort District. Are there any restrictions?", a: "Proximity to the Disneyland Resort doesn't affect your eligibility. We evaluate each home based on its specific characteristics and comparable market data." },
+    { q: "How much of the profit do I keep?", a: "Profit splits are negotiated as part of your offer and typically range from 30–50% of the profit above your guaranteed cash offer price. Higher splits are available with a slightly lower base offer." },
+    { q: "What kinds of renovations does FlipSplit do in Anaheim?", a: "We handle everything from cosmetic refreshes (paint, flooring, fixtures) to full kitchen and bath remodels, HVAC upgrades, exterior improvements, and more — based on what will maximize your home's value." },
+    { q: "How do I know my offer is fair?", a: "We walk through the comparable sales data with you so you can see exactly how we arrived at your offer. Our model only works if you make money, so competitive offers are in our interest too." },
+  ],
+  places: [
+    "Anaheim Hills", "West Anaheim", "Central Anaheim", "South Anaheim",
+    "East Anaheim", "The Colony", "Platinum Triangle", "Downtown Anaheim",
+    "Nearby: Placentia", "Nearby: Orange", "Nearby: Villa Park", "Nearby: Garden Grove",
+    "Nearby: Stanton", "Nearby: La Palma", "Nearby: Cypress", "Nearby: Buena Park",
+  ],
+  showComparison: false,
+  showValueProp: true,
+};
+---
+<LocationLayout {...props} />

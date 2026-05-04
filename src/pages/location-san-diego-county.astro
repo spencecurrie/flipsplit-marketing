@@ -1,0 +1,44 @@
+---
+import LocationLayout from '../layouts/LocationLayout.astro';
+
+const props = {
+  title: "We Buy Houses in San Diego County | FlipSplit",
+  description: "FlipSplit buys homes in San Diego County. Get a guaranteed cash offer, we handle all renovations, and you share in the profit when it sells. No repairs, no stress.",
+  slug: "location-san-diego-county",
+  city: "San Diego County",
+  shortName: "San Diego",
+  heroHeadline: "We buy houses in San Diego County the easy way.",
+  heroSub: "FlipSplit offers a guaranteed cash price for your San Diego home and splits the renovation profit with you when it sells. Skip repairs, showings, and uncertainty.",
+  stats: [
+    { label: "Median Home Price", value: ">$800K" },
+    { label: "Avg Days on Market", value: "12" },
+    { label: "Close in as few as", value: "7 days" },
+    { label: "SoCal homes bought", value: "500+" },
+  ],
+  step1Body: "Takes 2 minutes. We analyze your San Diego County home and respond within 24–48 hours with a guaranteed cash offer and renovation estimate.",
+  testimonials: [
+    { quote: "FlipSplit gave me a strong cash offer and I still got a split on the backend. Best of both worlds — certainty upfront and upside later.", name: "Nick B.", location: "San Diego, CA" },
+    { quote: "The San Diego market is competitive. FlipSplit understood that and priced my home accordingly. Very impressed with the whole team.", name: "Paul H.", location: "Chula Vista, CA" },
+    { quote: "Selling a house is stressful — none of the stress came from FlipSplit. They resolved every complication and I walked away very happy.", name: "Mursalin H.", location: "San Diego, CA" },
+    { quote: "I needed to sell fast after a job change. FlipSplit closed in 10 days and I still got a check months later when the renovated house sold. Amazing.", name: "Rachel D.", location: "El Cajon, CA" },
+  ],
+  faqs: [
+    { q: "Does FlipSplit buy homes throughout San Diego County?", a: "Yes — we serve all of San Diego County including the city of San Diego, North County, East County, South County, and coastal communities." },
+    { q: "The San Diego market moves fast. How quickly can you make an offer?", a: "We respond with a preliminary offer within 24–48 hours of receiving your property details. We can close in as few as 7 days once you've accepted." },
+    { q: "My home has fire or flood damage. Will you still buy it?", a: "We evaluate damaged properties on a case-by-case basis. San Diego's wildfire and moisture conditions don't disqualify a home — reach out and we'll assess your situation." },
+    { q: "How does the profit split work exactly?", a: "At closing you receive your guaranteed cash offer. If the renovated home sells for more, you keep your agreed percentage (typically 30–50%) of the amount above your offer price." },
+    { q: "Are there costs for the homeowner?", a: "Zero upfront costs. FlipSplit fronts 100% of renovation costs, which are recovered from the eventual sale proceeds — not from you directly." },
+    { q: "Can you work with a San Diego home in a trust or probate?", a: "Yes. We regularly work with inherited homes, trust sales, and probate situations throughout San Diego County. We have experience navigating the legal complexity." },
+  ],
+  places: [
+    "San Diego", "Chula Vista", "El Cajon", "Oceanside", "Escondido",
+    "Santee", "La Mesa", "National City", "Vista", "Poway",
+    "Spring Valley", "Lemon Grove", "Lakeside", "Ramona", "Coronado",
+    "Imperial Beach", "Bonita", "Jamul", "Encinitas", "Carlsbad",
+    "San Marcos", "Solana Beach", "Del Mar", "La Jolla", "Point Loma",
+    "Mission Hills", "North Park", "Hillcrest",
+  ],
+  placesDescription: "We buy homes in every city and neighborhood across San Diego County.",
+};
+---
+<LocationLayout {...props} />

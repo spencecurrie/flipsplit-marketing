@@ -1,0 +1,46 @@
+---
+import LocationLayout from '../layouts/LocationLayout.astro';
+
+const props = {
+  title: "Sell Your House in Los Angeles the Easy Way | FlipSplit",
+  description: "FlipSplit buys homes in Los Angeles County. Get a guaranteed cash offer, we renovate, and you keep a share of the upside when it sells. No repairs, no stress.",
+  slug: "location-la-county",
+  city: "Los Angeles County",
+  shortName: "LA",
+  heroHeadline: "Sell your house in Los Angeles the easy way.",
+  heroSub: "Get a guaranteed cash offer, we handle every renovation, and you share in the profit when your upgraded home sells for more. Serving all of LA County.",
+  stats: [
+    { label: "Median Home Price", value: "$725K" },
+    { label: "Avg Days on Market", value: "21" },
+    { label: "Close in as few as", value: "7 days" },
+    { label: "SoCal homes bought", value: "500+" },
+  ],
+  step1Body: "Takes 2 minutes. We analyze your LA County home and respond within 24–48 hours with a guaranteed cash offer.",
+  testimonials: [
+    { quote: "I didn't want to deal with repairs or showings. FlipSplit came in, handled everything, and I got more than I expected. Process was seamless.", name: "Val Briot", location: "Los Angeles, CA" },
+    { quote: "As an investor I've seen a lot of deals. FlipSplit's model is genuinely different — they gave me a fair offer and I still participated in the upside. Outstanding.", name: "Felipe Ramirez Salazar", location: "East LA, CA" },
+    { quote: "I inherited my parents' home and had no idea where to start. FlipSplit walked me through everything patiently. Very professional team.", name: "Ana F.", location: "Inglewood, CA" },
+    { quote: "Moving across the country meant I needed a fast, reliable sale. FlipSplit delivered exactly that — closed on my timeline with zero surprises.", name: "Janalle B.", location: "Compton, CA" },
+  ],
+  faqs: [
+    { q: "Does FlipSplit buy homes anywhere in LA County?", a: "Yes — we serve the entire Los Angeles County market including the San Fernando Valley, South Bay, San Gabriel Valley, East LA, and all cities in between." },
+    { q: "My LA home needs a lot of work. Will you still buy it?", a: "Absolutely. We specialize in homes that need renovation — that's the core of our model. The worse the condition, the more value we can unlock through our rehab process." },
+    { q: "How does the profit split work?", a: "You receive a guaranteed cash offer at closing. If your renovated home sells above that amount, you keep your agreed share (typically 30–50%) of the profit above your offer price." },
+    { q: "How is this different from selling to a cash buyer in LA?", a: "Traditional cash buyers in LA discount your price and keep all the upside. FlipSplit gives you a competitive offer AND lets you participate in the renovation upside — often resulting in tens of thousands more." },
+    { q: "Are there any upfront costs?", a: "None. FlipSplit covers 100% of renovation costs. You pay nothing until closing, and everything comes from proceeds." },
+    { q: "How long does a Los Angeles FlipSplit take?", a: "We can close on the cash purchase in as few as 7 days. The full process — including renovation and final sale — typically takes 3–6 months depending on scope." },
+  ],
+  places: [
+    "Los Angeles", "Inglewood", "Compton", "Hawthorne", "Torrance", "Carson",
+    "Gardena", "Lynwood", "South Gate", "Downey", "Norwalk", "Cerritos",
+    "Lakewood", "Long Beach", "Whittier", "Pico Rivera", "Montebello",
+    "El Monte", "Baldwin Park", "West Covina", "Covina", "Azusa", "Arcadia",
+    "Monrovia", "Pasadena", "Glendale", "Burbank", "Van Nuys", "Reseda",
+    "Northridge", "Chatsworth", "Woodland Hills", "Canoga Park", "Tarzana",
+    "North Hollywood", "Studio City", "Sherman Oaks", "Encino", "Palmdale",
+    "Lancaster", "Santa Clarita", "Thousand Oaks area", "Pomona",
+  ],
+  placesDescription: "We buy homes in every city and neighborhood across Los Angeles County.",
+};
+---
+<LocationLayout {...props} />

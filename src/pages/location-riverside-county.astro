@@ -1,0 +1,43 @@
+---
+import LocationLayout from '../layouts/LocationLayout.astro';
+
+const props = {
+  title: "We Buy Houses in Riverside County | FlipSplit",
+  description: "FlipSplit buys homes in Riverside County. Get a guaranteed cash offer, we renovate at no cost to you, and you keep a share of the profit when it sells for more.",
+  slug: "location-riverside-county",
+  city: "Riverside County",
+  shortName: "the Inland Empire",
+  testimonialsName: "Inland Empire",
+  heroHeadline: "We buy houses in Riverside County.",
+  heroSub: "Get a fair guaranteed offer for your Riverside County home. We manage every renovation detail and split the profit with you when the updated home sells. Zero out-of-pocket costs.",
+  stats: [
+    { label: "Median Home Price", value: "~$630K" },
+    { label: "Avg Days on Market", value: "15" },
+    { label: "Sold Above List Price", value: "75%" },
+    { label: "Close in as few as", value: "7 days" },
+  ],
+  step1Body: "Takes 2 minutes. We analyze your Riverside County home using local market data and respond in 24–48 hours with a guaranteed cash offer.",
+  testimonials: [
+    { quote: "I was ready to just take the first cash offer I got. My neighbor told me about FlipSplit and I'm so glad I waited. Got a fair offer AND a bonus check.", name: "David M.", location: "Riverside, CA" },
+    { quote: "The Inland Empire market is different from coastal CA. FlipSplit understood the local comps and made a realistic, competitive offer. Very professional.", name: "Tamara W.", location: "Corona, CA" },
+    { quote: "My Temecula home needed a kitchen and bath overhaul I couldn't afford. FlipSplit handled everything and I walked away with more than my asking price.", name: "James R.", location: "Temecula, CA" },
+    { quote: "Easy process. They handled permits, contractors, the whole thing. I just moved out and waited for my checks. Couldn't be simpler.", name: "Lisa P.", location: "Moreno Valley, CA" },
+  ],
+  faqs: [
+    { q: "Does FlipSplit buy homes across all of Riverside County?", a: "Yes — we serve the full Riverside County market including the City of Riverside, Corona, Moreno Valley, Temecula, Murrieta, Hemet, Menifee, and all surrounding areas including the Coachella Valley." },
+    { q: "Riverside County is more affordable than coastal markets. Does FlipSplit still work here?", a: "Absolutely. Our model works in any price range. We buy homes throughout the Inland Empire and have strong contractor networks and market data for Riverside County specifically." },
+    { q: "My Riverside home is in a HOA community. Does that complicate things?", a: "Not usually. We're experienced working within HOA guidelines and can factor HOA renovation restrictions into the offer and plan." },
+    { q: "How long do renovations typically take in Riverside County?", a: "Most renovations take 6–10 weeks. Riverside County permit timelines are generally manageable, and our local contractor network keeps projects on schedule." },
+    { q: "What neighborhoods in Riverside do you know well?", a: "We have strong local knowledge across Canyon Crest, Orangecrest, La Sierra, Victoria, Wood Streets, Downtown Riverside, and surrounding communities. We also have deep knowledge of Temecula wine country and the Hemet/San Jacinto Valley." },
+    { q: "Can you close fast if I need to move quickly?", a: "Yes — we can close the initial cash purchase in as few as 7 days. The renovation and resale happens on its own timeline, but your guaranteed cash hits your account at that first closing." },
+  ],
+  places: [
+    "Riverside", "Corona", "Moreno Valley", "Temecula", "Murrieta",
+    "Hemet", "Menifee", "Perris", "Lake Elsinore", "Eastvale",
+    "Jurupa Valley", "Wildomar", "San Jacinto", "Beaumont", "Banning",
+    "Cathedral City", "Palm Springs", "Indio", "Palm Desert", "Coachella",
+    "Desert Hot Springs", "La Quinta", "Indian Wells", "Rancho Mirage",
+  ],
+};
+---
+<LocationLayout {...props} />
