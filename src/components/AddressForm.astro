@@ -3,8 +3,9 @@ interface Props {
   id?: string;
   action?: string;
   class?: string;
+  align?: 'left' | 'center';
 }
-const { id = 'address-form', action = 'https://formspree.io/f/YOUR_FORM_ID', class: className = '' } = Astro.props;
+const { id = 'address-form', action = 'https://formspree.io/f/YOUR_FORM_ID', class: className = '', align = 'left' } = Astro.props;
 ---
 
 <div class={className}>
@@ -33,13 +34,13 @@ const { id = 'address-form', action = 'https://formspree.io/f/YOUR_FORM_ID', cla
     </button>
   </form>
 
-  <div class="flex flex-wrap justify-center items-center gap-1.5 text-sm mb-1.5">
+  <div class={`flex flex-wrap items-center gap-1.5 text-sm mb-1.5 ${align === 'center' ? 'justify-center' : ''}`}>
     <span style="color: #FBBC05; letter-spacing: 1px;">★★★★★</span>
     <span class="font-bold text-[#0C3034]">5.0</span>
     <span class="text-slate-400">· Verified reviews on</span>
     <span class="font-bold text-slate-400">REVIEWS.IO</span>
   </div>
-  <p class="text-xs text-slate-400 text-center">No obligation · No repairs needed · Results in 24–48 hours</p>
+  <p class={`text-xs text-slate-400 ${align === 'center' ? 'text-center' : ''}`}>No obligation · No repairs needed · Results in 24–48 hours</p>
 </div>
 
 <style is:global>
