@@ -27,6 +27,9 @@ interface Props {
   caseStudies?: CaseStudy[];
   showComparison?: boolean;
   showValueProp?: boolean;
+  marketOverview?: string;
+  marketHeading?: string;
+  whySellBody?: string;
 }
 
 const {
@@ -40,6 +43,9 @@ const {
   caseStudies,
   showComparison = true,
   showValueProp = false,
+  marketOverview,
+  marketHeading = `The ${city} real estate market in 2026.`,
+  whySellBody = `If you want to sell your home in ${city}, the traditional path means paying for repairs upfront, managing contractors, sitting through weeks of showings, and hoping a buyer doesn't walk after inspection. A cash buyer solves the hassle — but discounts your home 20–30% below market and keeps every dollar of renovation profit for themselves.\n\nFlipSplit is a third option. We buy your home as-is, fund and manage the entire renovation at zero cost to you, and split the profit when the updated home sells for more. You get a guaranteed cash offer at closing and a backend check once the renovated home sells. No repairs. No showings. No surprises.`,
 } = Astro.props;
 
 const displayComparison = !(caseStudies && caseStudies.length > 0) && showComparison;
@@ -106,7 +112,13 @@ const displayTestimonials = !(caseStudies && caseStudies.length > 0) && testimon
         </h1>
         <p class="text-slate-300 text-lg leading-relaxed mb-8">{heroSub}</p>
         <div id="address-wrap" class="max-w-lg w-full"></div>
-        <p class="text-slate-400 text-xs mt-3">No obligation · No repairs needed · Results in 24–48 hours</p>
+        <div class="flex items-center gap-2 mt-3">
+          <div class="flex gap-px" style="color:#FBBC05; font-size:13px; line-height:1;">★★★★★</div>
+          <span class="text-white text-xs font-bold">5.0</span>
+          <span class="text-slate-400 text-xs">· Verified reviews on</span>
+          <span class="text-xs font-bold tracking-wide" style="color:var(--brand-cyan);">REVIEWS.IO</span>
+        </div>
+        <p class="text-slate-500 text-xs mt-2">No obligation · No repairs needed · Results in 24–48 hours</p>
       </div>
       <div class="grid grid-cols-2 gap-4">
         {stats.map(s => (
@@ -115,6 +127,46 @@ const displayTestimonials = !(caseStudies && caseStudies.length > 0) && testimon
             <div class="text-sm text-slate-400">{s.label}</div>
           </div>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY FLIPSPLIT -->
+  <section class="py-20 px-6 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-black mb-6" style="color:#0C3034;">Why {city} homeowners choose FlipSplit.</h2>
+      <div class="space-y-4 mb-12">
+        {whySellBody.split('\\n\\n').map(para => (
+          <p class="text-slate-600 leading-relaxed text-base">{para}</p>
+        ))}
+      </div>
+      <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+        <div class="min-w-[560px]">
+          <!-- Header -->
+          <div class="grid grid-cols-4 text-sm font-bold text-center" style="background:#0C3034;">
+            <div class="px-5 py-4 text-left text-slate-500 text-xs uppercase tracking-widest font-semibold"></div>
+            <div class="px-5 py-5 text-center font-black text-lg" style="color:var(--brand-cyan);">FlipSplit</div>
+            <div class="px-5 py-4 text-white font-semibold text-sm flex items-center justify-center">Traditional Sale</div>
+            <div class="px-5 py-4 text-white font-semibold text-sm flex items-center justify-center">Cash Buyer</div>
+          </div>
+          <!-- Rows -->
+          {[
+            { label: "Best for",            flip: "Homes needing renovation",   trad: "Move-in ready homes",         cash: "Distressed properties" },
+            { label: "Time to close",       flip: "7–30 days",                  trad: "45–90 days",                  cash: "7–14 days" },
+            { label: "Upfront costs",       flip: "$0 to you",                  trad: "$15K–$60K+ in repairs",       cash: "$0" },
+            { label: "Renovation",          flip: "FlipSplit handles everything",trad: "You manage it all",           cash: "Buyer's responsibility" },
+            { label: "Share of upside",     flip: "0–100% profit split",        trad: "Yours (after all costs)",     cash: "0% — buyer keeps it all" },
+            { label: "Contingencies",       flip: "None",                       trad: "Inspection, financing, appraisal", cash: "Low" },
+            { label: "Net to seller",       flip: "Competitive offer + upside", trad: "Below market after costs",    cash: "Deeply discounted" },
+          ].map((row, i) => (
+            <div class={`grid grid-cols-4 text-sm items-start ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
+              <div class="px-5 py-4 font-bold text-[#0C3034]">{row.label}</div>
+              <div class="px-5 py-4 font-semibold text-center" style="color:#0C3034; background:rgba(65,235,214,0.06);">{row.flip}</div>
+              <div class="px-5 py-4 text-slate-400 text-center">{row.trad}</div>
+              <div class="px-5 py-4 text-slate-400 text-center">{row.cash}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
@@ -142,6 +194,23 @@ const displayTestimonials = !(caseStudies && caseStudies.length > 0) && testimon
       </div>
     </div>
   </section>
+
+  <!-- MARKET OVERVIEW -->
+  {marketOverview && (
+    <section class="py-20 px-6" style="background: #f0faf9;">
+      <div class="max-w-5xl mx-auto lg:grid lg:grid-cols-[1fr_2fr] lg:gap-16 lg:items-start">
+        <div class="mb-8 lg:mb-0 lg:sticky lg:top-24">
+          <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color: var(--brand-cyan);">2026 Market Overview</p>
+          <h2 class="text-3xl font-black leading-snug" style="color: #0C3034;">{marketHeading}</h2>
+        </div>
+        <div class="space-y-5">
+          {marketOverview.split('\n\n').map(para => (
+            <p class="text-slate-600 leading-relaxed text-base">{para}</p>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- VALUE PROP CALLOUT (Anaheim) -->
   {showValueProp && (
