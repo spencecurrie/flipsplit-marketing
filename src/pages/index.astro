@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css'
+import AddressForm from '../components/AddressForm.astro'
 ---
 
 <!DOCTYPE html>
@@ -27,6 +28,15 @@ import '../styles/global.css'
     details > summary::-webkit-details-marker { display: none; }
     .faq-icon { transition: transform 0.2s ease; display: inline-block; }
     details[open] .faq-icon { transform: rotate(45deg); }
+    .hiw-item[open] .hiw-chevron { transform: rotate(180deg); }
+    @keyframes hiw-fill { from { width: 0%; } to { width: 100%; } }
+    .hiw-step { transition: border-color 0.2s, box-shadow 0.2s; }
+    .hiw-step.hiw-active { border-left-color: var(--brand-cyan) !important; box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+    .hiw-step.hiw-active .hiw-num { color: var(--brand-cyan) !important; }
+    .hiw-step.hiw-active .hiw-title { color: var(--brand-dark) !important; }
+    .hiw-step .hiw-body { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease; margin-top: 0; }
+    .hiw-step.hiw-active .hiw-body { max-height: 100px; opacity: 1; margin-top: 0.375rem; }
+    .hiw-step.hiw-active .hiw-bar { animation: hiw-fill 4s linear forwards; }
     .btn-primary { background: var(--brand-cyan); color: var(--brand-dark); font-weight: 700; transition: filter 0.15s ease; }
     .btn-primary:hover { filter: brightness(1.08); }
     .text-brand-dark { color: var(--brand-dark); }
@@ -81,58 +91,14 @@ import '../styles/global.css'
         <p class="text-lg text-slate-500 mb-8 leading-relaxed max-w-lg">
           FlipSplit lets you unlock your home equity fast with a cash offer while allowing you to still benefit from a newly renovated home later.
         </p>
-        <form
-          id="hero-form"
-          action="https://formspree.io/f/YOUR_FORM_ID"
-          method="POST"
-          class="flex flex-col sm:flex-row gap-2 max-w-lg mb-4"
-        >
-          <input
-            type="text"
-            name="address"
-            required
-            placeholder="Enter your property address..."
-            class="flex-1 border border-slate-300 rounded-xl px-5 py-3.5 text-brand-dark text-sm focus:outline-none focus:border-[#41ebd6] transition-colors"
-          />
-          <button type="submit" class="btn-primary text-sm px-6 py-3.5 rounded-xl whitespace-nowrap">
-            Get My Free Offer →
-          </button>
-        </form>
-        <p class="text-xs text-slate-400">No obligation. No repairs needed. Results in 24–48 hours.</p>
+        <AddressForm id="hero-form" action="https://formspree.io/f/YOUR_FORM_ID" />
 
-        <!-- Review badges -->
-        <div class="flex flex-wrap items-center gap-4 mt-6">
-          <!-- Google -->
-          <div class="flex items-center gap-2">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
-              <path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
-              <path d="M3.964 10.707A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.039l3.007-2.332z" fill="#FBBC05"/>
-              <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z" fill="#EA4335"/>
-            </svg>
-            <div class="flex gap-px" style="color: #FBBC05; font-size: 12px; line-height:1;">★★★★★</div>
-            <span class="text-xs font-bold text-brand-dark">4.9</span>
-            <span class="text-xs text-slate-400">· 120+ reviews</span>
-          </div>
-
-          <span class="text-slate-200 select-none">|</span>
-
-          <!-- Reviews.io -->
-          <div class="flex items-center gap-2">
-            <svg width="18" height="18" viewBox="0 0 29 29" xmlns="http://www.w3.org/2000/svg" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-              <g><g><path d="M22.835,5.616l-1.206,0.604c2.351,1.899 3.5,4.351 3.713,7.317c-0.178,5.727 -2.88,9.408 -7.521,10.986c-5.363,1.616 -8.76,0.309 -12.048,-3.042l-0.208,1.288l1.337,1.393c4.65,4.846 12.36,5.005 17.205,0.355c4.846,-4.65 5.005,-12.359 0.355,-17.205l-1.627,-1.696Z" style="fill:#feef7c;"/><path d="M4.904,22.052l0.808,-0.706c-3.357,-4.756 -3.497,-11.72 1.096,-15.553c3.405,-2.842 10.161,-4.315 15.566,0.444l0.404,-0.709l-1.318,-1.373c-4.65,-4.846 -12.359,-5.005 -17.205,-0.355c-4.846,4.65 -5.005,12.36 -0.355,17.205l1.004,1.047Z" style="fill:#5cd3cb;"/></g><circle cx="14.192" cy="14.193" r="11.192" style="fill:#fff;"/><path d="M2,14.193c-0,6.733 5.459,12.192 12.192,12.192c6.734,0 12.193,-5.459 12.193,-12.192c-0,-6.734 -5.459,-12.193 -12.193,-12.193c-6.733,0 -12.192,5.459 -12.192,12.193Zm8.486,2.205c0.128,-0.405 -0.014,-0.847 -0.355,-1.102c-0.902,-0.674 -2.682,-2.003 -3.877,-2.895c-0.173,-0.129 -0.243,-0.354 -0.175,-0.559c0.068,-0.204 0.259,-0.342 0.474,-0.342l4.634,-0c0.431,-0 0.814,-0.276 0.949,-0.686c0.365,-1.103 1.091,-3.296 1.573,-4.749c0.067,-0.204 0.258,-0.342 0.474,-0.343c0.215,-0 0.406,0.138 0.475,0.342c0.486,1.454 1.221,3.65 1.59,4.753c0.136,0.408 0.518,0.683 0.948,0.683c1.096,0 3.208,-0 4.645,0c0.215,-0 0.406,0.137 0.474,0.341c0.068,0.204 -0.001,0.429 -0.173,0.558c-1.192,0.898 -2.972,2.239 -3.873,2.917c-0.338,0.255 -0.479,0.696 -0.351,1.101c0.348,1.1 1.046,3.305 1.518,4.794c0.066,0.209 -0.011,0.436 -0.19,0.561c-0.178,0.125 -0.418,0.12 -0.591,-0.013c-1.198,-0.919 -2.947,-2.262 -3.863,-2.965c-0.36,-0.276 -0.861,-0.275 -1.22,0.002c-0.908,0.702 -2.633,2.036 -3.82,2.954c-0.173,0.134 -0.413,0.14 -0.592,0.015c-0.18,-0.126 -0.257,-0.353 -0.191,-0.561c0.472,-1.494 1.169,-3.703 1.517,-4.806Z" style="fill-rule:nonzero;"/></g>
-            </svg>
-            <div class="flex gap-px" style="color: #FBBC05; font-size: 12px; line-height:1;">★★★★★</div>
-            <span class="text-xs font-bold text-brand-dark">4.8</span>
-            <span class="text-xs text-slate-400">· Reviews.io</span>
-          </div>
-        </div>
 
       </div>
 
-      <!-- Right: Design Your Deal calculator -->
+      <!-- Right: Create Your Offer calculator -->
       <div class="w-full lg:w-[440px] shrink-0 bg-white rounded-2xl shadow-md border border-slate-200 p-7">
-        <h3 class="text-lg font-black text-brand-dark mb-1">Design Your Deal</h3>
+        <h3 class="text-lg font-black text-brand-dark mb-1">Create Your Offer</h3>
         <p class="text-slate-400 text-sm mb-5">Adjust upfront cash vs. backend upside.</p>
 
         <div class="flex justify-between text-xs font-medium text-slate-400 mb-2">
@@ -181,16 +147,92 @@ import '../styles/global.css'
     </div>
   </section>
 
-  <!-- ─── PRESS LOGOS ─── -->
-  <section class="py-10 px-6 border-b border-slate-100">
-    <div class="max-w-4xl mx-auto">
-      <p class="text-center text-slate-400 text-xs uppercase tracking-widest font-medium mb-7">As seen in</p>
-      <div class="flex flex-wrap items-center justify-center gap-10 md:gap-16 opacity-25">
-        <svg viewBox="0 0 80 28" class="h-6" fill="#0C3034"><text x="0" y="22" font-family="Georgia,serif" font-weight="700" font-size="22">CBS</text></svg>
-        <svg viewBox="0 0 60 28" class="h-6" fill="#0C3034"><text x="0" y="22" font-family="Arial,sans-serif" font-weight="900" font-size="22">FOX</text></svg>
-        <svg viewBox="0 0 80 28" class="h-6" fill="#0C3034"><text x="0" y="22" font-family="Arial,sans-serif" font-weight="700" font-size="22">NBC</text></svg>
-        <svg viewBox="0 0 100 28" class="h-6" fill="#0C3034"><text x="0" y="22" font-family="Georgia,serif" font-weight="700" font-size="18">Forbes</text></svg>
-        <svg viewBox="0 0 100 28" class="h-6" fill="#0C3034"><text x="0" y="22" font-family="Arial,sans-serif" font-weight="700" font-size="18">Yahoo!</text></svg>
+
+  <!-- ─── SOCIAL PROOF ─── -->
+  <section class="py-20 px-6 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <div class="mb-12">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">Why sellers choose FlipSplit</p>
+        <h2 class="text-4xl font-black text-brand-dark mb-2">Real stories from real homeowners.</h2>
+        <p class="text-slate-500 text-base">No pressure, no gimmicks. Just homeowners who found a better way to sell.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        {[
+          {
+            quote: "Working with FlipSplit was amazing from start to finish. Their responsive and knowledgeable team handled everything and made what is often a stressful experience extremely smooth, without leaving a lot of money on the table thanks to their resale bonus mechanism! Highly recommended!",
+            name: "Val Briot",
+            location: "Los Angeles, CA",
+            photo: "/val-briot.png",
+          },
+          {
+            quote: "FlipSplit was the best decision we ever made when we needed to sell our investment property quickly. They were fair and offered us the best deal. FlipSplit was transparent throughout the entire process and delivered on everything they said they would.",
+            name: "Nick Boyd",
+            location: "San Diego, CA",
+            photo: "/nick-boyd.png",
+          },
+          {
+            quote: "Working with FlipSplit was the best decision I've made so far in 2021! Easy, no hassle, and an extra bonus check at the end… more than I expected!",
+            name: "Grace G.",
+            location: "San Juan, CA",
+            photo: "/grace-g.png",
+          },
+        ].map(({ quote, name, location, photo }) => (
+          <div class="rounded-2xl p-8 flex flex-col items-center text-center" style="background: #F7F4F3;">
+            <img src={photo} alt={name} class="w-16 h-16 rounded-full object-cover mb-6 shrink-0" />
+            <p class="text-slate-600 leading-relaxed text-sm flex-1 mb-6">"{quote}"</p>
+            <div>
+              <div class="font-bold text-brand-dark text-sm">{name}</div>
+              <div class="text-xs text-slate-400 mt-1">{location}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HOW IT WORKS ─── -->
+  <section class="py-28 px-6 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">Simple by design</p>
+        <h2 class="text-4xl md:text-5xl font-black text-brand-dark">Our home sale recipe.</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-16 items-center">
+
+        <!-- Left: image -->
+        <div class="flex items-center justify-center">
+          <img src="/app-screenshot.png" alt="FlipSplit app" class="w-full max-w-xs mx-auto" />
+        </div>
+
+        <!-- Right: auto-advancing tour -->
+        <div class="flex flex-col gap-3">
+          {[
+            { num: '01', title: 'Submit your property details', body: 'Submit your property details, a few photos, and a quick home walkthrough to receive a "no-contingencies" offer from FlipSplit within 24–48 hours.' },
+            { num: '02', title: 'Customize your home offer', body: 'Choose your upfront offer price! Offer price can move up or down based on how much of the backend profit you desire from a newly renovated home.' },
+            { num: '03', title: 'We handle the hard stuff', body: 'From tenant issues to permitting to renovation — we take care of it all. You don\'t spend a dollar or lift a finger.' },
+            { num: '04', title: 'You get paid — twice', body: 'Once the home is renovated and resold, you\'ll be notified within 10 days of the resale of the bonus check headed your way.' },
+          ].map(({ num, title, body }) => (
+            <button class="hiw-step relative w-full text-left pl-5 pr-4 py-5 rounded-xl border border-slate-200 border-l-4 border-l-transparent bg-white">
+              <div class="flex gap-4 items-start">
+                <span class="hiw-num text-sm font-black shrink-0 mt-0.5" style="color: #CBD5E1;">{num}</span>
+                <div class="flex-1">
+                  <div class="hiw-title font-bold text-sm text-slate-400">{title}</div>
+                  <div class="hiw-body text-sm text-slate-500 leading-relaxed">{body}</div>
+                </div>
+              </div>
+              <div class="hiw-bar absolute bottom-0 left-0 h-0.5" style="background: var(--brand-cyan); width: 0%;"></div>
+            </button>
+          ))}
+          <div class="flex items-center gap-4 pt-6 pl-5">
+            <a href="#get-offer" class="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold">
+              Get My Free Offer →
+            </a>
+            <span class="text-xs text-slate-400">No obligation. Results in 24–48 hrs.</span>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -237,7 +279,7 @@ import '../styles/global.css'
           <div class="border-t border-slate-100 pt-5 mt-auto">
             <p class="text-brand-dark italic leading-relaxed mb-3">"Selling a house is stressful — none of the stress came from FlipSplit."</p>
             <div class="flex items-center gap-2.5">
-              <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-brand-dark shrink-0" style="background: rgba(65,235,214,0.2);">M</div>
+              <img src="/mursalin.png" alt="Mursalin H." class="w-8 h-8 rounded-full object-cover shrink-0" />
               <div>
                 <span class="text-sm font-bold text-brand-dark">Mursalin H.</span>
                 <span class="text-xs text-slate-400 ml-1.5">San Diego, CA</span>
@@ -277,72 +319,43 @@ import '../styles/global.css'
     </div>
   </section>
 
-  <!-- ─── HOW IT WORKS ─── -->
-  <section id="how-it-works" class="py-28 px-6">
-    <div class="max-w-5xl mx-auto">
-      <div class="mb-16 text-center">
-        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">The process</p>
-        <h2 class="text-4xl md:text-5xl font-black text-brand-dark">Three steps to a better sale.</h2>
-      </div>
-      <div class="grid md:grid-cols-3 gap-10">
-        {[
-          {
-            step: '01',
-            title: 'Get your offer',
-            body: 'Share your address. We analyze your home and come back within 24–48 hours with a guaranteed cash offer plus a renovation upside projection.',
-          },
-          {
-            step: '02',
-            title: 'We renovate',
-            body: "FlipSplit manages everything — contractors, materials, permits, and timeline. You don't spend a dollar or lift a finger.",
-          },
-          {
-            step: '03',
-            title: 'You get paid more',
-            body: 'Your renovated home sells at a higher price. You receive your guaranteed cash offer at close plus your share of the profit above that.',
-          },
-        ].map(({ step, title, body }) => (
-          <div class="text-center">
-            <div class="w-16 h-16 rounded-full flex items-center justify-center text-xl font-black mx-auto mb-6 text-brand-dark" style="background: rgba(65,235,214,0.12); border: 2px solid rgba(65,235,214,0.4);">{step}</div>
-            <h3 class="text-xl font-black mb-3 text-brand-dark">{title}</h3>
-            <p class="text-slate-500 leading-relaxed">{body}</p>
-          </div>
-        ))}
-      </div>
-      <div class="mt-14 text-center">
-        <a href="#get-offer" class="btn-primary inline-flex items-center gap-2 px-7 py-3.5 rounded-xl">
-          Start My Free Offer →
-        </a>
-      </div>
-    </div>
-  </section>
 
   <!-- ─── SITUATION TARGETING ─── -->
   <section class="py-20 px-6" style="background: #f0faf9;">
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-6xl mx-auto">
       <div class="text-center mb-12">
         <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">We help in any situation</p>
         <h2 class="text-4xl font-black text-brand-dark mb-4">Whatever brought you here.</h2>
         <p class="text-slate-500 leading-relaxed max-w-md mx-auto">We work with homeowners in every situation — no judgment, no pressure.</p>
       </div>
-      <div class="flex flex-wrap gap-3 justify-center">
-        {[
-          'Need to downsize',
-          'Relocating for work',
-          'Inherited a property',
-          'Behind on payments',
-          'Going through divorce',
-          'Home needs major repairs',
-          'Tired of being a landlord',
-          'Need to sell fast',
-          'Avoiding foreclosure',
-        ].map((label) => (
+      {(() => {
+        const tags = [
+          { label: 'Need to downsize', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="3" y2="21"/><line x1="21" y1="3" x2="14" y2="10"/></svg>' },
+          { label: 'Relocating for work', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' },
+          { label: 'Inherited a property', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>' },
+          { label: 'Behind on payments', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>' },
+          { label: 'Home needs major repairs', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>' },
+          { label: 'Tired of being a landlord', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>' },
+          { label: 'Need to sell fast', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' },
+          { label: 'Avoiding foreclosure', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' },
+        ];
+        const chip = ({ label, icon }: { label: string; icon: string }) => (
           <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-sm font-medium text-brand-dark shadow-sm" style="border: 1px solid rgba(65,235,214,0.35);">
-            <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background: var(--brand-cyan);"></span>
+            <span class="shrink-0" set:html={icon} />
             {label}
           </span>
-        ))}
-      </div>
+        );
+        return (
+          <div class="flex flex-col items-center gap-3">
+            <div class="flex justify-center gap-3">
+              {tags.slice(0, 4).map(chip)}
+            </div>
+            <div class="flex justify-center gap-3">
+              {tags.slice(4).map(chip)}
+            </div>
+          </div>
+        );
+      })()}
     </div>
   </section>
 
@@ -394,67 +407,6 @@ import '../styles/global.css'
     </div>
   </section>
 
-  <!-- ─── TESTIMONIALS ─── -->
-  <section class="py-28 px-6 bg-slate-50">
-    <div class="max-w-3xl mx-auto">
-      <div class="text-center mb-14">
-        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">What homeowners say</p>
-        <h2 class="text-4xl font-black text-brand-dark">Real results, real people.</h2>
-      </div>
-
-      <div class="relative">
-        <div class="overflow-hidden">
-          <div id="testimonial-inner" class="flex transition-transform duration-500 ease-in-out">
-            {[
-              {
-                quote: "I was dreading the whole process. FlipSplit handled everything — I just moved out and a few months later I got a check for way more than I expected.",
-                name: "Maria T.", location: "Phoenix, AZ",
-              },
-              {
-                quote: "The profit participation model was a game-changer. We took a 60/40 split and ended up netting $40k more than we would have with any cash buyer.",
-                name: "James & Keiko R.", location: "Tempe, AZ",
-              },
-              {
-                quote: "After my divorce I needed a fast, clean sale. FlipSplit gave me a fair number, handled every repair, and closed on my timeline. Zero stress.",
-                name: "Denise M.", location: "Scottsdale, AZ",
-              },
-              {
-                quote: "I inherited my mom's house and had no idea what to do. FlipSplit walked me through everything and I walked away with more than I thought possible.",
-                name: "Robert S.", location: "Mesa, AZ",
-              },
-            ].map(({ quote, name, location }) => (
-              <div class="w-full shrink-0">
-                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-10">
-                  <div class="flex gap-0.5 mb-5">
-                    {Array(5).fill(null).map(() => <span class="text-yellow-400">★</span>)}
-                  </div>
-                  <p class="text-brand-dark leading-relaxed mb-8 text-lg">"{quote}"</p>
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-brand-dark shrink-0" style="background: rgba(65,235,214,0.2);">
-                      {name.charAt(0)}
-                    </div>
-                    <div>
-                      <div class="text-sm font-bold text-brand-dark">{name}</div>
-                      <div class="text-xs text-slate-400">{location}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <button id="testimonial-prev" class="absolute -left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-brand-dark hover:border-[#41ebd6] transition-colors">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <button id="testimonial-next" class="absolute -right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-brand-dark hover:border-[#41ebd6] transition-colors">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </div>
-
-      <div id="testimonial-dots" class="flex justify-center gap-2 mt-8"></div>
-    </div>
-  </section>
 
 
   <!-- ─── FAQ ─── -->
@@ -622,46 +574,45 @@ import '../styles/global.css'
 
     updateTable(baseOffer, 50);
 
-    // ── Testimonial carousel ──
-    const inner   = document.getElementById('testimonial-inner');
-    const dotsEl  = document.getElementById('testimonial-dots');
-    const total   = inner.children.length;
-    let current   = 0;
-    let autoTimer;
+    // ── How It Works auto-tour ──
+    const hiwSteps = document.querySelectorAll('.hiw-step');
+    let hiwIndex = 0;
+    let hiwTimer;
 
-    const dots = Array.from({ length: total }, (_, i) => {
-      const d = document.createElement('button');
-      d.className = 'w-2 h-2 rounded-full transition-colors duration-300';
-      d.style.background = i === 0 ? 'var(--brand-cyan)' : '#e2e8f0';
-      d.addEventListener('click', () => goTo(i));
-      dotsEl.appendChild(d);
-      return d;
-    });
-
-    function goTo(index) {
-      current = (index + total) % total;
-      inner.style.transform = `translateX(-${current * 100}%)`;
-      dots.forEach((d, i) => d.style.background = i === current ? 'var(--brand-cyan)' : '#e2e8f0');
-      resetTimer();
+    function hiwActivate(idx) {
+      hiwIndex = ((idx % hiwSteps.length) + hiwSteps.length) % hiwSteps.length;
+      hiwSteps.forEach((s, i) => {
+        s.classList.toggle('hiw-active', i === hiwIndex);
+        if (i !== hiwIndex) {
+          const bar = s.querySelector('.hiw-bar');
+          bar.style.animation = 'none';
+          bar.style.width = '0%';
+        }
+        if (i === hiwIndex) {
+          const bar = s.querySelector('.hiw-bar');
+          bar.style.animation = 'none';
+          bar.offsetWidth;
+          if (hiwAutoPlay) {
+            bar.style.width = '';
+            bar.style.animation = '';
+          } else {
+            bar.style.width = '100%';
+          }
+        }
+      });
+      clearTimeout(hiwTimer);
+      if (hiwAutoPlay) hiwTimer = setTimeout(() => hiwActivate(hiwIndex + 1), 4000);
     }
 
-    function resetTimer() {
-      clearInterval(autoTimer);
-      autoTimer = setInterval(() => goTo(current + 1), 5000);
-    }
+    let hiwAutoPlay = true;
 
-    document.getElementById('testimonial-prev').addEventListener('click', () => goTo(current - 1));
-    document.getElementById('testimonial-next').addEventListener('click', () => goTo(current + 1));
+    hiwSteps.forEach((step, i) => step.addEventListener('click', () => {
+      hiwAutoPlay = false;
+      clearTimeout(hiwTimer);
+      hiwActivate(i);
+    }));
+    hiwActivate(0);
 
-    // Touch swipe support
-    let touchStartX = 0;
-    inner.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-    inner.addEventListener('touchend', e => {
-      const diff = touchStartX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 50) goTo(current + (diff > 0 ? 1 : -1));
-    });
-
-    resetTimer();
   </script>
 
 </body>

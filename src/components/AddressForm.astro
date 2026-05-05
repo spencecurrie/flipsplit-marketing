@@ -1,0 +1,48 @@
+---
+interface Props {
+  id?: string;
+  action?: string;
+  class?: string;
+}
+const { id = 'address-form', action = 'https://formspree.io/f/YOUR_FORM_ID', class: className = '' } = Astro.props;
+---
+
+<div class={className}>
+  <form
+    id={id}
+    action={action}
+    method="POST"
+    class="flex items-center bg-white rounded-2xl border border-slate-200 shadow-sm p-1.5 gap-2 max-w-lg mb-3"
+  >
+    <svg class="w-5 h-5 ml-2 shrink-0" style="color: #41ebd6;" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="2"/>
+      <path d="M15 15l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <input
+      type="text"
+      name="address"
+      required
+      placeholder="Enter your home address..."
+      class="flex-1 text-[#0C3034] text-sm focus:outline-none bg-transparent min-w-0 py-2.5 placeholder-slate-400"
+    />
+    <button
+      type="submit"
+      aria-label="Get my offer"
+      class="shrink-0 rounded-xl p-3 transition-all hover:brightness-110"
+      style="background: #41ebd6;"
+    >
+      <svg class="w-5 h-5" style="color: #0C3034;" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="2"/>
+        <path d="M15 15l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </form>
+
+  <div class="flex flex-wrap items-center gap-1.5 text-sm mb-1.5">
+    <span style="color: #FBBC05; letter-spacing: 1px;">★★★★★</span>
+    <span class="font-bold text-[#0C3034]">5.0</span>
+    <span class="text-slate-400">· Verified reviews on</span>
+    <span class="font-bold text-slate-400">REVIEWS.IO</span>
+  </div>
+  <p class="text-xs text-slate-400">No obligation · No repairs needed · Results in 24–48 hours</p>
+</div>
