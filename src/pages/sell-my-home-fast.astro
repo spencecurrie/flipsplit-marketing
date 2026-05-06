@@ -42,18 +42,14 @@ import AddressForm from '../components/AddressForm.astro';
   </nav>
 
   <!-- HERO -->
-  <section class="relative overflow-hidden py-24 px-6" style="background:#0f172a;">
-    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-      <div style="position:absolute; top:-80px; left:-100px; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle, rgba(0,128,255,0.15) 0%, transparent 70%);"></div>
-      <div style="position:absolute; bottom:-80px; right:-60px; width:450px; height:450px; border-radius:50%; background:radial-gradient(circle, rgba(0,128,255,0.1) 0%, transparent 70%);"></div>
-    </div>
-    <div class="relative max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
+  <section class="py-24 px-6 bg-white border-b border-slate-100">
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
       <div>
-        <span class="inline-block text-xs font-bold uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full" style="background:rgba(0,128,255,0.15); color:#0080FF;">Fast. Simple. Fair.</span>
-        <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6" style="color:white; font-family:'sahar','Open Sans',sans-serif;">
+        <span class="inline-block text-xs font-bold uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full" style="background:rgba(0,128,255,0.1); color:#0080FF;">Fast. Simple. Fair.</span>
+        <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6" style="color:#0C3034; font-family:'sahar','Open Sans',sans-serif;">
           Sell your home<br/><span style="color:#0080FF;">fast. Keep the upside.</span>
         </h1>
-        <p class="text-slate-300 text-lg leading-relaxed mb-10 max-w-lg">
+        <p class="text-slate-500 text-lg leading-relaxed mb-10 max-w-lg">
           Get a guaranteed cash offer in 24–48 hours. Close in as few as 7 days. And if the renovated home sells for more than projected — you get a cut.
         </p>
         <AddressForm id="hero-form" action="https://formspree.io/f/YOUR_FORM_ID" />
@@ -65,7 +61,7 @@ import AddressForm from '../components/AddressForm.astro';
           { value: '$0', label: 'Fees or commissions' },
           { value: '5.0★', label: 'Customer rating' },
         ].map(({ value, label }) => (
-          <div class="rounded-2xl p-6 text-center" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">
+          <div class="rounded-2xl p-6 text-center border border-slate-200" style="background:#fdfcfb;">
             <div class="text-2xl font-black mb-1" style="color:#0080FF;">{value}</div>
             <div class="text-xs text-slate-400">{label}</div>
           </div>
@@ -176,11 +172,11 @@ import AddressForm from '../components/AddressForm.astro';
       <div class="overflow-x-auto rounded-2xl border border-slate-200">
         <table class="w-full text-sm">
           <thead>
-            <tr style="background:#0f172a;">
-              <th class="text-left px-6 py-4 text-slate-400 font-semibold"></th>
-              <th class="px-6 py-4 text-center font-black" style="color:#0080FF;">FlipSplit</th>
-              <th class="px-6 py-4 text-center font-semibold text-slate-400">Traditional Agent</th>
-              <th class="px-6 py-4 text-center font-semibold text-slate-400">Cash Buyer</th>
+            <tr style="background:#f8fafa;">
+              <th class="text-left px-6 py-4 text-slate-400 font-semibold border-b border-slate-200"></th>
+              <th class="px-6 py-4 text-center font-black border-b border-slate-200" style="color:#0080FF;">FlipSplit</th>
+              <th class="px-6 py-4 text-center font-semibold text-slate-400 border-b border-slate-200">Traditional Agent</th>
+              <th class="px-6 py-4 text-center font-semibold text-slate-400 border-b border-slate-200">Cash Buyer</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100 bg-white">

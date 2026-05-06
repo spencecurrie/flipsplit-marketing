@@ -42,16 +42,13 @@ import AddressForm from '../components/AddressForm.astro';
   </nav>
 
   <!-- HERO -->
-  <section class="relative overflow-hidden py-24 px-6" style="background:#0f172a;">
-    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-      <div style="position:absolute; top:-80px; right:-60px; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle, rgba(0,128,255,0.14) 0%, transparent 70%);"></div>
-    </div>
-    <div class="relative max-w-4xl mx-auto">
-      <span class="inline-block text-xs font-bold uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full" style="background:rgba(0,128,255,0.15); color:#0080FF;">Our Story</span>
-      <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6" style="color:white; font-family:'sahar','Open Sans',sans-serif;">
+  <section class="py-24 px-6 bg-white border-b border-slate-100">
+    <div class="max-w-4xl mx-auto">
+      <span class="inline-block text-xs font-bold uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full" style="background:rgba(0,128,255,0.1); color:#0080FF;">Our Story</span>
+      <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6" style="color:#0C3034; font-family:'sahar','Open Sans',sans-serif;">
         Built to fix a<br/><span style="color:#0080FF;">broken industry.</span>
       </h1>
-      <p class="text-slate-300 text-lg leading-relaxed max-w-2xl">
+      <p class="text-slate-500 text-lg leading-relaxed max-w-2xl">
         FlipSplit was founded on a simple belief: homeowners deserve to share in the profit when their home sells for more than expected — not watch a cash buyer pocket it all.
       </p>
     </div>
@@ -85,7 +82,7 @@ import AddressForm from '../components/AddressForm.astro';
           { value: '$0', label: 'Fees to homeowners' },
           { value: '5.0★', label: 'Average review rating' },
         ].map(({ value, label }) => (
-          <div class="rounded-2xl p-6 text-center border border-slate-100" style="background:#f8fafc;">
+          <div class="rounded-2xl p-6 text-center border border-slate-100" style="background:#f8f4f3;">
             <div class="text-3xl font-black mb-2" style="color:#0080FF;">{value}</div>
             <div class="text-sm text-slate-500">{label}</div>
           </div>
@@ -95,7 +92,7 @@ import AddressForm from '../components/AddressForm.astro';
   </section>
 
   <!-- MISSION -->
-  <section class="py-24 px-6" style="background:#f8fafc;">
+  <section class="py-24 px-6" style="background:#f8f4f3;">
     <div class="max-w-4xl mx-auto text-center">
       <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Our Mission</p>
       <h2 class="text-3xl sm:text-4xl font-black mb-6" style="color:#0C3034;">

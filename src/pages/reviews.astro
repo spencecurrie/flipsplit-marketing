@@ -45,43 +45,39 @@ import AddressForm from '../components/AddressForm.astro';
   </nav>
 
   <!-- ─── HERO ─── -->
-  <section class="relative overflow-hidden py-24 px-6" style="background:#0f172a;">
-    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-      <div style="position:absolute; top:-60px; left:-80px; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle, rgba(0,128,255,0.15) 0%, transparent 70%);"></div>
-      <div style="position:absolute; bottom:-100px; right:-60px; width:550px; height:550px; border-radius:50%; background:radial-gradient(circle, rgba(0,128,255,0.1) 0%, transparent 70%);"></div>
-    </div>
-    <div class="relative max-w-4xl mx-auto text-center">
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 text-xs font-bold uppercase tracking-widest" style="background:rgba(0,128,255,0.15); color:#0080FF;">
+  <section class="py-24 px-6 bg-white border-b border-slate-100">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 text-xs font-bold uppercase tracking-widest" style="background:rgba(0,128,255,0.1); color:#0080FF;">
         Verified Reviews
       </div>
-      <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6" style="color:white; font-family:'sahar','Open Sans',sans-serif;">
+      <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6" style="color:#0C3034; font-family:'sahar','Open Sans',sans-serif;">
         Real homeowners.<br/><span style="color:#0080FF;">Real results.</span>
       </h1>
-      <p class="text-slate-300 text-lg leading-relaxed mb-12 max-w-2xl mx-auto">
+      <p class="text-slate-500 text-lg leading-relaxed mb-12 max-w-2xl mx-auto">
         Every review is verified through REVIEWS.IO. We don't cherry-pick — this is our complete public record.
       </p>
 
       <!-- Aggregate stats -->
-      <div class="inline-flex flex-wrap items-center justify-center gap-10 py-8 px-10 rounded-2xl" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);">
+      <div class="inline-flex flex-wrap items-center justify-center gap-10 py-8 px-10 rounded-2xl border border-slate-200" style="background:#f8f4f3;">
         <div class="text-center">
-          <div class="text-5xl font-black text-white mb-1">5.0</div>
+          <div class="text-5xl font-black mb-1" style="color:#0C3034;">5.0</div>
           <div class="flex justify-center gap-0.5 mb-1" style="color:#FBBC05; font-size:20px;">★★★★★</div>
           <div class="text-xs text-slate-400 font-medium">Average rating</div>
         </div>
-        <div class="hidden sm:block w-px h-14" style="background:rgba(255,255,255,0.1);"></div>
+        <div class="hidden sm:block w-px h-14 bg-slate-200"></div>
         <div class="text-center">
-          <div class="text-5xl font-black text-white mb-1">100%</div>
+          <div class="text-5xl font-black mb-1" style="color:#0C3034;">100%</div>
           <div class="text-xs text-slate-400 font-medium mt-4">5-star reviews</div>
         </div>
-        <div class="hidden sm:block w-px h-14" style="background:rgba(255,255,255,0.1);"></div>
+        <div class="hidden sm:block w-px h-14 bg-slate-200"></div>
         <div class="text-center">
-          <div class="text-5xl font-black text-white mb-1">10+</div>
+          <div class="text-5xl font-black mb-1" style="color:#0C3034;">10+</div>
           <div class="text-xs text-slate-400 font-medium mt-4">Verified homeowners</div>
         </div>
-        <div class="hidden sm:block w-px h-14" style="background:rgba(255,255,255,0.1);"></div>
+        <div class="hidden sm:block w-px h-14 bg-slate-200"></div>
         <div class="text-center">
           <a href="https://www.reviews.io/company-reviews/store/flipsplit" target="_blank" rel="noopener" class="flex flex-col items-center gap-1 group">
-            <div class="text-sm font-black text-white group-hover:text-[#0080FF] transition-colors">REVIEWS.IO</div>
+            <div class="text-sm font-black group-hover:text-[#0080FF] transition-colors" style="color:#0C3034;">REVIEWS.IO</div>
             <div class="text-xs text-slate-400 font-medium">Verified source</div>
             <div class="text-xs mt-1" style="color:#0080FF;">View all →</div>
           </a>
@@ -123,7 +119,7 @@ import AddressForm from '../components/AddressForm.astro';
   </section>
 
   <!-- ─── REVIEWS GRID ─── -->
-  <section class="pb-24 px-6" style="background:#f8fafc;">
+  <section class="pb-24 px-6" style="background:#f8f4f3;">
     <div class="max-w-6xl mx-auto">
       <div class="text-center pt-20 mb-14">
         <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">All Reviews</p>
@@ -189,7 +185,7 @@ import AddressForm from '../components/AddressForm.astro';
         ].map(({ name, location, initial, quote }) => (
           <div class="break-inside-avoid review-card">
             <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-full flex items-center justify-center font-black text-sm text-white shrink-0" style="background:#0f172a;">{initial}</div>
+              <div class="w-10 h-10 rounded-full flex items-center justify-center font-black text-sm shrink-0" style="background:rgba(0,128,255,0.1); color:#0080FF;">{initial}</div>
               <div>
                 <div class="font-bold text-sm text-[#0C3034]">{name}</div>
                 <div class="text-xs text-slate-400">{location}</div>
