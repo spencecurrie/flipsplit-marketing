@@ -11,7 +11,7 @@ import '../styles/global.css';
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --brand-cyan: #41ebd6;
+      --brand-blue: #0080FF;
       --brand-dark: #0C3034;
       --brand-body: #34313D;
     }
@@ -27,7 +27,7 @@ import '../styles/global.css';
     .dont strong { color: #dc2626; }
     code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 13px; font-family: monospace; color: #0C3034; }
     .demo-card { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; }
-    .demo-card.featured { border-color: #41ebd6; box-shadow: 0 4px 24px rgba(65,235,214,0.12); }
+    .demo-card.featured { border-color: #0080FF; box-shadow: 0 4px 24px rgba(0,128,255,0.12); }
   </style>
 </head>
 <body style="max-width:960px; margin:0 auto; padding:48px 24px;">
@@ -48,12 +48,12 @@ import '../styles/global.css';
         <div class="swatch" style="background:#0C3034;"></div>
         <p style="font-weight:700; font-size:14px; margin:0 0 2px;">Brand Dark</p>
         <code>#0C3034</code>
-        <p style="font-size:12px; color:#64748b; margin:8px 0 0;">Headlines, nav, dark section backgrounds, button text on cyan</p>
+        <p style="font-size:12px; color:#64748b; margin:8px 0 0;">Headlines, nav, dark section backgrounds, button text on blue</p>
       </div>
       <div>
-        <div class="swatch" style="background:#41ebd6; border:1px solid #e2e8f0;"></div>
-        <p style="font-weight:700; font-size:14px; margin:0 0 2px;">Brand Cyan</p>
-        <code>#41ebd6</code>
+        <div class="swatch" style="background:#0080FF; border:1px solid #e2e8f0;"></div>
+        <p style="font-weight:700; font-size:14px; margin:0 0 2px;">Brand Blue</p>
+        <code>#0080FF</code>
         <p style="font-size:12px; color:#64748b; margin:8px 0 0;">CTA buttons, hover states, icon accents, featured highlights. Text <em>only on dark backgrounds</em>.</p>
       </div>
       <div>
@@ -86,11 +86,11 @@ import '../styles/global.css';
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
       <div class="do">
         <strong>Do</strong>
-        Use cyan as a <strong>background color</strong> for buttons and badges, or as <strong>text on dark (#0C3034) backgrounds</strong>.
+        Use blue as a <strong>background color</strong> for buttons and badges, or as <strong>text on dark (#0C3034) backgrounds</strong>.
       </div>
       <div class="dont">
         <strong>Don't</strong>
-        Use cyan as text color on white or light backgrounds. Use <code>text-slate-500</code> (#64748b) for eyebrow/label text on white.
+        Use blue as text color on white or light backgrounds. Use <code>text-slate-500</code> (#64748b) for eyebrow/label text on white.
       </div>
     </div>
   </div>
@@ -165,7 +165,7 @@ import '../styles/global.css';
   <!-- ── THREE-OPTION COMPARISON CARDS ── -->
   <div class="section">
     <p class="section-title">Three-Option Comparison (with featured highlight)</p>
-    <p style="font-size:13px; color:#64748b; margin:0 0 24px;">When presenting three options, always highlight the recommended/default one with a cyan border and a "Default offer" or "Most popular" badge. The non-featured cards use a plain white bg with a standard slate border.</p>
+    <p style="font-size:13px; color:#64748b; margin:0 0 24px;">When presenting three options, always highlight the recommended/default one with a blue border and a "Default offer" or "Most popular" badge. The non-featured cards use a plain white bg with a standard slate border.</p>
 
     <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:24px;">
       <div class="demo-card">
@@ -175,7 +175,7 @@ import '../styles/global.css';
         <a href="#" style="font-size:13px; font-weight:700; color:#0C3034; text-decoration:none;">Learn More →</a>
       </div>
       <div class="demo-card featured">
-        <span style="display:inline-block; font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; background:rgba(65,235,214,0.15); color:#0C3034; margin-bottom:12px;">Default offer</span>
+        <span style="display:inline-block; font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; background:rgba(0,128,255,0.15); color:#0C3034; margin-bottom:12px;">Default offer</span>
         <p style="font-size:11px; font-weight:700; letter-spacing:.1em; color:#94a3b8; margin:0 0 12px;">Balanced</p>
         <h3 style="font-family:'sahar',sans-serif; font-weight:900; font-size:17px; color:#0C3034; margin:0 0 8px;">Cash now + upside later</h3>
         <p style="font-size:13px; color:#64748b; margin:0 0 16px;">Max offer with a 50% split on any amount above the projection.</p>
@@ -190,8 +190,8 @@ import '../styles/global.css';
     </div>
 
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-      <div class="do"><strong>Do</strong>Feature the middle/recommended option with <code>border-color:#41ebd6</code> and a subtle cyan-tint background. Add a small badge ("Default offer" / "Most popular").</div>
-      <div class="dont"><strong>Don't</strong>Feature more than one card, or use a filled cyan background on the featured card — it overwhelms. A cyan border + light tint is enough.</div>
+      <div class="do"><strong>Do</strong>Feature the middle/recommended option with <code>border-color:#0080FF</code> and a subtle blue-tint background. Add a small badge ("Default offer" / "Most popular").</div>
+      <div class="dont"><strong>Don't</strong>Feature more than one card, or use a filled blue background on the featured card — it overwhelms. A blue border + light tint is enough.</div>
     </div>
   </div>
 
@@ -201,10 +201,10 @@ import '../styles/global.css';
     <p style="font-size:13px; color:#64748b; margin:0 0 20px;">Small inline pills used to label attributes, features, or process phases. Three styles depending on context.</p>
 
     <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:24px; align-items:center;">
-      <!-- Cyan tint — primary feature -->
-      <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:rgba(65,235,214,0.12);color:#0C3034;">Expert Design</span>
-      <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:rgba(65,235,214,0.12);color:#0C3034;">Quality Contractors</span>
-      <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:rgba(65,235,214,0.12);color:#0C3034;">Project Oversight</span>
+      <!-- Blue tint — primary feature -->
+      <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:rgba(0,128,255,0.12);color:#0C3034;">Expert Design</span>
+      <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:rgba(0,128,255,0.12);color:#0C3034;">Quality Contractors</span>
+      <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:rgba(0,128,255,0.12);color:#0C3034;">Project Oversight</span>
       <!-- Slate — neutral/secondary -->
       <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:#f1f5f9;color:#64748b;">6–10 weeks</span>
       <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:#f1f5f9;color:#64748b;">Your timeline</span>
@@ -214,7 +214,7 @@ import '../styles/global.css';
 
     <div style="border:1px solid #f1f5f9; border-radius:12px; overflow:hidden;">
       {[
-        { style:'Cyan tint', code:'bg: rgba(65,235,214,0.12) · text: #0C3034', usage:'Feature attributes, value props, process labels on white/light backgrounds' },
+        { style:'Blue tint', code:'bg: rgba(0,128,255,0.12) · text: #0C3034', usage:'Feature attributes, value props, process labels on white/light backgrounds' },
         { style:'Slate neutral', code:'bg: #f1f5f9 · text: #64748b', usage:'Time estimates, secondary metadata, non-featured tags' },
         { style:'Dark bg variant', code:'bg: rgba(255,255,255,0.10) · text: rgba(255,255,255,0.7)', usage:'Any pills placed on the #0C3034 dark background sections' },
       ].map(({ style, code, usage }) => (
@@ -236,7 +236,7 @@ import '../styles/global.css';
     <p class="section-title">Buttons</p>
     <div style="display:flex; flex-wrap:wrap; gap:24px; align-items:center; margin-bottom:24px;">
       <div style="text-align:center;">
-        <a href="#" style="display:inline-block; background:#41ebd6; color:#0C3034; font-weight:700; padding:12px 24px; border-radius:10px; text-decoration:none; font-size:14px;">Get My Free Offer →</a>
+        <a href="#" style="display:inline-block; background:#0080FF; color:#0C3034; font-weight:700; padding:12px 24px; border-radius:10px; text-decoration:none; font-size:14px;">Get My Free Offer →</a>
         <p style="font-size:11px; color:#94a3b8; margin:8px 0 0;">Primary CTA</p>
       </div>
       <div style="text-align:center;">
@@ -248,13 +248,13 @@ import '../styles/global.css';
         <p style="font-size:11px; color:#94a3b8; margin:8px 0 0;">Outline</p>
       </div>
       <div style="text-align:center;">
-        <a href="#" style="display:inline-block; font-weight:700; font-size:14px; color:#0C3034; text-decoration:none; border-bottom:2px solid #41ebd6; padding-bottom:2px;">Learn More →</a>
+        <a href="#" style="display:inline-block; font-weight:700; font-size:14px; color:#0C3034; text-decoration:none; border-bottom:2px solid #0080FF; padding-bottom:2px;">Learn More →</a>
         <p style="font-size:11px; color:#94a3b8; margin:8px 0 0;">Text link</p>
       </div>
     </div>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-      <div class="do"><strong>Do</strong>One primary CTA per section. Primary = cyan bg, dark text. Use text links ("Learn More →") for low-priority actions inside cards.</div>
-      <div class="dont"><strong>Don't</strong>Use multiple cyan buttons in the same view. If two actions exist, make one primary and one secondary/outline/text.</div>
+      <div class="do"><strong>Do</strong>One primary CTA per section. Primary = blue bg, dark text. Use text links ("Learn More →") for low-priority actions inside cards.</div>
+      <div class="dont"><strong>Don't</strong>Use multiple blue buttons in the same view. If two actions exist, make one primary and one secondary/outline/text.</div>
     </div>
   </div>
 
@@ -269,9 +269,9 @@ import '../styles/global.css';
         <p style="font-size:12px;color:#94a3b8;margin:12px 0 0;">Eyebrow = <code>text-slate-500</code> (#64748b). Always uppercase, tracking-widest, text-xs.</p>
       </div>
       <div style="background:#0C3034; border-radius:12px; padding:24px;">
-        <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#41ebd6;margin:0 0 6px;">On dark backgrounds</p>
+        <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#0080FF;margin:0 0 6px;">On dark backgrounds</p>
         <h2 style="font-family:'sahar',sans-serif;font-weight:900;font-size:28px;color:white;margin:0;">Create Your Offer.</h2>
-        <p style="font-size:12px;color:#94a3b8;margin:12px 0 0;">Eyebrow = <code style="background:#1a4a50;color:#41ebd6;">#41ebd6</code> (cyan is OK here)</p>
+        <p style="font-size:12px;color:#94a3b8;margin:12px 0 0;">Eyebrow = <code style="background:#001a40;color:#0080FF;">#0080FF</code> (blue is OK here)</p>
       </div>
     </div>
   </div>
@@ -288,7 +288,7 @@ import '../styles/global.css';
         { label:'Small radius', value:'rounded-xl (12px)', usage:'Buttons, inputs, pills, inline elements' },
         { label:'Gap between cards', value:'gap-5 or gap-6', usage:'Card grids' },
         { label:'Card border', value:'1px solid #e2e8f0', usage:'Default card border — subtle, not heavy' },
-        { label:'Featured card border', value:'1px solid #41ebd6', usage:'Highlighted/recommended option only' },
+        { label:'Featured card border', value:'1px solid #0080FF', usage:'Highlighted/recommended option only' },
         { label:'Section alternation', value:'white → #f8fafa → white', usage:'Alternate section backgrounds to create rhythm' },
       ].map(r => (
         <div style="background:#f8fafc; border-radius:10px; padding:16px;">

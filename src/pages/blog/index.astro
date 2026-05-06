@@ -28,13 +28,13 @@ function formatDate(d: Date) {
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --brand-cyan: #41ebd6;
+      --brand-cyan: #0080FF;
       --brand-dark: #0C3034;
       --brand-body: #34313D;
     }
     body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
     h1, h2, h3 { font-family: 'sahar', 'Open Sans', sans-serif; }
-    .btn-primary { background: var(--brand-cyan); color: var(--brand-dark); font-weight: 700; transition: filter 0.15s; }
+    .btn-primary { background: var(--brand-cyan); color: #ffffff; font-weight: 700; transition: filter 0.15s; }
     .btn-primary:hover { filter: brightness(1.08); }
     .card-img { transition: transform 0.4s ease; }
     .card-img:hover { transform: scale(1.03); }
@@ -76,7 +76,7 @@ function formatDate(d: Date) {
         <section>
           <div class="flex items-center justify-between mb-7">
             <h2 class="text-xl font-black text-[#0C3034]">Home Selling</h2>
-            <a href="/blog/category/home-selling" class="text-xs font-semibold text-slate-400 hover:text-[#41ebd6] transition-colors">View all →</a>
+            <a href="/blog/category/home-selling" class="text-xs font-semibold text-slate-400 hover:text-[#0080FF] transition-colors">View all →</a>
           </div>
 
           {/* Hero row: large card left + 2 stacked right */}
@@ -91,7 +91,7 @@ function formatDate(d: Date) {
                 }
               </div>
               <div class="p-6">
-                <span class="text-xs font-semibold px-2.5 py-1 rounded-full mb-3 inline-block" style="background:rgba(65,235,214,0.1);color:#0C3034;">{hero.data.category}</span>
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-full mb-3 inline-block" style="background:rgba(0,128,255,0.1);color:#0C3034;">{hero.data.category}</span>
                 <h3 class="text-xl font-black text-[#0C3034] leading-snug mb-2 transition-colors">{hero.data.title}</h3>
                 {hero.data.description && <p class="text-sm text-slate-500 line-clamp-2 leading-relaxed mb-3">{hero.data.description}</p>}
                 <span class="text-xs text-slate-400">{formatDate(hero.data.pubDate)}</span>
@@ -159,7 +159,7 @@ function formatDate(d: Date) {
         <section>
           <div class="flex items-center justify-between mb-7">
             <h2 class="text-xl font-black text-[#0C3034]">Local Trends</h2>
-            <a href="/blog/category/local-trends" class="text-xs font-semibold text-slate-400 hover:text-[#41ebd6] transition-colors">View all →</a>
+            <a href="/blog/category/local-trends" class="text-xs font-semibold text-slate-400 hover:text-[#0080FF] transition-colors">View all →</a>
           </div>
 
           <div class="grid md:grid-cols-[2fr_3fr] gap-5">

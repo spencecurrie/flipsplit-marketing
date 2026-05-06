@@ -1,0 +1,187 @@
+---
+import '../styles/global.css';
+import AddressForm from '../components/AddressForm.astro';
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About FlipSplit | Our Story & Mission</title>
+  <meta name="description" content="FlipSplit was founded to give homeowners a more honest, profitable way to sell. Learn our story, our mission, and the team behind the model." />
+  <link rel="canonical" href="https://www.flipsplit.com/about" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --brand-blue: #0080FF; --brand-dark: #0C3034; --brand-body: #34313D; }
+    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
+    h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
+    .btn-primary { background: #0080FF; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary:hover { filter: brightness(1.08); }
+    a, button { cursor: pointer; }
+  </style>
+</head>
+<body class="bg-white antialiased">
+
+  <!-- NAV -->
+  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-9" /></a>
+      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
+        <a href="/how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
+        <a href="/reviews" class="hover:text-[#0C3034] transition-colors">Reviews</a>
+        <a href="/blog" class="hover:text-[#0C3034] transition-colors">Blog</a>
+        <a href="/faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
+      </div>
+      <a href="/request-offer" class="btn-primary text-sm px-5 py-2.5 rounded-lg">Get My Offer</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden py-24 px-6" style="background:#0f172a;">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div style="position:absolute; top:-80px; right:-60px; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle, rgba(0,128,255,0.14) 0%, transparent 70%);"></div>
+    </div>
+    <div class="relative max-w-4xl mx-auto">
+      <span class="inline-block text-xs font-bold uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full" style="background:rgba(0,128,255,0.15); color:#0080FF;">Our Story</span>
+      <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6" style="color:white; font-family:'sahar','Open Sans',sans-serif;">
+        Built to fix a<br/><span style="color:#0080FF;">broken industry.</span>
+      </h1>
+      <p class="text-slate-300 text-lg leading-relaxed max-w-2xl">
+        FlipSplit was founded on a simple belief: homeowners deserve to share in the profit when their home sells for more than expected — not watch a cash buyer pocket it all.
+      </p>
+    </div>
+  </section>
+
+  <!-- FOUNDER STORY -->
+  <section class="py-24 px-6 bg-white">
+    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">The Founder</p>
+        <h2 class="text-3xl font-black mb-6" style="color:#0C3034;">Stephen saw homeowners getting shortchanged. So he changed the model.</h2>
+        <div class="space-y-4 text-slate-600 leading-relaxed">
+          <p>After 15+ years in real estate and flipping over 2,000 homes across Southern California, FlipSplit founder Stephen recognized a fundamental problem: cash buyers and iBuyers were profiting enormously from renovations while the original homeowner received nothing beyond their initial offer.</p>
+          <p>The math was obvious. Buy a distressed home at a discount, spend $150K on renovations, sell for $400K more. The homeowner who enabled that entire transaction? They got a fixed cash offer and never heard from you again.</p>
+          <p>FlipSplit flips that model. We still buy your home as-is with a guaranteed cash offer — but if the renovated home sells for more than we projected, you get a cut. Your home, your upside.</p>
+        </div>
+        <div class="flex items-center gap-4 mt-8">
+          <div class="w-12 h-12 rounded-full overflow-hidden bg-slate-200 shrink-0">
+            <div class="w-full h-full flex items-center justify-center font-black text-slate-400">S</div>
+          </div>
+          <div>
+            <div class="font-bold text-[#0C3034]">Stephen</div>
+            <div class="text-sm text-slate-400">Founder, FlipSplit</div>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        {[
+          { value: '2,000+', label: 'Homes flipped' },
+          { value: '15+', label: 'Years in real estate' },
+          { value: '$0', label: 'Fees to homeowners' },
+          { value: '5.0★', label: 'Average review rating' },
+        ].map(({ value, label }) => (
+          <div class="rounded-2xl p-6 text-center border border-slate-100" style="background:#f8fafc;">
+            <div class="text-3xl font-black mb-2" style="color:#0080FF;">{value}</div>
+            <div class="text-sm text-slate-500">{label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section class="py-24 px-6" style="background:#f8fafc;">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Our Mission</p>
+      <h2 class="text-3xl sm:text-4xl font-black mb-6" style="color:#0C3034;">
+        "To provide homeowners with outdated or distressed homes an easier and more profitable way to sell."
+      </h2>
+      <p class="text-slate-500 text-lg leading-relaxed max-w-2xl mx-auto">
+        That's it. Everything we build — our offer model, our renovation process, our profit-sharing structure — exists to serve that mission.
+      </p>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="py-24 px-6 bg-white">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">How We Operate</p>
+        <h2 class="text-3xl font-black" style="color:#0C3034;">Three values. No exceptions.</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
+        {[
+          {
+            num: '01',
+            title: 'Honesty above profit',
+            body: 'Our profit-sharing model exists to prove this point. If we underpay you, the resale will show it — and you\'ll be compensated. We have every financial incentive to be accurate and transparent.',
+          },
+          {
+            num: '02',
+            title: 'Do what\'s best for the homeowner',
+            body: 'Every decision we make — from offer pricing to renovation scope — is run through one filter: is this the best outcome for the homeowner? If the answer is no, we don\'t do it.',
+          },
+          {
+            num: '03',
+            title: 'Serve others',
+            body: 'Real estate is a people business. We return calls, answer questions, and stay in contact through every stage. You will always have a real person to talk to.',
+          },
+        ].map(({ num, title, body }) => (
+          <div class="rounded-2xl p-8 border border-slate-100">
+            <div class="text-sm font-black mb-4" style="color:#0080FF;">{num}</div>
+            <h3 class="text-lg font-black mb-3" style="color:#0C3034;">{title}</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">{body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICE AREAS -->
+  <section class="py-16 px-6 border-t border-slate-100">
+    <div class="max-w-5xl mx-auto">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-6 justify-between">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Where We Work</p>
+          <h3 class="text-xl font-black" style="color:#0C3034;">Serving all of Southern California.</h3>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {['Los Angeles County', 'Orange County', 'San Diego County', 'Inland Empire', 'Anaheim', 'Long Beach', 'Riverside', 'San Bernardino'].map(area => (
+            <span class="text-xs font-semibold px-3 py-1.5 rounded-full border border-slate-200 text-slate-500">{area}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-24 px-6" style="background: linear-gradient(135deg, #0f172a 0%, #1a2744 100%);">
+    <div class="max-w-2xl mx-auto text-center">
+      <h2 class="text-4xl font-black mb-4 leading-tight" style="color:white; font-family:'sahar','Open Sans',sans-serif;">Ready to see what your home is worth?</h2>
+      <p class="text-slate-400 mb-10">Free offer. No obligation. Results in 24–48 hours.</p>
+      <AddressForm id="about-form" action="https://formspree.io/f/YOUR_FORM_ID" align="center" />
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-12 px-6 border-t border-slate-100">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-8" /></a>
+      <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-400">
+        <a href="/how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
+        <a href="/reviews" class="hover:text-[#0C3034] transition-colors">Reviews</a>
+        <a href="/about" class="hover:text-[#0C3034] transition-colors">About</a>
+        <a href="/faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
+        <a href="/privacy-policy" class="hover:text-[#0C3034] transition-colors">Privacy Policy</a>
+      </div>
+      <p class="text-xs text-slate-400">© 2026 FlipSplit. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

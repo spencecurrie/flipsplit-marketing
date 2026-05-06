@@ -1,0 +1,92 @@
+---
+import '../styles/global.css';
+import AddressForm from '../components/AddressForm.astro';
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Request a Free Cash Offer | FlipSplit</title>
+  <meta name="description" content="Request your free cash offer from FlipSplit. Enter your address and get a no-obligation offer within 24–48 hours. No repairs, no fees, no pressure." />
+  <link rel="canonical" href="https://www.flipsplit.com/request-offer" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --brand-blue: #0080FF; --brand-dark: #0C3034; --brand-body: #34313D; }
+    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
+    h1, h2 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
+    .btn-primary { background: #0080FF; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary:hover { filter: brightness(1.08); }
+    a { cursor: pointer; }
+  </style>
+</head>
+<body class="antialiased" style="background:#0f172a;">
+
+  <!-- NAV -->
+  <nav class="bg-transparent border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/"><img src="/wordmark-light.png" alt="FlipSplit" class="h-9" onerror="this.src='/wordmark.png'" /></a>
+      <div class="hidden md:flex items-center gap-8 text-sm text-slate-400 font-medium">
+        <a href="/how-it-works" class="hover:text-white transition-colors">How It Works</a>
+        <a href="/reviews" class="hover:text-white transition-colors">Reviews</a>
+        <a href="/faq" class="hover:text-white transition-colors">FAQ</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="min-h-screen flex flex-col items-center justify-center px-6 py-20 relative overflow-hidden">
+    <!-- Glow orbs -->
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div style="position:absolute; top:-60px; left:-80px; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle, rgba(0,128,255,0.18) 0%, transparent 70%);"></div>
+      <div style="position:absolute; bottom:-80px; right:-60px; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle, rgba(0,128,255,0.12) 0%, transparent 70%);"></div>
+    </div>
+
+    <div class="relative w-full max-w-xl text-center">
+      <a href="/" class="inline-block mb-10">
+        <img src="/wordmark.png" alt="FlipSplit" class="h-10 mx-auto" />
+      </a>
+
+      <h1 class="text-4xl sm:text-5xl font-black leading-tight mb-4" style="color:white; font-family:'sahar','Open Sans',sans-serif;">
+        Get your free<br/><span style="color:#0080FF;">cash offer.</span>
+      </h1>
+      <p class="text-slate-400 text-lg mb-10">
+        Enter your property address below. We'll respond within 24–48 hours with a no-obligation offer.
+      </p>
+
+      <AddressForm id="request-form" action="https://formspree.io/f/YOUR_FORM_ID" align="center" />
+
+      <!-- Trust signals -->
+      <div class="mt-10 grid grid-cols-3 gap-4 text-center">
+        {[
+          { value: '$0', label: 'Fees or commissions' },
+          { value: '24–48 hrs', label: 'Offer turnaround' },
+          { value: '5.0★', label: 'Customer rating' },
+        ].map(({ value, label }) => (
+          <div class="rounded-xl py-4 px-3" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);">
+            <div class="font-black text-white text-lg">{value}</div>
+            <div class="text-xs text-slate-500 mt-0.5">{label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="py-8 px-6 border-t border-white/10 text-center">
+    <div class="flex flex-wrap justify-center gap-6 text-xs text-slate-500 mb-3">
+      <a href="/how-it-works" class="hover:text-slate-300 transition-colors">How It Works</a>
+      <a href="/faq" class="hover:text-slate-300 transition-colors">FAQ</a>
+      <a href="/privacy-policy" class="hover:text-slate-300 transition-colors">Privacy Policy</a>
+      <a href="/about" class="hover:text-slate-300 transition-colors">About</a>
+    </div>
+    <p class="text-xs text-slate-600">© 2026 FlipSplit LLC. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

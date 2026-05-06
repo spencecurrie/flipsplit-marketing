@@ -1,0 +1,206 @@
+---
+import '../styles/global.css';
+import AddressForm from '../components/AddressForm.astro';
+
+const faqs = [
+  {
+    q: "What fees, closing costs, or commissions are involved in selling my home to FlipSplit?",
+    a: "Absolutely zero. You receive 100% of the amount we offer you. There are no hidden fees, no agent commissions, and no closing costs charged to you. What we quote is what you get.",
+  },
+  {
+    q: "What areas does FlipSplit buy homes in?",
+    a: "We purchase homes throughout Southern California, including Los Angeles, Ventura, Orange, Riverside, San Bernardino, and San Diego counties. We're continuing to expand — contact us to confirm your specific location.",
+  },
+  {
+    q: "Is there a cost for a home evaluation or offer?",
+    a: "Not at all. We provide a free, no-obligation home evaluation and cash offer. You're never required to accept.",
+  },
+  {
+    q: "Is FlipSplit a house flipper?",
+    a: "Yes — but with a key difference. Traditional flippers buy low, renovate, and keep 100% of the upside. FlipSplit shares the resale profit with you if the home sells for more than projected. You funded the asset. You should benefit from it.",
+  },
+  {
+    q: "My home is in great condition. Can I still sell to FlipSplit?",
+    a: "Absolutely. If convenience and speed matter more than squeezing every dollar out of a traditional listing, FlipSplit is a strong option. You get a competitive cash offer, close on your schedule, and skip the showings entirely. Plus, if the renovated home beats our resale projection, you'll receive a profit split regardless.",
+  },
+  {
+    q: "Will FlipSplit buy a home that isn't in terrible condition?",
+    a: "Yes. We buy homes of all shapes, conditions, and sizes — from move-in-ready to major fixer-uppers. Condition doesn't disqualify you.",
+  },
+  {
+    q: "Do I need to handle any repairs or renovations before selling?",
+    a: "No. You sell as-is. FlipSplit covers 100% of the renovation costs using our own contractors. You don't spend a dollar or lift a finger.",
+  },
+  {
+    q: "Can I sell to FlipSplit without any profit-sharing involvement?",
+    a: "Yes. The profit-sharing component only activates if the renovated home sells above the projected resale value we agreed on. If the home sells at or below that threshold, there is no backend payment — and that simply means we paid you the maximum upfront value we could justify.",
+  },
+  {
+    q: "Will FlipSplit share the renovation plan and budget with me?",
+    a: "Yes. We walk you through the estimated repair scope and budget before you accept the offer. Nothing happens behind closed doors. After the renovation, you receive an accounting of the actual costs and the final resale price.",
+  },
+  {
+    q: "Will I know what FlipSplit intends to resell the property for?",
+    a: "Yes. We share our projected resale price upfront as part of your offer. This number also sets the Profit Participation Threshold — the price above which your backend bonus kicks in.",
+  },
+  {
+    q: "Can I visit the property during renovations?",
+    a: "Due to active construction insurance requirements, we can't allow visits during the renovation. However, you can schedule a post-renovation walkthrough before the home lists, or we'll send you a full photo set of the completed work.",
+  },
+  {
+    q: "Will FlipSplit purchase a home with a tenant in place?",
+    a: "Yes. We buy tenant-occupied properties. The length of the remaining lease will factor into our offer — vacant homes typically receive a slightly higher offer since we can begin renovation immediately.",
+  },
+  {
+    q: "How should I compare a FlipSplit offer to other offers?",
+    a: "Compare net proceeds at closing, not the quoted number. Subtract agent commissions (typically 5–6%), closing costs, and any required repairs from traditional offers. Then compare that net figure to our zero-fee cash offer — plus factor in the profit-sharing upside FlipSplit provides.",
+  },
+  {
+    q: "How quickly can FlipSplit buy my house?",
+    a: "We can close in as few as 48–72 hours in expedited situations. Typical timelines range from 7 to 30 days. If you need more time, we can extend closing up to 90 days — you set the schedule.",
+  },
+  {
+    q: "Can I receive money before closing?",
+    a: "Yes. After inspections are complete, we can advance up to $20,000 prior to the official closing date if you need it.",
+  },
+  {
+    q: "When do I receive my profit-split payment?",
+    a: "Within 10 days after the renovated home sells. This is a separate check from your initial offer payment — you don't need to do anything to receive it.",
+  },
+  {
+    q: "Can I leave furniture or belongings behind?",
+    a: "Yes. Leave anything you don't want to take. FlipSplit handles all junk removal and cleanout at no cost to you.",
+  },
+  {
+    q: "Do I have any liability after selling?",
+    a: "None. Once the sale closes, FlipSplit assumes 100% of the risk — construction cost overruns, market downturns, permit issues, everything. Your obligation ends at closing.",
+  },
+  {
+    q: "Am I guaranteed a profit-split payment?",
+    a: "No — the backend payment only occurs if the home sells above the projected resale value. If there's no backend payment, it means the home sold at or below projection, which means you received the maximum upfront offer we could justify.",
+  },
+  {
+    q: "How is FlipSplit different from other iBuyers or cash buyers?",
+    a: "Three key differences: (1) We accept distressed properties that iBuyers like Opendoor won't touch. (2) We charge zero fees. (3) We share the resale profit with you. Traditional cash buyers keep 100% of renovation upside — FlipSplit splits it.",
+  },
+];
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FAQ | FlipSplit — Frequently Asked Questions</title>
+  <meta name="description" content="Get answers to the most common questions about selling your home to FlipSplit — fees, timelines, the profit-split model, and more." />
+  <link rel="canonical" href="https://www.flipsplit.com/faq" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --brand-blue: #0080FF; --brand-dark: #0C3034; --brand-body: #34313D; }
+    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
+    h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
+    .btn-primary { background: #0080FF; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary:hover { filter: brightness(1.08); }
+    details > summary { list-style: none; cursor: pointer; }
+    details > summary::-webkit-details-marker { display: none; }
+    .faq-icon { transition: transform 0.2s ease; display: inline-block; }
+    details[open] .faq-icon { transform: rotate(45deg); }
+    a, button, summary { cursor: pointer; }
+  </style>
+</head>
+<body class="bg-white antialiased">
+
+  <!-- NAV -->
+  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-9" /></a>
+      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
+        <a href="/how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
+        <a href="/reviews" class="hover:text-[#0C3034] transition-colors">Reviews</a>
+        <a href="/blog" class="hover:text-[#0C3034] transition-colors">Blog</a>
+        <a href="/faq" class="font-semibold" style="color:#0C3034;">FAQ</a>
+      </div>
+      <a href="/request-offer" class="btn-primary text-sm px-5 py-2.5 rounded-lg">Get My Offer</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="py-20 px-6" style="background:#0f172a;">
+    <div class="max-w-3xl mx-auto text-center">
+      <span class="inline-block text-xs font-bold uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full" style="background:rgba(0,128,255,0.15); color:#0080FF;">Got Questions?</span>
+      <h1 class="text-5xl font-black leading-tight mb-4" style="color:white; font-family:'sahar','Open Sans',sans-serif;">
+        Frequently asked<br/><span style="color:#0080FF;">questions.</span>
+      </h1>
+      <p class="text-slate-400 text-lg">Everything you need to know about selling your home to FlipSplit.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 px-6 bg-white">
+    <div class="max-w-3xl mx-auto">
+      <div class="divide-y divide-slate-100">
+        {faqs.map(({ q, a }) => (
+          <details class="group py-1">
+            <summary class="flex items-start justify-between gap-4 py-5 font-semibold text-[#0C3034] hover:text-[#0080FF] transition-colors">
+              <span class="flex-1 text-left">{q}</span>
+              <span class="faq-icon shrink-0 mt-0.5 text-slate-400 text-xl leading-none">+</span>
+            </summary>
+            <div class="pb-6 text-slate-500 leading-relaxed text-sm pr-8">
+              {a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- STILL HAVE QUESTIONS -->
+  <section class="py-16 px-6 border-t border-slate-100" style="background:#f8fafc;">
+    <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center gap-8 justify-between">
+      <div>
+        <h3 class="text-xl font-black mb-2" style="color:#0C3034;">Still have questions?</h3>
+        <p class="text-slate-500 text-sm">Call us or send an email — a real person will respond.</p>
+      </div>
+      <div class="flex flex-wrap gap-3 shrink-0">
+        <a href="tel:18006617489" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-200 text-sm font-semibold text-[#0C3034] hover:border-[#0080FF] transition-colors">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .99h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          1-800-661-7489
+        </a>
+        <a href="mailto:info@flipsplit.com" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-200 text-sm font-semibold text-[#0C3034] hover:border-[#0080FF] transition-colors">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          info@flipsplit.com
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-24 px-6" style="background: linear-gradient(135deg, #0f172a 0%, #1a2744 100%);">
+    <div class="max-w-2xl mx-auto text-center">
+      <h2 class="text-4xl font-black mb-4 leading-tight" style="color:white; font-family:'sahar','Open Sans',sans-serif;">Ready to get your free offer?</h2>
+      <p class="text-slate-400 mb-10">No fees. No repairs. No obligation. Results in 24–48 hours.</p>
+      <AddressForm id="faq-form" action="https://formspree.io/f/YOUR_FORM_ID" align="center" />
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-12 px-6 border-t border-slate-100">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-8" /></a>
+      <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-400">
+        <a href="/how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
+        <a href="/reviews" class="hover:text-[#0C3034] transition-colors">Reviews</a>
+        <a href="/about" class="hover:text-[#0C3034] transition-colors">About</a>
+        <a href="/faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
+        <a href="/privacy-policy" class="hover:text-[#0C3034] transition-colors">Privacy Policy</a>
+      </div>
+      <p class="text-xs text-slate-400">© 2026 FlipSplit. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -50,13 +50,13 @@ function formatDate(d: Date) {
 
   <style>
     :root {
-      --brand-cyan: #41ebd6;
+      --brand-cyan: #0080FF;
       --brand-dark: #0C3034;
       --brand-body: #34313D;
     }
     body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
     h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
-    .btn-primary { background: var(--brand-cyan); color: var(--brand-dark); font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary { background: var(--brand-cyan); color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
     .btn-primary:hover { filter: brightness(1.08); }
 
     /* Reading progress bar */
@@ -112,7 +112,7 @@ function formatDate(d: Date) {
   </nav>
 
   <!-- ─── ARTICLE HEADER ─── -->
-  <header class="px-6 pt-10 pb-10 border-b border-slate-200" style="background: linear-gradient(135deg, rgba(65,235,214,0.08) 0%, rgba(65,235,214,0.02) 50%, transparent 100%);">
+  <header class="px-6 pt-10 pb-10 border-b border-slate-200" style="background: linear-gradient(135deg, rgba(0,128,255,0.08) 0%, rgba(0,128,255,0.02) 50%, transparent 100%);">
     <div class="max-w-6xl mx-auto">
       <div class="lg:grid lg:grid-cols-[1fr_300px] lg:gap-16">
         <div>
@@ -133,7 +133,7 @@ function formatDate(d: Date) {
 
           <!-- Meta row -->
           <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background:rgba(65,235,214,0.15);color:#0C3034;">{category}</span>
+            <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background:rgba(0,128,255,0.15);color:#0C3034;">{category}</span>
             <span class="text-xs text-slate-400">{formatDate(pubDate)}</span>
             {readingTime && <span class="text-xs text-slate-400">{readingTime} min read</span>}
             {reviewer && <span class="text-xs text-slate-400">Reviewed by <span class="font-semibold text-slate-500">{reviewer}</span></span>}
@@ -166,7 +166,7 @@ function formatDate(d: Date) {
             <ul class="space-y-2">
               {tocHeadings.map(h => (
                 <li style={`padding-left: ${(h.depth - 2) * 12}px`}>
-                  <a href={`#${h.slug}`} class="text-sm text-slate-600 hover:text-[#41ebd6] transition-colors">
+                  <a href={`#${h.slug}`} class="text-sm text-slate-600 hover:text-[#0080FF] transition-colors">
                     {h.text}
                   </a>
                 </li>
@@ -185,7 +185,7 @@ function formatDate(d: Date) {
       <div class="mt-14 pt-10 border-t border-slate-100">
         <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-5">About the reviewer</p>
         <div class="flex items-start gap-4">
-          <div class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-black text-[#0C3034] shrink-0" style="background: rgba(65,235,214,0.2);">BB</div>
+          <div class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-black text-[#0C3034] shrink-0" style="background: rgba(0,128,255,0.2);">BB</div>
           <div>
             <p class="font-bold text-[#0C3034]">Brandon Brown</p>
             <p class="text-xs text-slate-400 mb-2">Licensed Real Estate Agent · Southern California</p>
@@ -222,7 +222,7 @@ function formatDate(d: Date) {
                   <a
                     href={`#${h.slug}`}
                     data-heading={h.slug}
-                    class="toc-link text-sm text-slate-500 hover:text-[#41ebd6] block py-0.5 border-l-2 border-transparent pl-3 transition-colors"
+                    class="toc-link text-sm text-slate-500 hover:text-[#0080FF] block py-0.5 border-l-2 border-transparent pl-3 transition-colors"
                   >
                     {h.text}
                   </a>
@@ -251,7 +251,7 @@ function formatDate(d: Date) {
               </div>
               <div class="p-6 flex flex-col flex-1">
                 <span class="text-xs text-slate-400 mb-2">{formatDate(p.data.pubDate)}</span>
-                <h3 class="font-black text-[#0C3034] leading-snug group-hover:text-[#41ebd6] transition-colors line-clamp-3">{p.data.title}</h3>
+                <h3 class="font-black text-[#0C3034] leading-snug group-hover:text-[#0080FF] transition-colors line-clamp-3">{p.data.title}</h3>
               </div>
             </a>
           ))}

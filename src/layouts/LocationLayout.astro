@@ -68,10 +68,10 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style is:global>
-    :root { --brand-cyan: #41ebd6; --brand-dark: #0C3034; --brand-body: #34313D; }
+    :root { --brand-cyan: #0080FF; --brand-dark: #0C3034; --brand-body: #34313D; }
     body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
     h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
-    .btn-primary { background: var(--brand-cyan); color: var(--brand-dark); font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary { background: var(--brand-cyan); color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
     .btn-primary:hover { filter: brightness(1.08); }
     details > summary { list-style: none; }
     details > summary::-webkit-details-marker { display: none; }
@@ -84,11 +84,11 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
     .fs-pac-input-wrap { display:flex; align-items:center; background:rgba(255,255,255,0.97); border-radius:12px; position:relative; }
     .fs-pac-input { width:100%; padding:14px 62px 14px 44px; font-size:15px; font-family:'Open Sans',sans-serif; color:#0C3034; background:transparent; border:none; border-radius:12px; outline:none; }
     .fs-pac-input::placeholder { color:#94a3b8; }
-    .fs-pac-input:focus { box-shadow:0 0 0 2px #41ebd6; border-radius:12px; }
+    .fs-pac-input:focus { box-shadow:0 0 0 2px #0080FF; border-radius:12px; }
     .fs-pac-dropdown { position:absolute; left:0; right:0; top:calc(100% + 6px); background:#fff; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.12); z-index:9999; display:none; overflow:hidden; border:1px solid rgba(0,0,0,0.06); }
     .fs-pac-item { padding:12px 16px; cursor:pointer; font-size:14px; color:#0C3034; font-family:'Open Sans',sans-serif; border-bottom:1px solid #f4f4f4; }
     .fs-pac-item:last-child { border-bottom:none; }
-    .fs-pac-item:hover { background:rgba(65,235,214,0.1); }
+    .fs-pac-item:hover { background:rgba(0,128,255,0.1); }
   </style>
 </head>
 <body class="bg-white antialiased">
@@ -108,10 +108,10 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
   </nav>
 
   <!-- HERO -->
-  <section class="py-20 px-6" style="background: linear-gradient(135deg, #0C3034 0%, #134a52 100%);">
+  <section class="py-20 px-6" style="background: linear-gradient(135deg, #0f172a 0%, #1a2744 100%);">
     <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
       <div>
-        <span class="inline-block text-xs font-semibold tracking-wide mb-5 px-4 py-1.5 rounded-full text-[#0C3034]" style="background: rgba(65,235,214,0.85);">{city}</span>
+        <span class="inline-block text-xs font-semibold tracking-wide mb-5 px-4 py-1.5 rounded-full text-[#0C3034]" style="background: rgba(0,128,255,0.85);">{city}</span>
         <h1 class="text-4xl sm:text-5xl font-black leading-tight mb-6" style="color: white; font-family:'sahar','Open Sans',sans-serif;">
           {heroHeadline}
         </h1>
@@ -149,7 +149,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
       <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
         <div class="min-w-[560px]">
           <!-- Header -->
-          <div class="grid grid-cols-4 text-sm font-bold text-center" style="background:#0C3034;">
+          <div class="grid grid-cols-4 text-sm font-bold text-center" style="background:#0f172a;">
             <div class="px-5 py-4 text-left text-slate-500 text-xs uppercase tracking-widest font-semibold"></div>
             <div class="px-5 py-5 text-center font-black text-lg" style="color:var(--brand-cyan);">FlipSplit</div>
             <div class="px-5 py-4 text-white font-semibold text-sm flex items-center justify-center">Traditional Sale</div>
@@ -167,7 +167,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
           ].map((row, i) => (
             <div class={`grid grid-cols-4 text-sm items-start ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
               <div class="px-5 py-4 font-bold text-[#0C3034]">{row.label}</div>
-              <div class="px-5 py-4 font-semibold text-center" style="color:#0C3034; background:rgba(65,235,214,0.06);">{row.flip}</div>
+              <div class="px-5 py-4 font-semibold text-center" style="color:#0C3034; background:rgba(0,128,255,0.06);">{row.flip}</div>
               <div class="px-5 py-4 text-slate-400 text-center">{row.trad}</div>
               <div class="px-5 py-4 text-slate-400 text-center">{row.cash}</div>
             </div>
@@ -262,7 +262,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
               <ul class="space-y-2">
                 {bullets.map(b => (
                   <li class="flex items-start gap-2.5 text-sm text-slate-500">
-                    <svg class="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#41ebd6" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#41ebd6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg class="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#0080FF" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#0080FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     {b}
                   </li>
                 ))}
@@ -274,15 +274,15 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
       </div>
 
       <!-- Right: video or placeholder -->
-      <div class="rounded-2xl overflow-hidden w-full" style="aspect-ratio:16/9; background:#0C3034;">
+      <div class="rounded-2xl overflow-hidden w-full" style="aspect-ratio:16/9; background:#0f172a;">
         {howItWorksVideoUrl ? (
           <iframe src={howItWorksVideoUrl} width="100%" height="100%" style="border:0;" allow="autoplay; fullscreen" allowfullscreen></iframe>
         ) : (
           <div class="w-full h-full flex flex-col items-center justify-center gap-4">
-            <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background:rgba(65,235,214,0.15); border:2px solid rgba(65,235,214,0.3);">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4l12 6-12 6V4z" fill="#41ebd6"/></svg>
+            <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background:rgba(0,128,255,0.15); border:2px solid rgba(0,128,255,0.3);">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4l12 6-12 6V4z" fill="#0080FF"/></svg>
             </div>
-            <p class="text-sm font-semibold" style="color:rgba(65,235,214,0.6);">How It Works Video</p>
+            <p class="text-sm font-semibold" style="color:rgba(0,128,255,0.6);">How It Works Video</p>
             <p class="text-xs" style="color:rgba(255,255,255,0.3);">Coming soon</p>
           </div>
         )}
@@ -341,10 +341,10 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
         <div class="grid md:grid-cols-2 gap-6">
           {caseStudies.map(c => (
             <div class="bg-white rounded-2xl border border-slate-200 p-8">
-              <span class="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4" style="background: rgba(65,235,214,0.12); color: #0C3034;">{c.tag}</span>
+              <span class="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4" style="background: rgba(0,128,255,0.12); color: #0C3034;">{c.tag}</span>
               <h3 class="text-xl font-black text-[#0C3034] mb-3">{c.headline}</h3>
               <p class="text-slate-500 text-sm leading-relaxed mb-5">{c.body}</p>
-              <div class="rounded-xl px-5 py-4" style="background: #0C3034;">
+              <div class="rounded-xl px-5 py-4" style="background: #0f172a;">
                 <span class="text-xs font-semibold uppercase tracking-widest" style="color: var(--brand-cyan);">Result</span>
                 <p class="text-white font-bold mt-1">{c.result}</p>
               </div>
@@ -370,7 +370,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
               <div class="flex gap-0.5 mb-4" style="color: #FBBC05;">★★★★★</div>
               <p class="text-sm text-slate-600 leading-relaxed flex-1 mb-5">"{t.quote}"</p>
               <div class="flex items-center gap-3 mt-auto">
-                <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-[#0C3034] shrink-0" style="background: rgba(65,235,214,0.2);">{t.name.charAt(0)}</div>
+                <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-[#0C3034] shrink-0" style="background: rgba(0,128,255,0.2);">{t.name.charAt(0)}</div>
                 <div>
                   <div class="text-sm font-bold text-[#0C3034]">{t.name}</div>
                   <div class="text-xs text-slate-400">{t.location}</div>
@@ -406,7 +406,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
 
 
   <!-- GET OFFER -->
-  <section id="get-offer" class="py-20 px-6" style="background: #0C3034;">
+  <section id="get-offer" class="py-20 px-6" style="background: #0f172a;">
     <input type="hidden" id="offer-city" value={city} />
     <div class="max-w-2xl mx-auto text-center">
       <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color: var(--brand-cyan);">Free. No obligation.</p>
@@ -428,16 +428,16 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
       <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
         {["No repairs needed", "Cash offer in 24–48 hours", "Zero upfront costs"].map(t => (
           <span class="flex items-center gap-2 text-sm text-slate-400">
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#41ebd6" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#41ebd6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#0080FF" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#0080FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             {t}
           </span>
         ))}
       </div>
 
       <!-- Success state (hidden by default) -->
-      <div id="offer-success" class="hidden mt-10 p-8 rounded-2xl" style="background: rgba(65,235,214,0.08); border: 1px solid rgba(65,235,214,0.2);">
-        <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5" style="background: rgba(65,235,214,0.15);">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5 9-9" stroke="#41ebd6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div id="offer-success" class="hidden mt-10 p-8 rounded-2xl" style="background: rgba(0,128,255,0.08); border: 1px solid rgba(0,128,255,0.2);">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5" style="background: rgba(0,128,255,0.15);">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5 9-9" stroke="#0080FF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3 class="text-2xl font-black text-white mb-2">We'll be in touch!</h3>
         <p class="text-slate-300 text-sm leading-relaxed">Our team will review your address and reach out within 24–48 hours with your offer details.</p>
@@ -471,12 +471,12 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
       <!-- Address box -->
       <div class="rounded-2xl px-5 py-4 flex items-start justify-between gap-4 mb-6" style="background:#f2f2f2;">
         <p id="modal-addr" class="text-base leading-snug flex-1" style="color:#0C3034;"></p>
-        <button id="modal-edit" class="text-sm font-bold shrink-0 hover:opacity-70 transition-opacity" style="color:#41ebd6;">Edit</button>
+        <button id="modal-edit" class="text-sm font-bold shrink-0 hover:opacity-70 transition-opacity" style="color:#0080FF;">Edit</button>
       </div>
       <!-- Ownership question -->
       <p class="text-base font-bold mb-3" style="color:#0C3034;">Are you the owner of this home? <span style="color:#ef4444;">*</span></p>
       <div class="relative mb-6">
-        <select id="ownership" class="w-full appearance-none bg-white border rounded-2xl px-5 py-4 text-base focus:outline-none focus:border-[#41ebd6] transition-colors pr-12" style="border-color:#e2e8f0; color:#94a3b8;">
+        <select id="ownership" class="w-full appearance-none bg-white border rounded-2xl px-5 py-4 text-base focus:outline-none focus:border-[#0080FF] transition-colors pr-12" style="border-color:#e2e8f0; color:#94a3b8;">
           <option value="" disabled selected>Select</option>
           <option style="color:#0C3034;">Yes</option>
           <option style="color:#0C3034;">No</option>
@@ -487,7 +487,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
           <svg width="16" height="16" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
       </div>
-      <button id="modal-continue" class="w-full py-4 rounded-2xl font-bold text-base transition-opacity hover:opacity-90" style="background:#41ebd6; color:#0C3034;">Confirm</button>
+      <button id="modal-continue" class="w-full py-4 rounded-2xl font-bold text-base transition-opacity hover:opacity-90" style="background:#0080FF; color:#ffffff;">Confirm</button>
     </div>
   </div>
 
@@ -549,7 +549,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
 
         var searchIcon = document.createElement('span');
         searchIcon.style.cssText = 'position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;display:flex;';
-        searchIcon.innerHTML = '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="7.5" cy="7.5" r="5" stroke="#41ebd6" stroke-width="1.6"/><path d="M12 12l3 3" stroke="#41ebd6" stroke-width="1.6" stroke-linecap="round"/></svg>';
+        searchIcon.innerHTML = '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="7.5" cy="7.5" r="5" stroke="#0080FF" stroke-width="1.6"/><path d="M12 12l3 3" stroke="#0080FF" stroke-width="1.6" stroke-linecap="round"/></svg>';
 
         var input = document.createElement('input');
         input.className = 'fs-pac-input';
@@ -559,8 +559,8 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
 
         var btn = document.createElement('button');
         btn.type = 'button';
-        btn.style.cssText = 'position:absolute;right:6px;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:8px;border:none;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:filter 0.15s;background:#41ebd6;';
-        btn.innerHTML = '<svg width="19" height="19" viewBox="0 0 18 18" fill="none"><circle cx="7.5" cy="7.5" r="5" stroke="#0C3034" stroke-width="1.8"/><path d="M12 12l3 3" stroke="#0C3034" stroke-width="1.8" stroke-linecap="round"/></svg>';
+        btn.style.cssText = 'position:absolute;right:6px;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:8px;border:none;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:filter 0.15s;background:#0080FF;';
+        btn.innerHTML = '<svg width="19" height="19" viewBox="0 0 18 18" fill="none"><circle cx="7.5" cy="7.5" r="5" stroke="#ffffff" stroke-width="1.8"/><path d="M12 12l3 3" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/></svg>';
         btn.addEventListener('mouseenter', function () { this.style.filter = 'brightness(1.08)'; });
         btn.addEventListener('mouseleave', function () { this.style.filter = ''; });
 
