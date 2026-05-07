@@ -1,5 +1,6 @@
 ---
-import '../styles/global.css';
+import '../styles/global.css'
+import Nav from '../components/Nav.astro';
 ---
 
 <!DOCTYPE html>
@@ -16,12 +17,12 @@ import '../styles/global.css';
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root { --brand-blue: #0080FF; --brand-dark: #0C3034; --brand-body: #34313D; }
+    :root { --brand-blue: #1a96e8; --brand-dark: #1E2A3A; --brand-body: #374151; }
     body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
     h1, h2, h3 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
-    .btn-primary { background: #0080FF; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary { background: #1a96e8; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
     .btn-primary:hover { filter: brightness(1.08); }
-    .prose h2 { font-size: 1.25rem; font-weight: 900; color: #0C3034; margin: 2rem 0 0.75rem; }
+    .prose h2 { font-size: 1.25rem; font-weight: 900; color: #1E2A3A; margin: 2rem 0 0.75rem; }
     .prose p, .prose li { font-size: 0.9375rem; color: #475569; line-height: 1.75; }
     .prose ul { list-style: disc; padding-left: 1.5rem; margin: 0.75rem 0; }
     .prose li { margin-bottom: 0.25rem; }
@@ -31,23 +32,12 @@ import '../styles/global.css';
 <body class="bg-white antialiased">
 
   <!-- NAV -->
-  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-9" /></a>
-      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
-        <a href="/how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
-        <a href="/reviews" class="hover:text-[#0C3034] transition-colors">Reviews</a>
-        <a href="/blog" class="hover:text-[#0C3034] transition-colors">Blog</a>
-        <a href="/faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
-      </div>
-      <a href="/request-offer" class="btn-primary text-sm px-5 py-2.5 rounded-lg">Get My Offer</a>
-    </div>
-  </nav>
+  <Nav />
 
   <!-- HEADER -->
   <section class="py-16 px-6 border-b border-slate-100">
     <div class="max-w-3xl mx-auto">
-      <h1 class="text-4xl font-black mb-3" style="color:#0C3034;">Privacy Policy</h1>
+      <h1 class="text-4xl font-black mb-3" style="color:#1E2A3A;">Privacy Policy</h1>
       <p class="text-slate-400 text-sm">Last updated: January 25, 2021</p>
     </div>
   </section>
@@ -89,10 +79,10 @@ import '../styles/global.css';
       <p><strong>FlipSplit LLC has not disclosed or sold any personal information to third parties for a business or commercial purpose in the preceding 12 months.</strong></p>
 
       <h2>4. Cookies and Tracking Technologies</h2>
-      <p>We use cookies and similar tracking technologies to improve your experience on our site. You can manage cookie preferences through your browser settings or opt out of interest-based advertising at <a href="http://www.aboutads.info/choices/" style="color:#0080FF;">www.aboutads.info/choices</a>.</p>
+      <p>We use cookies and similar tracking technologies to improve your experience on our site. You can manage cookie preferences through your browser settings or opt out of interest-based advertising at <a href="http://www.aboutads.info/choices/" style="color:#1a96e8;">www.aboutads.info/choices</a>.</p>
 
       <h2>5. Google Maps</h2>
-      <p>Our site uses Google Maps Platform APIs to process location data. To revoke location consent, contact us at <a href="mailto:info@flipsplit.com" style="color:#0080FF;">info@flipsplit.com</a>.</p>
+      <p>Our site uses Google Maps Platform APIs to process location data. To revoke location consent, contact us at <a href="mailto:info@flipsplit.com" style="color:#1a96e8;">info@flipsplit.com</a>.</p>
 
       <h2>6. Data Retention</h2>
       <p>We retain your personal information for as long as necessary to fulfill the purposes outlined in this policy, or as required by law. After that period, data is either deleted or anonymized.</p>
@@ -123,7 +113,7 @@ import '../styles/global.css';
         <li>Non-discrimination for exercising your CCPA rights</li>
       </ul>
       <p>We collect the following category of personal information: <strong>Category B</strong> — name, contact information, and property details. We do not collect biometric data, geolocation, commercial transaction data, or other sensitive categories.</p>
-      <p>To submit a CCPA request, contact us at <a href="mailto:info@flipsplit.com" style="color:#0080FF;">info@flipsplit.com</a>. We will verify your identity and respond within 30 days.</p>
+      <p>To submit a CCPA request, contact us at <a href="mailto:info@flipsplit.com" style="color:#1a96e8;">info@flipsplit.com</a>. We will verify your identity and respond within 30 days.</p>
 
       <h2>11. Policy Updates</h2>
       <p>We may update this privacy policy from time to time. Material changes will be communicated by updating the date at the top of this page or by direct notification. We encourage you to review this page periodically.</p>
@@ -131,8 +121,8 @@ import '../styles/global.css';
       <h2>12. Contact Us</h2>
       <p>If you have questions or wish to exercise any of your privacy rights, contact us at:</p>
       <ul>
-        <li><strong>Email:</strong> <a href="mailto:info@flipsplit.com" style="color:#0080FF;">info@flipsplit.com</a></li>
-        <li><strong>Phone:</strong> <a href="tel:18006617489" style="color:#0080FF;">1-800-661-7489</a></li>
+        <li><strong>Email:</strong> <a href="mailto:info@flipsplit.com" style="color:#1a96e8;">info@flipsplit.com</a></li>
+        <li><strong>Phone:</strong> <a href="tel:18006617489" style="color:#1a96e8;">1-800-661-7489</a></li>
         <li><strong>Mail:</strong> FlipSplit LLC, 1590 S Coast Hwy #16, Laguna Beach, CA 92651</li>
       </ul>
 
@@ -144,11 +134,11 @@ import '../styles/global.css';
     <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
       <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-8" /></a>
       <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-400">
-        <a href="/how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
-        <a href="/reviews" class="hover:text-[#0C3034] transition-colors">Reviews</a>
-        <a href="/about" class="hover:text-[#0C3034] transition-colors">About</a>
-        <a href="/faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
-        <a href="/privacy-policy" class="font-semibold" style="color:#0C3034;">Privacy Policy</a>
+        <a href="/how-it-works" class="hover:text-[#1E2A3A] transition-colors">How It Works</a>
+        <a href="/reviews" class="hover:text-[#1E2A3A] transition-colors">Reviews</a>
+        <a href="/about" class="hover:text-[#1E2A3A] transition-colors">About</a>
+        <a href="/faq" class="hover:text-[#1E2A3A] transition-colors">FAQ</a>
+        <a href="/privacy-policy" class="font-semibold" style="color:#1E2A3A;">Privacy Policy</a>
       </div>
       <p class="text-xs text-slate-400">© 2026 FlipSplit. All rights reserved.</p>
     </div>

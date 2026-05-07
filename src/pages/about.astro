@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import AddressForm from '../components/AddressForm.astro';
+import AddressForm from '../components/AddressForm.astro'
+import Nav from '../components/Nav.astro';
 ---
 
 <!DOCTYPE html>
@@ -17,10 +18,10 @@ import AddressForm from '../components/AddressForm.astro';
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root { --brand-blue: #0080FF; --brand-dark: #0C3034; --brand-body: #34313D; }
+    :root { --brand-blue: #1a96e8; --brand-dark: #1E2A3A; --brand-body: #374151; }
     body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
     h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
-    .btn-primary { background: #0080FF; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary { background: #1a96e8; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
     .btn-primary:hover { filter: brightness(1.08); }
     a, button { cursor: pointer; }
   </style>
@@ -28,25 +29,14 @@ import AddressForm from '../components/AddressForm.astro';
 <body class="bg-white antialiased">
 
   <!-- NAV -->
-  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-9" /></a>
-      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
-        <a href="/how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
-        <a href="/reviews" class="hover:text-[#0C3034] transition-colors">Reviews</a>
-        <a href="/blog" class="hover:text-[#0C3034] transition-colors">Blog</a>
-        <a href="/faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
-      </div>
-      <a href="/request-offer" class="btn-primary text-sm px-5 py-2.5 rounded-lg">Get My Offer</a>
-    </div>
-  </nav>
+  <Nav />
 
   <!-- HERO -->
   <section class="py-24 px-6 bg-white border-b border-slate-100">
     <div class="max-w-4xl mx-auto">
-      <span class="inline-block text-xs font-bold uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full" style="background:rgba(0,128,255,0.1); color:#0080FF;">Our Story</span>
-      <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6" style="color:#0C3034; font-family:'sahar','Open Sans',sans-serif;">
-        Built to fix a<br/><span style="color:#0080FF;">broken industry.</span>
+      <span class="inline-block text-xs font-bold uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full" style="background:rgba(26,150,232,0.1); color:#1a96e8;">Our Story</span>
+      <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+        Built to fix a<br/><span style="color:#1a96e8;">broken industry.</span>
       </h1>
       <p class="text-slate-500 text-lg leading-relaxed max-w-2xl">
         FlipSplit was founded on a simple belief: homeowners deserve to share in the profit when their home sells for more than expected — not watch a cash buyer pocket it all.
@@ -59,7 +49,7 @@ import AddressForm from '../components/AddressForm.astro';
     <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
       <div>
         <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">The Founder</p>
-        <h2 class="text-3xl font-black mb-6" style="color:#0C3034;">Stephen saw homeowners getting shortchanged. So he changed the model.</h2>
+        <h2 class="text-3xl font-black mb-6" style="color:#1E2A3A;">Stephen saw homeowners getting shortchanged. So he changed the model.</h2>
         <div class="space-y-4 text-slate-600 leading-relaxed">
           <p>After 15+ years in real estate and flipping over 2,000 homes across Southern California, FlipSplit founder Stephen recognized a fundamental problem: cash buyers and iBuyers were profiting enormously from renovations while the original homeowner received nothing beyond their initial offer.</p>
           <p>The math was obvious. Buy a distressed home at a discount, spend $150K on renovations, sell for $400K more. The homeowner who enabled that entire transaction? They got a fixed cash offer and never heard from you again.</p>
@@ -70,7 +60,7 @@ import AddressForm from '../components/AddressForm.astro';
             <div class="w-full h-full flex items-center justify-center font-black text-slate-400">S</div>
           </div>
           <div>
-            <div class="font-bold text-[#0C3034]">Stephen</div>
+            <div class="font-bold text-[#1E2A3A]">Stephen</div>
             <div class="text-sm text-slate-400">Founder, FlipSplit</div>
           </div>
         </div>
@@ -82,8 +72,8 @@ import AddressForm from '../components/AddressForm.astro';
           { value: '$0', label: 'Fees to homeowners' },
           { value: '5.0★', label: 'Average review rating' },
         ].map(({ value, label }) => (
-          <div class="rounded-2xl p-6 text-center border border-slate-100" style="background:#f8f4f3;">
-            <div class="text-3xl font-black mb-2" style="color:#0080FF;">{value}</div>
+          <div class="rounded-2xl p-6 text-center border border-slate-100" style="background:#F8FAFC;">
+            <div class="text-3xl font-black mb-2" style="color:#1a96e8;">{value}</div>
             <div class="text-sm text-slate-500">{label}</div>
           </div>
         ))}
@@ -92,10 +82,10 @@ import AddressForm from '../components/AddressForm.astro';
   </section>
 
   <!-- MISSION -->
-  <section class="py-24 px-6" style="background:#f8f4f3;">
+  <section class="py-24 px-6" style="background:#F8FAFC;">
     <div class="max-w-4xl mx-auto text-center">
       <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Our Mission</p>
-      <h2 class="text-3xl sm:text-4xl font-black mb-6" style="color:#0C3034;">
+      <h2 class="text-3xl sm:text-4xl font-black mb-6" style="color:#1E2A3A;">
         "To provide homeowners with outdated or distressed homes an easier and more profitable way to sell."
       </h2>
       <p class="text-slate-500 text-lg leading-relaxed max-w-2xl mx-auto">
@@ -109,7 +99,7 @@ import AddressForm from '../components/AddressForm.astro';
     <div class="max-w-5xl mx-auto">
       <div class="text-center mb-14">
         <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">How We Operate</p>
-        <h2 class="text-3xl font-black" style="color:#0C3034;">Three values. No exceptions.</h2>
+        <h2 class="text-3xl font-black" style="color:#1E2A3A;">Three values. No exceptions.</h2>
       </div>
       <div class="grid md:grid-cols-3 gap-8">
         {[
@@ -130,8 +120,8 @@ import AddressForm from '../components/AddressForm.astro';
           },
         ].map(({ num, title, body }) => (
           <div class="rounded-2xl p-8 border border-slate-100">
-            <div class="text-sm font-black mb-4" style="color:#0080FF;">{num}</div>
-            <h3 class="text-lg font-black mb-3" style="color:#0C3034;">{title}</h3>
+            <div class="text-sm font-black mb-4" style="color:#1a96e8;">{num}</div>
+            <h3 class="text-lg font-black mb-3" style="color:#1E2A3A;">{title}</h3>
             <p class="text-slate-500 text-sm leading-relaxed">{body}</p>
           </div>
         ))}
@@ -145,7 +135,7 @@ import AddressForm from '../components/AddressForm.astro';
       <div class="flex flex-col sm:flex-row sm:items-center gap-6 justify-between">
         <div>
           <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Where We Work</p>
-          <h3 class="text-xl font-black" style="color:#0C3034;">Serving all of Southern California.</h3>
+          <h3 class="text-xl font-black" style="color:#1E2A3A;">Serving all of Southern California.</h3>
         </div>
         <div class="flex flex-wrap gap-2">
           {['Los Angeles County', 'Orange County', 'San Diego County', 'Inland Empire', 'Anaheim', 'Long Beach', 'Riverside', 'San Bernardino'].map(area => (
@@ -157,7 +147,7 @@ import AddressForm from '../components/AddressForm.astro';
   </section>
 
   <!-- CTA -->
-  <section class="py-24 px-6" style="background: linear-gradient(135deg, #0f172a 0%, #1a2744 100%);">
+  <section class="py-24 px-6" style="background: linear-gradient(135deg, #1E2A3A 0%, #1a2744 100%);">
     <div class="max-w-2xl mx-auto text-center">
       <h2 class="text-4xl font-black mb-4 leading-tight" style="color:white; font-family:'sahar','Open Sans',sans-serif;">Ready to see what your home is worth?</h2>
       <p class="text-slate-400 mb-10">Free offer. No obligation. Results in 24–48 hours.</p>
@@ -170,11 +160,11 @@ import AddressForm from '../components/AddressForm.astro';
     <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
       <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-8" /></a>
       <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-400">
-        <a href="/how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
-        <a href="/reviews" class="hover:text-[#0C3034] transition-colors">Reviews</a>
-        <a href="/about" class="hover:text-[#0C3034] transition-colors">About</a>
-        <a href="/faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
-        <a href="/privacy-policy" class="hover:text-[#0C3034] transition-colors">Privacy Policy</a>
+        <a href="/how-it-works" class="hover:text-[#1E2A3A] transition-colors">How It Works</a>
+        <a href="/reviews" class="hover:text-[#1E2A3A] transition-colors">Reviews</a>
+        <a href="/about" class="hover:text-[#1E2A3A] transition-colors">About</a>
+        <a href="/faq" class="hover:text-[#1E2A3A] transition-colors">FAQ</a>
+        <a href="/privacy-policy" class="hover:text-[#1E2A3A] transition-colors">Privacy Policy</a>
       </div>
       <p class="text-xs text-slate-400">© 2026 FlipSplit. All rights reserved.</p>
     </div>

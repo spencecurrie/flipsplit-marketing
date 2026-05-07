@@ -1,17 +1,35 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Reusable outline button — apply class="btn-transparent" to any <a> or <button> */
+.btn-transparent {
+  display: inline-block;
+  background: transparent;
+  color: #1E2A3A;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem 1.75rem;
+  border: 1.5px solid #1E2A3A;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+.btn-transparent:hover { background: rgba(30, 42, 58, 0.06); }
+
 /* Blog prose overrides */
 .prose {
-  --tw-prose-body: #34313D;
-  --tw-prose-headings: #0C3034;
-  --tw-prose-links: #0C3034;
-  --tw-prose-bold: #0C3034;
-  --tw-prose-bullets: #0080FF;
-  --tw-prose-counters: #0080FF;
+  --tw-prose-body: #374151;
+  --tw-prose-headings: #1E2A3A;
+  --tw-prose-links: #1E2A3A;
+  --tw-prose-bold: #1E2A3A;
+  --tw-prose-bullets: #1a96e8;
+  --tw-prose-counters: #1a96e8;
   --tw-prose-hr: #e2e8f0;
-  --tw-prose-quotes: #0C3034;
-  --tw-prose-quote-borders: #0080FF;
+  --tw-prose-quotes: #1E2A3A;
+  --tw-prose-quote-borders: #1a96e8;
   --tw-prose-th-borders: #e2e8f0;
   --tw-prose-td-borders: #f1f5f9;
 }
@@ -20,7 +38,7 @@
 .prose h3 { scroll-margin-top: 96px; }
 
 .prose a {
-  text-decoration-color: #0080FF;
+  text-decoration-color: #1a96e8;
   text-decoration-thickness: 2px;
 }
-.prose a:hover { color: #0080FF; }
+.prose a:hover { color: #1a96e8; }

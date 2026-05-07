@@ -11,12 +11,12 @@ import '../styles/global.css';
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --brand-blue: #0080FF;
-      --brand-dark: #0C3034;
-      --brand-body: #34313D;
+      --brand-blue: #1a96e8;
+      --brand-dark: #1E2A3A;
+      --brand-body: #374151;
     }
-    body { font-family: 'Open Sans', sans-serif; color: #34313D; background: #f8fafc; }
-    h1,h2,h3,h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: #0C3034; }
+    body { font-family: 'Open Sans', sans-serif; color: #374151; background: #f8fafc; }
+    h1,h2,h3,h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: #1E2A3A; }
     .section { background: white; border-radius: 16px; padding: 40px; margin-bottom: 24px; border: 1px solid #e2e8f0; }
     .section-title { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #94a3b8; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9; }
     .swatch { border-radius: 12px; height: 80px; margin-bottom: 12px; }
@@ -25,9 +25,9 @@ import '../styles/global.css';
     .do strong, .dont strong { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
     .do strong { color: #16a34a; }
     .dont strong { color: #dc2626; }
-    code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 13px; font-family: monospace; color: #0C3034; }
+    code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 13px; font-family: monospace; color: #1E2A3A; }
     .demo-card { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; }
-    .demo-card.featured { border-color: #0080FF; box-shadow: 0 4px 24px rgba(0,128,255,0.12); }
+    .demo-card.featured { border-color: #1a96e8; box-shadow: 0 4px 24px rgba(26,150,232,0.12); }
   </style>
 </head>
 <body style="max-width:960px; margin:0 auto; padding:48px 24px;">
@@ -45,21 +45,21 @@ import '../styles/global.css';
 
     <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:20px; margin-bottom:32px;">
       <div>
-        <div class="swatch" style="background:#0C3034;"></div>
+        <div class="swatch" style="background:#1E2A3A;"></div>
         <p style="font-weight:700; font-size:14px; margin:0 0 2px;">Brand Dark</p>
-        <code>#0C3034</code>
+        <code>#1E2A3A</code>
         <p style="font-size:12px; color:#64748b; margin:8px 0 0;">Headlines, nav, dark section backgrounds, button text on blue</p>
       </div>
       <div>
-        <div class="swatch" style="background:#0080FF; border:1px solid #e2e8f0;"></div>
+        <div class="swatch" style="background:#1a96e8; border:1px solid #e2e8f0;"></div>
         <p style="font-weight:700; font-size:14px; margin:0 0 2px;">Brand Blue</p>
-        <code>#0080FF</code>
+        <code>#1a96e8</code>
         <p style="font-size:12px; color:#64748b; margin:8px 0 0;">CTA buttons, hover states, icon accents, featured highlights. Text <em>only on dark backgrounds</em>.</p>
       </div>
       <div>
-        <div class="swatch" style="background:#34313D;"></div>
+        <div class="swatch" style="background:#374151;"></div>
         <p style="font-weight:700; font-size:14px; margin:0 0 2px;">Body Text</p>
-        <code>#34313D</code>
+        <code>#374151</code>
         <p style="font-size:12px; color:#64748b; margin:8px 0 0;">Paragraphs, descriptions, general copy</p>
       </div>
       <div>
@@ -82,11 +82,11 @@ import '../styles/global.css';
       </div>
     </div>
 
-    <p style="font-weight:700; font-size:13px; margin:0 0 12px; color:#0C3034;">The most important color rule</p>
+    <p style="font-weight:700; font-size:13px; margin:0 0 12px; color:#1E2A3A;">The most important color rule</p>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
       <div class="do">
         <strong>Do</strong>
-        Use blue as a <strong>background color</strong> for buttons and badges, or as <strong>text on dark (#0C3034) backgrounds</strong>.
+        Use blue as a <strong>background color</strong> for buttons and badges, or as <strong>text on dark (#1E2A3A) backgrounds</strong>.
       </div>
       <div class="dont">
         <strong>Don't</strong>
@@ -102,17 +102,17 @@ import '../styles/global.css';
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-bottom:32px;">
       <div>
         <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin:0 0 12px;">Headings — Sahar</p>
-        <p style="font-family:'sahar','Open Sans',sans-serif;font-weight:900;font-size:36px;line-height:1.1;color:#0C3034;margin:0 0 8px;">The quick brown fox</p>
+        <p style="font-family:'sahar','Open Sans',sans-serif;font-weight:900;font-size:36px;line-height:1.1;color:#1E2A3A;margin:0 0 8px;">The quick brown fox</p>
         <p style="font-size:12px;color:#64748b;">All H1–H4. Always font-black (900). Brand Dark on light backgrounds, white on dark backgrounds.</p>
       </div>
       <div>
         <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;margin:0 0 12px;">Body — Open Sans</p>
-        <p style="font-family:'Open Sans',sans-serif;font-size:16px;line-height:1.7;color:#34313D;margin:0 0 8px;">The quick brown fox jumps over the lazy dog. Use for all body copy, descriptions, and UI text.</p>
+        <p style="font-family:'Open Sans',sans-serif;font-size:16px;line-height:1.7;color:#374151;margin:0 0 8px;">The quick brown fox jumps over the lazy dog. Use for all body copy, descriptions, and UI text.</p>
         <p style="font-size:12px;color:#64748b;">400 for body, 600 for labels and nav, 700 for strong emphasis.</p>
       </div>
     </div>
 
-    <p style="font-weight:700; font-size:13px; margin:0 0 16px; color:#0C3034;">Size scale</p>
+    <p style="font-weight:700; font-size:13px; margin:0 0 16px; color:#1E2A3A;">Size scale</p>
     <div style="border:1px solid #f1f5f9; border-radius:12px; overflow:hidden;">
       {[
         { label:'H1 — Page title', size:'48–60px', weight:'900', usage:'Hero headlines', sample:'Create Your Offer' },
@@ -125,12 +125,12 @@ import '../styles/global.css';
       ].map(r => (
         <div style="display:grid; grid-template-columns:180px 1fr; border-bottom:1px solid #f1f5f9;">
           <div style="padding:14px 16px; border-right:1px solid #f1f5f9; background:#f8fafc;">
-            <p style="font-size:12px; font-weight:700; color:#0C3034; margin:0 0 2px;">{r.label}</p>
+            <p style="font-size:12px; font-weight:700; color:#1E2A3A; margin:0 0 2px;">{r.label}</p>
             <p style="font-size:11px; color:#94a3b8; margin:0;">{r.size} · {r.weight}</p>
           </div>
           <div style="padding:14px 16px;">
             <p style="font-size:12px; color:#64748b; margin:0 0 4px;">{r.usage}</p>
-            <p style="font-family:'sahar','Open Sans',sans-serif; font-size:13px; color:#0C3034; margin:0;">{r.sample}</p>
+            <p style="font-family:'sahar','Open Sans',sans-serif; font-size:13px; color:#1E2A3A; margin:0;">{r.sample}</p>
           </div>
         </div>
       ))}
@@ -150,7 +150,7 @@ import '../styles/global.css';
       ].map(({ n, title, body }) => (
         <div class="demo-card">
           <p style="font-size:11px; font-weight:700; letter-spacing:.1em; color:#94a3b8; margin:0 0 10px;">{n}</p>
-          <h3 style="font-family:'sahar',sans-serif; font-weight:900; font-size:17px; color:#0C3034; margin:0 0 8px;">{title}</h3>
+          <h3 style="font-family:'sahar',sans-serif; font-weight:900; font-size:17px; color:#1E2A3A; margin:0 0 8px;">{title}</h3>
           <p style="font-size:13px; color:#64748b; margin:0;">{body}</p>
         </div>
       ))}
@@ -170,27 +170,27 @@ import '../styles/global.css';
     <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:24px;">
       <div class="demo-card">
         <p style="font-size:11px; font-weight:700; letter-spacing:.1em; color:#94a3b8; margin:0 0 12px;">Max Cash</p>
-        <h3 style="font-family:'sahar',sans-serif; font-weight:900; font-size:17px; color:#0C3034; margin:0 0 8px;">Highest upfront offer</h3>
+        <h3 style="font-family:'sahar',sans-serif; font-weight:900; font-size:17px; color:#1E2A3A; margin:0 0 8px;">Highest upfront offer</h3>
         <p style="font-size:13px; color:#64748b; margin:0 0 16px;">Maximum cash at closing. No backend participation.</p>
-        <a href="#" style="font-size:13px; font-weight:700; color:#0C3034; text-decoration:none;">Learn More →</a>
+        <a href="#" style="font-size:13px; font-weight:700; color:#1E2A3A; text-decoration:none;">Learn More →</a>
       </div>
       <div class="demo-card featured">
-        <span style="display:inline-block; font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; background:rgba(0,128,255,0.15); color:#0C3034; margin-bottom:12px;">Default offer</span>
+        <span style="display:inline-block; font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; background:rgba(26,150,232,0.15); color:#1E2A3A; margin-bottom:12px;">Default offer</span>
         <p style="font-size:11px; font-weight:700; letter-spacing:.1em; color:#94a3b8; margin:0 0 12px;">Balanced</p>
-        <h3 style="font-family:'sahar',sans-serif; font-weight:900; font-size:17px; color:#0C3034; margin:0 0 8px;">Cash now + upside later</h3>
+        <h3 style="font-family:'sahar',sans-serif; font-weight:900; font-size:17px; color:#1E2A3A; margin:0 0 8px;">Cash now + upside later</h3>
         <p style="font-size:13px; color:#64748b; margin:0 0 16px;">Max offer with a 50% split on any amount above the projection.</p>
-        <a href="#" style="font-size:13px; font-weight:700; color:#0C3034; text-decoration:none;">Learn More →</a>
+        <a href="#" style="font-size:13px; font-weight:700; color:#1E2A3A; text-decoration:none;">Learn More →</a>
       </div>
       <div class="demo-card">
         <p style="font-size:11px; font-weight:700; letter-spacing:.1em; color:#94a3b8; margin:0 0 12px;">Max Upside</p>
-        <h3 style="font-family:'sahar',sans-serif; font-weight:900; font-size:17px; color:#0C3034; margin:0 0 8px;">Highest backend potential</h3>
+        <h3 style="font-family:'sahar',sans-serif; font-weight:900; font-size:17px; color:#1E2A3A; margin:0 0 8px;">Highest backend potential</h3>
         <p style="font-size:13px; color:#64748b; margin:0 0 16px;">Lower cash offer, bigger share of outperformance.</p>
-        <a href="#" style="font-size:13px; font-weight:700; color:#0C3034; text-decoration:none;">Learn More →</a>
+        <a href="#" style="font-size:13px; font-weight:700; color:#1E2A3A; text-decoration:none;">Learn More →</a>
       </div>
     </div>
 
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-      <div class="do"><strong>Do</strong>Feature the middle/recommended option with <code>border-color:#0080FF</code> and a subtle blue-tint background. Add a small badge ("Default offer" / "Most popular").</div>
+      <div class="do"><strong>Do</strong>Feature the middle/recommended option with <code>border-color:#1a96e8</code> and a subtle blue-tint background. Add a small badge ("Default offer" / "Most popular").</div>
       <div class="dont"><strong>Don't</strong>Feature more than one card, or use a filled blue background on the featured card — it overwhelms. A blue border + light tint is enough.</div>
     </div>
   </div>
@@ -202,9 +202,9 @@ import '../styles/global.css';
 
     <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:24px; align-items:center;">
       <!-- Blue tint — primary feature -->
-      <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:rgba(0,128,255,0.12);color:#0C3034;">Expert Design</span>
-      <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:rgba(0,128,255,0.12);color:#0C3034;">Quality Contractors</span>
-      <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:rgba(0,128,255,0.12);color:#0C3034;">Project Oversight</span>
+      <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:rgba(26,150,232,0.12);color:#1E2A3A;">Expert Design</span>
+      <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:rgba(26,150,232,0.12);color:#1E2A3A;">Quality Contractors</span>
+      <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:rgba(26,150,232,0.12);color:#1E2A3A;">Project Oversight</span>
       <!-- Slate — neutral/secondary -->
       <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:#f1f5f9;color:#64748b;">6–10 weeks</span>
       <span style="font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px;background:#f1f5f9;color:#64748b;">Your timeline</span>
@@ -214,13 +214,13 @@ import '../styles/global.css';
 
     <div style="border:1px solid #f1f5f9; border-radius:12px; overflow:hidden;">
       {[
-        { style:'Blue tint', code:'bg: rgba(0,128,255,0.12) · text: #0C3034', usage:'Feature attributes, value props, process labels on white/light backgrounds' },
+        { style:'Blue tint', code:'bg: rgba(26,150,232,0.12) · text: #1E2A3A', usage:'Feature attributes, value props, process labels on white/light backgrounds' },
         { style:'Slate neutral', code:'bg: #f1f5f9 · text: #64748b', usage:'Time estimates, secondary metadata, non-featured tags' },
-        { style:'Dark bg variant', code:'bg: rgba(255,255,255,0.10) · text: rgba(255,255,255,0.7)', usage:'Any pills placed on the #0C3034 dark background sections' },
+        { style:'Dark bg variant', code:'bg: rgba(255,255,255,0.10) · text: rgba(255,255,255,0.7)', usage:'Any pills placed on the #1E2A3A dark background sections' },
       ].map(({ style, code, usage }) => (
         <div style="display:grid; grid-template-columns:140px 1fr; border-bottom:1px solid #f1f5f9;">
           <div style="padding:12px 16px; border-right:1px solid #f1f5f9; background:#f8fafc;">
-            <p style="font-size:12px; font-weight:700; color:#0C3034; margin:0;">{style}</p>
+            <p style="font-size:12px; font-weight:700; color:#1E2A3A; margin:0;">{style}</p>
           </div>
           <div style="padding:12px 16px;">
             <code style="font-size:11px; display:block; margin-bottom:4px;">{code}</code>
@@ -236,19 +236,19 @@ import '../styles/global.css';
     <p class="section-title">Buttons</p>
     <div style="display:flex; flex-wrap:wrap; gap:24px; align-items:center; margin-bottom:24px;">
       <div style="text-align:center;">
-        <a href="#" style="display:inline-block; background:#0080FF; color:#0C3034; font-weight:700; padding:12px 24px; border-radius:10px; text-decoration:none; font-size:14px;">Get My Free Offer →</a>
+        <a href="#" style="display:inline-block; background:#1a96e8; color:#1E2A3A; font-weight:700; padding:12px 24px; border-radius:10px; text-decoration:none; font-size:14px;">Get My Free Offer →</a>
         <p style="font-size:11px; color:#94a3b8; margin:8px 0 0;">Primary CTA</p>
       </div>
       <div style="text-align:center;">
-        <a href="#" style="display:inline-block; background:#0C3034; color:white; font-weight:700; padding:12px 24px; border-radius:10px; text-decoration:none; font-size:14px;">Learn More</a>
+        <a href="#" style="display:inline-block; background:#1E2A3A; color:white; font-weight:700; padding:12px 24px; border-radius:10px; text-decoration:none; font-size:14px;">Learn More</a>
         <p style="font-size:11px; color:#94a3b8; margin:8px 0 0;">Secondary</p>
       </div>
       <div style="text-align:center;">
-        <a href="#" style="display:inline-block; border:2px solid #0C3034; color:#0C3034; font-weight:700; padding:10px 24px; border-radius:10px; text-decoration:none; font-size:14px;">View All →</a>
+        <a href="#" style="display:inline-block; border:2px solid #1E2A3A; color:#1E2A3A; font-weight:700; padding:10px 24px; border-radius:10px; text-decoration:none; font-size:14px;">View All →</a>
         <p style="font-size:11px; color:#94a3b8; margin:8px 0 0;">Outline</p>
       </div>
       <div style="text-align:center;">
-        <a href="#" style="display:inline-block; font-weight:700; font-size:14px; color:#0C3034; text-decoration:none; border-bottom:2px solid #0080FF; padding-bottom:2px;">Learn More →</a>
+        <a href="#" style="display:inline-block; font-weight:700; font-size:14px; color:#1E2A3A; text-decoration:none; border-bottom:2px solid #1a96e8; padding-bottom:2px;">Learn More →</a>
         <p style="font-size:11px; color:#94a3b8; margin:8px 0 0;">Text link</p>
       </div>
     </div>
@@ -265,13 +265,13 @@ import '../styles/global.css';
       <div>
         <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin:0 0 6px;">On white / light backgrounds</p>
         <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#64748b;margin:0 0 4px;">Our Recipe</p>
-        <h2 style="font-family:'sahar',sans-serif;font-weight:900;font-size:28px;color:#0C3034;margin:0;">We make your home value rise.</h2>
+        <h2 style="font-family:'sahar',sans-serif;font-weight:900;font-size:28px;color:#1E2A3A;margin:0;">We make your home value rise.</h2>
         <p style="font-size:12px;color:#94a3b8;margin:12px 0 0;">Eyebrow = <code>text-slate-500</code> (#64748b). Always uppercase, tracking-widest, text-xs.</p>
       </div>
-      <div style="background:#0C3034; border-radius:12px; padding:24px;">
-        <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#0080FF;margin:0 0 6px;">On dark backgrounds</p>
+      <div style="background:#1E2A3A; border-radius:12px; padding:24px;">
+        <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1a96e8;margin:0 0 6px;">On dark backgrounds</p>
         <h2 style="font-family:'sahar',sans-serif;font-weight:900;font-size:28px;color:white;margin:0;">Create Your Offer.</h2>
-        <p style="font-size:12px;color:#94a3b8;margin:12px 0 0;">Eyebrow = <code style="background:#001a40;color:#0080FF;">#0080FF</code> (blue is OK here)</p>
+        <p style="font-size:12px;color:#94a3b8;margin:12px 0 0;">Eyebrow = <code style="background:#001a40;color:#1a96e8;">#1a96e8</code> (blue is OK here)</p>
       </div>
     </div>
   </div>
@@ -288,8 +288,8 @@ import '../styles/global.css';
         { label:'Small radius', value:'rounded-xl (12px)', usage:'Buttons, inputs, pills, inline elements' },
         { label:'Gap between cards', value:'gap-5 or gap-6', usage:'Card grids' },
         { label:'Card border', value:'1px solid #e2e8f0', usage:'Default card border — subtle, not heavy' },
-        { label:'Featured card border', value:'1px solid #0080FF', usage:'Highlighted/recommended option only' },
-        { label:'Section alternation', value:'white → #f8fafa → white', usage:'Alternate section backgrounds to create rhythm' },
+        { label:'Featured card border', value:'1px solid #1a96e8', usage:'Highlighted/recommended option only' },
+        { label:'Section alternation', value:'white → #F8FAFC → white', usage:'Alternate section backgrounds to create rhythm' },
       ].map(r => (
         <div style="background:#f8fafc; border-radius:10px; padding:16px;">
           <p style="font-size:11px;font-weight:700;color:#94a3b8;margin:0 0 4px;text-transform:uppercase;letter-spacing:.08em;">{r.label}</p>
@@ -325,7 +325,7 @@ import '../styles/global.css';
       ].map(({ n, title, body }) => (
         <div style="background:#f8fafc; border-radius:12px; padding:20px;">
           <p style="font-size:11px; font-weight:700; letter-spacing:.1em; color:#94a3b8; margin:0 0 10px;">{n}</p>
-          <h3 style="font-family:'sahar',sans-serif; font-weight:900; font-size:16px; color:#0C3034; margin:0 0 8px;">{title}</h3>
+          <h3 style="font-family:'sahar',sans-serif; font-weight:900; font-size:16px; color:#1E2A3A; margin:0 0 8px;">{title}</h3>
           <p style="font-size:13px; color:#64748b; margin:0; line-height:1.6;">{body}</p>
         </div>
       ))}

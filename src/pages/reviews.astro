@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import AddressForm from '../components/AddressForm.astro';
+import AddressForm from '../components/AddressForm.astro'
+import Nav from '../components/Nav.astro';
 ---
 
 <!DOCTYPE html>
@@ -17,7 +18,7 @@ import AddressForm from '../components/AddressForm.astro';
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root { --brand-blue: #0080FF; --brand-dark: #0C3034; --brand-body: #34313D; }
+    :root { --brand-blue: #1a96e8; --brand-dark: #1E2A3A; --brand-body: #374151; }
     body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
     h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
     .btn-primary { background: var(--brand-blue); color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
@@ -25,61 +26,50 @@ import AddressForm from '../components/AddressForm.astro';
     a, button, summary { cursor: pointer; }
     .review-card { background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 28px; transition: box-shadow 0.2s, border-color 0.2s; }
     .review-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); border-color: #cbd5e1; }
-    .review-card.featured { border-color: #0080FF; box-shadow: 0 4px 24px rgba(0,128,255,0.1); }
+    .review-card.featured { border-color: #1a96e8; box-shadow: 0 4px 24px rgba(26,150,232,0.1); }
   </style>
 </head>
 <body class="bg-white antialiased">
 
   <!-- NAV -->
-  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-9" /></a>
-      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
-        <a href="/how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
-        <a href="/reviews" class="font-semibold transition-colors" style="color:#0C3034;">Reviews</a>
-        <a href="/blog" class="hover:text-[#0C3034] transition-colors">Blog</a>
-        <a href="/#faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
-      </div>
-      <a href="#get-offer" class="btn-primary text-sm px-5 py-2.5 rounded-lg">Get My Offer</a>
-    </div>
-  </nav>
+  <Nav />
 
   <!-- ─── HERO ─── -->
   <section class="py-24 px-6 bg-white border-b border-slate-100">
     <div class="max-w-4xl mx-auto text-center">
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 text-xs font-bold uppercase tracking-widest" style="background:rgba(0,128,255,0.1); color:#0080FF;">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 text-xs font-bold uppercase tracking-widest" style="background:rgba(26,150,232,0.1); color:#1a96e8;">
         Verified Reviews
       </div>
-      <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6" style="color:#0C3034; font-family:'sahar','Open Sans',sans-serif;">
-        Real homeowners.<br/><span style="color:#0080FF;">Real results.</span>
+      <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+        Real homeowners.<br/><span style="color:#1a96e8;">Real results.</span>
       </h1>
       <p class="text-slate-500 text-lg leading-relaxed mb-12 max-w-2xl mx-auto">
         Every review is verified through REVIEWS.IO. We don't cherry-pick — this is our complete public record.
       </p>
 
       <!-- Aggregate stats -->
-      <div class="inline-flex flex-wrap items-center justify-center gap-10 py-8 px-10 rounded-2xl border border-slate-200" style="background:#f8f4f3;">
+      <div class="inline-flex flex-wrap items-center justify-center gap-10 py-8 px-10 rounded-2xl border border-slate-200" style="background:#F8FAFC;">
         <div class="text-center">
-          <div class="text-5xl font-black mb-1" style="color:#0C3034;">5.0</div>
+          <div class="text-5xl font-black mb-1" style="color:#1E2A3A;">5.0</div>
           <div class="flex justify-center gap-0.5 mb-1" style="color:#FBBC05; font-size:20px;">★★★★★</div>
           <div class="text-xs text-slate-400 font-medium">Average rating</div>
         </div>
         <div class="hidden sm:block w-px h-14 bg-slate-200"></div>
         <div class="text-center">
-          <div class="text-5xl font-black mb-1" style="color:#0C3034;">100%</div>
+          <div class="text-5xl font-black mb-1" style="color:#1E2A3A;">100%</div>
           <div class="text-xs text-slate-400 font-medium mt-4">5-star reviews</div>
         </div>
         <div class="hidden sm:block w-px h-14 bg-slate-200"></div>
         <div class="text-center">
-          <div class="text-5xl font-black mb-1" style="color:#0C3034;">10+</div>
+          <div class="text-5xl font-black mb-1" style="color:#1E2A3A;">10+</div>
           <div class="text-xs text-slate-400 font-medium mt-4">Verified homeowners</div>
         </div>
         <div class="hidden sm:block w-px h-14 bg-slate-200"></div>
         <div class="text-center">
           <a href="https://www.reviews.io/company-reviews/store/flipsplit" target="_blank" rel="noopener" class="flex flex-col items-center gap-1 group">
-            <div class="text-sm font-black group-hover:text-[#0080FF] transition-colors" style="color:#0C3034;">REVIEWS.IO</div>
+            <div class="text-sm font-black group-hover:text-[#1a96e8] transition-colors" style="color:#1E2A3A;">REVIEWS.IO</div>
             <div class="text-xs text-slate-400 font-medium">Verified source</div>
-            <div class="text-xs mt-1" style="color:#0080FF;">View all →</div>
+            <div class="text-xs mt-1" style="color:#1a96e8;">View all →</div>
           </a>
         </div>
       </div>
@@ -92,19 +82,19 @@ import AddressForm from '../components/AddressForm.astro';
       <div class="review-card featured">
         <div class="flex flex-col sm:flex-row sm:items-start gap-6">
           <div class="shrink-0">
-            <div class="w-14 h-14 rounded-full flex items-center justify-center font-black text-lg text-white" style="background:#0080FF;">P</div>
+            <div class="w-14 h-14 rounded-full flex items-center justify-center font-black text-lg text-white" style="background:#1a96e8;">P</div>
           </div>
           <div class="flex-1">
             <div class="flex flex-wrap items-center gap-3 mb-4">
               <div style="color:#FBBC05; font-size:16px; letter-spacing:1px;">★★★★★</div>
-              <span class="text-xs font-bold px-2.5 py-1 rounded-full" style="background:rgba(0,128,255,0.1); color:#0080FF;">Featured Review</span>
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full" style="background:rgba(26,150,232,0.1); color:#1a96e8;">Featured Review</span>
             </div>
-            <blockquote class="text-lg leading-relaxed font-medium text-[#0C3034] mb-5">
+            <blockquote class="text-lg leading-relaxed font-medium text-[#1E2A3A] mb-5">
               "FlipSplit gave my mother a better offer than any of their competitors. She received her full cash payment at closing, and then — months later — she got a profit-sharing check when the renovated home sold for more than projected. The renovations they did genuinely benefited the whole neighborhood. Highly recommend."
             </blockquote>
             <div class="flex items-center gap-3">
               <div>
-                <div class="font-bold text-sm text-[#0C3034]">Peter Lien</div>
+                <div class="font-bold text-sm text-[#1E2A3A]">Peter Lien</div>
                 <div class="text-xs text-slate-400">Southern California</div>
               </div>
               <div class="ml-auto text-xs text-slate-400 flex items-center gap-1">
@@ -119,11 +109,11 @@ import AddressForm from '../components/AddressForm.astro';
   </section>
 
   <!-- ─── REVIEWS GRID ─── -->
-  <section class="pb-24 px-6" style="background:#f8f4f3;">
+  <section class="pb-24 px-6" style="background:#F8FAFC;">
     <div class="max-w-6xl mx-auto">
       <div class="text-center pt-20 mb-14">
         <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">All Reviews</p>
-        <h2 class="text-3xl sm:text-4xl font-black" style="color:#0C3034;">What our homeowners say.</h2>
+        <h2 class="text-3xl sm:text-4xl font-black" style="color:#1E2A3A;">What our homeowners say.</h2>
       </div>
 
       <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
@@ -185,9 +175,9 @@ import AddressForm from '../components/AddressForm.astro';
         ].map(({ name, location, initial, quote }) => (
           <div class="break-inside-avoid review-card">
             <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-full flex items-center justify-center font-black text-sm shrink-0" style="background:rgba(0,128,255,0.1); color:#0080FF;">{initial}</div>
+              <div class="w-10 h-10 rounded-full flex items-center justify-center font-black text-sm shrink-0" style="background:rgba(26,150,232,0.1); color:#1a96e8;">{initial}</div>
               <div>
-                <div class="font-bold text-sm text-[#0C3034]">{name}</div>
+                <div class="font-bold text-sm text-[#1E2A3A]">{name}</div>
                 <div class="text-xs text-slate-400">{location}</div>
               </div>
               <div class="ml-auto flex items-center gap-1 text-xs text-slate-400">
@@ -204,7 +194,7 @@ import AddressForm from '../components/AddressForm.astro';
       <!-- Link to REVIEWS.IO -->
       <div class="text-center mt-14">
         <a href="https://www.reviews.io/company-reviews/store/flipsplit" target="_blank" rel="noopener"
-           class="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-[#0080FF] transition-colors border border-slate-200 hover:border-[#0080FF] rounded-xl px-6 py-3">
+           class="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-[#1a96e8] transition-colors border border-slate-200 hover:border-[#1a96e8] rounded-xl px-6 py-3">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Read all reviews on REVIEWS.IO
         </a>
@@ -217,13 +207,13 @@ import AddressForm from '../components/AddressForm.astro';
     <div class="max-w-5xl mx-auto">
       <div class="grid sm:grid-cols-3 gap-8 text-center">
         {[
-          { icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke="#0080FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, label: 'No pressure. No obligations.', body: 'Every offer is free with zero commitment to accept.' },
-          { icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke="#0080FF" stroke-width="1.8"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke="#0080FF" stroke-width="1.8"/></svg>`, label: '100% transparent offers.', body: 'We show you every number — comps, reno costs, projected resale.' },
-          { icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#0080FF" stroke-width="1.8" stroke-linecap="round"/></svg>`, label: 'You get paid twice.', body: 'Cash at closing, plus a bonus check if the home beats our projection.' },
+          { icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke="#1a96e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, label: 'No pressure. No obligations.', body: 'Every offer is free with zero commitment to accept.' },
+          { icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke="#1a96e8" stroke-width="1.8"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke="#1a96e8" stroke-width="1.8"/></svg>`, label: '100% transparent offers.', body: 'We show you every number — comps, reno costs, projected resale.' },
+          { icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#1a96e8" stroke-width="1.8" stroke-linecap="round"/></svg>`, label: 'You get paid twice.', body: 'Cash at closing, plus a bonus check if the home beats our projection.' },
         ].map(({ icon, label, body }) => (
           <div class="flex flex-col items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl flex items-center justify-center" style="background:rgba(0,128,255,0.08);" set:html={icon}></div>
-            <div class="font-black text-[#0C3034]">{label}</div>
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center" style="background:rgba(26,150,232,0.08);" set:html={icon}></div>
+            <div class="font-black text-[#1E2A3A]">{label}</div>
             <p class="text-sm text-slate-500 leading-relaxed">{body}</p>
           </div>
         ))}
@@ -232,9 +222,9 @@ import AddressForm from '../components/AddressForm.astro';
   </section>
 
   <!-- ─── CTA ─── -->
-  <section id="get-offer" class="py-24 px-6" style="background: linear-gradient(135deg, #0f172a 0%, #1a2744 100%);">
+  <section id="get-offer" class="py-24 px-6" style="background: linear-gradient(135deg, #1E2A3A 0%, #1a2744 100%);">
     <div class="max-w-2xl mx-auto text-center">
-      <p class="text-xs font-bold uppercase tracking-widest mb-4" style="color:rgba(0,128,255,0.8);">Free. No obligation.</p>
+      <p class="text-xs font-bold uppercase tracking-widest mb-4" style="color:rgba(26,150,232,0.8);">Free. No obligation.</p>
       <h2 class="text-4xl sm:text-5xl font-black mb-4 leading-tight" style="color:white; font-family:'sahar','Open Sans',sans-serif;">
         Join our homeowners.<br/>Get your free offer.
       </h2>
@@ -248,10 +238,10 @@ import AddressForm from '../components/AddressForm.astro';
     <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
       <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-8" /></a>
       <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-400">
-        <a href="/how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
-        <a href="/reviews" class="hover:text-[#0C3034] transition-colors">Reviews</a>
-        <a href="/blog" class="hover:text-[#0C3034] transition-colors">Blog</a>
-        <a href="/#faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
+        <a href="/how-it-works" class="hover:text-[#1E2A3A] transition-colors">How It Works</a>
+        <a href="/reviews" class="hover:text-[#1E2A3A] transition-colors">Reviews</a>
+        <a href="/blog" class="hover:text-[#1E2A3A] transition-colors">Blog</a>
+        <a href="/#faq" class="hover:text-[#1E2A3A] transition-colors">FAQ</a>
       </div>
       <p class="text-xs text-slate-400">© 2026 FlipSplit. All rights reserved.</p>
     </div>

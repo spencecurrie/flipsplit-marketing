@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import AddressForm from '../components/AddressForm.astro';
+import AddressForm from '../components/AddressForm.astro'
+import Nav from '../components/Nav.astro';
 ---
 
 <!DOCTYPE html>
@@ -17,10 +18,10 @@ import AddressForm from '../components/AddressForm.astro';
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root { --brand-blue: #0080FF; --brand-dark: #0C3034; --brand-body: #34313D; }
+    :root { --brand-blue: #1a96e8; --brand-dark: #1E2A3A; --brand-body: #374151; }
     body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
     h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
-    .btn-primary { background: #0080FF; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary { background: #1a96e8; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
     .btn-primary:hover { filter: brightness(1.08); }
     a, button { cursor: pointer; }
   </style>
@@ -28,26 +29,15 @@ import AddressForm from '../components/AddressForm.astro';
 <body class="bg-white antialiased">
 
   <!-- NAV -->
-  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-9" /></a>
-      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
-        <a href="/how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
-        <a href="/reviews" class="hover:text-[#0C3034] transition-colors">Reviews</a>
-        <a href="/blog" class="hover:text-[#0C3034] transition-colors">Blog</a>
-        <a href="/faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
-      </div>
-      <a href="#get-offer" class="btn-primary text-sm px-5 py-2.5 rounded-lg">Get My Offer</a>
-    </div>
-  </nav>
+  <Nav />
 
   <!-- HERO -->
   <section class="py-24 px-6 bg-white border-b border-slate-100">
     <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
       <div>
-        <span class="inline-block text-xs font-bold uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full" style="background:rgba(0,128,255,0.1); color:#0080FF;">Fast. Simple. Fair.</span>
-        <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6" style="color:#0C3034; font-family:'sahar','Open Sans',sans-serif;">
-          Sell your home<br/><span style="color:#0080FF;">fast. Keep the upside.</span>
+        <span class="inline-block text-xs font-bold uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full" style="background:rgba(26,150,232,0.1); color:#1a96e8;">Fast. Simple. Fair.</span>
+        <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+          Sell your home<br/><span style="color:#1a96e8;">fast. Keep the upside.</span>
         </h1>
         <p class="text-slate-500 text-lg leading-relaxed mb-10 max-w-lg">
           Get a guaranteed cash offer in 24–48 hours. Close in as few as 7 days. And if the renovated home sells for more than projected — you get a cut.
@@ -61,8 +51,8 @@ import AddressForm from '../components/AddressForm.astro';
           { value: '$0', label: 'Fees or commissions' },
           { value: '5.0★', label: 'Customer rating' },
         ].map(({ value, label }) => (
-          <div class="rounded-2xl p-6 text-center border border-slate-200" style="background:#fdfcfb;">
-            <div class="text-2xl font-black mb-1" style="color:#0080FF;">{value}</div>
+          <div class="rounded-2xl p-6 text-center border border-slate-200" style="background:#ffffff;">
+            <div class="text-2xl font-black mb-1" style="color:#1a96e8;">{value}</div>
             <div class="text-xs text-slate-400">{label}</div>
           </div>
         ))}
@@ -75,29 +65,29 @@ import AddressForm from '../components/AddressForm.astro';
     <div class="max-w-5xl mx-auto">
       <div class="text-center mb-14">
         <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Why FlipSplit</p>
-        <h2 class="text-3xl sm:text-4xl font-black" style="color:#0C3034;">Not just fast. The best outcome.</h2>
+        <h2 class="text-3xl sm:text-4xl font-black" style="color:#1E2A3A;">Not just fast. The best outcome.</h2>
       </div>
       <div class="grid md:grid-cols-3 gap-8">
         {[
           {
-            icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#0080FF" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+            icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#1a96e8" stroke-width="1.8" stroke-linecap="round"/></svg>`,
             title: 'Maximum cash offer',
             body: 'We price our offers to maximize your upfront payout — not to leave room for us to profit on the buy. We only make money on the renovation.',
           },
           {
-            icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="#0080FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="9 22 9 12 15 12 15 22" stroke="#0080FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+            icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="#1a96e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="9 22 9 12 15 12 15 22" stroke="#1a96e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
             title: 'Sell completely as-is',
             body: 'No repairs, no cleaning, no staging. Leave whatever you don\'t want behind. We handle all of it — at zero cost to you.',
           },
           {
-            icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" stroke="#0080FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+            icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" stroke="#1a96e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
             title: 'You get paid twice',
             body: 'Cash at closing is just the start. If the renovated home sells above projection, you receive a bonus check — often within 90–120 days.',
           },
         ].map(({ icon, title, body }) => (
           <div class="rounded-2xl p-8 border border-slate-100">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:rgba(0,128,255,0.08);" set:html={icon}></div>
-            <h3 class="text-lg font-black mb-3" style="color:#0C3034;">{title}</h3>
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:rgba(26,150,232,0.08);" set:html={icon}></div>
+            <h3 class="text-lg font-black mb-3" style="color:#1E2A3A;">{title}</h3>
             <p class="text-slate-500 text-sm leading-relaxed">{body}</p>
           </div>
         ))}
@@ -110,7 +100,7 @@ import AddressForm from '../components/AddressForm.astro';
     <div class="max-w-5xl mx-auto">
       <div class="text-center mb-14">
         <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">We Buy It All</p>
-        <h2 class="text-3xl font-black" style="color:#0C3034;">No situation is too complicated.</h2>
+        <h2 class="text-3xl font-black" style="color:#1E2A3A;">No situation is too complicated.</h2>
         <p class="text-slate-500 mt-4 max-w-xl mx-auto">FlipSplit buys homes in situations that traditional agents and iBuyers won't touch.</p>
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -129,7 +119,7 @@ import AddressForm from '../components/AddressForm.astro';
           'Behind on property taxes',
         ].map(item => (
           <div class="flex items-center gap-3 bg-white rounded-xl px-5 py-4 border border-slate-100">
-            <svg class="shrink-0" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#0080FF" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#0080FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg class="shrink-0" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#1a96e8" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#1a96e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <span class="text-sm text-slate-600">{item}</span>
           </div>
         ))}
@@ -142,7 +132,7 @@ import AddressForm from '../components/AddressForm.astro';
     <div class="max-w-4xl mx-auto">
       <div class="text-center mb-14">
         <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">The Process</p>
-        <h2 class="text-3xl font-black" style="color:#0C3034;">Four steps to sold.</h2>
+        <h2 class="text-3xl font-black" style="color:#1E2A3A;">Four steps to sold.</h2>
       </div>
       <div class="space-y-6">
         {[
@@ -152,9 +142,9 @@ import AddressForm from '../components/AddressForm.astro';
           { num: '04', title: 'Collect your bonus', body: 'FlipSplit renovates and relists. If the home sells above the projected value, your profit-split check arrives within 10 days of resale.' },
         ].map(({ num, title, body }) => (
           <div class="flex gap-6 items-start p-6 rounded-2xl border border-slate-100">
-            <div class="text-sm font-black shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style="background:#0f172a; color:#0080FF;">{num}</div>
+            <div class="text-sm font-black shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style="background:#1E2A3A; color:#1a96e8;">{num}</div>
             <div>
-              <h3 class="font-black text-[#0C3034] mb-1">{title}</h3>
+              <h3 class="font-black text-[#1E2A3A] mb-1">{title}</h3>
               <p class="text-sm text-slate-500 leading-relaxed">{body}</p>
             </div>
           </div>
@@ -167,14 +157,14 @@ import AddressForm from '../components/AddressForm.astro';
   <section class="py-24 px-6" style="background:#f8fafc;">
     <div class="max-w-5xl mx-auto">
       <div class="text-center mb-14">
-        <h2 class="text-3xl font-black" style="color:#0C3034;">How we compare.</h2>
+        <h2 class="text-3xl font-black" style="color:#1E2A3A;">How we compare.</h2>
       </div>
       <div class="overflow-x-auto rounded-2xl border border-slate-200">
         <table class="w-full text-sm">
           <thead>
-            <tr style="background:#f8fafa;">
+            <tr style="background:#F8FAFC;">
               <th class="text-left px-6 py-4 text-slate-400 font-semibold border-b border-slate-200"></th>
-              <th class="px-6 py-4 text-center font-black border-b border-slate-200" style="color:#0080FF;">FlipSplit</th>
+              <th class="px-6 py-4 text-center font-black border-b border-slate-200" style="color:#1a96e8;">FlipSplit</th>
               <th class="px-6 py-4 text-center font-semibold text-slate-400 border-b border-slate-200">Traditional Agent</th>
               <th class="px-6 py-4 text-center font-semibold text-slate-400 border-b border-slate-200">Cash Buyer</th>
             </tr>
@@ -189,8 +179,8 @@ import AddressForm from '../components/AddressForm.astro';
               ['Close in 7 days', '✓ Yes', '✗ 30–60 days', '✓ Yes'],
             ].map(([feature, flip, agent, cash]) => (
               <tr>
-                <td class="px-6 py-4 font-medium text-[#0C3034]">{feature}</td>
-                <td class="px-6 py-4 text-center font-semibold" style={flip.startsWith('✓') ? 'color:#0080FF;' : 'color:#94a3b8;'}>{flip}</td>
+                <td class="px-6 py-4 font-medium text-[#1E2A3A]">{feature}</td>
+                <td class="px-6 py-4 text-center font-semibold" style={flip.startsWith('✓') ? 'color:#1a96e8;' : 'color:#94a3b8;'}>{flip}</td>
                 <td class="px-6 py-4 text-center text-slate-400">{agent}</td>
                 <td class="px-6 py-4 text-center text-slate-400">{cash}</td>
               </tr>
@@ -202,7 +192,7 @@ import AddressForm from '../components/AddressForm.astro';
   </section>
 
   <!-- CTA -->
-  <section id="get-offer" class="py-24 px-6" style="background: linear-gradient(135deg, #0f172a 0%, #1a2744 100%);">
+  <section id="get-offer" class="py-24 px-6" style="background: linear-gradient(135deg, #1E2A3A 0%, #1a2744 100%);">
     <div class="max-w-2xl mx-auto text-center">
       <h2 class="text-4xl font-black mb-4 leading-tight" style="color:white; font-family:'sahar','Open Sans',sans-serif;">Get your free offer today.</h2>
       <p class="text-slate-400 mb-10">No fees. No repairs. No obligation. Results in 24–48 hours.</p>
@@ -215,11 +205,11 @@ import AddressForm from '../components/AddressForm.astro';
     <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
       <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-8" /></a>
       <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-400">
-        <a href="/how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
-        <a href="/reviews" class="hover:text-[#0C3034] transition-colors">Reviews</a>
-        <a href="/about" class="hover:text-[#0C3034] transition-colors">About</a>
-        <a href="/faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
-        <a href="/privacy-policy" class="hover:text-[#0C3034] transition-colors">Privacy Policy</a>
+        <a href="/how-it-works" class="hover:text-[#1E2A3A] transition-colors">How It Works</a>
+        <a href="/reviews" class="hover:text-[#1E2A3A] transition-colors">Reviews</a>
+        <a href="/about" class="hover:text-[#1E2A3A] transition-colors">About</a>
+        <a href="/faq" class="hover:text-[#1E2A3A] transition-colors">FAQ</a>
+        <a href="/privacy-policy" class="hover:text-[#1E2A3A] transition-colors">Privacy Policy</a>
       </div>
       <p class="text-xs text-slate-400">© 2026 FlipSplit. All rights reserved.</p>
     </div>

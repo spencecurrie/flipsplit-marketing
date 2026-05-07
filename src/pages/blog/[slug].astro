@@ -1,4 +1,5 @@
 ---
+import Nav from '../components/Nav.astro'
 import { getCollection, render } from 'astro:content';
 import '../../styles/global.css';
 
@@ -50,9 +51,9 @@ function formatDate(d: Date) {
 
   <style>
     :root {
-      --brand-cyan: #0080FF;
-      --brand-dark: #0C3034;
-      --brand-body: #34313D;
+      --brand-cyan: #1a96e8;
+      --brand-dark: #1E2A3A;
+      --brand-body: #374151;
     }
     body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
     h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
@@ -98,42 +99,31 @@ function formatDate(d: Date) {
   <div id="progress-bar"></div>
 
   <!-- ─── NAV ─── -->
-  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-9" /></a>
-      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
-        <a href="/#how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
-        <a href="/#why-flipsplit" class="hover:text-[#0C3034] transition-colors">Why FlipSplit</a>
-        <a href="/blog" class="hover:text-[#0C3034] transition-colors">Blog</a>
-        <a href="/#faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
-      </div>
-      <a href="/#get-offer" class="btn-primary text-sm px-5 py-2.5 rounded-lg">Get My Offer</a>
-    </div>
-  </nav>
+  <Nav />
 
   <!-- ─── ARTICLE HEADER ─── -->
-  <header class="px-6 pt-10 pb-10 border-b border-slate-200" style="background: linear-gradient(135deg, rgba(0,128,255,0.08) 0%, rgba(0,128,255,0.02) 50%, transparent 100%);">
+  <header class="px-6 pt-10 pb-10 border-b border-slate-200" style="background: linear-gradient(135deg, rgba(26,150,232,0.08) 0%, rgba(26,150,232,0.02) 50%, transparent 100%);">
     <div class="max-w-6xl mx-auto">
       <div class="lg:grid lg:grid-cols-[1fr_300px] lg:gap-16">
         <div>
 
           <!-- Breadcrumb -->
           <nav class="flex items-center gap-1.5 text-xs text-slate-400 mb-5">
-            <a href="/" class="hover:text-[#0C3034] transition-colors">Home</a>
+            <a href="/" class="hover:text-[#1E2A3A] transition-colors">Home</a>
             <span>›</span>
-            <a href="/blog" class="hover:text-[#0C3034] transition-colors">Blog</a>
+            <a href="/blog" class="hover:text-[#1E2A3A] transition-colors">Blog</a>
             <span>›</span>
             <span class="text-slate-500 font-medium">{category}</span>
           </nav>
 
           <!-- Title -->
-          <h1 class="text-3xl sm:text-4xl lg:text-[2.75rem] font-black text-[#0C3034] leading-tight mb-5" style="font-family:'sahar','Open Sans',sans-serif; color:#0C3034;">
+          <h1 class="text-3xl sm:text-4xl lg:text-[2.75rem] font-black text-[#1E2A3A] leading-tight mb-5" style="font-family:'sahar','Open Sans',sans-serif; color:#1E2A3A;">
             {title}
           </h1>
 
           <!-- Meta row -->
           <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background:rgba(0,128,255,0.15);color:#0C3034;">{category}</span>
+            <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background:rgba(26,150,232,0.15);color:#1E2A3A;">{category}</span>
             <span class="text-xs text-slate-400">{formatDate(pubDate)}</span>
             {readingTime && <span class="text-xs text-slate-400">{readingTime} min read</span>}
             {reviewer && <span class="text-xs text-slate-400">Reviewed by <span class="font-semibold text-slate-500">{reviewer}</span></span>}
@@ -155,7 +145,7 @@ function formatDate(d: Date) {
       <!-- Mobile TOC (collapsible) -->
       {tocHeadings.length > 2 && (
         <details class="lg:hidden mb-10 rounded-xl border border-slate-200 overflow-hidden">
-          <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-semibold text-sm text-[#0C3034] bg-slate-50 select-none">
+          <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-semibold text-sm text-[#1E2A3A] bg-slate-50 select-none">
             <span class="flex items-center gap-2">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
               In this article
@@ -166,7 +156,7 @@ function formatDate(d: Date) {
             <ul class="space-y-2">
               {tocHeadings.map(h => (
                 <li style={`padding-left: ${(h.depth - 2) * 12}px`}>
-                  <a href={`#${h.slug}`} class="text-sm text-slate-600 hover:text-[#0080FF] transition-colors">
+                  <a href={`#${h.slug}`} class="text-sm text-slate-600 hover:text-[#1a96e8] transition-colors">
                     {h.text}
                   </a>
                 </li>
@@ -185,9 +175,9 @@ function formatDate(d: Date) {
       <div class="mt-14 pt-10 border-t border-slate-100">
         <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-5">About the reviewer</p>
         <div class="flex items-start gap-4">
-          <div class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-black text-[#0C3034] shrink-0" style="background: rgba(0,128,255,0.2);">BB</div>
+          <div class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-black text-[#1E2A3A] shrink-0" style="background: rgba(26,150,232,0.2);">BB</div>
           <div>
-            <p class="font-bold text-[#0C3034]">Brandon Brown</p>
+            <p class="font-bold text-[#1E2A3A]">Brandon Brown</p>
             <p class="text-xs text-slate-400 mb-2">Licensed Real Estate Agent · Southern California</p>
             <p class="text-sm text-slate-500 leading-relaxed">
               Brandon is a licensed real estate professional with years of experience in the Southern California market. He reviews all FlipSplit content for accuracy, market relevance, and compliance.
@@ -222,7 +212,7 @@ function formatDate(d: Date) {
                   <a
                     href={`#${h.slug}`}
                     data-heading={h.slug}
-                    class="toc-link text-sm text-slate-500 hover:text-[#0080FF] block py-0.5 border-l-2 border-transparent pl-3 transition-colors"
+                    class="toc-link text-sm text-slate-500 hover:text-[#1a96e8] block py-0.5 border-l-2 border-transparent pl-3 transition-colors"
                   >
                     {h.text}
                   </a>
@@ -239,19 +229,19 @@ function formatDate(d: Date) {
   {related.length > 0 && (
     <section class="border-t border-slate-100 py-20 px-6">
       <div class="max-w-6xl mx-auto">
-        <h2 class="text-2xl font-black text-[#0C3034] mb-10">Keep reading</h2>
+        <h2 class="text-2xl font-black text-[#1E2A3A] mb-10">Keep reading</h2>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {related.map(p => (
             <a href={`/blog/${p.id}`} class="group flex flex-col rounded-2xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
               <div class="aspect-[16/9] bg-slate-100 overflow-hidden shrink-0">
                 {p.data.heroImage
                   ? <img src={p.data.heroImage} alt={p.data.title} class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" loading="lazy" />
-                  : <div class="w-full h-full" style="background: linear-gradient(135deg, #0C3034 0%, #134a52 100%);"></div>
+                  : <div class="w-full h-full" style="background: linear-gradient(135deg, #1E2A3A 0%, #134a52 100%);"></div>
                 }
               </div>
               <div class="p-6 flex flex-col flex-1">
                 <span class="text-xs text-slate-400 mb-2">{formatDate(p.data.pubDate)}</span>
-                <h3 class="font-black text-[#0C3034] leading-snug group-hover:text-[#0080FF] transition-colors line-clamp-3">{p.data.title}</h3>
+                <h3 class="font-black text-[#1E2A3A] leading-snug group-hover:text-[#1a96e8] transition-colors line-clamp-3">{p.data.title}</h3>
               </div>
             </a>
           ))}

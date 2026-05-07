@@ -1,4 +1,5 @@
 ---
+import Nav from '../components/Nav.astro'
 import { getCollection } from 'astro:content';
 import '../../styles/global.css';
 
@@ -28,9 +29,9 @@ function formatDate(d: Date) {
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --brand-cyan: #0080FF;
-      --brand-dark: #0C3034;
-      --brand-body: #34313D;
+      --brand-cyan: #1a96e8;
+      --brand-dark: #1E2A3A;
+      --brand-body: #374151;
     }
     body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
     h1, h2, h3 { font-family: 'sahar', 'Open Sans', sans-serif; }
@@ -44,24 +45,13 @@ function formatDate(d: Date) {
 <body class="bg-white antialiased">
 
   <!-- ─── NAV ─── -->
-  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-9" /></a>
-      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
-        <a href="/#how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
-        <a href="/#why-flipsplit" class="hover:text-[#0C3034] transition-colors">Why FlipSplit</a>
-        <a href="/blog" class="text-[#0C3034] font-semibold">Blog</a>
-        <a href="/#faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
-      </div>
-      <a href="/#get-offer" class="btn-primary text-sm px-5 py-2.5 rounded-lg">Get My Offer</a>
-    </div>
-  </nav>
+  <Nav />
 
   <!-- ─── PAGE HEADER ─── -->
   <div class="border-b border-slate-100 py-10 px-6">
     <div class="max-w-6xl mx-auto">
       <p class="text-xs font-semibold tracking-widest uppercase mb-2 text-slate-500">FlipSplit Resources</p>
-      <h1 class="text-4xl font-black text-[#0C3034]">Real Estate Articles &amp; Resources</h1>
+      <h1 class="text-4xl font-black text-[#1E2A3A]">Real Estate Articles &amp; Resources</h1>
     </div>
   </div>
 
@@ -75,8 +65,8 @@ function formatDate(d: Date) {
       return (
         <section>
           <div class="flex items-center justify-between mb-7">
-            <h2 class="text-xl font-black text-[#0C3034]">Home Selling</h2>
-            <a href="/blog/category/home-selling" class="text-xs font-semibold text-slate-400 hover:text-[#0080FF] transition-colors">View all →</a>
+            <h2 class="text-xl font-black text-[#1E2A3A]">Home Selling</h2>
+            <a href="/blog/category/home-selling" class="text-xs font-semibold text-slate-400 hover:text-[#1a96e8] transition-colors">View all →</a>
           </div>
 
           {/* Hero row: large card left + 2 stacked right */}
@@ -87,12 +77,12 @@ function formatDate(d: Date) {
               <div class="aspect-[16/9] overflow-hidden bg-slate-100">
                 {hero.data.heroImage
                   ? <img src={hero.data.heroImage} alt={hero.data.title} class="card-img w-full h-full object-cover" />
-                  : <div class="w-full h-full" style="background: linear-gradient(135deg,#0C3034,#1a5c66);" />
+                  : <div class="w-full h-full" style="background: linear-gradient(135deg,#1E2A3A,#1a5c66);" />
                 }
               </div>
               <div class="p-6">
-                <span class="text-xs font-semibold px-2.5 py-1 rounded-full mb-3 inline-block" style="background:rgba(0,128,255,0.1);color:#0C3034;">{hero.data.category}</span>
-                <h3 class="text-xl font-black text-[#0C3034] leading-snug mb-2 transition-colors">{hero.data.title}</h3>
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-full mb-3 inline-block" style="background:rgba(26,150,232,0.1);color:#1E2A3A;">{hero.data.category}</span>
+                <h3 class="text-xl font-black text-[#1E2A3A] leading-snug mb-2 transition-colors">{hero.data.title}</h3>
                 {hero.data.description && <p class="text-sm text-slate-500 line-clamp-2 leading-relaxed mb-3">{hero.data.description}</p>}
                 <span class="text-xs text-slate-400">{formatDate(hero.data.pubDate)}</span>
               </div>
@@ -105,12 +95,12 @@ function formatDate(d: Date) {
                   <div class="w-24 shrink-0 rounded-xl overflow-hidden bg-slate-100 self-stretch">
                     {post.data.heroImage
                       ? <img src={post.data.heroImage} alt={post.data.title} class="card-img w-full h-full object-cover" />
-                      : <div class="w-full h-full" style="background: linear-gradient(135deg,#0C3034,#1a5c66);" />
+                      : <div class="w-full h-full" style="background: linear-gradient(135deg,#1E2A3A,#1a5c66);" />
                     }
                   </div>
                   <div class="flex flex-col justify-center min-w-0">
                     <span class="text-xs font-semibold mb-1.5 text-slate-500">{post.data.category}</span>
-                    <h3 class="text-sm font-black text-[#0C3034] leading-snug line-clamp-3 transition-colors">{post.data.title}</h3>
+                    <h3 class="text-sm font-black text-[#1E2A3A] leading-snug line-clamp-3 transition-colors">{post.data.title}</h3>
                     <span class="text-xs text-slate-400 mt-2">{formatDate(post.data.pubDate)}</span>
                   </div>
                 </a>
@@ -126,11 +116,11 @@ function formatDate(d: Date) {
                   <div class="aspect-[16/9] overflow-hidden bg-slate-100">
                     {post.data.heroImage
                       ? <img src={post.data.heroImage} alt={post.data.title} class="card-img w-full h-full object-cover" loading="lazy" />
-                      : <div class="w-full h-full" style="background: linear-gradient(135deg,#0C3034,#1a5c66);" />
+                      : <div class="w-full h-full" style="background: linear-gradient(135deg,#1E2A3A,#1a5c66);" />
                     }
                   </div>
                   <div class="p-5">
-                    <h3 class="text-sm font-black text-[#0C3034] leading-snug line-clamp-2 mb-2 transition-colors">{post.data.title}</h3>
+                    <h3 class="text-sm font-black text-[#1E2A3A] leading-snug line-clamp-2 mb-2 transition-colors">{post.data.title}</h3>
                     <span class="text-xs text-slate-400">{formatDate(post.data.pubDate)}</span>
                   </div>
                 </a>
@@ -158,8 +148,8 @@ function formatDate(d: Date) {
       return (
         <section>
           <div class="flex items-center justify-between mb-7">
-            <h2 class="text-xl font-black text-[#0C3034]">Local Trends</h2>
-            <a href="/blog/category/local-trends" class="text-xs font-semibold text-slate-400 hover:text-[#0080FF] transition-colors">View all →</a>
+            <h2 class="text-xl font-black text-[#1E2A3A]">Local Trends</h2>
+            <a href="/blog/category/local-trends" class="text-xs font-semibold text-slate-400 hover:text-[#1a96e8] transition-colors">View all →</a>
           </div>
 
           <div class="grid md:grid-cols-[2fr_3fr] gap-5">
@@ -168,12 +158,12 @@ function formatDate(d: Date) {
               <div class="h-56 overflow-hidden bg-slate-100">
                 {hero.data.heroImage
                   ? <img src={hero.data.heroImage} alt={hero.data.title} class="card-img w-full h-full object-cover" />
-                  : <div class="w-full h-full" style="background: linear-gradient(135deg,#0C3034,#1a5c66);" />
+                  : <div class="w-full h-full" style="background: linear-gradient(135deg,#1E2A3A,#1a5c66);" />
                 }
               </div>
               <div class="p-6">
                 <span class="text-xs font-semibold mb-2 inline-block text-slate-500">{hero.data.category}</span>
-                <h3 class="text-lg font-black text-[#0C3034] leading-snug mb-2 transition-colors">{hero.data.title}</h3>
+                <h3 class="text-lg font-black text-[#1E2A3A] leading-snug mb-2 transition-colors">{hero.data.title}</h3>
                 {hero.data.description && <p class="text-sm text-slate-500 line-clamp-2">{hero.data.description}</p>}
               </div>
             </a>
@@ -185,11 +175,11 @@ function formatDate(d: Date) {
                   <div class="w-20 h-14 shrink-0 rounded-xl overflow-hidden bg-slate-100">
                     {post.data.heroImage
                       ? <img src={post.data.heroImage} alt={post.data.title} class="card-img w-full h-full object-cover" loading="lazy" />
-                      : <div class="w-full h-full" style="background: linear-gradient(135deg,#0C3034,#1a5c66);" />
+                      : <div class="w-full h-full" style="background: linear-gradient(135deg,#1E2A3A,#1a5c66);" />
                     }
                   </div>
                   <div class="min-w-0">
-                    <h3 class="text-sm font-black text-[#0C3034] leading-snug line-clamp-2 mb-1 transition-colors">{post.data.title}</h3>
+                    <h3 class="text-sm font-black text-[#1E2A3A] leading-snug line-clamp-2 mb-1 transition-colors">{post.data.title}</h3>
                     <span class="text-xs text-slate-400">{formatDate(post.data.pubDate)}</span>
                   </div>
                 </a>
@@ -204,7 +194,7 @@ function formatDate(d: Date) {
     {allPosts.length > 10 && (
       <section>
         <div class="flex items-center justify-between mb-7">
-          <h2 class="text-xl font-black text-[#0C3034]">Recent Articles</h2>
+          <h2 class="text-xl font-black text-[#1E2A3A]">Recent Articles</h2>
           <span class="text-xs text-slate-400">{allPosts.length} articles</span>
         </div>
         <div id="recent-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -217,11 +207,11 @@ function formatDate(d: Date) {
               <div class="aspect-[16/9] overflow-hidden bg-slate-100">
                 {post.data.heroImage
                   ? <img src={post.data.heroImage} alt={post.data.title} class="card-img w-full h-full object-cover" loading="lazy" />
-                  : <div class="w-full h-full" style="background: linear-gradient(135deg,#0C3034,#1a5c66);" />
+                  : <div class="w-full h-full" style="background: linear-gradient(135deg,#1E2A3A,#1a5c66);" />
                 }
               </div>
               <div class="p-4">
-                <h3 class="text-sm font-black text-[#0C3034] leading-snug line-clamp-2 mb-1.5 transition-colors">{post.data.title}</h3>
+                <h3 class="text-sm font-black text-[#1E2A3A] leading-snug line-clamp-2 mb-1.5 transition-colors">{post.data.title}</h3>
                 <span class="text-xs text-slate-400">{formatDate(post.data.pubDate)}</span>
               </div>
             </a>
@@ -232,7 +222,7 @@ function formatDate(d: Date) {
         <div id="load-more-wrap" class="mt-10 text-center">
           <button
             id="load-more-btn"
-            class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl border-2 border-[#0C3034] text-[#0C3034] font-bold text-sm hover:bg-[#0C3034] hover:text-white transition-colors"
+            class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl border-2 border-[#1E2A3A] text-[#1E2A3A] font-bold text-sm hover:bg-[#1E2A3A] hover:text-white transition-colors"
           >
             Load more articles
           </button>

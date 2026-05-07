@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import AddressForm from '../components/AddressForm.astro';
+import AddressForm from '../components/AddressForm.astro'
+import Nav from '../components/Nav.astro';
 ---
 
 <!DOCTYPE html>
@@ -17,10 +18,10 @@ import AddressForm from '../components/AddressForm.astro';
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root { --brand-blue: #0080FF; --brand-dark: #0C3034; --brand-body: #34313D; }
+    :root { --brand-blue: #1a96e8; --brand-dark: #1E2A3A; --brand-body: #374151; }
     body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
     h1, h2 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
-    .btn-primary { background: #0080FF; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary { background: #1a96e8; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
     .btn-primary:hover { filter: brightness(1.08); }
     a { cursor: pointer; }
   </style>
@@ -28,16 +29,7 @@ import AddressForm from '../components/AddressForm.astro';
 <body class="antialiased bg-white">
 
   <!-- NAV -->
-  <nav class="bg-white border-b border-slate-100">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-9" /></a>
-      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
-        <a href="/how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
-        <a href="/reviews" class="hover:text-[#0C3034] transition-colors">Reviews</a>
-        <a href="/faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
-      </div>
-    </div>
-  </nav>
+  <Nav />
 
   <!-- MAIN -->
   <main class="min-h-screen flex flex-col items-center justify-center px-6 py-20">
@@ -46,8 +38,8 @@ import AddressForm from '../components/AddressForm.astro';
         <img src="/wordmark.png" alt="FlipSplit" class="h-10 mx-auto" />
       </a>
 
-      <h1 class="text-4xl sm:text-5xl font-black leading-tight mb-4" style="color:#0C3034; font-family:'sahar','Open Sans',sans-serif;">
-        Get your free<br/><span style="color:#0080FF;">cash offer.</span>
+      <h1 class="text-4xl sm:text-5xl font-black leading-tight mb-4" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+        Get your free<br/><span style="color:#1a96e8;">cash offer.</span>
       </h1>
       <p class="text-slate-500 text-lg mb-10">
         Enter your property address below. We'll respond within 24–48 hours with a no-obligation offer.
@@ -62,8 +54,8 @@ import AddressForm from '../components/AddressForm.astro';
           { value: '24–48 hrs', label: 'Offer turnaround' },
           { value: '5.0★', label: 'Customer rating' },
         ].map(({ value, label }) => (
-          <div class="rounded-xl py-4 px-3 border border-slate-200" style="background:#f8f4f3;">
-            <div class="font-black text-lg" style="color:#0C3034;">{value}</div>
+          <div class="rounded-xl py-4 px-3 border border-slate-200" style="background:#F8FAFC;">
+            <div class="font-black text-lg" style="color:#1E2A3A;">{value}</div>
             <div class="text-xs text-slate-400 mt-0.5">{label}</div>
           </div>
         ))}
@@ -74,10 +66,10 @@ import AddressForm from '../components/AddressForm.astro';
   <!-- FOOTER -->
   <footer class="py-8 px-6 border-t border-slate-100 text-center">
     <div class="flex flex-wrap justify-center gap-6 text-xs text-slate-400 mb-3">
-      <a href="/how-it-works" class="hover:text-[#0C3034] transition-colors">How It Works</a>
-      <a href="/faq" class="hover:text-[#0C3034] transition-colors">FAQ</a>
-      <a href="/privacy-policy" class="hover:text-[#0C3034] transition-colors">Privacy Policy</a>
-      <a href="/about" class="hover:text-[#0C3034] transition-colors">About</a>
+      <a href="/how-it-works" class="hover:text-[#1E2A3A] transition-colors">How It Works</a>
+      <a href="/faq" class="hover:text-[#1E2A3A] transition-colors">FAQ</a>
+      <a href="/privacy-policy" class="hover:text-[#1E2A3A] transition-colors">Privacy Policy</a>
+      <a href="/about" class="hover:text-[#1E2A3A] transition-colors">About</a>
     </div>
     <p class="text-xs text-slate-400">© 2026 FlipSplit LLC. All rights reserved.</p>
   </footer>

@@ -1,0 +1,251 @@
+---
+interface Props {
+  variant?: 'solid' | 'transparent';
+}
+const { variant = 'solid' } = Astro.props;
+---
+
+<style>
+  .nav-btn { background: #1a96e8; color: #fff; font-weight: 700; font-size: 0.875rem; padding: 0.625rem 1.25rem; border-radius: 8px; transition: filter 0.15s; white-space: nowrap; }
+  .nav-btn:hover { filter: brightness(1.08); }
+  .nav-dropdown-wrap { position: relative; }
+  .nav-dropdown { position: absolute; top: calc(100% + 12px); left: 0; width: 14rem; border-radius: 12px; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s; z-index: 60; background: #1E2A3A; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 16px 40px rgba(0,0,0,0.2); }
+  .nav-dropdown-wrap:hover .nav-dropdown,
+  .nav-dropdown-wrap:focus-within .nav-dropdown { opacity: 1; visibility: visible; }
+  .nav-chevron { transition: transform 0.2s; display: inline-block; }
+  .nav-dropdown-wrap:hover .nav-chevron { transform: rotate(180deg); }
+  .nav-drop-item { display: block; padding: 0.75rem 1rem; font-size: 0.875rem; color: rgba(255,255,255,0.8); transition: background 0.15s, color 0.15s; border-top: 1px solid rgba(255,255,255,0.08); }
+  .nav-drop-item:first-child { border-top: none; }
+  .nav-drop-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .mobile-dropdown > summary { list-style: none; cursor: pointer; }
+  .mobile-dropdown > summary::-webkit-details-marker { display: none; }
+  .mobile-dropdown[open] .mobile-chevron { transform: rotate(90deg); }
+  .mobile-chevron { transition: transform 0.2s; }
+</style>
+
+{variant === 'transparent' ? (
+  <!-- ─── TRANSPARENT NAV (homepage) ─── -->
+  <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style="background: transparent;">
+    <div class="max-w-6xl mx-auto px-6 h-20 flex items-center">
+      <div class="flex-1">
+        <a href="/"><img id="nav-logo" src="/wordmark-dark.png" alt="FlipSplit" class="h-9" /></a>
+      </div>
+
+      <div id="nav-links" class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <a href="/how-it-works/" class="text-white/90 hover:text-white transition-colors">Sell</a>
+        <div class="nav-dropdown-wrap">
+          <button class="flex items-center gap-1 text-white/90 hover:text-white transition-colors text-sm font-medium">
+            Where We Buy <svg class="nav-chevron mt-0.5" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="nav-dropdown">
+            <a href="/location-la-county/" class="nav-drop-item">Los Angeles County</a>
+            <a href="/location-orange-county/" class="nav-drop-item">Orange County</a>
+            <a href="/location-riverside-county/" class="nav-drop-item">Riverside County</a>
+            <a href="/location-san-bernardino-county/" class="nav-drop-item">San Bernardino County</a>
+            <a href="/location-san-diego-county/" class="nav-drop-item">San Diego County</a>
+          </div>
+        </div>
+        <a href="/reviews/" class="text-white/90 hover:text-white transition-colors">Reviews</a>
+      </div>
+
+      <div id="nav-offer-form-wrap" class="hidden flex-1 max-w-lg mx-auto">
+        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <div class="flex items-center rounded-xl overflow-hidden border border-white/20" style="background: rgba(255,255,255,0.1);">
+            <input type="text" name="address" placeholder="Enter your home address..." class="flex-1 bg-transparent text-white text-sm placeholder:text-white/50 focus:outline-none px-4 py-2.5" />
+            <button type="submit" class="shrink-0 text-white text-xs font-bold px-4 py-2.5 transition-all hover:bg-white/10 whitespace-nowrap rounded-lg" style="border: 1.5px solid rgba(255,255,255,0.7); background: transparent;">
+              Get My Offer
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div id="nav-right" class="flex-1 flex items-center justify-end gap-3">
+        <button id="menu-toggle" class="md:hidden p-2 text-white transition-colors" aria-label="Toggle menu">
+          <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <svg id="icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden fixed inset-0 bg-white z-[60] flex flex-col">
+      <div class="flex items-center justify-between px-6 h-20 border-b border-slate-100 shrink-0">
+        <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
+        <button id="menu-close" class="p-2 text-slate-700" aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="flex-1 overflow-y-auto px-6">
+        <a href="/how-it-works/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sell</a>
+        <details class="mobile-dropdown border-b border-slate-200">
+          <summary class="flex items-center justify-between py-6 text-2xl font-medium text-slate-900 cursor-pointer">
+            <span>Where We Buy</span>
+            <svg class="mobile-chevron text-slate-700" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+          </summary>
+          <div class="pb-5 ml-1 space-y-1">
+            <a href="/location-la-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">Los Angeles County</a>
+            <a href="/location-orange-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">Orange County</a>
+            <a href="/location-riverside-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">Riverside County</a>
+            <a href="/location-san-bernardino-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">San Bernardino County</a>
+            <a href="/location-san-diego-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">San Diego County</a>
+          </div>
+        </details>
+        <a href="/reviews/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Reviews</a>
+      </div>
+      <div class="p-6 shrink-0">
+        <a href="#get-offer" class="mobile-nav-link flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors">
+          <div>
+            <div class="font-bold text-slate-900 text-base">Ready to get started?</div>
+            <div class="text-sm text-slate-500 mt-0.5">Get your free offer in 24–48 hours</div>
+          </div>
+          <svg class="text-slate-700 shrink-0" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const nav = document.getElementById('main-nav') as HTMLElement;
+    const navLinks = document.getElementById('nav-links') as HTMLElement;
+    const navOfferFormWrap = document.getElementById('nav-offer-form-wrap') as HTMLElement;
+    const navRight = document.getElementById('nav-right') as HTMLElement;
+    const menuToggle = document.getElementById('menu-toggle') as HTMLButtonElement;
+    const mobileMenu = document.getElementById('mobile-menu') as HTMLElement;
+    const iconOpen = document.getElementById('icon-open') as HTMLElement;
+    const iconClose = document.getElementById('icon-close') as HTMLElement;
+
+    function updateNav() {
+      const scrolled = window.scrollY > 80;
+      const isMobile = window.innerWidth < 768;
+      if (scrolled) {
+        nav.style.background = '#1E2A3A';
+        navLinks.style.display = 'none';
+        if (isMobile) {
+          navOfferFormWrap.style.display = 'none';
+          navRight.style.display = '';
+        } else {
+          navOfferFormWrap.style.display = 'flex';
+          navRight.style.display = 'none';
+        }
+      } else {
+        nav.style.background = 'transparent';
+        navLinks.style.display = '';
+        navRight.style.display = '';
+        navOfferFormWrap.style.display = 'none';
+      }
+    }
+
+    window.addEventListener('scroll', updateNav);
+    window.addEventListener('resize', updateNav);
+    updateNav();
+
+    function closeMobileMenu() {
+      mobileMenu.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    menuToggle.addEventListener('click', () => {
+      const willOpen = mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden');
+      document.body.style.overflow = willOpen ? 'hidden' : '';
+    });
+
+    document.getElementById('menu-close')?.addEventListener('click', closeMobileMenu);
+
+    mobileMenu.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+  </script>
+) : (
+  <!-- ─── SOLID NAV (all other pages) ─── -->
+  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center">
+      <div class="flex-1">
+        <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
+      </div>
+
+      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
+        <a href="/how-it-works/" class="hover:text-[#1E2A3A] transition-colors">Sell</a>
+        <div class="nav-dropdown-wrap">
+          <button class="flex items-center gap-1 text-slate-500 hover:text-[#1E2A3A] transition-colors text-sm font-medium">
+            Where We Buy <svg class="nav-chevron mt-0.5" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="nav-dropdown">
+            <a href="/location-la-county/" class="nav-drop-item">Los Angeles County</a>
+            <a href="/location-orange-county/" class="nav-drop-item">Orange County</a>
+            <a href="/location-riverside-county/" class="nav-drop-item">Riverside County</a>
+            <a href="/location-san-bernardino-county/" class="nav-drop-item">San Bernardino County</a>
+            <a href="/location-san-diego-county/" class="nav-drop-item">San Diego County</a>
+          </div>
+        </div>
+        <a href="/reviews/" class="hover:text-[#1E2A3A] transition-colors">Reviews</a>
+      </div>
+
+      <div class="flex-1 flex items-center justify-end gap-3">
+        <a href="/request-offer/" class="nav-btn">Get My Offer</a>
+        <button id="solid-menu-toggle" class="md:hidden p-2 text-slate-600" aria-label="Toggle menu">
+          <svg id="solid-icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <svg id="solid-icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="solid-mobile-menu" class="hidden md:hidden fixed inset-0 bg-white z-[60] flex flex-col">
+      <div class="flex items-center justify-between px-6 h-16 border-b border-slate-100 shrink-0">
+        <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
+        <button id="solid-menu-close" class="p-2 text-slate-700" aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="flex-1 overflow-y-auto px-6">
+        <a href="/how-it-works/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sell</a>
+        <details class="mobile-dropdown border-b border-slate-200">
+          <summary class="flex items-center justify-between py-6 text-2xl font-medium text-slate-900 cursor-pointer">
+            <span>Where We Buy</span>
+            <svg class="mobile-chevron text-slate-700" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+          </summary>
+          <div class="pb-5 ml-1 space-y-1">
+            <a href="/location-la-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">Los Angeles County</a>
+            <a href="/location-orange-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">Orange County</a>
+            <a href="/location-riverside-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">Riverside County</a>
+            <a href="/location-san-bernardino-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">San Bernardino County</a>
+            <a href="/location-san-diego-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">San Diego County</a>
+          </div>
+        </details>
+        <a href="/reviews/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Reviews</a>
+      </div>
+      <div class="p-6 shrink-0">
+        <a href="/request-offer/" class="solid-mobile-link flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors">
+          <div>
+            <div class="font-bold text-slate-900 text-base">Ready to get started?</div>
+            <div class="text-sm text-slate-500 mt-0.5">Get your free offer in 24–48 hours</div>
+          </div>
+          <svg class="text-slate-700 shrink-0" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    const toggle = document.getElementById('solid-menu-toggle');
+    const menu = document.getElementById('solid-mobile-menu');
+    const iconOpen = document.getElementById('solid-icon-open');
+    const iconClose = document.getElementById('solid-icon-close');
+
+    function closeSolidMenu() {
+      menu?.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    toggle?.addEventListener('click', () => {
+      const willOpen = menu!.classList.contains('hidden');
+      menu!.classList.toggle('hidden');
+      document.body.style.overflow = willOpen ? 'hidden' : '';
+    });
+
+    document.getElementById('solid-menu-close')?.addEventListener('click', closeSolidMenu);
+
+    menu?.querySelectorAll('.solid-mobile-link').forEach(link => {
+      link.addEventListener('click', closeSolidMenu);
+    });
+  </script>
+)}

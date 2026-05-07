@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css'
 import AddressForm from '../components/AddressForm.astro'
+import Nav from '../components/Nav.astro'
 ---
 
 <!DOCTYPE html>
@@ -18,11 +19,13 @@ import AddressForm from '../components/AddressForm.astro'
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --brand-cyan: #0080FF;
-      --brand-dark: #0C3034;
-      --brand-body: #34313D;
+      --brand-cyan: #1a96e8;
+      --brand-dark: #1E2A3A;
+      --brand-body: #374151;
+      --brand-blue: #1a96e8;
+      --brand-coral: #F97066;
     }
-    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
+    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); overflow-x: hidden; }
     h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
     details > summary { list-style: none; }
     details > summary::-webkit-details-marker { display: none; }
@@ -41,62 +44,62 @@ import AddressForm from '../components/AddressForm.astro'
     .btn-primary:hover { filter: brightness(1.08); }
     .text-brand-dark { color: var(--brand-dark); }
     .text-brand-cyan { color: var(--brand-cyan); }
-    .bg-brand-dark { background: #0f172a; }
+    .bg-brand-dark { background: #1E2A3A; }
     input::placeholder { color: #9ca3af; }
     .dark-placeholder::placeholder { color: rgba(255,255,255,0.35); }
-    select option { background: #fff; color: #34313D; }
+    select option { background: #fff; color: #374151; }
     .deal-slider {
       -webkit-appearance: none; appearance: none;
       width: 100%; height: 6px; border-radius: 3px;
-      background: linear-gradient(to right, #0080FF var(--fill, 50%), #e2e8f0 var(--fill, 50%));
+      background: linear-gradient(to right, #1a96e8 var(--fill, 50%), #e2e8f0 var(--fill, 50%));
       outline: none; cursor: pointer;
     }
     .deal-slider::-webkit-slider-thumb {
       -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
-      background: #0080FF; border: 3px solid white; box-shadow: 0 1px 6px rgba(0,0,0,0.2); cursor: pointer;
+      background: #1a96e8; border: 3px solid white; box-shadow: 0 1px 6px rgba(0,0,0,0.2); cursor: pointer;
     }
     .deal-slider::-moz-range-thumb {
       width: 20px; height: 20px; border-radius: 50%;
-      background: #0080FF; border: 3px solid white; box-shadow: 0 1px 6px rgba(0,0,0,0.2); cursor: pointer;
+      background: #1a96e8; border: 3px solid white; box-shadow: 0 1px 6px rgba(0,0,0,0.2); cursor: pointer;
     }
   </style>
 </head>
 <body class="bg-white antialiased">
 
-  <!-- ─── NAV ─── -->
-  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <img src="/wordmark.png" alt="FlipSplit" class="h-9" />
-      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
-        <a href="#how-it-works" class="hover:text-brand-dark transition-colors">How It Works</a>
-        <a href="#why-flipsplit" class="hover:text-brand-dark transition-colors">Why FlipSplit</a>
-        <a href="#faq" class="hover:text-brand-dark transition-colors">FAQ</a>
-      </div>
-      <a href="#get-offer" class="btn-primary text-sm px-5 py-2.5 rounded-lg">
-        Get My Offer
-      </a>
-    </div>
-  </nav>
+  <Nav variant="transparent" />
 
   <!-- ─── HERO ─── -->
-  <section class="relative overflow-hidden pt-16 pb-28 px-6 bg-white">
-    <div class="relative max-w-6xl mx-auto flex flex-col lg:flex-row items-start gap-12 xl:gap-20">
+  <section class="relative overflow-hidden rounded-b-[2.5rem]" style="min-height: 560px;">
+    <!-- Background photo -->
+    <img
+      src="/hero-family.png"
+      alt="Family in front of their new home"
+      class="absolute inset-0 w-full h-full object-cover object-right lg:object-center"
+    />
+    <!-- Gradient overlay: dark on left for text, fades right -->
+    <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(10,20,35,0.78) 0%, rgba(10,20,35,0.55) 50%, rgba(10,20,35,0.15) 100%);"></div>
 
-      <!-- Left: copy + form -->
-      <div class="flex-1 pt-4">
-        <span class="inline-block text-xs font-semibold tracking-wide mb-5 px-4 py-1.5 rounded-full text-brand-dark" style="background: rgba(0,128,255,0.2); border: 1px solid rgba(0,128,255,0.4);">Southern California — Now Accepting Homeowners</span>
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08] mb-6 text-brand-dark">
-          Choose your home offer <span style="color: var(--brand-cyan);">with FlipSplit.</span>
+    <div class="relative max-w-6xl mx-auto px-6 flex flex-col justify-center" style="min-height: 560px; padding-top: 8rem; padding-bottom: 5rem;">
+      <div class="max-w-2xl">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08] mb-6" style="color: #ffffff;">
+          Choose your home offer with FlipSplit.
         </h1>
-        <p class="text-lg text-slate-500 mb-8 leading-relaxed max-w-lg">
+        <p class="text-lg mb-8 leading-relaxed" style="color: rgba(255,255,255,0.78);">
           FlipSplit lets you unlock your home equity fast with a cash offer while allowing you to still benefit from a newly renovated home later.
         </p>
         <AddressForm id="hero-form" action="https://formspree.io/f/YOUR_FORM_ID" />
-
-
       </div>
+    </div>
+  </section>
 
-      <!-- Right: Create Your Offer calculator -->
+  <!-- ─── CREATE YOUR OFFER ─── -->
+  <section class="py-20 px-6 bg-white">
+    <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-start gap-12 xl:gap-20">
+      <div class="flex-1 pt-2">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">Flexible by design</p>
+        <h2 class="text-4xl font-black text-brand-dark mb-4">Create your offer.</h2>
+        <p class="text-slate-500 leading-relaxed max-w-md">Adjust how much cash you want upfront versus how much you want to earn on the backend. Every FlipSplit offer starts with the maximum cash we can justify.</p>
+      </div>
       <div class="w-full lg:w-[440px] shrink-0 bg-white rounded-2xl shadow-md border border-slate-200 p-7">
         <h3 class="text-lg font-black text-brand-dark mb-1">Create Your Offer</h3>
         <p class="text-slate-400 text-sm mb-5">Adjust upfront cash vs. backend upside.</p>
@@ -110,7 +113,7 @@ import AddressForm from '../components/AddressForm.astro'
         <div class="grid grid-cols-2 gap-3 mb-5">
           <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
             <div class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Upfront Offer</div>
-            <div class="flex items-center gap-0.5 border border-slate-200 hover:border-[#0080FF] focus-within:border-[#0080FF] rounded-lg px-2 py-1 bg-white transition-colors">
+            <div class="flex items-center gap-0.5 border border-slate-200 hover:border-[#1a96e8] focus-within:border-[#1a96e8] rounded-lg px-2 py-1 bg-white transition-colors">
               <span class="text-xl font-black text-brand-dark">$</span>
               <input
                 id="offer-amount"
@@ -122,7 +125,7 @@ import AddressForm from '../components/AddressForm.astro'
             </div>
             <div class="text-xs text-slate-400 mt-1.5">Cash at closing</div>
           </div>
-          <div class="rounded-xl p-4 border" style="background:#0080FF08; border-color:#0080FF40;">
+          <div class="rounded-xl p-4 border" style="background:#1a96e808; border-color:#1a96e840;">
             <div class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Backend Split</div>
             <div id="split-pct" class="text-xl font-black" style="color:var(--brand-cyan);">50%</div>
             <div class="text-xs text-slate-400 mt-1.5">Of profit above offer</div>
@@ -143,10 +146,8 @@ import AddressForm from '../components/AddressForm.astro'
           <p class="text-xs text-slate-400 mt-3">* Resale price not guaranteed.</p>
         </div>
       </div>
-
     </div>
   </section>
-
 
   <!-- ─── SOCIAL PROOF ─── -->
   <section class="py-20 px-6 bg-white">
@@ -178,7 +179,7 @@ import AddressForm from '../components/AddressForm.astro'
             photo: "/grace-g.png",
           },
         ].map(({ quote, name, location, photo }) => (
-          <div class="rounded-2xl p-8 flex flex-col items-center text-center" style="background: #F7F4F3;">
+          <div class="rounded-2xl p-8 flex flex-col items-center text-center" style="background: #F8FAFC;">
             <img src={photo} alt={name} class="w-16 h-16 rounded-full object-cover mb-6 shrink-0" />
             <p class="text-slate-600 leading-relaxed text-sm flex-1 mb-6">"{quote}"</p>
             <div>
@@ -246,7 +247,7 @@ import AddressForm from '../components/AddressForm.astro'
       </div>
 
       <!-- Case study card -->
-      <div class="rounded-2xl overflow-hidden shadow-md border border-slate-200 grid md:grid-cols-[1fr_320px]">
+      <div class="rounded-2xl overflow-hidden shadow-md border border-slate-200 grid md:grid-cols-[1fr_360px]">
 
         <!-- Left: story -->
         <div class="p-8 md:p-10 bg-white flex flex-col gap-6">
@@ -270,7 +271,7 @@ import AddressForm from '../components/AddressForm.astro'
               'Exterior and interior repaint + new appliances',
             ].map((item) => (
               <li class="flex items-start gap-2.5">
-                <span class="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center shrink-0 text-xs font-bold" style="background: rgba(0,128,255,0.2); color: var(--brand-cyan);">✓</span>
+                <span class="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center shrink-0 text-xs font-bold" style="background: rgba(26,150,232,0.2); color: var(--brand-cyan);">✓</span>
                 {item}
               </li>
             ))}
@@ -288,30 +289,45 @@ import AddressForm from '../components/AddressForm.astro'
           </div>
         </div>
 
-        <!-- Right: numbers -->
-        <div class="p-8 flex flex-col gap-5 border-t md:border-t-0 md:border-l border-slate-200" style="background: #0f172a;">
+        <!-- Right: comparison -->
+        <div class="p-8 flex flex-col gap-5 border-t md:border-t-0 md:border-l border-slate-200" style="background: #F8FAFC;">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-semibold uppercase tracking-widest" style="color: var(--brand-cyan);">Deal snapshot</span>
-            <span class="text-xs font-semibold px-2.5 py-1 rounded-full" style="background: rgba(0,128,255,0.15); color: var(--brand-cyan);">Closed in 10 days</span>
+            <span class="text-xs font-semibold uppercase tracking-widest" style="color: #1a96e8;">Deal snapshot</span>
+            <span class="text-xs font-semibold px-2.5 py-1 rounded-full" style="background: rgba(249,112,102,0.12); color: #F97066;">Closed in 10 days</span>
           </div>
 
-          <div class="space-y-3">
-            {[
-              { label: 'Offer price', value: '$1,101,000' },
-              { label: 'Benchmark price', value: '$1,300,000' },
-              { label: 'Split agreement', value: '40%' },
-            ].map(({ label, value }) => (
-              <div class="flex justify-between items-center py-3 border-b border-white/10">
-                <span class="text-sm text-slate-400">{label}</span>
-                <span class="text-sm font-bold text-white">{value}</span>
-              </div>
-            ))}
+          <!-- Comparison table -->
+          <div>
+            <!-- Column headers -->
+            <div class="grid grid-cols-[1fr_1fr_1fr] gap-1 pb-2.5 border-b border-slate-200">
+              <div></div>
+              <div class="text-center text-xs font-semibold text-slate-400 uppercase tracking-wide">Traditional</div>
+              <div class="text-center text-xs font-semibold uppercase tracking-wide" style="color: #1a96e8;">FlipSplit</div>
+            </div>
+            <!-- Offer price -->
+            <div class="grid grid-cols-[1fr_1fr_1fr] gap-1 py-3 border-b border-slate-200 items-center">
+              <div class="text-xs text-slate-500">Offer</div>
+              <div class="text-center text-xs font-bold" style="color: #1E2A3A;">$1,101,000</div>
+              <div class="text-center text-xs font-bold" style="color: #1E2A3A;">$1,101,000</div>
+            </div>
+            <!-- Profit share -->
+            <div class="grid grid-cols-[1fr_1fr_1fr] gap-1 py-3 border-b border-slate-200 items-center">
+              <div class="text-xs text-slate-500 leading-tight">Profit Share</div>
+              <div class="text-center text-xs font-bold text-slate-400">0%</div>
+              <div class="text-center text-xs font-bold" style="color: #1a96e8;">40%</div>
+            </div>
+            <!-- Net proceeds -->
+            <div class="grid grid-cols-[1fr_1fr_1fr] gap-1 py-3 items-center">
+              <div class="text-xs text-slate-500 leading-tight">Net Proceeds</div>
+              <div class="text-center text-xs font-bold" style="color: #1E2A3A;">$1,101,000</div>
+              <div class="text-center text-xs font-bold" style="color: #1E2A3A;">$1,144,167</div>
+            </div>
           </div>
 
-          <div class="rounded-xl p-5 mt-auto" style="background: rgba(0,128,255,0.1); border: 1px solid rgba(0,128,255,0.3);">
-            <div class="text-xs font-semibold uppercase tracking-widest mb-1.5" style="color: var(--brand-cyan);">Bonus check</div>
-            <div class="text-3xl font-black text-white">$43,167</div>
-            <div class="text-xs text-slate-400 mt-1">Paid on top of the guaranteed offer</div>
+          <div class="rounded-xl p-5 mt-auto" style="background: #ffffff; border: 1px solid rgba(26,150,232,0.2);">
+            <div class="text-xs font-semibold uppercase tracking-widest mb-1.5" style="color: #1a96e8;">Extra earned with FlipSplit</div>
+            <div class="text-3xl font-black" style="color: #F97066;">+$43,167</div>
+            <div class="text-xs text-slate-500 mt-1">vs. a traditional cash offer</div>
           </div>
         </div>
 
@@ -321,7 +337,7 @@ import AddressForm from '../components/AddressForm.astro'
 
 
   <!-- ─── SITUATION TARGETING ─── -->
-  <section class="py-20 px-6" style="background: #f0faf9;">
+  <section class="py-20 px-6" style="background: #F8FAFC;">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-12">
         <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">We help in any situation</p>
@@ -340,19 +356,14 @@ import AddressForm from '../components/AddressForm.astro'
           { label: 'Avoiding foreclosure', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' },
         ];
         const chip = ({ label, icon }: { label: string; icon: string }) => (
-          <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-sm font-medium text-brand-dark shadow-sm" style="border: 1px solid rgba(0,128,255,0.35);">
+          <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-sm font-medium text-brand-dark shadow-sm" style="border: 1px solid rgba(26,150,232,0.35);">
             <span class="shrink-0" set:html={icon} />
             {label}
           </span>
         );
         return (
-          <div class="flex flex-col items-center gap-3">
-            <div class="flex justify-center gap-3">
-              {tags.slice(0, 4).map(chip)}
-            </div>
-            <div class="flex justify-center gap-3">
-              {tags.slice(4).map(chip)}
-            </div>
+          <div class="flex flex-wrap justify-center gap-3">
+            {tags.map(chip)}
           </div>
         );
       })()}
@@ -385,7 +396,7 @@ import AddressForm from '../components/AddressForm.astro'
             ))}
           </ul>
         </div>
-        <div class="p-8" style="background: #0f172a;">
+        <div class="p-8" style="background: #1E2A3A;">
           <h3 class="font-black text-sm uppercase tracking-widest mb-7" style="color: var(--brand-cyan);">FlipSplit</h3>
           <ul class="space-y-5">
             {[
@@ -397,7 +408,7 @@ import AddressForm from '../components/AddressForm.astro'
               'You keep a share of the profit above your offer',
             ].map((item) => (
               <li class="flex items-start gap-3">
-                <span class="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-xs font-bold" style="background: rgba(0,128,255,0.2); color: var(--brand-cyan);">✓</span>
+                <span class="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-xs font-bold" style="background: rgba(26,150,232,0.2); color: var(--brand-cyan);">✓</span>
                 <span class="text-sm font-medium text-slate-200">{item}</span>
               </li>
             ))}
