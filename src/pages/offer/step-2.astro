@@ -1,0 +1,78 @@
+---
+import OfferLayout from '../../layouts/OfferLayout.astro';
+
+const options = [
+  { value: 'single_family', label: 'Single Family Home' },
+  { value: 'apartment_condo', label: 'Apartment or Condo' },
+  { value: 'attached_single_family', label: 'Attached Single Family Home' },
+  { value: 'manufactured_mobile', label: 'Manufactured or Mobile Home' },
+  { value: 'multi_family', label: 'Multi-family' },
+  { value: 'empty_lot', label: 'Empty Lot' },
+];
+---
+
+<OfferLayout
+  step={2}
+  title="Please select your home category"
+  subtitle="This will help us arrive at an initial offer range based on properties with similar characteristics in your area."
+  backHref="/offer/step-1/"
+  nextHref="/offer/step-3/"
+  autoAdvance={true}
+>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
+    {options.map((opt) => (
+      <button type="button" class="offer-card-btn" data-value={opt.value} aria-pressed="false">
+        {opt.label}
+      </button>
+    ))}
+  </div>
+</OfferLayout>
+
+<script>
+  declare global {
+    interface Window {
+      __funnel: {
+        sessionId: string;
+        session: any;
+        getSelected: () => Record<string, unknown> | null;
+        advance: () => Promise<void>;
+        setError: (msg: string) => void;
+        clearError: () => void;
+      };
+    }
+  }
+
+  const setup = (session: { home_category?: string | null }) => {
+    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.offer-card-btn'));
+    const nextBtn = document.getElementById('offer-next') as HTMLButtonElement;
+    let selected: string | null = session.home_category ?? null;
+    let advancing = false;
+
+    const render = () => {
+      buttons.forEach((b) => {
+        b.setAttribute('aria-pressed', b.dataset.value === selected ? 'true' : 'false');
+        b.disabled = advancing;
+      });
+      nextBtn.disabled = !selected || advancing;
+    };
+
+    buttons.forEach((b) => {
+      b.addEventListener('click', () => {
+        if (advancing) return;
+        selected = b.dataset.value!;
+        advancing = true;
+        render();
+        setTimeout(() => window.__funnel.advance(), 280);
+      });
+    });
+
+    window.__funnel.getSelected = () => (selected ? { home_category: selected } : null);
+    render();
+  };
+
+  if ((window as any).__funnel?.session) {
+    setup((window as any).__funnel.session);
+  } else {
+    window.addEventListener('funnel-ready', (e) => setup((e as CustomEvent).detail), { once: true });
+  }
+</script>

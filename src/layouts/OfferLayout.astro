@@ -1,0 +1,319 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  step: 1 | 2 | 3 | 4 | 5;
+  title: string;
+  subtitle?: string;
+  /** Path of the previous step's URL (or "/" for back to home) */
+  backHref: string;
+  /** Path of the next step's URL (or "/offer/finish/" on the last step) */
+  nextHref: string;
+  /** If true, hide the Next button — page will call window.__funnel.advance() on selection */
+  autoAdvance?: boolean;
+}
+const { step, title, subtitle, backHref, nextHref, autoAdvance = false } = Astro.props;
+const totalSteps = 5;
+const progressPct = Math.round((step / totalSteps) * 100);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FlipSplit — Get Your Offer</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style is:global>
+    :root {
+      --brand-cyan: #1a96e8;
+      --brand-dark: #1E2A3A;
+      --brand-body: #374151;
+    }
+    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); background: #fff; overflow-x: hidden; }
+    .offer-progress-bar {
+      height: 4px;
+      background: linear-gradient(to right, #1a96e8 var(--pct, 0%), #e2e8f0 var(--pct, 0%));
+      transition: background 0.4s ease;
+    }
+    .offer-shell { min-height: calc(100vh - 4px); display: flex; flex-direction: column; }
+
+    /* Card-style option button used in steps 1, 3, 4, 5 */
+    .offer-card-btn {
+      display: block;
+      width: 100%;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 1.75rem 1.25rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #1E2A3A;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+      text-align: center;
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.3;
+    }
+    .offer-card-btn:hover {
+      border-color: #1a96e8;
+      background: #F1F8FE;
+      box-shadow: 0 4px 12px rgba(26,150,232,0.08);
+    }
+    .offer-card-btn:active { transform: scale(0.98); }
+    .offer-card-btn[aria-pressed="true"] {
+      border-color: #1a96e8;
+      background: #1a96e8;
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(26,150,232,0.25);
+    }
+    .offer-card-btn[aria-pressed="true"]:hover {
+      background: #1a96e8;
+      color: #fff;
+    }
+    .offer-card-btn[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+    /* Footer Next button (only shown when autoAdvance=false) */
+    .offer-next {
+      background: #1a96e8;
+      color: #fff;
+      font-weight: 700;
+      padding: 0.75rem 1.75rem;
+      border-radius: 10px;
+      transition: filter 0.15s, opacity 0.15s;
+      border: none;
+      cursor: pointer;
+    }
+    .offer-next:hover { filter: brightness(1.08); }
+    .offer-next:disabled { opacity: 0.4; cursor: not-allowed; filter: none; }
+
+    .offer-back {
+      background: transparent;
+      color: #64748b;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      transition: color 0.15s, background 0.15s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+    .offer-back:hover { color: #1E2A3A; background: #F8FAFC; }
+
+    /* Dropdown used in step 2 */
+    .offer-select {
+      width: 100%;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 0.875rem 2.5rem 0.875rem 1rem;
+      font-size: 0.95rem;
+      color: #1E2A3A;
+      background-color: #fff;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+      font-family: 'Open Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .offer-select:focus { border-color: #1a96e8; }
+  </style>
+</head>
+<body>
+  <div class="offer-shell">
+    <!-- Top progress bar -->
+    <div class="offer-progress-bar" style={`--pct: ${progressPct}%`} role="progressbar" aria-valuenow={progressPct} aria-valuemin="0" aria-valuemax="100"></div>
+
+    <!-- Header (logo only) -->
+    <header class="px-6 py-5 max-w-5xl mx-auto w-full">
+      <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
+    </header>
+
+    <!-- Question content -->
+    <main class="flex-1 px-6 py-8 max-w-5xl mx-auto w-full">
+      <div class="text-center mb-14">
+        <h1 class="text-4xl md:text-5xl font-black mb-4" style="color: var(--brand-dark);">{title}</h1>
+        {subtitle && <p class="text-base md:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">{subtitle}</p>}
+      </div>
+
+      <slot />
+
+      <p id="offer-error" class="hidden text-sm text-red-500 font-medium mt-6 text-center"></p>
+    </main>
+
+    <!-- Address breadcrumb -->
+    <p id="offer-address-display" class="px-6 pb-4 text-base text-slate-500 max-w-5xl mx-auto w-full"></p>
+
+    <!-- Footer with Back / Next -->
+    <footer class="px-6 py-4 border-t border-slate-100 bg-slate-50">
+      <div class="max-w-5xl mx-auto flex items-center justify-between">
+        <button id="offer-back" type="button" data-back-href={backHref} class="offer-back">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          <span class="hidden sm:inline">Back</span>
+        </button>
+        <button
+          id="offer-next"
+          type="button"
+          data-next-href={nextHref}
+          class="offer-next"
+          disabled
+        >
+          Next
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    import { getSupabase } from '../lib/supabase';
+
+    declare global {
+      interface Window {
+        __funnel: {
+          sessionId: string;
+          session: any;
+          getSelected: () => Record<string, unknown> | null;
+          advance: () => Promise<void>;
+          setError: (msg: string) => void;
+          clearError: () => void;
+        };
+      }
+    }
+
+    (async () => {
+      const supabase = getSupabase();
+      const errorEl = document.getElementById('offer-error');
+      const addrEl = document.getElementById('offer-address-display');
+      const nextBtn = document.getElementById('offer-next') as HTMLButtonElement;
+      const backBtn = document.getElementById('offer-back') as HTMLButtonElement;
+
+      // Wire Back to navigate to the configured backHref while preserving
+      // the current URL's query string (e.g. ?preview=1).
+      backBtn?.addEventListener('click', () => {
+        const target = backBtn.dataset.backHref!;
+        const currentParams = window.location.search; // includes leading "?"
+        if (!currentParams) {
+          window.location.assign(target);
+        } else {
+          const sep = target.includes('?') ? '&' : '?';
+          window.location.assign(target + sep + currentParams.slice(1));
+        }
+      });
+
+      const setError = (msg: string) => {
+        if (!errorEl) return;
+        errorEl.textContent = msg;
+        errorEl.classList.remove('hidden');
+      };
+      const clearError = () => errorEl?.classList.add('hidden');
+
+      // ── Design preview mode: ?preview=1 skips backend, uses fake session ──
+      const isPreview = new URL(window.location.href).searchParams.get('preview') === '1';
+      if (isPreview) {
+        const fake = { id: 'preview', address: '33951 Alcazar Dr, Dana Point, CA 92629' };
+        if (addrEl) addrEl.textContent = fake.address + ' (preview)';
+        const previewAdvance = async () => {
+          const href = nextBtn.dataset.nextHref!;
+          window.location.assign(href.includes('?') ? `${href}&preview=1` : `${href}?preview=1`);
+        };
+        window.__funnel = {
+          sessionId: 'preview',
+          session: fake,
+          getSelected: () => null,
+          advance: previewAdvance,
+          setError,
+          clearError,
+        };
+        nextBtn.addEventListener('click', (e) => { e.preventDefault(); previewAdvance(); });
+        // Defer so any page-level listener registered later still receives the event.
+        setTimeout(() => window.dispatchEvent(new CustomEvent('funnel-ready', { detail: fake })), 0);
+        return;
+      }
+
+      // 1. Verify there's a session — if not, send back home
+      const { data: userData } = await supabase.auth.getUser();
+      if (!userData.user) {
+        window.location.replace('/');
+        return;
+      }
+      const userId = userData.user.id;
+
+      // 2. Load the user's most-recent in-progress session
+      const { data: sessions } = await supabase
+        .from('qualification_sessions')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('status', 'in_progress')
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      const session = sessions?.[0];
+      if (!session) {
+        window.location.replace('/');
+        return;
+      }
+
+      // 3. Display the address breadcrumb
+      if (addrEl) addrEl.textContent = session.address;
+
+      // 4. Determine the event name for advancing (e.g. step_1_completed)
+      const nextMatch = (nextBtn.dataset.nextHref || '').match(/step-(\d+)/);
+      const completedStepNum = (nextMatch ? parseInt(nextMatch[1]) : 6) - 1;
+      const stepDoneEvent = `step_${completedStepNum}_completed`;
+
+      // Reusable: save current answers + fire event + redirect
+      const advance = async () => {
+        const patch = window.__funnel.getSelected();
+        if (!patch) return;
+        clearError();
+        nextBtn.disabled = true;
+        try {
+          const { error: updErr } = await supabase
+            .from('qualification_sessions')
+            .update({ ...patch, current_step: completedStepNum })
+            .eq('id', session.id);
+          if (updErr) throw updErr;
+
+          await supabase.from('events').insert({
+            session_id: session.id,
+            user_id: userId,
+            event_name: stepDoneEvent,
+            payload: patch,
+          });
+
+          window.location.assign(nextBtn.dataset.nextHref!);
+        } catch (err: any) {
+          console.error(err);
+          setError(err?.message || 'Could not save your answer. Please try again.');
+          nextBtn.disabled = false;
+        }
+      };
+
+      // 5. Expose helpers to the page-specific script
+      window.__funnel = {
+        sessionId: session.id,
+        session,
+        getSelected: () => null,
+        advance,
+        setError,
+        clearError,
+      };
+
+      // 6. Wire the Next button to the same advance() helper
+      nextBtn.addEventListener('click', advance);
+
+      // 7. Tell the page script the session is ready. Defer so listeners
+      //    registered after this script runs still receive the event.
+      setTimeout(() => window.dispatchEvent(new CustomEvent('funnel-ready', { detail: session })), 0);
+    })();
+  </script>
+</body>
+</html>

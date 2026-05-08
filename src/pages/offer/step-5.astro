@@ -1,0 +1,77 @@
+---
+import OfferLayout from '../../layouts/OfferLayout.astro';
+
+const options = [
+  { value: 'needs_love',       label: 'Needs a lot of love' },
+  { value: 'dated_clean',      label: 'Dated but clean' },
+  { value: 'standard',         label: 'Standard' },
+  { value: 'newly_renovated',  label: 'Newly renovated' },
+  { value: 'high_end',         label: 'High end' },
+];
+---
+
+<OfferLayout
+  step={5}
+  title="Please describe the current condition"
+  subtitle="Select the option that most closely resembles your home."
+  backHref="/offer/step-4/"
+  nextHref="/offer/finish/"
+  autoAdvance={true}
+>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
+    {options.map((opt) => (
+      <button type="button" class="offer-card-btn" data-value={opt.value} aria-pressed="false">
+        {opt.label}
+      </button>
+    ))}
+  </div>
+</OfferLayout>
+
+<script>
+  declare global {
+    interface Window {
+      __funnel: {
+        sessionId: string;
+        getSelected: () => Record<string, unknown> | null;
+        advance: () => Promise<void>;
+        setError: (msg: string) => void;
+        clearError: () => void;
+      };
+    }
+  }
+
+  const setup = (session: { condition?: string | null }) => {
+    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.offer-card-btn'));
+    const nextBtn = document.getElementById('offer-next') as HTMLButtonElement;
+    let selected: string | null = session.condition ?? null;
+    let advancing = false;
+
+    const render = () => {
+      buttons.forEach((b) => {
+        const isSel = b.dataset.value === selected;
+        b.setAttribute('aria-pressed', isSel ? 'true' : 'false');
+        b.disabled = advancing;
+      });
+      nextBtn.disabled = !selected || advancing;
+    };
+
+    buttons.forEach((b) => {
+      b.addEventListener('click', () => {
+        if (advancing) return;
+        selected = b.dataset.value!;
+        advancing = true;
+        render();
+        setTimeout(() => window.__funnel.advance(), 280);
+      });
+    });
+
+    window.__funnel.getSelected = () => (selected ? { condition: selected } : null);
+    render();
+  };
+
+  if ((window as any).__funnel?.session) {
+    setup((window as any).__funnel.session);
+  } else {
+    window.addEventListener('funnel-ready', (e) => setup((e as CustomEvent).detail), { once: true });
+  }
+</script>

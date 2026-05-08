@@ -1,0 +1,143 @@
+---
+import OfferLayout from '../../layouts/OfferLayout.astro';
+
+const numericOptions = [1, 2, 3, 4, 5, 6];
+const numericLabel = (n: number) => (n === 6 ? '6+' : String(n));
+
+const sqftOptions = [
+  { value: 'under_1000',  label: 'Under 1,000 sq ft' },
+  { value: '1000_1500',   label: '1,000 – 1,500 sq ft' },
+  { value: '1500_2000',   label: '1,500 – 2,000 sq ft' },
+  { value: '2000_2500',   label: '2,000 – 2,500 sq ft' },
+  { value: '2500_3000',   label: '2,500 – 3,000 sq ft' },
+  { value: '3000_plus',   label: '3,000+ sq ft' },
+];
+---
+
+<OfferLayout
+  step={3}
+  title="Confirm your home details"
+  subtitle="Please fill out the known information about your home to the best of your ability."
+  backHref="/offer/step-2/"
+  nextHref="/offer/step-4/"
+>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8 max-w-4xl mx-auto">
+
+    <div>
+      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Bedrooms</label>
+      <select id="f-bedrooms" class="offer-select">
+        <option value="">Select one…</option>
+        {numericOptions.map((n) => <option value={n}>{numericLabel(n)}</option>)}
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Full Bathrooms</label>
+      <select id="f-full-baths" class="offer-select">
+        <option value="">Select one…</option>
+        {numericOptions.map((n) => <option value={n}>{numericLabel(n)}</option>)}
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-base font-bold text-[#1E2A3A] mb-2">
+        Partial Bathrooms <span class="text-slate-400 font-normal text-sm">(toilet + sink)</span>
+      </label>
+      <select id="f-partial-baths" class="offer-select">
+        <option value="">Select one…</option>
+        <option value="0">0</option>
+        {numericOptions.map((n) => <option value={n}>{numericLabel(n)}</option>)}
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Square Footage</label>
+      <select id="f-sqft" class="offer-select">
+        <option value="">Select one…</option>
+        {sqftOptions.map((o) => <option value={o.value}>{o.label}</option>)}
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Pool</label>
+      <select id="f-pool" class="offer-select">
+        <option value="">Select one…</option>
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Floors (above ground)</label>
+      <select id="f-floors" class="offer-select">
+        <option value="">Select one…</option>
+        {numericOptions.map((n) => <option value={n}>{numericLabel(n)}</option>)}
+      </select>
+    </div>
+
+  </div>
+</OfferLayout>
+
+<script>
+  declare global {
+    interface Window {
+      __funnel: {
+        sessionId: string;
+        session: any;
+        getSelected: () => Record<string, unknown> | null;
+        advance: () => Promise<void>;
+        setError: (msg: string) => void;
+        clearError: () => void;
+      };
+    }
+  }
+
+  const setup = (session: Record<string, any>) => {
+    const nextBtn = document.getElementById('offer-next') as HTMLButtonElement;
+
+    const fields: Array<[string, string, 'int' | 'string' | 'bool']> = [
+      ['f-bedrooms', 'bedrooms', 'int'],
+      ['f-full-baths', 'full_bathrooms', 'int'],
+      ['f-partial-baths', 'partial_bathrooms', 'int'],
+      ['f-sqft', 'square_footage_range', 'string'],
+      ['f-pool', 'has_pool', 'bool'],
+      ['f-floors', 'floors_above_ground', 'int'],
+    ];
+
+    fields.forEach(([elId, col]) => {
+      const el = document.getElementById(elId) as HTMLSelectElement;
+      const v = session[col];
+      if (v !== null && v !== undefined && v !== '') {
+        el.value = String(v);
+      }
+    });
+
+    const collect = (): Record<string, unknown> | null => {
+      const out: Record<string, unknown> = {};
+      for (const [elId, col, kind] of fields) {
+        const el = document.getElementById(elId) as HTMLSelectElement;
+        const raw = el.value;
+        if (raw === '') return null;
+        if (kind === 'int') out[col] = parseInt(raw, 10);
+        else if (kind === 'bool') out[col] = raw === 'true';
+        else out[col] = raw;
+      }
+      return out;
+    };
+
+    const update = () => { nextBtn.disabled = collect() === null; };
+
+    fields.forEach(([elId]) => {
+      document.getElementById(elId)!.addEventListener('change', update);
+    });
+
+    window.__funnel.getSelected = collect;
+    update();
+  };
+
+  if ((window as any).__funnel?.session) {
+    setup((window as any).__funnel.session);
+  } else {
+    window.addEventListener('funnel-ready', (e) => setup((e as CustomEvent).detail), { once: true });
+  }
+</script>

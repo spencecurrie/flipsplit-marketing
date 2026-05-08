@@ -1,38 +1,43 @@
 ---
 interface Props {
   id?: string;
-  action?: string;
   class?: string;
   align?: 'left' | 'center';
 }
-const { id = 'address-form', action = 'https://formspree.io/f/YOUR_FORM_ID', class: className = '', align = 'left' } = Astro.props;
+const { id = 'address-form', class: className = '', align = 'left' } = Astro.props;
 ---
 
 <div class={className}>
   <form
     id={id}
-    action={action}
-    method="POST"
-    class="flex items-center bg-white rounded-2xl border border-slate-200 shadow-sm p-1.5 gap-2 w-full max-w-xl mb-3"
+    class="address-form flex items-center bg-white rounded-2xl border border-slate-200 shadow-sm p-1.5 gap-2 w-full max-w-xl mb-3"
+    novalidate
   >
     <input
       type="text"
       name="address"
       required
       placeholder="Enter your home address..."
+      autocomplete="off"
       class="flex-1 text-[#1E2A3A] text-sm focus:outline-none bg-transparent min-w-0 py-2.5 px-3 placeholder-slate-400"
     />
     <button
       type="submit"
       aria-label="Get my offer"
-      class="shrink-0 rounded-xl p-3 transition-all hover:brightness-110"
+      class="address-submit shrink-0 rounded-xl p-3 transition-all hover:brightness-110 disabled:opacity-60 disabled:cursor-wait"
       style="background: #1a96e8;"
     >
-      <svg class="w-5 h-5" style="color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg class="address-arrow w-5 h-5" style="color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+      <svg class="address-spinner hidden w-5 h-5 animate-spin" style="color: #ffffff;" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-opacity="0.25"/>
+        <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
       </svg>
     </button>
   </form>
+
+  <p class="address-error hidden text-xs text-red-500 font-medium mb-2"></p>
 
   <div class={`flex flex-wrap items-center gap-1.5 text-sm mb-1.5 ${align === 'center' ? 'justify-center' : ''}`}>
     <span style="color: #FBBC05; letter-spacing: 1px;">★★★★★</span>
@@ -64,96 +69,11 @@ const { id = 'address-form', action = 'https://formspree.io/f/YOUR_FORM_ID', cla
   .pac-icon { display: none; }
   .pac-item-query { font-weight: 600; color: #1E2A3A; }
   .pac-matched { color: #1a96e8; }
-
-  #fs-confirm-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: rgba(0, 0, 0, 0.45);
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-  #fs-confirm-modal.open { display: flex; }
-
-  #fs-confirm-modal .fs-modal-card {
-    background: white;
-    border-radius: 20px;
-    padding: 36px 32px 32px;
-    max-width: 440px;
-    width: 100%;
-    position: relative;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.18);
-  }
-
-  #fs-confirm-modal .fs-close-btn {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: 1.5px solid #e2e8f0;
-    background: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #64748b;
-    font-size: 14px;
-    transition: border-color 0.15s;
-  }
-  #fs-confirm-modal .fs-close-btn:hover { border-color: #94a3b8; }
-
-  #fs-confirm-modal .fs-address-box {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin-bottom: 22px;
-  }
-
-  #fs-confirm-modal .fs-owner-select {
-    width: 100%;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 13px 40px 13px 16px;
-    font-size: 14px;
-    color: #1E2A3A;
-    background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 14px center;
-    -webkit-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    font-family: 'Open Sans', sans-serif;
-    outline: none;
-    transition: border-color 0.15s;
-    margin-bottom: 22px;
-  }
-  #fs-confirm-modal .fs-owner-select:focus { border-color: #1a96e8; }
-  #fs-confirm-modal .fs-owner-select.error { border-color: #ef4444; }
-
-  #fs-confirm-modal .fs-confirm-btn {
-    width: 100%;
-    background: #1a96e8;
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 1rem;
-    padding: 16px;
-    border-radius: 14px;
-    border: none;
-    cursor: pointer;
-    font-family: 'Open Sans', sans-serif;
-    transition: filter 0.15s;
-  }
-  #fs-confirm-modal .fs-confirm-btn:hover { filter: brightness(1.06); }
 </style>
 
 <script>
+  import { getSupabase } from '../lib/supabase';
+
   declare global {
     interface Window {
       __placesReady?: boolean;
@@ -162,168 +82,141 @@ const { id = 'address-form', action = 'https://formspree.io/f/YOUR_FORM_ID', cla
     }
   }
 
-  // ── Modal ──────────────────────────────────────────────────────────────────
+  // ── Helper: parse address components from a Google Places result ────────
+  function parseAddressParts(place: google.maps.places.PlaceResult) {
+    const parts: { street?: string; city?: string; state?: string; zip?: string } = {};
+    const components = place.address_components || [];
+    let streetNumber = '';
+    let route = '';
 
-  let _modalActiveInput: HTMLInputElement | null = null;
-  let _modalSuggestionSelected = false;
-
-  function ensureModal() {
-    if (document.getElementById('fs-confirm-modal')) return;
-
-    const modal = document.createElement('div');
-    modal.id = 'fs-confirm-modal';
-    modal.setAttribute('role', 'dialog');
-    modal.setAttribute('aria-modal', 'true');
-    modal.innerHTML = `
-      <div class="fs-modal-card">
-        <button class="fs-close-btn" id="fs-modal-close" aria-label="Close">✕</button>
-        <h3 style="font-size:1.4rem;font-weight:900;color:#1E2A3A;margin:0 0 20px;font-family:'sahar','Open Sans',sans-serif;line-height:1.25;">
-          Is this the correct<br>home address?
-        </h3>
-        <div class="fs-address-box">
-          <span id="fs-modal-addr-text" style="font-size:0.875rem;color:#1E2A3A;line-height:1.45;flex:1;"></span>
-          <button id="fs-modal-edit" style="color:#1a96e8;font-weight:700;font-size:0.875rem;background:none;border:none;cursor:pointer;white-space:nowrap;font-family:'Open Sans',sans-serif;">Edit</button>
-        </div>
-        <label style="display:block;font-weight:700;font-size:0.875rem;color:#1E2A3A;margin-bottom:8px;">
-          Are you the owner of this home? <span style="color:#ef4444;">*</span>
-        </label>
-        <select class="fs-owner-select" id="fs-modal-owner">
-          <option value="" disabled selected>Select</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-          <option value="agent">Agent</option>
-          <option value="other">Other</option>
-        </select>
-        <button class="fs-confirm-btn" id="fs-modal-confirm">Confirm</button>
-      </div>
-    `;
-    document.body.appendChild(modal);
-
-    // Close on backdrop click
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) dismissModal(false);
-    });
-
-    document.getElementById('fs-modal-close')!.addEventListener('click', () => dismissModal(false));
-
-    document.getElementById('fs-modal-edit')!.addEventListener('click', () => {
-      dismissModal(true);
-    });
-
-    document.getElementById('fs-modal-confirm')!.addEventListener('click', () => {
-      const ownerEl = document.getElementById('fs-modal-owner') as HTMLSelectElement;
-      if (!ownerEl.value) {
-        ownerEl.classList.add('error');
-        return;
-      }
-      ownerEl.classList.remove('error');
-
-      const input = _modalActiveInput;
-      const form = input?.closest('form');
-      if (!form || !input) return;
-
-      // Store ownership as a hidden field
-      let hidden = form.querySelector<HTMLInputElement>('input[name="owner_type"]');
-      if (!hidden) {
-        hidden = document.createElement('input');
-        hidden.type = 'hidden';
-        hidden.name = 'owner_type';
-        form.appendChild(hidden);
-      }
-      hidden.value = ownerEl.value;
-
-      // Mark as fully confirmed
-      input.dataset.placeConfirmed = '1';
-      input.setCustomValidity('');
-
-      closeModal();
-      form.requestSubmit();
-    });
-
-    // Reset error styling when owner changes
-    document.getElementById('fs-modal-owner')!.addEventListener('change', () => {
-      (document.getElementById('fs-modal-owner') as HTMLSelectElement).classList.remove('error');
-    });
-  }
-
-  function openModal(address: string, input: HTMLInputElement) {
-    ensureModal();
-    _modalActiveInput = input;
-    (document.getElementById('fs-modal-addr-text') as HTMLElement).textContent = address;
-    (document.getElementById('fs-modal-owner') as HTMLSelectElement).value = '';
-    (document.getElementById('fs-modal-owner') as HTMLSelectElement).classList.remove('error');
-    document.getElementById('fs-confirm-modal')!.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeModal() {
-    document.getElementById('fs-confirm-modal')?.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  function dismissModal(focusInput: boolean) {
-    closeModal();
-    if (focusInput && _modalActiveInput) {
-      _modalActiveInput.focus();
-      _modalActiveInput.select();
+    for (const c of components) {
+      if (c.types.includes('street_number')) streetNumber = c.long_name;
+      else if (c.types.includes('route')) route = c.long_name;
+      else if (c.types.includes('locality')) parts.city = c.long_name;
+      else if (c.types.includes('administrative_area_level_1')) parts.state = c.short_name;
+      else if (c.types.includes('postal_code')) parts.zip = c.long_name;
     }
+    if (streetNumber || route) parts.street = `${streetNumber} ${route}`.trim();
+    return parts;
   }
 
-  // ── Autocomplete ──────────────────────────────────────────────────────────
-
+  // ── Form lifecycle ──────────────────────────────────────────────────────
   function attachAutocomplete() {
     document.querySelectorAll<HTMLInputElement>('input[name="address"]').forEach((input) => {
       if (input.dataset.placesInit) return;
       input.dataset.placesInit = '1';
 
-      let suggestionPicked = false;
+      let pickedPlace: google.maps.places.PlaceResult | null = null;
 
       const ac = new (window as any).google.maps.places.Autocomplete(input, {
         types: ['address'],
         componentRestrictions: { country: 'us' },
-        fields: ['formatted_address'],
+        fields: ['formatted_address', 'address_components'],
       });
 
       ac.addListener('place_changed', () => {
         const place = ac.getPlace();
         if (place?.formatted_address) {
           input.value = place.formatted_address;
-          suggestionPicked = true;
-          input.dataset.placeConfirmed = '';
+          pickedPlace = place;
           input.setCustomValidity('');
-          openModal(place.formatted_address, input);
         }
       });
 
-      // Typing after selecting resets everything
       input.addEventListener('input', () => {
-        suggestionPicked = false;
-        input.dataset.placeConfirmed = '';
+        pickedPlace = null;
         input.setCustomValidity(
           input.value.trim() ? 'Please select an address from the dropdown suggestions.' : ''
         );
       });
 
-      // Guard form submission
-      input.closest('form')?.addEventListener('submit', (e) => {
-        if (input.dataset.placeConfirmed === '1') return; // confirmed via modal — allow
+      const form = input.closest('form');
+      if (!form) return;
 
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const errorEl = form.parentElement?.querySelector<HTMLElement>('.address-error');
+        const submitBtn = form.querySelector<HTMLButtonElement>('.address-submit');
+        const arrow = form.querySelector<SVGElement>('.address-arrow');
+        const spinner = form.querySelector<SVGElement>('.address-spinner');
+
+        const showError = (msg: string) => {
+          if (errorEl) {
+            errorEl.textContent = msg;
+            errorEl.classList.remove('hidden');
+          }
+        };
+        const clearError = () => errorEl?.classList.add('hidden');
+
+        clearError();
 
         if (!input.value.trim()) {
-          input.setCustomValidity('Please enter your property address.');
-          input.reportValidity();
-        } else if (!suggestionPicked) {
-          input.setCustomValidity('Please select an address from the dropdown suggestions.');
-          input.reportValidity();
-        } else {
-          // Suggestion picked but modal not confirmed yet — re-open modal
-          openModal(input.value, input);
+          showError('Please enter your property address.');
+          return;
+        }
+        if (!pickedPlace) {
+          showError('Please select an address from the dropdown suggestions.');
+          return;
+        }
+
+        // Show loading state
+        submitBtn?.setAttribute('disabled', 'true');
+        arrow?.classList.add('hidden');
+        spinner?.classList.remove('hidden');
+
+        try {
+          const supabase = getSupabase();
+
+          // 1. Sign in anonymously (or reuse existing session if any)
+          const { data: sessionData } = await supabase.auth.getSession();
+          if (!sessionData.session) {
+            const { error: authErr } = await supabase.auth.signInAnonymously();
+            if (authErr) throw authErr;
+          }
+
+          const { data: userData } = await supabase.auth.getUser();
+          const userId = userData.user?.id;
+          if (!userId) throw new Error('Could not establish anonymous session.');
+
+          // 2. Insert qualification_sessions row
+          const parts = parseAddressParts(pickedPlace);
+          const { data: row, error: insertErr } = await supabase
+            .from('qualification_sessions')
+            .insert({
+              user_id: userId,
+              address: pickedPlace.formatted_address!,
+              street: parts.street,
+              city: parts.city,
+              state: parts.state,
+              zip: parts.zip,
+              current_step: 0,
+            })
+            .select('id')
+            .single();
+          if (insertErr) throw insertErr;
+
+          // 3. Fire event
+          await supabase.from('events').insert({
+            session_id: row.id,
+            user_id: userId,
+            event_name: 'funnel_started',
+            payload: { address: pickedPlace.formatted_address },
+          });
+
+          // 4. Redirect to step 1
+          window.location.assign('/offer/step-1/');
+        } catch (err: any) {
+          console.error('Funnel start failed:', err);
+          showError(err?.message || 'Something went wrong. Please try again.');
+          submitBtn?.removeAttribute('disabled');
+          arrow?.classList.remove('hidden');
+          spinner?.classList.add('hidden');
         }
       });
     });
   }
 
+  // Lazy-load Google Places, then initialize all forms on the page
   if (!(window as any).google?.maps?.places) {
     window.__placesQueue = window.__placesQueue || [];
     window.__placesQueue.push(attachAutocomplete);

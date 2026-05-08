@@ -1,0 +1,129 @@
+---
+import '../../styles/global.css';
+
+const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FlipSplit — Preparing your offer</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Open Sans', sans-serif; color: #374151; background: #fff; min-height: 100vh; display: flex; flex-direction: column; }
+    h1 { font-family: 'sahar', 'Open Sans', sans-serif; color: #1E2A3A; }
+    .progress-bar { height: 4px; background: #1a96e8; }
+    .spinner { width: 56px; height: 56px; border-radius: 50%; border: 4px solid #e2e8f0; border-top-color: #1a96e8; animation: spin 0.85s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .preview-note { background: #FEF3C7; border: 1px solid #FCD34D; color: #78350F; padding: 1rem 1.25rem; border-radius: 12px; font-size: 0.875rem; max-width: 32rem; margin: 1.5rem auto 0; }
+  </style>
+</head>
+<body>
+  <div class="progress-bar"></div>
+  <header class="px-6 py-5 max-w-5xl mx-auto w-full">
+    <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
+  </header>
+
+  <main class="flex-1 flex flex-col items-center justify-center px-6 text-center">
+    <div class="spinner mb-8" aria-hidden="true"></div>
+    <h1 class="text-3xl md:text-4xl font-black mb-3">Preparing your offer…</h1>
+    <p class="text-base md:text-lg text-slate-500 max-w-md">We're saving your details and sending you to create an account so we can text you when your offer is ready.</p>
+    <p id="finish-error" class="hidden text-sm text-red-500 font-medium mt-6"></p>
+    <div id="preview-note" class="preview-note hidden"></div>
+  </main>
+
+  <script>
+    import { getSupabase } from '../../lib/supabase';
+
+    (async () => {
+      const errorEl = document.getElementById('finish-error');
+      const previewEl = document.getElementById('preview-note');
+      const showError = (msg: string) => {
+        if (!errorEl) return;
+        errorEl.textContent = msg;
+        errorEl.classList.remove('hidden');
+      };
+
+      const APP_URL = (document.querySelector('meta[name="x-app-url"]') as HTMLMetaElement)?.content
+        || 'https://app.flipsplit.com';
+
+      // Preview mode: just display a banner instead of redirecting
+      const isPreview = new URL(window.location.href).searchParams.get('preview') === '1';
+      if (isPreview) {
+        if (previewEl) {
+          previewEl.classList.remove('hidden');
+          previewEl.innerHTML = `Preview mode — would generate a claim token and redirect to <code style="background:#fff;padding:2px 6px;border-radius:4px;">${APP_URL}/signup?claim=&lt;token&gt;</code>`;
+        }
+        return;
+      }
+
+      try {
+        const supabase = getSupabase();
+
+        // 1. Verify session
+        const { data: userData } = await supabase.auth.getUser();
+        if (!userData.user) {
+          window.location.replace('/');
+          return;
+        }
+        const userId = userData.user.id;
+
+        // 2. Find the user's most-recent in-progress session
+        const { data: sessions, error: selErr } = await supabase
+          .from('qualification_sessions')
+          .select('id')
+          .eq('user_id', userId)
+          .eq('status', 'in_progress')
+          .order('created_at', { ascending: false })
+          .limit(1);
+        if (selErr) throw selErr;
+        const session = sessions?.[0];
+        if (!session) {
+          window.location.replace('/');
+          return;
+        }
+
+        // 3. Generate a one-time claim token (1 hour expiry)
+        const claimToken = crypto.randomUUID();
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+
+        const { error: updErr } = await supabase
+          .from('qualification_sessions')
+          .update({
+            claim_token: claimToken,
+            claim_token_expires_at: expiresAt,
+            current_step: 5,
+          })
+          .eq('id', session.id);
+        if (updErr) throw updErr;
+
+        // 4. Fire a funnel_completed event (informational; the actual signup is on the app)
+        await supabase.from('events').insert({
+          session_id: session.id,
+          user_id: userId,
+          event_name: 'funnel_completed',
+          payload: {},
+        });
+
+        // 5. Sign out the anonymous session before crossing domains so the
+        //    app starts fresh — the claim token is what carries identity over.
+        await supabase.auth.signOut();
+
+        // 6. Redirect to the app's signup page with the claim token
+        window.location.assign(`${APP_URL}/signup?claim=${claimToken}`);
+      } catch (err: any) {
+        console.error('Finish step failed:', err);
+        showError(err?.message || 'Something went wrong preparing your offer. Please try again.');
+      }
+    })();
+  </script>
+
+  <meta name="x-app-url" content={APP_URL} />
+</body>
+</html>
