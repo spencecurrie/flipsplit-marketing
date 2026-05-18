@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css'
 import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <!DOCTYPE html>
@@ -130,19 +131,7 @@ import Nav from '../components/Nav.astro';
   </section>
 
   <!-- FOOTER -->
-  <footer class="py-12 px-6 border-t border-slate-100">
-    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-8" /></a>
-      <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-400">
-        <a href="/how-it-works" class="hover:text-[#1E2A3A] transition-colors">How It Works</a>
-        <a href="/reviews" class="hover:text-[#1E2A3A] transition-colors">Reviews</a>
-        <a href="/about" class="hover:text-[#1E2A3A] transition-colors">About</a>
-        <a href="/faq" class="hover:text-[#1E2A3A] transition-colors">FAQ</a>
-        <a href="/privacy-policy" class="font-semibold" style="color:#1E2A3A;">Privacy Policy</a>
-      </div>
-      <p class="text-xs text-slate-400">© 2026 FlipSplit. All rights reserved.</p>
-    </div>
-  </footer>
+  <Footer />
 
 </body>
 </html>

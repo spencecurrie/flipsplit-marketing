@@ -2,6 +2,7 @@
 import Nav from '../components/Nav.astro'
 import { getCollection } from 'astro:content';
 import '../../styles/global.css';
+import Footer from '../../components/Footer.astro';
 
 const allPosts = await getCollection('blog');
 allPosts.sort((a, b) => +new Date(b.data.pubDate) - +new Date(a.data.pubDate));
@@ -49,13 +50,13 @@ function formatDate(d: Date) {
 
   <!-- ─── PAGE HEADER ─── -->
   <div class="border-b border-slate-100 py-10 px-6">
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-[1500px] mx-auto">
       <p class="text-xs font-semibold tracking-widest uppercase mb-2 text-slate-500">FlipSplit Resources</p>
       <h1 class="text-4xl font-semibold text-[#1E2A3A]">Real Estate Articles &amp; Resources</h1>
     </div>
   </div>
 
-  <div class="max-w-6xl mx-auto px-6 py-12 space-y-20">
+  <div class="max-w-[1500px] mx-auto px-6 py-12 space-y-20">
 
     <!-- ─── HOME SELLING ─── -->
     {homeSelling.length > 0 && (() => {
@@ -241,18 +242,7 @@ function formatDate(d: Date) {
     <a href="/#get-offer" class="btn-primary inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base">Get My Free Offer →</a>
   </section>
 
-  <footer style="background:#081e21;" class="py-10 px-6">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-      <img src="/wordmark.png" alt="FlipSplit" class="h-8" />
-      <div class="flex gap-6">
-        <a href="/blog" class="hover:text-white transition-colors">Blog</a>
-        <a href="/#how-it-works" class="hover:text-white transition-colors">How It Works</a>
-        <a href="/#faq" class="hover:text-white transition-colors">FAQ</a>
-        <a href="mailto:hello@flipsplit.com" class="hover:text-white transition-colors">Contact</a>
-      </div>
-      <p>© 2026 FlipSplit. All rights reserved.</p>
-    </div>
-  </footer>
+  <Footer />
 
   <script>
     const BATCH = 12;

@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import AddressForm from '../components/AddressForm.astro'
 import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <!DOCTYPE html>
@@ -110,7 +111,7 @@ import Nav from '../components/Nav.astro';
 
   <!-- ─── REVIEWS GRID ─── -->
   <section class="pb-24 px-6" style="background:#F8FAFC;">
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-[1500px] mx-auto">
       <div class="text-center pt-20 mb-14">
         <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">All Reviews</p>
         <h2 class="text-3xl sm:text-4xl font-semibold" style="color:#1E2A3A;">What our homeowners say.</h2>
@@ -204,7 +205,7 @@ import Nav from '../components/Nav.astro';
 
   <!-- ─── TRUST STRIP ─── -->
   <section class="py-14 px-6 border-t border-b border-slate-100 bg-white">
-    <div class="max-w-5xl mx-auto">
+    <div class="max-w-[1500px] mx-auto">
       <div class="grid sm:grid-cols-3 gap-8 text-center">
         {[
           { icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke="#1e88e5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, label: 'No pressure. No obligations.', body: 'Every offer is free with zero commitment to accept.' },
@@ -225,27 +226,16 @@ import Nav from '../components/Nav.astro';
   <section id="get-offer" class="py-24 px-6" style="background: linear-gradient(135deg, #1E2A3A 0%, #1a2744 100%);">
     <div class="max-w-2xl mx-auto text-center">
       <p class="text-xs font-bold uppercase tracking-widest mb-4" style="color:rgba(26,150,232,0.8);">Free. No obligation.</p>
-      <h2 class="text-4xl sm:text-5xl font-semibold mb-4 leading-tight" style="color:white; font-family:'sahar','Open Sans',sans-serif;">
+      <h2 class="text-3xl sm:text-4xl font-semibold mb-4 leading-tight" style="color:white; font-family:'sahar','Open Sans',sans-serif;">
         Join our homeowners.<br/>Get your free offer.
       </h2>
       <p class="text-slate-400 mb-10 text-lg">Results in 24–48 hours. No repairs. No agent fees.</p>
-      <AddressForm id="cta-form" align="center" />
+      <AddressForm id="cta-form" class="flex flex-col items-center" align="center" />
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer class="py-12 px-6 border-t border-slate-100">
-    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-8" /></a>
-      <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-400">
-        <a href="/how-it-works" class="hover:text-[#1E2A3A] transition-colors">How It Works</a>
-        <a href="/reviews" class="hover:text-[#1E2A3A] transition-colors">Reviews</a>
-        <a href="/blog" class="hover:text-[#1E2A3A] transition-colors">Blog</a>
-        <a href="/#faq" class="hover:text-[#1E2A3A] transition-colors">FAQ</a>
-      </div>
-      <p class="text-xs text-slate-400">© 2026 FlipSplit. All rights reserved.</p>
-    </div>
-  </footer>
+  <Footer />
 
 </body>
 </html>

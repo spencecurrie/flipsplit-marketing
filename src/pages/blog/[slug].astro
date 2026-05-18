@@ -2,6 +2,7 @@
 import Nav from '../components/Nav.astro'
 import { getCollection, render } from 'astro:content';
 import '../../styles/global.css';
+import Footer from '../../components/Footer.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -103,7 +104,7 @@ function formatDate(d: Date) {
 
   <!-- ─── ARTICLE HEADER ─── -->
   <header class="px-6 pt-10 pb-10 border-b border-slate-200" style="background: linear-gradient(135deg, rgba(26,150,232,0.08) 0%, rgba(26,150,232,0.02) 50%, transparent 100%);">
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-[1500px] mx-auto">
       <div class="lg:grid lg:grid-cols-[1fr_300px] lg:gap-16">
         <div>
 
@@ -137,7 +138,7 @@ function formatDate(d: Date) {
   </header>
 
   <!-- ─── CONTENT + SIDEBAR ─── -->
-  <div class="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-16 items-start">
+  <div class="max-w-[1500px] mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-16 items-start">
 
     <!-- Main article -->
     <article id="article-body">
@@ -228,7 +229,7 @@ function formatDate(d: Date) {
   <!-- ─── RELATED POSTS ─── -->
   {related.length > 0 && (
     <section class="border-t border-slate-100 py-20 px-6">
-      <div class="max-w-6xl mx-auto">
+      <div class="max-w-[1500px] mx-auto">
         <h2 class="text-2xl font-semibold text-[#1E2A3A] mb-10">Keep reading</h2>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {related.map(p => (
@@ -251,18 +252,7 @@ function formatDate(d: Date) {
   )}
 
   <!-- ─── FOOTER ─── -->
-  <footer style="background: #081e21;" class="py-10 px-6">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-      <img src="/wordmark.png" alt="FlipSplit" class="h-8" />
-      <div class="flex gap-6">
-        <a href="/blog" class="hover:text-white transition-colors">Blog</a>
-        <a href="/#how-it-works" class="hover:text-white transition-colors">How It Works</a>
-        <a href="/#faq" class="hover:text-white transition-colors">FAQ</a>
-        <a href="mailto:hello@flipsplit.com" class="hover:text-white transition-colors">Contact</a>
-      </div>
-      <p>© 2026 FlipSplit. All rights reserved.</p>
-    </div>
-  </footer>
+  <Footer />
 
   <script>
     // ── Reading progress bar ──

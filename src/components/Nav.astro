@@ -26,15 +26,15 @@ const { variant = 'solid' } = Astro.props;
 {variant === 'transparent' ? (
   <!-- ─── TRANSPARENT NAV (homepage) ─── -->
   <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style="background: transparent;">
-    <div class="max-w-6xl mx-auto px-6 h-20 flex items-center">
+    <div class="max-w-[1500px] mx-auto px-6 h-20 flex items-center">
       <div class="flex-1">
         <a href="/"><img id="nav-logo" src="/wordmark-dark.png" alt="FlipSplit" class="h-9" /></a>
       </div>
 
-      <div id="nav-links" class="hidden md:flex items-center gap-8 text-base font-medium">
+      <div id="nav-links" class="hidden md:flex items-center gap-8 text-[15px] font-medium">
         <a href="/how-it-works/" class="text-white/90 hover:text-white transition-colors">Sell</a>
         <div class="nav-dropdown-wrap">
-          <button class="flex items-center gap-1 text-white/90 hover:text-white transition-colors text-base font-medium">
+          <button class="flex items-center gap-1 text-white/90 hover:text-white transition-colors text-[15px] font-medium">
             Where We Buy <svg class="nav-chevron mt-0.5" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="nav-dropdown">
@@ -48,7 +48,7 @@ const { variant = 'solid' } = Astro.props;
         <a href="/reviews/" class="text-white/90 hover:text-white transition-colors">Reviews</a>
       </div>
 
-      <div id="nav-offer-form-wrap" class="hidden flex-1 max-w-lg mx-auto">
+      <div id="nav-offer-form-wrap" class="hidden flex-[5] max-w-4xl mx-auto">
         <form>
           <div class="flex items-center rounded-xl overflow-hidden border border-white/20" style="background: rgba(255,255,255,0.1);">
             <input type="text" name="address" placeholder="Enter your home address..." class="flex-1 bg-transparent text-white text-sm placeholder:text-white/50 focus:outline-none px-4 py-2.5" />
@@ -60,7 +60,20 @@ const { variant = 'solid' } = Astro.props;
       </div>
 
       <div id="nav-right" class="flex-1 flex items-center justify-end gap-5">
-        <a href="/sign-in/" class="hidden md:inline-block text-white/90 hover:text-white transition-colors text-base font-medium">Sign in</a>
+        <a id="t-signin-link" href="/sign-in/" class="hidden md:inline-block text-white/90 hover:text-white transition-colors text-[15px] font-medium">Sign in</a>
+        <div id="t-profile-wrap" class="hidden relative">
+          <button id="t-profile-btn" class="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden hover:opacity-90 transition-opacity" style="background:#1e88e5;" aria-label="Account menu" aria-expanded="false">
+            <img id="t-profile-avatar" alt="" class="w-full h-full object-cover hidden" />
+            <span id="t-profile-initial" class="text-sm font-bold text-white">U</span>
+          </button>
+          <div id="t-profile-menu" class="hidden absolute right-0 top-12 w-56 bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden" style="z-index:100;">
+            <div class="px-4 py-3 border-b border-slate-100">
+              <p class="text-xs text-slate-400">Signed in as</p>
+              <p id="t-profile-email" class="text-sm font-semibold text-slate-700 truncate"></p>
+            </div>
+            <button id="t-signout-btn" class="w-full text-left px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">Sign out</button>
+          </div>
+        </div>
         <button id="menu-toggle" class="md:hidden p-2 text-white transition-colors" aria-label="Toggle menu">
           <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           <svg id="icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -74,6 +87,13 @@ const { variant = 'solid' } = Astro.props;
         <button id="menu-close" class="p-2 text-slate-700" aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
+      </div>
+      <div id="t-mobile-profile" class="hidden items-center gap-3 px-6 py-5 border-b border-slate-200 shrink-0" style="background:#F8FAFC;">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden shrink-0" style="background:#1e88e5;">
+          <img id="t-mobile-profile-avatar" alt="" class="w-full h-full object-cover hidden" />
+          <span id="t-mobile-profile-initial" class="text-sm font-bold text-white">U</span>
+        </div>
+        <p id="t-mobile-profile-email" class="font-semibold text-slate-900 truncate"></p>
       </div>
       <div class="flex-1 overflow-y-auto px-6">
         <a href="/how-it-works/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sell</a>
@@ -91,7 +111,8 @@ const { variant = 'solid' } = Astro.props;
           </div>
         </details>
         <a href="/reviews/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Reviews</a>
-        <a href="/sign-in/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sign in</a>
+        <a id="t-mobile-signin-link" href="/sign-in/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sign in</a>
+        <button id="t-mobile-signout-btn" class="hidden w-full text-left flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sign out</button>
       </div>
       <div class="p-6 shrink-0">
         <a href="#get-offer" class="mobile-nav-link flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors">
@@ -106,6 +127,8 @@ const { variant = 'solid' } = Astro.props;
   </nav>
 
   <script>
+    import { getSupabase } from '../lib/supabase';
+
     const nav = document.getElementById('main-nav') as HTMLElement;
     const navLinks = document.getElementById('nav-links') as HTMLElement;
     const navOfferFormWrap = document.getElementById('nav-offer-form-wrap') as HTMLElement;
@@ -114,6 +137,98 @@ const { variant = 'solid' } = Astro.props;
     const mobileMenu = document.getElementById('mobile-menu') as HTMLElement;
     const iconOpen = document.getElementById('icon-open') as HTMLElement;
     const iconClose = document.getElementById('icon-close') as HTMLElement;
+
+    // ─── Auth state: swap Sign in link with profile icon when logged in ───
+    const tSignin       = document.getElementById('t-signin-link') as HTMLAnchorElement;
+    const tProfileWrap  = document.getElementById('t-profile-wrap') as HTMLElement;
+    const tProfileBtn   = document.getElementById('t-profile-btn') as HTMLButtonElement;
+    const tProfileImg   = document.getElementById('t-profile-avatar') as HTMLImageElement;
+    const tProfileInit  = document.getElementById('t-profile-initial') as HTMLElement;
+    const tProfileMenu  = document.getElementById('t-profile-menu') as HTMLElement;
+    const tProfileEmail = document.getElementById('t-profile-email') as HTMLElement;
+    const tSignoutBtn   = document.getElementById('t-signout-btn') as HTMLButtonElement;
+    const tMSignin      = document.getElementById('t-mobile-signin-link') as HTMLAnchorElement;
+    const tMSignout     = document.getElementById('t-mobile-signout-btn') as HTMLButtonElement;
+    const tSupabase = getSupabase();
+
+    const tMProfile     = document.getElementById('t-mobile-profile') as HTMLElement;
+    const tMProfileImg  = document.getElementById('t-mobile-profile-avatar') as HTMLImageElement;
+    const tMProfileInit = document.getElementById('t-mobile-profile-initial') as HTMLElement;
+    const tMProfileEmail= document.getElementById('t-mobile-profile-email') as HTMLElement;
+
+    function tApplyAuth(user: any) {
+      const signedIn = !!user && !user.is_anonymous;
+      if (signedIn) {
+        // Desktop: hide Sign in text (inline beats md:inline-block), show
+        // profile button only at md+ (don't show on mobile — that's what the
+        // hamburger menu is for).
+        tSignin.style.display = 'none';
+        tProfileWrap.classList.remove('hidden');
+        tProfileWrap.style.display = window.innerWidth >= 768 ? 'block' : 'none';
+        // Mobile menu: swap Sign in link for the profile row + Sign out.
+        tMSignin.classList.add('hidden');
+        tMSignout.classList.remove('hidden');
+        tMProfile.classList.remove('hidden');
+        tMProfile.style.display = 'flex';
+        const email = user.email || '';
+        tProfileEmail.textContent = email;
+        tMProfileEmail.textContent = email;
+        const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture;
+        if (avatarUrl) {
+          tProfileImg.src = avatarUrl;
+          tMProfileImg.src = avatarUrl;
+          tProfileImg.classList.remove('hidden');
+          tMProfileImg.classList.remove('hidden');
+          tProfileInit.classList.add('hidden');
+          tMProfileInit.classList.add('hidden');
+        } else {
+          tProfileImg.classList.add('hidden');
+          tMProfileImg.classList.add('hidden');
+          tProfileInit.classList.remove('hidden');
+          tMProfileInit.classList.remove('hidden');
+          const initial = (email[0] || 'U').toUpperCase();
+          tProfileInit.textContent = initial;
+          tMProfileInit.textContent = initial;
+        }
+      } else {
+        tSignin.style.display = '';
+        tProfileWrap.classList.add('hidden');
+        tProfileWrap.style.display = '';
+        tMSignin.classList.remove('hidden');
+        tMSignout.classList.add('hidden');
+        tMProfile.classList.add('hidden');
+        tMProfile.style.display = '';
+        tProfileMenu.classList.add('hidden');
+      }
+    }
+    // Keep mobile-vs-desktop visibility correct on viewport resize.
+    window.addEventListener('resize', () => {
+      if (tProfileWrap.style.display && tProfileWrap.style.display !== '') {
+        tProfileWrap.style.display = window.innerWidth >= 768 ? 'block' : 'none';
+      }
+    });
+    tSupabase.auth.getUser().then(({ data }) => tApplyAuth(data.user));
+    tSupabase.auth.onAuthStateChange((_event, session) => tApplyAuth(session?.user || null));
+
+    tProfileBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const willShow = tProfileMenu.classList.contains('hidden');
+      tProfileMenu.classList.toggle('hidden');
+      tProfileBtn.setAttribute('aria-expanded', String(willShow));
+    });
+    document.addEventListener('click', (e) => {
+      if (!tProfileWrap.contains(e.target as Node)) {
+        tProfileMenu.classList.add('hidden');
+        tProfileBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    async function tHandleSignOut() {
+      await tSupabase.auth.signOut();
+      window.location.assign('/');
+    }
+    tSignoutBtn.addEventListener('click', tHandleSignOut);
+    tMSignout.addEventListener('click', tHandleSignOut);
 
     function updateNav() {
       const scrolled = window.scrollY > 80;
@@ -160,15 +275,15 @@ const { variant = 'solid' } = Astro.props;
 ) : (
   <!-- ─── SOLID NAV (all other pages — mirrors homepage scroll behavior) ─── -->
   <nav id="solid-nav" class="sticky top-0 z-50 bg-white border-b border-slate-100 transition-all duration-300">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center">
+    <div class="max-w-[1500px] mx-auto px-6 h-16 flex items-center">
       <div class="flex-1">
         <a href="/"><img id="solid-nav-logo" src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
       </div>
 
-      <div id="solid-nav-links" class="hidden md:flex items-center gap-8 text-base text-slate-500 font-medium">
+      <div id="solid-nav-links" class="hidden md:flex items-center gap-8 text-[15px] text-slate-500 font-medium">
         <a href="/how-it-works/" class="hover:text-[#1E2A3A] transition-colors">Sell</a>
         <div class="nav-dropdown-wrap">
-          <button class="flex items-center gap-1 text-slate-500 hover:text-[#1E2A3A] transition-colors text-base font-medium">
+          <button class="flex items-center gap-1 text-slate-500 hover:text-[#1E2A3A] transition-colors text-[15px] font-medium">
             Where We Buy <svg class="nav-chevron mt-0.5" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="nav-dropdown">
@@ -182,7 +297,7 @@ const { variant = 'solid' } = Astro.props;
         <a href="/reviews/" class="hover:text-[#1E2A3A] transition-colors">Reviews</a>
       </div>
 
-      <div id="solid-nav-offer-form-wrap" class="hidden flex-1 max-w-lg mx-auto">
+      <div id="solid-nav-offer-form-wrap" class="hidden flex-[5] max-w-4xl mx-auto">
         <form>
           <div class="flex items-center rounded-xl overflow-hidden border border-white/20" style="background: rgba(255,255,255,0.1);">
             <input type="text" name="address" placeholder="Enter your home address..." class="flex-1 bg-transparent text-white text-sm placeholder:text-white/50 focus:outline-none px-4 py-2.5" />
@@ -194,8 +309,20 @@ const { variant = 'solid' } = Astro.props;
       </div>
 
       <div id="solid-nav-right" class="flex-1 flex items-center justify-end gap-5">
-        <a href="/sign-in/" class="hidden md:inline-block text-slate-500 hover:text-[#1E2A3A] transition-colors text-base font-medium">Sign in</a>
-        <a href="/request-offer/" class="nav-btn">Get My Offer</a>
+        <a id="s-signin-link" href="/sign-in/" class="hidden md:inline-block text-slate-500 hover:text-[#1E2A3A] transition-colors text-[15px] font-medium">Sign in</a>
+        <div id="s-profile-wrap" class="hidden relative">
+          <button id="s-profile-btn" class="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden hover:opacity-90 transition-opacity" style="background:#1e88e5;" aria-label="Account menu" aria-expanded="false">
+            <img id="s-profile-avatar" alt="" class="w-full h-full object-cover hidden" />
+            <span id="s-profile-initial" class="text-sm font-bold text-white">U</span>
+          </button>
+          <div id="s-profile-menu" class="hidden absolute right-0 top-12 w-56 bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden" style="z-index:100;">
+            <div class="px-4 py-3 border-b border-slate-100">
+              <p class="text-xs text-slate-400">Signed in as</p>
+              <p id="s-profile-email" class="text-sm font-semibold text-slate-700 truncate"></p>
+            </div>
+            <button id="s-signout-btn" class="w-full text-left px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">Sign out</button>
+          </div>
+        </div>
         <button id="solid-menu-toggle" class="md:hidden p-2 text-slate-600" aria-label="Toggle menu">
           <svg id="solid-icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           <svg id="solid-icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -209,6 +336,13 @@ const { variant = 'solid' } = Astro.props;
         <button id="solid-menu-close" class="p-2 text-slate-700" aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
+      </div>
+      <div id="s-mobile-profile" class="hidden items-center gap-3 px-6 py-5 border-b border-slate-200 shrink-0" style="background:#F8FAFC;">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden shrink-0" style="background:#1e88e5;">
+          <img id="s-mobile-profile-avatar" alt="" class="w-full h-full object-cover hidden" />
+          <span id="s-mobile-profile-initial" class="text-sm font-bold text-white">U</span>
+        </div>
+        <p id="s-mobile-profile-email" class="font-semibold text-slate-900 truncate"></p>
       </div>
       <div class="flex-1 overflow-y-auto px-6">
         <a href="/how-it-works/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sell</a>
@@ -226,7 +360,8 @@ const { variant = 'solid' } = Astro.props;
           </div>
         </details>
         <a href="/reviews/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Reviews</a>
-        <a href="/sign-in/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sign in</a>
+        <a id="s-mobile-signin-link" href="/sign-in/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sign in</a>
+        <button id="s-mobile-signout-btn" class="hidden w-full text-left flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sign out</button>
       </div>
       <div class="p-6 shrink-0">
         <a href="/request-offer/" class="solid-mobile-link flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors">
@@ -241,6 +376,95 @@ const { variant = 'solid' } = Astro.props;
   </nav>
 
   <script>
+    import { getSupabase } from '../lib/supabase';
+
+    // ─── Auth state: swap Sign in link with profile icon when logged in ───
+    const sSignin       = document.getElementById('s-signin-link') as HTMLAnchorElement;
+    const sProfileWrap  = document.getElementById('s-profile-wrap') as HTMLElement;
+    const sProfileBtn   = document.getElementById('s-profile-btn') as HTMLButtonElement;
+    const sProfileImg   = document.getElementById('s-profile-avatar') as HTMLImageElement;
+    const sProfileInit  = document.getElementById('s-profile-initial') as HTMLElement;
+    const sProfileMenu  = document.getElementById('s-profile-menu') as HTMLElement;
+    const sProfileEmail = document.getElementById('s-profile-email') as HTMLElement;
+    const sSignoutBtn   = document.getElementById('s-signout-btn') as HTMLButtonElement;
+    const sMSignin      = document.getElementById('s-mobile-signin-link') as HTMLAnchorElement;
+    const sMSignout     = document.getElementById('s-mobile-signout-btn') as HTMLButtonElement;
+    const sSupabase = getSupabase();
+
+    const sMProfile     = document.getElementById('s-mobile-profile') as HTMLElement;
+    const sMProfileImg  = document.getElementById('s-mobile-profile-avatar') as HTMLImageElement;
+    const sMProfileInit = document.getElementById('s-mobile-profile-initial') as HTMLElement;
+    const sMProfileEmail= document.getElementById('s-mobile-profile-email') as HTMLElement;
+
+    function sApplyAuth(user: any) {
+      const signedIn = !!user && !user.is_anonymous;
+      if (signedIn) {
+        sSignin.style.display = 'none';
+        sProfileWrap.classList.remove('hidden');
+        sProfileWrap.style.display = window.innerWidth >= 768 ? 'block' : 'none';
+        sMSignin.classList.add('hidden');
+        sMSignout.classList.remove('hidden');
+        sMProfile.classList.remove('hidden');
+        sMProfile.style.display = 'flex';
+        const email = user.email || '';
+        sProfileEmail.textContent = email;
+        sMProfileEmail.textContent = email;
+        const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture;
+        if (avatarUrl) {
+          sProfileImg.src = avatarUrl;
+          sMProfileImg.src = avatarUrl;
+          sProfileImg.classList.remove('hidden');
+          sMProfileImg.classList.remove('hidden');
+          sProfileInit.classList.add('hidden');
+          sMProfileInit.classList.add('hidden');
+        } else {
+          sProfileImg.classList.add('hidden');
+          sMProfileImg.classList.add('hidden');
+          sProfileInit.classList.remove('hidden');
+          sMProfileInit.classList.remove('hidden');
+          const initial = (email[0] || 'U').toUpperCase();
+          sProfileInit.textContent = initial;
+          sMProfileInit.textContent = initial;
+        }
+      } else {
+        sSignin.style.display = '';
+        sProfileWrap.classList.add('hidden');
+        sProfileWrap.style.display = '';
+        sMSignin.classList.remove('hidden');
+        sMSignout.classList.add('hidden');
+        sMProfile.classList.add('hidden');
+        sMProfile.style.display = '';
+        sProfileMenu.classList.add('hidden');
+      }
+    }
+    window.addEventListener('resize', () => {
+      if (sProfileWrap.style.display && sProfileWrap.style.display !== '') {
+        sProfileWrap.style.display = window.innerWidth >= 768 ? 'block' : 'none';
+      }
+    });
+    sSupabase.auth.getUser().then(({ data }) => sApplyAuth(data.user));
+    sSupabase.auth.onAuthStateChange((_event, session) => sApplyAuth(session?.user || null));
+
+    sProfileBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const willShow = sProfileMenu.classList.contains('hidden');
+      sProfileMenu.classList.toggle('hidden');
+      sProfileBtn.setAttribute('aria-expanded', String(willShow));
+    });
+    document.addEventListener('click', (e) => {
+      if (!sProfileWrap.contains(e.target as Node)) {
+        sProfileMenu.classList.add('hidden');
+        sProfileBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    async function sHandleSignOut() {
+      await sSupabase.auth.signOut();
+      window.location.assign('/');
+    }
+    sSignoutBtn.addEventListener('click', sHandleSignOut);
+    sMSignout.addEventListener('click', sHandleSignOut);
+
     const solidNav = document.getElementById('solid-nav') as HTMLElement;
     const solidNavLogo = document.getElementById('solid-nav-logo') as HTMLImageElement;
     const solidNavLinks = document.getElementById('solid-nav-links') as HTMLElement;

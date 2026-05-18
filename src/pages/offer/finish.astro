@@ -26,7 +26,7 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
 </head>
 <body>
   <div class="progress-bar"></div>
-  <header class="px-6 py-5 max-w-5xl mx-auto w-full">
+  <header class="px-6 py-5 max-w-6xl mx-auto w-full">
     <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
   </header>
 
@@ -92,6 +92,10 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
           return;
         }
         const userId = userData.user.id;
+        // Anonymous users came in via the homepage funnel without an account
+        // and need to create one (claim-token flow). Existing users have a
+        // real account already; we skip the claim/signup detour entirely.
+        const isAnonymous = !!userData.user.is_anonymous;
 
         // 2. Find the user's most-recent in-progress session
         const { data: sessions, error: selErr } = await supabase
@@ -108,34 +112,56 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
           return;
         }
 
-        // 3. Generate a one-time claim token (1 hour expiry)
-        const claimToken = genUUID();
-        const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+        if (isAnonymous) {
+          // ── Anonymous user path: generate claim token, redirect to /signup ──
+          const claimToken = genUUID();
+          const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
 
-        const { error: updErr } = await supabase
-          .from('qualification_sessions')
-          .update({
-            claim_token: claimToken,
-            claim_token_expires_at: expiresAt,
-            current_step: 5,
-          })
-          .eq('id', session.id);
-        if (updErr) throw updErr;
+          const { error: updErr } = await supabase
+            .from('qualification_sessions')
+            .update({
+              claim_token: claimToken,
+              claim_token_expires_at: expiresAt,
+              current_step: 5,
+            })
+            .eq('id', session.id);
+          if (updErr) throw updErr;
 
-        // 4. Fire a funnel_completed event (informational; the actual signup is on the app)
-        await supabase.from('events').insert({
-          session_id: session.id,
-          user_id: userId,
-          event_name: 'funnel_completed',
-          payload: {},
-        });
+          await supabase.from('events').insert({
+            session_id: session.id,
+            user_id: userId,
+            event_name: 'funnel_completed',
+            payload: { auth_state: 'anonymous' },
+          });
 
-        // 5. Sign out the anonymous session before crossing domains so the
-        //    app starts fresh — the claim token is what carries identity over.
-        await supabase.auth.signOut();
+          // Sign out the anonymous session before crossing domains so the app
+          // starts fresh — the claim token carries identity over to signup.
+          await supabase.auth.signOut();
+          window.location.assign(`${APP_URL}/signup?claim=${claimToken}`);
+        } else {
+          // ── Existing FlipSplit user: session is already tied to their
+          //    account. Skip the claim/signup flow. Mark the funnel complete
+          //    and hand off straight to the dashboard, pointing at this
+          //    specific session so the dashboard opens this property's offer.
+          const { error: updErr } = await supabase
+            .from('qualification_sessions')
+            .update({ current_step: 5 })
+            .eq('id', session.id);
+          if (updErr) throw updErr;
 
-        // 6. Redirect to the app's signup page with the claim token
-        window.location.assign(`${APP_URL}/signup?claim=${claimToken}`);
+          await supabase.from('events').insert({
+            session_id: session.id,
+            user_id: userId,
+            event_name: 'funnel_completed',
+            payload: { auth_state: 'existing_account' },
+          });
+
+          // Keep the user signed in — their browser session is theirs.
+          // The dashboard's Supabase client (same project) sees the same JWT.
+          // Land on the Overview (/) so they see the preliminary offer range
+          // for this new property, not the final-offer page.
+          window.location.assign(`${APP_URL}/?session_id=${session.id}`);
+        }
       } catch (err: any) {
         console.error('Finish step failed:', err);
         showError(err?.message || 'Something went wrong preparing your offer. Please try again.');

@@ -1,7 +1,8 @@
 ---
 import '../styles/global.css';
-import AddressForm from '../components/AddressForm.astro'
+import AddressForm from '../components/AddressForm.astro';
 import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <!DOCTYPE html>
@@ -21,58 +22,43 @@ import Nav from '../components/Nav.astro';
     :root { --brand-blue: #1e88e5; --brand-dark: #1E2A3A; --brand-body: #374151; }
     body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
     h1, h2 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
-    .btn-primary { background: #1e88e5; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
-    .btn-primary:hover { filter: brightness(1.08); }
     a { cursor: pointer; }
   </style>
 </head>
 <body class="antialiased bg-white">
 
-  <!-- NAV -->
   <Nav />
 
-  <!-- MAIN -->
-  <main class="min-h-screen flex flex-col items-center justify-center px-6 py-20">
-    <div class="w-full max-w-xl text-center">
-      <a href="/" class="inline-block mb-10">
-        <img src="/wordmark.png" alt="FlipSplit" class="h-10 mx-auto" />
-      </a>
-
-      <h1 class="text-4xl sm:text-5xl font-semibold leading-tight mb-4" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
-        Get your free<br/><span style="color:#1e88e5;">cash offer.</span>
+  <!-- HEADLINE + INPUT -->
+  <section class="px-6 pt-12 pb-6 text-center">
+    <div class="max-w-2xl mx-auto">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight mb-4" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+        Let's start your offer
       </h1>
-      <p class="text-slate-500 text-lg mb-10">
-        Enter your property address below. We'll respond within 24–48 hours with a no-obligation offer.
+      <p class="text-slate-500 text-base sm:text-lg leading-relaxed mb-8 max-w-xl mx-auto">
+        Enter your address to get started. This helps us find sales data for your home and other homes nearby.
       </p>
-
-      <AddressForm id="request-form" align="center" />
-
-      <!-- Trust signals -->
-      <div class="mt-10 grid grid-cols-3 gap-4 text-center">
-        {[
-          { value: '$0', label: 'Fees or commissions' },
-          { value: '24–48 hrs', label: 'Offer turnaround' },
-          { value: '5.0★', label: 'Customer rating' },
-        ].map(({ value, label }) => (
-          <div class="rounded-xl py-4 px-3 border border-slate-200" style="background:#F8FAFC;">
-            <div class="font-black text-lg" style="color:#1E2A3A;">{value}</div>
-            <div class="text-xs text-slate-400 mt-0.5">{label}</div>
-          </div>
-        ))}
-      </div>
+      <AddressForm id="request-form" class="flex flex-col items-center" align="center" showTrust={false} />
     </div>
-  </main>
+  </section>
 
-  <!-- FOOTER -->
-  <footer class="py-8 px-6 border-t border-slate-100 text-center">
-    <div class="flex flex-wrap justify-center gap-6 text-xs text-slate-400 mb-3">
-      <a href="/how-it-works" class="hover:text-[#1E2A3A] transition-colors">How It Works</a>
-      <a href="/faq" class="hover:text-[#1E2A3A] transition-colors">FAQ</a>
-      <a href="/privacy-policy" class="hover:text-[#1E2A3A] transition-colors">Privacy Policy</a>
-      <a href="/about" class="hover:text-[#1E2A3A] transition-colors">About</a>
+  <!-- ARCH-FRAMED HERO IMAGE — sized to fit remaining viewport before scroll -->
+  <div class="px-6 flex justify-center">
+    <div
+      class="aspect-[5/4] overflow-hidden shadow-lg"
+      style="border-radius: 9999px 9999px 0 0; height: min(calc(100vh - 24rem), 65vh); min-height: 240px;"
+    >
+      <img
+        src="/casestudies/arch-hero.jpg"
+        alt="A FlipSplit renovated home"
+        class="w-full h-full object-cover select-none"
+        draggable="false"
+      />
     </div>
-    <p class="text-xs text-slate-400">© 2026 FlipSplit LLC. All rights reserved.</p>
-  </footer>
+  </div>
+
+  <!-- FOOTER (minimal) -->
+  <Footer />
 
 </body>
 </html>

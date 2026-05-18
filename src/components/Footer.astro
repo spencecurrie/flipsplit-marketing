@@ -1,0 +1,71 @@
+---
+// Shared site-wide footer. Drop in via <Footer /> on any page.
+// Funnel pages (under /offer/*) keep their own minimal footer.
+---
+
+<footer class="bg-[#0F1A2B] text-slate-400 px-6 py-16">
+  <div class="max-w-[1500px] mx-auto">
+
+    <!-- Top row: logo + tagline -->
+    <div class="grid md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr] gap-10 lg:gap-16 mb-12 pb-12 border-b border-white/10">
+      <div>
+        <a href="/" class="inline-block mb-5">
+          <img src="/wordmark.png" alt="FlipSplit" class="h-10" />
+        </a>
+        <p class="text-sm leading-relaxed max-w-xs">
+          The first cash offer that doesn't make you choose. Sell as-is for cash today and share the upside when your home sells for more.
+        </p>
+      </div>
+
+      <!-- Sell -->
+      <div>
+        <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-5">Sell</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="/how-it-works/" class="hover:text-white transition-colors">How FlipSplit Works</a></li>
+          <li><a href="/request-offer/" class="hover:text-white transition-colors">Request an Offer</a></li>
+          <li><a href="/sell-my-home-fast/" class="hover:text-white transition-colors">Sell My Home Fast</a></li>
+        </ul>
+      </div>
+
+      <!-- Where we buy -->
+      <div>
+        <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-5">Where we buy</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="/location-la-county/"             class="hover:text-white transition-colors">Los Angeles County</a></li>
+          <li><a href="/location-orange-county/"         class="hover:text-white transition-colors">Orange County</a></li>
+          <li><a href="/location-san-diego-county/"      class="hover:text-white transition-colors">San Diego County</a></li>
+          <li><a href="/location-riverside-county/"      class="hover:text-white transition-colors">Riverside County</a></li>
+          <li><a href="/location-san-bernardino-county/" class="hover:text-white transition-colors">San Bernardino County</a></li>
+          <li><a href="/location-long-beach/"            class="hover:text-white transition-colors">Long Beach</a></li>
+          <li><a href="/location-anaheim/"               class="hover:text-white transition-colors">Anaheim</a></li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div>
+        <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-5">Company</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="/about/"    class="hover:text-white transition-colors">About</a></li>
+          <li><a href="/reviews/"  class="hover:text-white transition-colors">Reviews</a></li>
+          <li><a href="/faq/"      class="hover:text-white transition-colors">FAQ</a></li>
+          <li><a href="/blog/"     class="hover:text-white transition-colors">Blog</a></li>
+          <li><a href="/sign-in/"  class="hover:text-white transition-colors">Sign in</a></li>
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <div>
+        <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-5">Legal</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="/privacy-policy/" class="hover:text-white transition-colors">Privacy Policy</a></li>
+          <li><a href="mailto:hello@flipsplit.com" class="hover:text-white transition-colors">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom row: copyright -->
+    <div class="text-xs text-slate-500">
+      <p>© 2026 FlipSplit LLC. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

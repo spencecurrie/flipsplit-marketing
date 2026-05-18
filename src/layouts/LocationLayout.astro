@@ -2,6 +2,7 @@
 import '../styles/global.css'
 import Nav from '../components/Nav.astro';
 import AddressForm from '../components/AddressForm.astro';
+import Footer from '../components/Footer.astro';
 
 interface CaseStudy {
   tag: string;
@@ -165,7 +166,7 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
 
   <!-- HERO -->
   <section class="py-20 px-6 bg-white border-b border-slate-100">
-    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-32 xl:gap-40 items-center">
+    <div class="max-w-[1500px] mx-auto grid lg:grid-cols-2 gap-16 lg:gap-32 xl:gap-40 items-center">
       <div>
         <span class="inline-block text-xs font-semibold tracking-wide mb-5 px-4 py-1.5 rounded-full" style="background:rgba(26,150,232,0.1); color:#1e88e5;">{city}</span>
         <h1 class="text-4xl sm:text-5xl font-semibold leading-tight mb-6" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
@@ -183,11 +184,11 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
         ></iframe>
 
         {[
-          { top: '15%', left: '24%', amount: '$875K', delay: '0s', photo: heroHomePhotos[0] },
-          { top: '22%', left: '68%', amount: '$1.2M', delay: '1s', photo: heroHomePhotos[1] },
-          { top: '50%', left: '42%', amount: '$640K', delay: '2s', photo: heroHomePhotos[2] },
-          { top: '70%', left: '18%', amount: '$1.05M',delay: '3s', photo: heroHomePhotos[3] },
-          { top: '74%', left: '70%', amount: '$750K', delay: '4s', photo: heroHomePhotos[4] },
+          { top: '15%', left: '24%', amount: '$875K', delay: '1s', photo: heroHomePhotos[0] },
+          { top: '22%', left: '68%', amount: '$1.2M', delay: '2s', photo: heroHomePhotos[1] },
+          { top: '50%', left: '42%', amount: '$640K', delay: '3s', photo: heroHomePhotos[2] },
+          { top: '70%', left: '18%', amount: '$1.05M',delay: '4s', photo: heroHomePhotos[3] },
+          { top: '74%', left: '70%', amount: '$750K', delay: '5s', photo: heroHomePhotos[4] },
         ].map(p => (
           <div class="loc-pin" style={`top:${p.top}; left:${p.left}; animation-delay:${p.delay};`}>
             <div class="loc-pin-photo" style={`background-image:url('${p.photo}');`}></div>
@@ -253,7 +254,7 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
 
   <!-- SERVICE AREA -->
   <section class="py-20 px-6 bg-white">
-    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
+    <div class="max-w-[1500px] mx-auto grid lg:grid-cols-2 gap-12 items-start">
       <div>
         <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">Where we buy</p>
         <h2 class="text-3xl font-semibold mb-5" style="color:#1E2A3A;">We help {city} homeowners sell as-is.</h2>
@@ -288,7 +289,7 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
 
   <!-- HOW IT WORKS -->
   <section id="how-it-works" class="py-24 px-6 bg-white">
-    <div class="max-w-5xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+    <div class="max-w-[1500px] mx-auto grid lg:grid-cols-2 gap-16 items-center">
 
       <!-- Left: heading + accordion steps -->
       <div>
@@ -359,7 +360,7 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
   <!-- MARKET OVERVIEW -->
   {marketOverview && (
     <section class="py-20 px-6" style="background:#F8FAFC;">
-      <div class="max-w-5xl mx-auto lg:grid lg:grid-cols-[1fr_2fr] lg:gap-16 lg:items-start">
+      <div class="max-w-[1500px] mx-auto lg:grid lg:grid-cols-[1fr_2fr] lg:gap-16 lg:items-start">
         <div class="mb-8 lg:mb-0 lg:sticky lg:top-24">
           <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color: var(--brand-cyan);">2026 Market Overview</p>
           <h2 class="text-3xl font-semibold leading-snug" style="color: #1E2A3A;">{marketHeading}</h2>
@@ -398,7 +399,7 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
   <!-- CASE STUDIES (Long Beach) -->
   {caseStudies && caseStudies.length > 0 && (
     <section class="py-20 px-6 bg-slate-50">
-      <div class="max-w-5xl mx-auto">
+      <div class="max-w-[1500px] mx-auto">
         <div class="text-center mb-12">
           <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">Real cases</p>
           <h2 class="text-4xl font-semibold text-[#1E2A3A]">{city} homes we've bought.</h2>
@@ -424,7 +425,7 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
   <!-- TESTIMONIALS -->
   {displayTestimonials && (
     <section class="py-24 px-6">
-      <div class="max-w-6xl mx-auto">
+      <div class="max-w-[1500px] mx-auto">
         <div class="text-center mb-12">
           <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">What homeowners say</p>
           <h2 class="text-4xl font-semibold text-[#1E2A3A]">Real {testimonialsName} homeowners, real results.</h2>
@@ -474,7 +475,7 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
   <section id="get-offer" class="py-20 px-6" style="background: #1E2A3A;">
     <div class="max-w-2xl mx-auto text-center">
       <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color: var(--brand-cyan);">Free. No obligation.</p>
-      <h2 class="text-4xl sm:text-5xl font-semibold mb-4 leading-tight" style="color: white;">Get your free {shortName} offer today.</h2>
+      <h2 class="text-3xl sm:text-4xl font-semibold mb-4 leading-tight" style="color: white;">Get your free {shortName} offer today.</h2>
       <p class="text-slate-300 text-base leading-relaxed mb-7">Enter your address below. We'll respond within 24–48 hours with a guaranteed cash offer, renovation plan, and profit projection.</p>
 
       <AddressForm id={`loc-${slug}-bottom`} class="flex flex-col items-center mb-6" align="center" />
@@ -492,18 +493,7 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
   </section>
 
   <!-- FOOTER -->
-  <footer style="background: #081e21;" class="py-10 px-6">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-      <img src="/wordmark.png" alt="FlipSplit" class="h-8" />
-      <div class="flex gap-6">
-        <a href="/blog" class="hover:text-white transition-colors">Blog</a>
-        <a href="/#how-it-works" class="hover:text-white transition-colors">How It Works</a>
-        <a href="/#faq" class="hover:text-white transition-colors">FAQ</a>
-        <a href="mailto:hello@flipsplit.com" class="hover:text-white transition-colors">Contact</a>
-      </div>
-      <p>© 2026 FlipSplit. All rights reserved.</p>
-    </div>
-  </footer>
+  <Footer />
 
 </body>
 </html>

@@ -25,7 +25,12 @@ export function getSupabase(): SupabaseClient {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
-      detectSessionInUrl: false,
+      // detectSessionInUrl: true (Supabase default) — required so the OAuth
+      // callback's tokens (in the URL hash) are picked up when Google bounces
+      // the user back to the marketing site. Doesn't interfere with the
+      // anonymous-auth qualification funnel (anon sessions never put tokens
+      // in the URL).
+      detectSessionInUrl: true,
     },
   });
   return _client;

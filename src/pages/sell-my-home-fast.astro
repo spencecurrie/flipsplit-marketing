@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import AddressForm from '../components/AddressForm.astro'
 import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <!DOCTYPE html>
@@ -33,7 +34,7 @@ import Nav from '../components/Nav.astro';
 
   <!-- HERO -->
   <section class="py-24 px-6 bg-white border-b border-slate-100">
-    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
+    <div class="max-w-[1500px] mx-auto grid lg:grid-cols-2 gap-14 items-center">
       <div>
         <span class="inline-block text-xs font-bold uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full" style="background:rgba(26,150,232,0.1); color:#1e88e5;">Fast. Simple. Fair.</span>
         <h1 class="text-5xl sm:text-6xl font-semibold leading-tight mb-6" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
@@ -62,7 +63,7 @@ import Nav from '../components/Nav.astro';
 
   <!-- WHY FLIPSPLIT -->
   <section class="py-24 px-6 bg-white">
-    <div class="max-w-5xl mx-auto">
+    <div class="max-w-[1500px] mx-auto">
       <div class="text-center mb-14">
         <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Why FlipSplit</p>
         <h2 class="text-3xl sm:text-4xl font-semibold" style="color:#1E2A3A;">Not just fast. The best outcome.</h2>
@@ -97,7 +98,7 @@ import Nav from '../components/Nav.astro';
 
   <!-- WE BUY ANY CONDITION -->
   <section class="py-24 px-6" style="background:#f8fafc;">
-    <div class="max-w-5xl mx-auto">
+    <div class="max-w-[1500px] mx-auto">
       <div class="text-center mb-14">
         <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">We Buy It All</p>
         <h2 class="text-3xl font-semibold" style="color:#1E2A3A;">No situation is too complicated.</h2>
@@ -155,7 +156,7 @@ import Nav from '../components/Nav.astro';
 
   <!-- VS COMPARISON -->
   <section class="py-24 px-6" style="background:#f8fafc;">
-    <div class="max-w-5xl mx-auto">
+    <div class="max-w-[1500px] mx-auto">
       <div class="text-center mb-14">
         <h2 class="text-3xl font-semibold" style="color:#1E2A3A;">How we compare.</h2>
       </div>
@@ -201,19 +202,7 @@ import Nav from '../components/Nav.astro';
   </section>
 
   <!-- FOOTER -->
-  <footer class="py-12 px-6 border-t border-slate-100">
-    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <a href="/"><img src="/wordmark.png" alt="FlipSplit" class="h-8" /></a>
-      <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-400">
-        <a href="/how-it-works" class="hover:text-[#1E2A3A] transition-colors">How It Works</a>
-        <a href="/reviews" class="hover:text-[#1E2A3A] transition-colors">Reviews</a>
-        <a href="/about" class="hover:text-[#1E2A3A] transition-colors">About</a>
-        <a href="/faq" class="hover:text-[#1E2A3A] transition-colors">FAQ</a>
-        <a href="/privacy-policy" class="hover:text-[#1E2A3A] transition-colors">Privacy Policy</a>
-      </div>
-      <p class="text-xs text-slate-400">© 2026 FlipSplit. All rights reserved.</p>
-    </div>
-  </footer>
+  <Footer />
 
 </body>
 </html>

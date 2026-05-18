@@ -5,14 +5,26 @@ interface Props {
   align?: 'left' | 'center';
   /** When false, hides the ★ 5.0 reviews row + "No obligation…" line below the input. */
   showTrust?: boolean;
+  /** 'light' for dark text on light backgrounds (default); 'dark' for light text on dark backgrounds (e.g. hero overlays). */
+  theme?: 'light' | 'dark';
+  /** When true with align='center', center on mobile only; left-align on desktop (lg+). */
+  responsive?: boolean;
 }
-const { id = 'address-form', class: className = '', align = 'left', showTrust = true } = Astro.props;
+const { id = 'address-form', class: className = '', align = 'left', showTrust = true, theme = 'light', responsive = false } = Astro.props;
+const trustStrong = theme === 'dark' ? 'text-white' : 'text-slate-400';
+const trustSoft   = theme === 'dark' ? 'text-white/80' : 'text-slate-400';
+const trustHint   = theme === 'dark' ? 'text-white/70' : 'text-slate-400';
+const centerOnly  = align === 'center' && !responsive;
+const centerResp  = align === 'center' && responsive;
+const formCenter  = centerOnly ? 'mx-auto' : centerResp ? 'mx-auto lg:mx-0' : '';
+const rowCenter   = centerOnly ? 'justify-center' : centerResp ? 'justify-center lg:justify-start' : '';
+const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:text-left' : '';
 ---
 
 <div class={className}>
   <form
     id={id}
-    class="address-form flex items-center bg-white rounded-2xl border border-slate-200 shadow-sm p-2 gap-2 w-full max-w-lg mb-3"
+    class:list={["address-form flex items-center bg-white rounded-2xl border border-slate-200 shadow-sm p-2 gap-2 w-full max-w-lg mb-3", formCenter]}
     novalidate
   >
     <input
@@ -21,7 +33,7 @@ const { id = 'address-form', class: className = '', align = 'left', showTrust = 
       required
       placeholder="Enter your home address..."
       autocomplete="off"
-      class="flex-1 text-[#1E2A3A] text-sm focus:outline-none bg-transparent min-w-0 py-4 px-4 placeholder-slate-400"
+      class="flex-1 text-[#1E2A3A] text-[17px] focus:outline-none bg-transparent min-w-0 py-4 px-4 placeholder-slate-400"
     />
     <button
       type="submit"
@@ -41,15 +53,54 @@ const { id = 'address-form', class: className = '', align = 'left', showTrust = 
 
   <p class="address-error hidden text-xs text-red-500 font-medium mb-2"></p>
 
+  <!-- Address-confirmation modal (one per AddressForm instance, hidden by default) -->
+  <div class="address-modal hidden fixed inset-0 z-[100] flex items-center justify-center px-4 py-8" style="background: rgba(15, 23, 42, 0.55);">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 relative" role="dialog" aria-modal="true" aria-labelledby={`${id}-modal-title`}>
+      <button type="button" class="address-modal-close absolute top-5 right-5 p-1 text-slate-400 hover:text-slate-700 transition-colors" aria-label="Close">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <h2 id={`${id}-modal-title`} class="text-2xl font-bold mb-6 pr-8" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+        Is this the correct home address?
+      </h2>
+
+      <div class="rounded-2xl p-4 flex items-start justify-between gap-3 mb-6" style="background:#F1F5F9;">
+        <p class="address-modal-address text-sm font-medium leading-relaxed flex-1" style="color:#1E2A3A; white-space: pre-line;"></p>
+        <button type="button" class="address-modal-edit text-sm font-semibold shrink-0 hover:opacity-80 transition-opacity" style="color:#1e88e5;">Edit</button>
+      </div>
+
+      <label class="block">
+        <span class="text-sm font-semibold text-slate-700">Unit, Apt, or Suite # <span class="text-slate-400 font-normal">(optional)</span></span>
+        <input
+          type="text"
+          class="address-modal-unit mt-2 w-full border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#1e88e5] transition-colors"
+          placeholder="e.g. 30, 4B, Suite C"
+          autocomplete="off"
+          maxlength="20"
+        />
+      </label>
+      <p class="text-xs text-slate-400 mt-2">Leave blank if your home is single-family.</p>
+
+      <button
+        type="button"
+        class="address-modal-confirm w-full mt-6 text-white font-bold py-3.5 rounded-xl text-sm transition-all hover:brightness-110 disabled:opacity-60 disabled:cursor-wait"
+        style="background:#1e88e5;"
+      >
+        <span class="address-modal-confirm-label">Confirm address</span>
+      </button>
+      <p class="address-modal-error hidden text-sm text-red-500 font-medium mt-3 text-center"></p>
+    </div>
+  </div>
+
   {showTrust && (
     <Fragment>
-      <div class={`flex flex-wrap items-center gap-1.5 text-sm mb-1.5 ${align === 'center' ? 'justify-center' : ''}`}>
+      <div class={`flex flex-wrap items-center gap-1.5 text-sm mb-1.5 ${rowCenter}`}>
         <span style="color: #FBBC05; letter-spacing: 1px;">★★★★★</span>
-        <span class="font-bold text-slate-400">5.0</span>
-        <span class="text-slate-400">· Verified reviews on</span>
-        <span class="font-bold text-slate-400">REVIEWS.IO</span>
+        <span class={`font-bold ${trustStrong}`}>5.0</span>
+        <span class={trustSoft}>· Verified reviews on</span>
+        <span class={`font-bold ${trustStrong}`}>REVIEWS.IO</span>
       </div>
-      <p class={`text-xs text-slate-400 ${align === 'center' ? 'text-center' : ''}`}>No obligation · No repairs needed · Results in 24–48 hours</p>
+      <p class={`text-xs ${trustHint} ${textCenter}`}>No obligation · No repairs needed · Results in 24–48 hours</p>
     </Fragment>
   )}
 </div>
@@ -120,12 +171,43 @@ const { id = 'address-form', class: className = '', align = 'left', showTrust = 
         fields: ['formatted_address', 'address_components'],
       });
 
+      const form = input.closest('form');
+      if (!form) return;
+      const wrap = form.parentElement; // outer <div class={className}>
+      if (!wrap) return;
+
+      // Modal elements (each AddressForm instance has its own sibling modal)
+      const modal       = wrap.querySelector<HTMLElement>('.address-modal');
+      const modalAddr   = wrap.querySelector<HTMLElement>('.address-modal-address');
+      const modalUnit   = wrap.querySelector<HTMLInputElement>('.address-modal-unit');
+      const modalConfirm= wrap.querySelector<HTMLButtonElement>('.address-modal-confirm');
+      const modalLabel  = wrap.querySelector<HTMLElement>('.address-modal-confirm-label');
+      const modalClose  = wrap.querySelector<HTMLButtonElement>('.address-modal-close');
+      const modalEdit   = wrap.querySelector<HTMLButtonElement>('.address-modal-edit');
+      const modalError  = wrap.querySelector<HTMLElement>('.address-modal-error');
+
+      function openModal(place: google.maps.places.PlaceResult) {
+        if (!modal || !modalAddr) return;
+        modalAddr.textContent = place.formatted_address || '';
+        if (modalUnit) modalUnit.value = '';
+        if (modalError) modalError.classList.add('hidden');
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => modalUnit?.focus(), 50);
+      }
+      function closeModal() {
+        modal?.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      // Open modal as soon as the user picks an address from the dropdown.
       ac.addListener('place_changed', () => {
         const place = ac.getPlace();
         if (place?.formatted_address) {
           input.value = place.formatted_address;
           pickedPlace = place;
           input.setCustomValidity('');
+          openModal(place);
         }
       });
 
@@ -136,55 +218,76 @@ const { id = 'address-form', class: className = '', align = 'left', showTrust = 
         );
       });
 
-      const form = input.closest('form');
-      if (!form) return;
+      // Close modal — keeps the address in the input field.
+      modalClose?.addEventListener('click', closeModal);
+      // Edit — close + clear so user can search again.
+      modalEdit?.addEventListener('click', () => {
+        closeModal();
+        input.value = '';
+        pickedPlace = null;
+        setTimeout(() => input.focus(), 50);
+      });
+      // Esc + backdrop close
+      modal?.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) closeModal();
+      });
 
-      form.addEventListener('submit', async (e) => {
+      // Submit button — if a place is picked, re-open modal; otherwise show
+      // the usual "select from dropdown" error.
+      form.addEventListener('submit', (e) => {
         e.preventDefault();
-        const errorEl = form.parentElement?.querySelector<HTMLElement>('.address-error');
-        const submitBtn = form.querySelector<HTMLButtonElement>('.address-submit');
-        const arrow = form.querySelector<SVGElement>('.address-arrow');
-        const spinner = form.querySelector<SVGElement>('.address-spinner');
-
+        const errorEl = wrap.querySelector<HTMLElement>('.address-error');
         const showError = (msg: string) => {
-          if (errorEl) {
-            errorEl.textContent = msg;
-            errorEl.classList.remove('hidden');
-          }
+          if (errorEl) { errorEl.textContent = msg; errorEl.classList.remove('hidden'); }
         };
-        const clearError = () => errorEl?.classList.add('hidden');
+        errorEl?.classList.add('hidden');
+        if (!input.value.trim()) return showError('Please enter your property address.');
+        if (!pickedPlace) return showError('Please select an address from the dropdown suggestions.');
+        openModal(pickedPlace);
+      });
 
-        clearError();
+      // Confirm — actually submits address + unit # to the funnel.
+      modalConfirm?.addEventListener('click', async () => {
+        if (!pickedPlace) return;
+        const unitNumber = (modalUnit?.value || '').trim() || null;
 
-        if (!input.value.trim()) {
-          showError('Please enter your property address.');
-          return;
-        }
-        if (!pickedPlace) {
-          showError('Please select an address from the dropdown suggestions.');
-          return;
-        }
-
-        // Show loading state
-        submitBtn?.setAttribute('disabled', 'true');
-        arrow?.classList.add('hidden');
-        spinner?.classList.remove('hidden');
+        // Loading state on the confirm button.
+        modalConfirm.setAttribute('disabled', 'true');
+        if (modalLabel) modalLabel.textContent = 'Confirming…';
+        if (modalError) modalError.classList.add('hidden');
 
         try {
           const supabase = getSupabase();
 
-          // 1. Sign in anonymously (or reuse existing session if any)
-          const { data: sessionData } = await supabase.auth.getSession();
-          if (!sessionData.session) {
-            const { error: authErr } = await supabase.auth.signInAnonymously();
-            if (authErr) throw authErr;
+          // 1. Ensure we have a *valid* authenticated session.
+          // We don't trust getSession() alone — its session may point to a
+          // deleted user (common in dev when auth.users gets reset). We verify
+          // via getUser() (server round-trip); on failure we clear the stale
+          // token and start a fresh anonymous session.
+          async function ensureUserId(): Promise<string> {
+            const { data: existing, error: getUserErr } = await supabase.auth.getUser();
+            if (existing?.user?.id && !getUserErr) return existing.user.id;
+            // Either no session or the stored JWT points to a user that no
+            // longer exists. Clear it and start fresh.
+            try { await supabase.auth.signOut(); } catch { /* ignore */ }
+            const { data: signin, error: authErr } = await supabase.auth.signInAnonymously();
+            if (authErr) {
+              throw new Error(
+                authErr.message?.includes('Anonymous sign-ins are disabled')
+                  ? 'Anonymous sign-ins are disabled for this project. Enable them in Supabase → Authentication → Sign In/Up → "Allow anonymous sign-ins".'
+                  : `Sign-in failed: ${authErr.message}`
+              );
+            }
+            const userId = signin?.user?.id;
+            if (!userId) throw new Error('Could not establish a session. Please refresh and try again.');
+            return userId;
           }
+          const userId = await ensureUserId();
 
-          const { data: userData } = await supabase.auth.getUser();
-          const userId = userData.user?.id;
-          if (!userId) throw new Error('Could not establish anonymous session.');
-
-          // 2. Insert qualification_sessions row
+          // 2. Insert qualification_sessions row (includes unit_number for condos/apts).
           const parts = parseAddressParts(pickedPlace);
           const { data: row, error: insertErr } = await supabase
             .from('qualification_sessions')
@@ -195,38 +298,39 @@ const { id = 'address-form', class: className = '', align = 'left', showTrust = 
               city: parts.city,
               state: parts.state,
               zip: parts.zip,
+              unit_number: unitNumber,
               current_step: 0,
             })
             .select('id')
             .single();
           if (insertErr) throw insertErr;
 
-          // 3. Kick off the RentCast property-records lookup *immediately* — it
-          //    gates the (now first) "home details" step, so start it before
-          //    anything else and don't wait on it; the home-details page polls
-          //    / re-tries if it hasn't landed by the time it renders.
+          // 3. Kick off RentCast property lookup (unit_number is on the session
+          //    row, so the edge function reads it directly).
           supabase.functions
             .invoke('lookup-property', { body: { session_id: row.id } })
             .catch((e: any) => console.warn('lookup-property invoke failed:', e));
 
-          // 3b. Fire the funnel_started event — analytics only, don't block on it.
+          // 3b. funnel_started analytics event (don't block on it).
           supabase.from('events')
             .insert({
               session_id: row.id,
               user_id: userId,
               event_name: 'funnel_started',
-              payload: { address: pickedPlace.formatted_address },
+              payload: { address: pickedPlace.formatted_address, unit_number: unitNumber },
             })
             .then((res: any) => { if (res?.error) console.warn('funnel_started event failed:', res.error); });
 
-          // 4. Redirect to step 1
+          // 4. Off to step 1.
           window.location.assign('/offer/step-1/');
         } catch (err: any) {
           console.error('Funnel start failed:', err);
-          showError(err?.message || 'Something went wrong. Please try again.');
-          submitBtn?.removeAttribute('disabled');
-          arrow?.classList.remove('hidden');
-          spinner?.classList.add('hidden');
+          if (modalError) {
+            modalError.textContent = err?.message || 'Something went wrong. Please try again.';
+            modalError.classList.remove('hidden');
+          }
+          modalConfirm.removeAttribute('disabled');
+          if (modalLabel) modalLabel.textContent = 'Confirm address';
         }
       });
     });

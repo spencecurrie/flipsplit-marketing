@@ -1,6 +1,22 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Global typography bump — body text sizes are ~3pt (4px) larger than Tailwind
+   defaults so copy reads bigger across every marketing page. Headings
+   (text-2xl+) keep their default sizes. */
+@theme {
+  --text-base: 1.25rem;        /* 20px (was 16px) */
+  --text-base--line-height: 1.6;
+  --text-lg: 1.13rem;          /* ~18.1px (2pt up from prior 15.5px) */
+  --text-lg--line-height: 1.6;
+  --text-xl: 1.5rem;           /* 24px (was 20px) */
+  --text-xl--line-height: 1.55;
+  --text-3xl: 2.33rem;         /* ~37.3px (2pt down from prior 40px) */
+  --text-3xl--line-height: 1.1;
+  --text-4xl: 2.83rem;         /* ~45.3px (2pt down from prior 48px) */
+  --text-4xl--line-height: 1.08;
+}
+
 /* Reusable outline button — apply class="btn-transparent" to any <a> or <button> */
 .btn-transparent {
   display: inline-block;
