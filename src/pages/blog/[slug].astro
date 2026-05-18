@@ -51,7 +51,7 @@ function formatDate(d: Date) {
 
   <style>
     :root {
-      --brand-cyan: #1a96e8;
+      --brand-cyan: #1e88e5;
       --brand-dark: #1E2A3A;
       --brand-body: #374151;
     }
@@ -117,7 +117,7 @@ function formatDate(d: Date) {
           </nav>
 
           <!-- Title -->
-          <h1 class="text-3xl sm:text-4xl lg:text-[2.75rem] font-black text-[#1E2A3A] leading-tight mb-5" style="font-family:'sahar','Open Sans',sans-serif; color:#1E2A3A;">
+          <h1 class="text-3xl sm:text-4xl lg:text-[2.75rem] font-semibold text-[#1E2A3A] leading-tight mb-5" style="font-family:'sahar','Open Sans',sans-serif; color:#1E2A3A;">
             {title}
           </h1>
 
@@ -156,7 +156,7 @@ function formatDate(d: Date) {
             <ul class="space-y-2">
               {tocHeadings.map(h => (
                 <li style={`padding-left: ${(h.depth - 2) * 12}px`}>
-                  <a href={`#${h.slug}`} class="text-sm text-slate-600 hover:text-[#1a96e8] transition-colors">
+                  <a href={`#${h.slug}`} class="text-sm text-slate-600 hover:text-[#1e88e5] transition-colors">
                     {h.text}
                   </a>
                 </li>
@@ -193,7 +193,7 @@ function formatDate(d: Date) {
       <!-- Get Offer card -->
       <div class="rounded-2xl p-6" style="background: var(--brand-dark);">
         <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color: var(--brand-cyan);">Free. No obligation.</p>
-        <h3 class="text-xl font-black mb-3 leading-tight" style="color: white;">Choose your home offer price.</h3>
+        <h3 class="text-xl font-semibold mb-3 leading-tight" style="color: white;">Choose your home offer price.</h3>
         <p class="text-slate-400 text-sm mb-5 leading-relaxed">Share your address. We'll respond in 24–48 hours with a cash offer and renovation projection.</p>
         <a href="/#get-offer" class="btn-primary block text-center text-sm px-5 py-3 rounded-xl">
           Get My Free Offer →
@@ -212,7 +212,7 @@ function formatDate(d: Date) {
                   <a
                     href={`#${h.slug}`}
                     data-heading={h.slug}
-                    class="toc-link text-sm text-slate-500 hover:text-[#1a96e8] block py-0.5 border-l-2 border-transparent pl-3 transition-colors"
+                    class="toc-link text-sm text-slate-500 hover:text-[#1e88e5] block py-0.5 border-l-2 border-transparent pl-3 transition-colors"
                   >
                     {h.text}
                   </a>
@@ -229,7 +229,7 @@ function formatDate(d: Date) {
   {related.length > 0 && (
     <section class="border-t border-slate-100 py-20 px-6">
       <div class="max-w-6xl mx-auto">
-        <h2 class="text-2xl font-black text-[#1E2A3A] mb-10">Keep reading</h2>
+        <h2 class="text-2xl font-semibold text-[#1E2A3A] mb-10">Keep reading</h2>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {related.map(p => (
             <a href={`/blog/${p.id}`} class="group flex flex-col rounded-2xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
@@ -241,7 +241,7 @@ function formatDate(d: Date) {
               </div>
               <div class="p-6 flex flex-col flex-1">
                 <span class="text-xs text-slate-400 mb-2">{formatDate(p.data.pubDate)}</span>
-                <h3 class="font-black text-[#1E2A3A] leading-snug group-hover:text-[#1a96e8] transition-colors line-clamp-3">{p.data.title}</h3>
+                <h3 class="font-semibold text-[#1E2A3A] leading-snug group-hover:text-[#1e88e5] transition-colors line-clamp-3">{p.data.title}</h3>
               </div>
             </a>
           ))}

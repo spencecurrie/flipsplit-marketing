@@ -18,8 +18,8 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
   <style>
     body { font-family: 'Open Sans', sans-serif; color: #374151; background: #fff; min-height: 100vh; display: flex; flex-direction: column; }
     h1 { font-family: 'sahar', 'Open Sans', sans-serif; color: #1E2A3A; }
-    .progress-bar { height: 4px; background: #1a96e8; }
-    .spinner { width: 56px; height: 56px; border-radius: 50%; border: 4px solid #e2e8f0; border-top-color: #1a96e8; animation: spin 0.85s linear infinite; }
+    .progress-bar { height: 4px; background: #1e88e5; }
+    .spinner { width: 56px; height: 56px; border-radius: 50%; border: 4px solid #e2e8f0; border-top-color: #1e88e5; animation: spin 0.85s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .preview-note { background: #FEF3C7; border: 1px solid #FCD34D; color: #78350F; padding: 1rem 1.25rem; border-radius: 12px; font-size: 0.875rem; max-width: 32rem; margin: 1.5rem auto 0; }
   </style>
@@ -32,7 +32,7 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
 
   <main class="flex-1 flex flex-col items-center justify-center px-6 text-center">
     <div class="spinner mb-8" aria-hidden="true"></div>
-    <h1 class="text-3xl md:text-4xl font-black mb-3">Preparing your offer…</h1>
+    <h1 class="text-3xl md:text-4xl font-semibold mb-3">Preparing your offer…</h1>
     <p class="text-base md:text-lg text-slate-500 max-w-md">We're saving your details and sending you to create an account so we can text you when your offer is ready.</p>
     <p id="finish-error" class="hidden text-sm text-red-500 font-medium mt-6"></p>
     <div id="preview-note" class="preview-note hidden"></div>
@@ -40,6 +40,25 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
 
   <script>
     import { getSupabase } from '../../lib/supabase';
+
+    // crypto.randomUUID() only exists in "secure contexts" — HTTPS or
+    // localhost — so it's missing when the site is opened over a plain-HTTP LAN
+    // IP (e.g. http://192.168.x.x:4321 for mobile testing). Fall back to a
+    // v4 UUID built from getRandomValues (available everywhere), then Math.random.
+    const genUUID = (): string => {
+      const c = (globalThis as any).crypto;
+      if (typeof c?.randomUUID === 'function') return c.randomUUID();
+      const bytes = new Uint8Array(16);
+      if (typeof c?.getRandomValues === 'function') {
+        c.getRandomValues(bytes);
+      } else {
+        for (let i = 0; i < 16; i++) bytes[i] = Math.floor(Math.random() * 256);
+      }
+      bytes[6] = (bytes[6] & 0x0f) | 0x40; // version 4
+      bytes[8] = (bytes[8] & 0x3f) | 0x80; // variant 10xx
+      const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+      return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+    };
 
     (async () => {
       const errorEl = document.getElementById('finish-error');
@@ -90,7 +109,7 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
         }
 
         // 3. Generate a one-time claim token (1 hour expiry)
-        const claimToken = crypto.randomUUID();
+        const claimToken = genUUID();
         const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
 
         const { error: updErr } = await supabase

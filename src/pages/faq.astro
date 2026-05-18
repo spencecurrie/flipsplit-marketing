@@ -101,10 +101,10 @@ const faqs = [
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root { --brand-blue: #1a96e8; --brand-dark: #1E2A3A; --brand-body: #374151; }
+    :root { --brand-blue: #1e88e5; --brand-dark: #1E2A3A; --brand-body: #374151; }
     body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
     h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
-    .btn-primary { background: #1a96e8; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary { background: #1e88e5; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
     .btn-primary:hover { filter: brightness(1.08); }
     details > summary { list-style: none; cursor: pointer; }
     details > summary::-webkit-details-marker { display: none; }
@@ -121,9 +121,9 @@ const faqs = [
   <!-- HERO -->
   <section class="py-20 px-6 bg-white border-b border-slate-100">
     <div class="max-w-3xl mx-auto text-center">
-      <span class="inline-block text-xs font-bold uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full" style="background:rgba(26,150,232,0.1); color:#1a96e8;">Got Questions?</span>
-      <h1 class="text-5xl font-black leading-tight mb-4" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
-        Frequently asked<br/><span style="color:#1a96e8;">questions.</span>
+      <span class="inline-block text-xs font-bold uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full" style="background:rgba(26,150,232,0.1); color:#1e88e5;">Got Questions?</span>
+      <h1 class="text-5xl font-semibold leading-tight mb-4" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+        Frequently asked<br/><span style="color:#1e88e5;">questions.</span>
       </h1>
       <p class="text-slate-500 text-lg">Everything you need to know about selling your home to FlipSplit.</p>
     </div>
@@ -135,7 +135,7 @@ const faqs = [
       <div class="divide-y divide-slate-100">
         {faqs.map(({ q, a }) => (
           <details class="group py-1">
-            <summary class="flex items-start justify-between gap-4 py-5 font-semibold text-[#1E2A3A] hover:text-[#1a96e8] transition-colors">
+            <summary class="flex items-start justify-between gap-4 py-5 font-semibold text-[#1E2A3A] hover:text-[#1e88e5] transition-colors">
               <span class="flex-1 text-left">{q}</span>
               <span class="faq-icon shrink-0 mt-0.5 text-slate-400 text-xl leading-none">+</span>
             </summary>
@@ -152,15 +152,15 @@ const faqs = [
   <section class="py-16 px-6 border-t border-slate-100" style="background:#F8FAFC;">
     <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center gap-8 justify-between">
       <div>
-        <h3 class="text-xl font-black mb-2" style="color:#1E2A3A;">Still have questions?</h3>
+        <h3 class="text-xl font-semibold mb-2" style="color:#1E2A3A;">Still have questions?</h3>
         <p class="text-slate-500 text-sm">Call us or send an email — a real person will respond.</p>
       </div>
       <div class="flex flex-wrap gap-3 shrink-0">
-        <a href="tel:18006617489" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-200 text-sm font-semibold text-[#1E2A3A] hover:border-[#1a96e8] transition-colors">
+        <a href="tel:18006617489" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-200 text-sm font-semibold text-[#1E2A3A] hover:border-[#1e88e5] transition-colors">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .99h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           1-800-661-7489
         </a>
-        <a href="mailto:info@flipsplit.com" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-200 text-sm font-semibold text-[#1E2A3A] hover:border-[#1a96e8] transition-colors">
+        <a href="mailto:info@flipsplit.com" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-slate-200 text-sm font-semibold text-[#1E2A3A] hover:border-[#1e88e5] transition-colors">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           info@flipsplit.com
         </a>
@@ -171,7 +171,7 @@ const faqs = [
   <!-- CTA -->
   <section class="py-24 px-6" style="background: linear-gradient(135deg, #1E2A3A 0%, #1a2744 100%);">
     <div class="max-w-2xl mx-auto text-center">
-      <h2 class="text-4xl font-black mb-4 leading-tight" style="color:white; font-family:'sahar','Open Sans',sans-serif;">Ready to get your free offer?</h2>
+      <h2 class="text-4xl font-semibold mb-4 leading-tight" style="color:white; font-family:'sahar','Open Sans',sans-serif;">Ready to get your free offer?</h2>
       <p class="text-slate-400 mb-10">No fees. No repairs. No obligation. Results in 24–48 hours.</p>
       <AddressForm id="faq-form" align="center" />
     </div>

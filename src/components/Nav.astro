@@ -6,7 +6,7 @@ const { variant = 'solid' } = Astro.props;
 ---
 
 <style>
-  .nav-btn { background: #1a96e8; color: #fff; font-weight: 700; font-size: 0.875rem; padding: 0.625rem 1.25rem; border-radius: 8px; transition: filter 0.15s; white-space: nowrap; }
+  .nav-btn { background: #1e88e5; color: #fff; font-weight: 700; font-size: 0.875rem; padding: 0.625rem 1.25rem; border-radius: 8px; transition: filter 0.15s; white-space: nowrap; }
   .nav-btn:hover { filter: brightness(1.08); }
   .nav-dropdown-wrap { position: relative; }
   .nav-dropdown { position: absolute; top: calc(100% + 12px); left: 0; width: 14rem; border-radius: 12px; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s; z-index: 60; background: #1E2A3A; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 16px 40px rgba(0,0,0,0.2); }
@@ -31,11 +31,11 @@ const { variant = 'solid' } = Astro.props;
         <a href="/"><img id="nav-logo" src="/wordmark-dark.png" alt="FlipSplit" class="h-9" /></a>
       </div>
 
-      <div id="nav-links" class="hidden md:flex items-center gap-8 text-sm font-medium">
+      <div id="nav-links" class="hidden md:flex items-center gap-8 text-base font-medium">
         <a href="/how-it-works/" class="text-white/90 hover:text-white transition-colors">Sell</a>
         <div class="nav-dropdown-wrap">
-          <button class="flex items-center gap-1 text-white/90 hover:text-white transition-colors text-sm font-medium">
-            Where We Buy <svg class="nav-chevron mt-0.5" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          <button class="flex items-center gap-1 text-white/90 hover:text-white transition-colors text-base font-medium">
+            Where We Buy <svg class="nav-chevron mt-0.5" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="nav-dropdown">
             <a href="/location-la-county/" class="nav-drop-item">Los Angeles County</a>
@@ -59,7 +59,8 @@ const { variant = 'solid' } = Astro.props;
         </form>
       </div>
 
-      <div id="nav-right" class="flex-1 flex items-center justify-end gap-3">
+      <div id="nav-right" class="flex-1 flex items-center justify-end gap-5">
+        <a href="/sign-in/" class="hidden md:inline-block text-white/90 hover:text-white transition-colors text-base font-medium">Sign in</a>
         <button id="menu-toggle" class="md:hidden p-2 text-white transition-colors" aria-label="Toggle menu">
           <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           <svg id="icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -82,14 +83,15 @@ const { variant = 'solid' } = Astro.props;
             <svg class="mobile-chevron text-slate-700" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
           </summary>
           <div class="pb-5 ml-1 space-y-1">
-            <a href="/location-la-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">Los Angeles County</a>
-            <a href="/location-orange-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">Orange County</a>
-            <a href="/location-riverside-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">Riverside County</a>
-            <a href="/location-san-bernardino-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">San Bernardino County</a>
-            <a href="/location-san-diego-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">San Diego County</a>
+            <a href="/location-la-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">Los Angeles County</a>
+            <a href="/location-orange-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">Orange County</a>
+            <a href="/location-riverside-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">Riverside County</a>
+            <a href="/location-san-bernardino-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">San Bernardino County</a>
+            <a href="/location-san-diego-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">San Diego County</a>
           </div>
         </details>
         <a href="/reviews/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Reviews</a>
+        <a href="/sign-in/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sign in</a>
       </div>
       <div class="p-6 shrink-0">
         <a href="#get-offer" class="mobile-nav-link flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors">
@@ -156,18 +158,18 @@ const { variant = 'solid' } = Astro.props;
     });
   </script>
 ) : (
-  <!-- ─── SOLID NAV (all other pages) ─── -->
-  <nav class="sticky top-0 z-50 bg-white border-b border-slate-100">
+  <!-- ─── SOLID NAV (all other pages — mirrors homepage scroll behavior) ─── -->
+  <nav id="solid-nav" class="sticky top-0 z-50 bg-white border-b border-slate-100 transition-all duration-300">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center">
       <div class="flex-1">
-        <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
+        <a href="/"><img id="solid-nav-logo" src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
       </div>
 
-      <div class="hidden md:flex items-center gap-8 text-sm text-slate-500 font-medium">
+      <div id="solid-nav-links" class="hidden md:flex items-center gap-8 text-base text-slate-500 font-medium">
         <a href="/how-it-works/" class="hover:text-[#1E2A3A] transition-colors">Sell</a>
         <div class="nav-dropdown-wrap">
-          <button class="flex items-center gap-1 text-slate-500 hover:text-[#1E2A3A] transition-colors text-sm font-medium">
-            Where We Buy <svg class="nav-chevron mt-0.5" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          <button class="flex items-center gap-1 text-slate-500 hover:text-[#1E2A3A] transition-colors text-base font-medium">
+            Where We Buy <svg class="nav-chevron mt-0.5" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="nav-dropdown">
             <a href="/location-la-county/" class="nav-drop-item">Los Angeles County</a>
@@ -180,7 +182,19 @@ const { variant = 'solid' } = Astro.props;
         <a href="/reviews/" class="hover:text-[#1E2A3A] transition-colors">Reviews</a>
       </div>
 
-      <div class="flex-1 flex items-center justify-end gap-3">
+      <div id="solid-nav-offer-form-wrap" class="hidden flex-1 max-w-lg mx-auto">
+        <form>
+          <div class="flex items-center rounded-xl overflow-hidden border border-white/20" style="background: rgba(255,255,255,0.1);">
+            <input type="text" name="address" placeholder="Enter your home address..." class="flex-1 bg-transparent text-white text-sm placeholder:text-white/50 focus:outline-none px-4 py-2.5" />
+            <button type="submit" class="shrink-0 text-white text-xs font-bold px-4 py-2.5 transition-all hover:bg-white/10 whitespace-nowrap rounded-lg" style="border: 1.5px solid rgba(255,255,255,0.7); background: transparent;">
+              Get My Offer
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div id="solid-nav-right" class="flex-1 flex items-center justify-end gap-5">
+        <a href="/sign-in/" class="hidden md:inline-block text-slate-500 hover:text-[#1E2A3A] transition-colors text-base font-medium">Sign in</a>
         <a href="/request-offer/" class="nav-btn">Get My Offer</a>
         <button id="solid-menu-toggle" class="md:hidden p-2 text-slate-600" aria-label="Toggle menu">
           <svg id="solid-icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -204,14 +218,15 @@ const { variant = 'solid' } = Astro.props;
             <svg class="mobile-chevron text-slate-700" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
           </summary>
           <div class="pb-5 ml-1 space-y-1">
-            <a href="/location-la-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">Los Angeles County</a>
-            <a href="/location-orange-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">Orange County</a>
-            <a href="/location-riverside-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">Riverside County</a>
-            <a href="/location-san-bernardino-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">San Bernardino County</a>
-            <a href="/location-san-diego-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1a96e8] transition-colors py-2">San Diego County</a>
+            <a href="/location-la-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">Los Angeles County</a>
+            <a href="/location-orange-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">Orange County</a>
+            <a href="/location-riverside-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">Riverside County</a>
+            <a href="/location-san-bernardino-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">San Bernardino County</a>
+            <a href="/location-san-diego-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">San Diego County</a>
           </div>
         </details>
         <a href="/reviews/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Reviews</a>
+        <a href="/sign-in/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sign in</a>
       </div>
       <div class="p-6 shrink-0">
         <a href="/request-offer/" class="solid-mobile-link flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors">
@@ -226,10 +241,43 @@ const { variant = 'solid' } = Astro.props;
   </nav>
 
   <script>
+    const solidNav = document.getElementById('solid-nav') as HTMLElement;
+    const solidNavLogo = document.getElementById('solid-nav-logo') as HTMLImageElement;
+    const solidNavLinks = document.getElementById('solid-nav-links') as HTMLElement;
+    const solidNavOfferFormWrap = document.getElementById('solid-nav-offer-form-wrap') as HTMLElement;
+    const solidNavRight = document.getElementById('solid-nav-right') as HTMLElement;
     const toggle = document.getElementById('solid-menu-toggle');
     const menu = document.getElementById('solid-mobile-menu');
-    const iconOpen = document.getElementById('solid-icon-open');
-    const iconClose = document.getElementById('solid-icon-close');
+
+    // Mirror homepage nav: after scrolling past the hero, swap to dark navy + address form input.
+    function updateSolidNav() {
+      const scrolled = window.scrollY > 80;
+      const isMobile = window.innerWidth < 768;
+      if (scrolled) {
+        solidNav.style.background = '#1E2A3A';
+        solidNav.style.borderBottomColor = 'rgba(255,255,255,0.06)';
+        solidNavLogo.src = '/wordmark-dark.png';
+        solidNavLinks.style.display = 'none';
+        if (isMobile) {
+          solidNavOfferFormWrap.style.display = 'none';
+          solidNavRight.style.display = '';
+        } else {
+          solidNavOfferFormWrap.style.display = 'flex';
+          solidNavRight.style.display = 'none';
+        }
+      } else {
+        solidNav.style.background = '';
+        solidNav.style.borderBottomColor = '';
+        solidNavLogo.src = '/wordmark-on-white.png';
+        solidNavLinks.style.display = '';
+        solidNavRight.style.display = '';
+        solidNavOfferFormWrap.style.display = 'none';
+      }
+    }
+
+    window.addEventListener('scroll', updateSolidNav);
+    window.addEventListener('resize', updateSolidNav);
+    updateSolidNav();
 
     function closeSolidMenu() {
       menu?.classList.add('hidden');

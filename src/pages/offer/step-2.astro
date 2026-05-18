@@ -2,24 +2,21 @@
 import OfferLayout from '../../layouts/OfferLayout.astro';
 
 const options = [
-  { value: 'single_family', label: 'Single Family Home' },
-  { value: 'apartment_condo', label: 'Apartment or Condo' },
-  { value: 'attached_single_family', label: 'Attached Single Family Home' },
-  { value: 'manufactured_mobile', label: 'Manufactured or Mobile Home' },
-  { value: 'multi_family', label: 'Multi-family' },
-  { value: 'empty_lot', label: 'Empty Lot' },
+  { value: 'owner', label: "Yes, I'm the owner" },
+  { value: 'agent', label: "No, I'm an agent" },
+  { value: 'other', label: 'Other' },
 ];
 ---
 
 <OfferLayout
   step={2}
-  title="Please select your home category"
-  subtitle="This will help us arrive at an initial offer range based on properties with similar characteristics in your area."
+  title="Are you the current owner of the home?"
+  subtitle="Please select your current selling situation."
   backHref="/offer/step-1/"
   nextHref="/offer/step-3/"
   autoAdvance={true}
 >
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
     {options.map((opt) => (
       <button type="button" class="offer-card-btn" data-value={opt.value} aria-pressed="false">
         {opt.label}
@@ -42,10 +39,10 @@ const options = [
     }
   }
 
-  const setup = (session: { home_category?: string | null }) => {
+  const setup = (session: { owner_status?: string | null }) => {
     const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.offer-card-btn'));
     const nextBtn = document.getElementById('offer-next') as HTMLButtonElement;
-    let selected: string | null = session.home_category ?? null;
+    let selected: string | null = session.owner_status ?? null;
     let advancing = false;
 
     const render = () => {
@@ -66,7 +63,7 @@ const options = [
       });
     });
 
-    window.__funnel.getSelected = () => (selected ? { home_category: selected } : null);
+    window.__funnel.getSelected = () => (selected ? { owner_status: selected } : null);
     render();
   };
 

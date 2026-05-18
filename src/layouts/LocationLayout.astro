@@ -33,7 +33,21 @@ interface Props {
   marketHeading?: string;
   whySellBody?: string;
   serviceAreaBody?: string;
+  /** Offset (0–16) into the 17-photo home pool. Each location page picks a
+   *  different offset so photos rotate across the site instead of repeating. */
+  homePhotosStart?: number;
+  /** OpenStreetMap bbox string ("west,south,east,north") for the hero map.
+   *  Each location page passes the bbox of a representative city in its area. */
+  mapBbox?: string;
+  /** Display name for the map (used in iframe title for a11y). */
+  mapDisplayName?: string;
 }
+
+// Master pool of 17 home photos (in /public/homes/). The hero map renders
+// 6 offer pins, each picking a photo from this pool starting at homePhotosStart
+// and wrapping. Spread evenly across all location pages by choosing a
+// different starting offset on each page.
+const HOME_PHOTOS = Array.from({ length: 17 }, (_, i) => `/homes/home-${i + 1}.png`);
 
 const {
   title, description, slug, city, shortName,
@@ -50,10 +64,18 @@ const {
   marketHeading = `The ${city} real estate market in 2026.`,
   serviceAreaBody = `Whether you're looking to sell a single-family home, an inherited property, a rental with tenants, or a house that needs major work — FlipSplit buys homes throughout ${city} in any condition. We specialize in situations traditional buyers won't touch: deferred maintenance, outdated systems, fire or water damage, difficult tenant situations, and full estate cleanouts.\n\nOur team has deep knowledge of every corner of ${city}. No matter where your property is located, we can evaluate it and deliver a fair offer within 24–48 hours.`,
   whySellBody = `If you want to sell your home in ${city}, the traditional path means paying for repairs upfront, managing contractors, sitting through weeks of showings, and hoping a buyer doesn't walk after inspection. A cash buyer solves the hassle — but discounts your home 20–30% below market and keeps every dollar of renovation profit for themselves.\n\nFlipSplit is a third option. We buy your home as-is, fund and manage the entire renovation at zero cost to you, and split the profit when the updated home sells for more. You get a guaranteed cash offer at closing and a backend check once the renovated home sells. No repairs. No showings. No surprises.`,
+  homePhotosStart = 0,
+  mapBbox = '-118.4300,34.0400,-118.2200,34.1300',
+  mapDisplayName = city,
 } = Astro.props;
 
 const displayTestimonials = !(caseStudies && caseStudies.length > 0) && testimonials.length > 0;
 const mapQuery = encodeURIComponent(`${city}, CA`);
+
+// Pick 5 photos starting at the page's offset, wrapping around the pool.
+const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
+  HOME_PHOTOS[(homePhotosStart + i) % HOME_PHOTOS.length]
+);
 ---
 
 <!DOCTYPE html>
@@ -70,7 +92,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style is:global>
-    :root { --brand-cyan: #1a96e8; --brand-dark: #1E2A3A; --brand-body: #374151; }
+    :root { --brand-cyan: #1e88e5; --brand-dark: #1E2A3A; --brand-body: #374151; }
     body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
     h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
     .btn-primary { background: var(--brand-cyan); color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
@@ -82,6 +104,58 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
     .step-chevron { transition: transform 0.2s ease; }
     details[open] .step-chevron { transform: rotate(180deg); }
     a, button, summary, select, [role="button"] { cursor: pointer !important; }
+
+    /* Floating offer pins over the city map */
+    @keyframes loc-pin-pop {
+      0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+      60%  { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+      100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+    .loc-pin {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border-radius: 999px;
+      padding: 5px 14px 5px 5px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
+      z-index: 2;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      animation: loc-pin-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .loc-pin { animation: none; opacity: 1; }
+    }
+    .loc-pin-photo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background-color: #CBD5E1;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 0 0 2px #ffffff;
+    }
+    .loc-pin-text { line-height: 1; }
+    .loc-pin-amount {
+      font-size: 14px;
+      font-weight: 800;
+      color: #1e88e5;
+      font-family: 'sahar', 'Open Sans', sans-serif;
+      line-height: 1;
+    }
+    .loc-pin-label {
+      font-size: 10px;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      margin-top: 3px;
+    }
   </style>
 </head>
 <body class="bg-white antialiased">
@@ -91,20 +165,36 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
 
   <!-- HERO -->
   <section class="py-20 px-6 bg-white border-b border-slate-100">
-    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-32 xl:gap-40 items-center">
       <div>
-        <span class="inline-block text-xs font-semibold tracking-wide mb-5 px-4 py-1.5 rounded-full" style="background:rgba(26,150,232,0.1); color:#1a96e8;">{city}</span>
-        <h1 class="text-4xl sm:text-5xl font-black leading-tight mb-6" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+        <span class="inline-block text-xs font-semibold tracking-wide mb-5 px-4 py-1.5 rounded-full" style="background:rgba(26,150,232,0.1); color:#1e88e5;">{city}</span>
+        <h1 class="text-4xl sm:text-5xl font-semibold leading-tight mb-6" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
           {heroHeadline}
         </h1>
         <p class="text-slate-500 text-lg leading-relaxed mb-8">{heroSub}</p>
         <AddressForm id={`loc-${slug}-hero`} class="max-w-lg w-full" />
       </div>
-      <div class="grid grid-cols-2 gap-4">
-        {stats.map(s => (
-          <div class="rounded-2xl p-6 border border-slate-200" style="background:#ffffff;">
-            <div class="text-3xl font-black mb-1" style="color: var(--brand-cyan);">{s.value}</div>
-            <div class="text-sm text-slate-400">{s.label}</div>
+      <div class="loc-map-frame rounded-3xl overflow-hidden border border-slate-200 shadow-md relative" style="height:520px; background:#E2E8F0;">
+        <iframe
+          src={`https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(mapBbox)}&layer=mapnik`}
+          style="border:0; display:block; pointer-events:none; filter:saturate(0.9); position:absolute; top:0; left:0; width:calc(100% + 60px); height:calc(100% + 35px);"
+          loading="lazy"
+          title={`Map of ${mapDisplayName}`}
+        ></iframe>
+
+        {[
+          { top: '15%', left: '24%', amount: '$875K', delay: '0s', photo: heroHomePhotos[0] },
+          { top: '22%', left: '68%', amount: '$1.2M', delay: '1s', photo: heroHomePhotos[1] },
+          { top: '50%', left: '42%', amount: '$640K', delay: '2s', photo: heroHomePhotos[2] },
+          { top: '70%', left: '18%', amount: '$1.05M',delay: '3s', photo: heroHomePhotos[3] },
+          { top: '74%', left: '70%', amount: '$750K', delay: '4s', photo: heroHomePhotos[4] },
+        ].map(p => (
+          <div class="loc-pin" style={`top:${p.top}; left:${p.left}; animation-delay:${p.delay};`}>
+            <div class="loc-pin-photo" style={`background-image:url('${p.photo}');`}></div>
+            <div class="loc-pin-text">
+              <div class="loc-pin-amount">{p.amount}</div>
+              <div class="loc-pin-label">offer</div>
+            </div>
           </div>
         ))}
       </div>
@@ -115,7 +205,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
   <section class="py-20 px-6 bg-white">
     <div class="max-w-4xl mx-auto">
       <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">Your options</p>
-      <h2 class="text-3xl font-black mb-6" style="color:#1E2A3A;">Why {city} homeowners choose FlipSplit.</h2>
+      <h2 class="text-3xl font-semibold mb-6" style="color:#1E2A3A;">Why {city} homeowners choose FlipSplit.</h2>
       <div class="space-y-4 mb-12">
         {whySellBody.split('\\n\\n').map(para => (
           <p class="text-slate-600 leading-relaxed text-base">{para}</p>
@@ -155,7 +245,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
   <!-- PROCESS CTA -->
   <section class="py-20 px-6 bg-white">
     <div class="max-w-2xl mx-auto text-center rounded-2xl border border-slate-200 py-12 px-8" style="background:#F8FAFC;">
-      <h2 class="text-2xl font-black mb-3" style="color:#1E2A3A;">Ready to see what your {city} home is worth?</h2>
+      <h2 class="text-2xl font-semibold mb-3" style="color:#1E2A3A;">Ready to see what your {city} home is worth?</h2>
       <p class="text-slate-500 text-sm mb-7">Get a guaranteed cash offer in 24–48 hours. No repairs, no showings, no obligation.</p>
       <a href="#get-offer" class="btn-primary inline-block px-8 py-4 rounded-xl text-base font-bold">Get My Free Offer →</a>
     </div>
@@ -166,7 +256,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
     <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-start">
       <div>
         <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">Where we buy</p>
-        <h2 class="text-3xl font-black mb-5" style="color:#1E2A3A;">We help {city} homeowners sell as-is.</h2>
+        <h2 class="text-3xl font-semibold mb-5" style="color:#1E2A3A;">We help {city} homeowners sell as-is.</h2>
         <div class="space-y-4 mb-8">
           {serviceAreaBody.split('\\n\\n').map(para => (
             <p class="text-slate-600 leading-relaxed text-base">{para}</p>
@@ -203,7 +293,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
       <!-- Left: heading + accordion steps -->
       <div>
         <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">The process</p>
-        <h2 class="text-3xl font-black mb-10 leading-snug" style="color:#1E2A3A;">How FlipSplit works in {city}.</h2>
+        <h2 class="text-3xl font-semibold mb-10 leading-snug" style="color:#1E2A3A;">How FlipSplit works in {city}.</h2>
 
         {[
           { n: "1", title: "Share your address", bullets: [
@@ -237,7 +327,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
               <ul class="space-y-2">
                 {bullets.map(b => (
                   <li class="flex items-start gap-2.5 text-sm text-slate-500">
-                    <svg class="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#1a96e8" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#1a96e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg class="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#1e88e5" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#1e88e5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     {b}
                   </li>
                 ))}
@@ -255,9 +345,9 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
         ) : (
           <div class="w-full h-full flex flex-col items-center justify-center gap-4">
             <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background:rgba(26,150,232,0.15); border:2px solid rgba(26,150,232,0.3);">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4l12 6-12 6V4z" fill="#1a96e8"/></svg>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4l12 6-12 6V4z" fill="#1e88e5"/></svg>
             </div>
-            <p class="text-sm font-semibold" style="color:#1a96e8;">How It Works Video</p>
+            <p class="text-sm font-semibold" style="color:#1e88e5;">How It Works Video</p>
             <p class="text-xs text-slate-400">Coming soon</p>
           </div>
         )}
@@ -272,7 +362,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
       <div class="max-w-5xl mx-auto lg:grid lg:grid-cols-[1fr_2fr] lg:gap-16 lg:items-start">
         <div class="mb-8 lg:mb-0 lg:sticky lg:top-24">
           <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color: var(--brand-cyan);">2026 Market Overview</p>
-          <h2 class="text-3xl font-black leading-snug" style="color: #1E2A3A;">{marketHeading}</h2>
+          <h2 class="text-3xl font-semibold leading-snug" style="color: #1E2A3A;">{marketHeading}</h2>
         </div>
         <div class="space-y-5">
           {marketOverview.split('\n\n').map(para => (
@@ -311,13 +401,13 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
       <div class="max-w-5xl mx-auto">
         <div class="text-center mb-12">
           <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">Real cases</p>
-          <h2 class="text-4xl font-black text-[#1E2A3A]">{city} homes we've bought.</h2>
+          <h2 class="text-4xl font-semibold text-[#1E2A3A]">{city} homes we've bought.</h2>
         </div>
         <div class="grid md:grid-cols-2 gap-6">
           {caseStudies.map(c => (
             <div class="bg-white rounded-2xl border border-slate-200 p-8">
               <span class="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4" style="background: rgba(26,150,232,0.12); color: #1E2A3A;">{c.tag}</span>
-              <h3 class="text-xl font-black text-[#1E2A3A] mb-3">{c.headline}</h3>
+              <h3 class="text-xl font-semibold text-[#1E2A3A] mb-3">{c.headline}</h3>
               <p class="text-slate-500 text-sm leading-relaxed mb-5">{c.body}</p>
               <div class="rounded-xl px-5 py-4 border border-slate-200" style="background:#F8FAFC;">
                 <span class="text-xs font-semibold uppercase tracking-widest" style="color: var(--brand-cyan);">Result</span>
@@ -337,7 +427,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
       <div class="max-w-6xl mx-auto">
         <div class="text-center mb-12">
           <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">What homeowners say</p>
-          <h2 class="text-4xl font-black text-[#1E2A3A]">Real {testimonialsName} homeowners, real results.</h2>
+          <h2 class="text-4xl font-semibold text-[#1E2A3A]">Real {testimonialsName} homeowners, real results.</h2>
         </div>
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {testimonials.map(t => (
@@ -363,7 +453,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
     <div class="max-w-3xl mx-auto">
       <div class="text-center mb-12">
         <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">FAQ</p>
-        <h2 class="text-4xl font-black text-[#1E2A3A]">Questions about selling in {city}.</h2>
+        <h2 class="text-4xl font-semibold text-[#1E2A3A]">Questions about selling in {city}.</h2>
       </div>
       <div>
         {faqs.map(({ q, a }) => (
@@ -384,7 +474,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
   <section id="get-offer" class="py-20 px-6" style="background: #1E2A3A;">
     <div class="max-w-2xl mx-auto text-center">
       <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color: var(--brand-cyan);">Free. No obligation.</p>
-      <h2 class="text-4xl sm:text-5xl font-black mb-4 leading-tight" style="color: white;">Get your free {shortName} offer today.</h2>
+      <h2 class="text-4xl sm:text-5xl font-semibold mb-4 leading-tight" style="color: white;">Get your free {shortName} offer today.</h2>
       <p class="text-slate-300 text-base leading-relaxed mb-7">Enter your address below. We'll respond within 24–48 hours with a guaranteed cash offer, renovation plan, and profit projection.</p>
 
       <AddressForm id={`loc-${slug}-bottom`} class="flex flex-col items-center mb-6" align="center" />
@@ -393,7 +483,7 @@ const mapQuery = encodeURIComponent(`${city}, CA`);
       <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mt-4">
         {["No repairs needed", "Cash offer in 24–48 hours", "Zero upfront costs"].map(t => (
           <span class="flex items-center gap-2 text-sm text-slate-400">
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#1a96e8" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#1a96e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#1e88e5" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#1e88e5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             {t}
           </span>
         ))}

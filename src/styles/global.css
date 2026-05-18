@@ -25,11 +25,11 @@
   --tw-prose-headings: #1E2A3A;
   --tw-prose-links: #1E2A3A;
   --tw-prose-bold: #1E2A3A;
-  --tw-prose-bullets: #1a96e8;
-  --tw-prose-counters: #1a96e8;
+  --tw-prose-bullets: #1e88e5;
+  --tw-prose-counters: #1e88e5;
   --tw-prose-hr: #e2e8f0;
   --tw-prose-quotes: #1E2A3A;
-  --tw-prose-quote-borders: #1a96e8;
+  --tw-prose-quote-borders: #1e88e5;
   --tw-prose-th-borders: #e2e8f0;
   --tw-prose-td-borders: #f1f5f9;
 }
@@ -38,7 +38,7 @@
 .prose h3 { scroll-margin-top: 96px; }
 
 .prose a {
-  text-decoration-color: #1a96e8;
+  text-decoration-color: #1e88e5;
   text-decoration-thickness: 2px;
 }
-.prose a:hover { color: #1a96e8; }
+.prose a:hover { color: #1e88e5; }

@@ -18,7 +18,7 @@ import Nav from '../components/Nav.astro';
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root { --brand-cyan: #1a96e8; --brand-dark: #1E2A3A; --brand-body: #374151; }
+    :root { --brand-cyan: #1e88e5; --brand-dark: #1E2A3A; --brand-body: #374151; }
     body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
     h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
     .btn-primary { background: var(--brand-cyan); color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
@@ -44,54 +44,37 @@ import Nav from '../components/Nav.astro';
   <Nav />
 
   <!-- ─── SECTION 1: HERO ─── -->
-  <section class="relative overflow-hidden py-24 px-6 bg-white">
-    <div class="relative max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
+  <section class="relative overflow-hidden py-32 md:py-40 lg:py-48 px-6 bg-white">
+    <div class="relative max-w-7xl mx-auto grid lg:grid-cols-[1fr_1.5fr] gap-12 lg:gap-20 xl:gap-24 items-center">
 
       <!-- Left: copy + form -->
       <div>
-        <span class="inline-block text-xs font-semibold tracking-wide mb-6 px-4 py-1.5 rounded-full" style="background:rgba(26,150,232,0.1); color:#1a96e8;">How It Works</span>
-        <h1 class="text-5xl sm:text-6xl font-black leading-tight mb-6" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
-          Create<br/><span style="color:#1a96e8;">your offer.</span>
+        <h1 class="text-5xl sm:text-6xl font-semibold leading-tight mb-6" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+          Sell Today.<br/>Get Paid Twice.
         </h1>
         <p class="text-slate-500 text-lg leading-relaxed mb-10 max-w-lg">
-          FlipSplit gives you the maximum cash offer we can justify. Then you choose: take the full amount at closing, or trade some upfront cash for a larger share of the backend profit if the home beats our projection.
+          Take our maximum cash offer at closing, or trade some upfront cash for a larger share of the resale profit.
         </p>
-        <AddressForm id="hero-form" />
+        <AddressForm id="hero-form" showTrust={false} />
       </div>
 
-      <!-- Right: interactive offer slider -->
-      <div class="hidden lg:block">
-        <div class="rounded-2xl p-7 border border-slate-200" style="background:#F8FAFC;">
-          <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color:#1a96e8;">Create your offer</p>
-          <p class="text-xs mb-6 text-slate-400">Slide to adjust your cash/upside mix</p>
-
-          <!-- Slider labels -->
-          <div class="flex justify-between text-xs font-semibold mb-2 text-slate-400">
-            <span>Max Cash Now</span>
-            <span>Max Upside Later</span>
+      <!-- Right: tall slideshow cycling through home transformations -->
+      <div class="flex items-center justify-center mt-10 lg:mt-0">
+        <div class="hiw-frame">
+          <div class="hiw-split">
+            <img src="/casestudies/hero-before.jpg" alt="Home before FlipSplit renovation" class="hiw-half" style="object-position: left center;" draggable="false" />
+            <img src="/casestudies/hero-after.jpg"  alt="Home after FlipSplit renovation"  class="hiw-half" style="object-position: right center;" draggable="false" />
+            <div class="hiw-divider" aria-hidden="true"></div>
           </div>
-          <!-- Slider -->
-          <input id="hiw-slider" type="range" min="0" max="100" value="50"
-            class="w-full mb-6"
-            style="-webkit-appearance:none; appearance:none; height:6px; border-radius:3px; background:linear-gradient(to right, #1a96e8 50%, #e2e8f0 50%); outline:none; cursor:pointer;" />
-
-          <!-- Output -->
-          <div class="grid grid-cols-2 gap-3 mb-5">
-            <div class="rounded-xl p-4 border border-slate-200" style="background:#ffffff;">
-              <div class="text-xs font-semibold uppercase tracking-widest mb-2 text-slate-400">Cash at closing</div>
-              <div id="hiw-offer" class="text-2xl font-black" style="color:#1E2A3A;">$1,000,000</div>
-              <div class="text-xs mt-1 text-slate-400">Guaranteed</div>
-            </div>
-            <div class="rounded-xl p-4 border" style="background:rgba(26,150,232,0.06); border-color:rgba(26,150,232,0.2);">
-              <div class="text-xs font-semibold uppercase tracking-widest mb-2 text-slate-400">Backend split</div>
-              <div id="hiw-split" class="text-2xl font-black" style="color:#1a96e8;">50%</div>
-              <div class="text-xs mt-1 text-slate-400">Of amount above projection</div>
-            </div>
+          <!-- Cash now (bottom-left, white pill) -->
+          <div class="hiw-chip hiw-chip-now">
+            <div class="text-[10px] uppercase tracking-widest text-slate-400 font-semibold">Cash now</div>
+            <div class="text-2xl font-black text-brand-dark leading-none mt-1">$900k</div>
           </div>
-
-          <!-- Scenario hint -->
-          <div id="hiw-hint" class="rounded-xl p-4 text-xs leading-relaxed border border-slate-200 text-slate-500" style="background:#ffffff;">
-            Balanced offer. Full cash at closing with a 50% bonus if the home sells above the $1,250,000 projection.
+          <!-- Upside later (top-right, brand-blue pill) -->
+          <div class="hiw-chip hiw-chip-later">
+            <div class="text-[10px] uppercase tracking-widest font-semibold" style="color:rgba(255,255,255,0.8);">Upside later</div>
+            <div class="text-2xl font-black leading-none mt-1" style="color:#fff;">+$125k</div>
           </div>
         </div>
       </div>
@@ -100,513 +83,459 @@ import Nav from '../components/Nav.astro';
   </section>
 
   <style>
-    #hiw-slider::-webkit-slider-thumb {
-      -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
-      background: #1a96e8; border: 3px solid white; box-shadow: 0 0 0 2px #1a96e8; cursor: pointer;
+    /* Landscape before/after split + floating chips */
+    .hiw-frame { position: relative; width: 100%; max-width: 900px; }
+
+    .hiw-split {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-radius: 90px 24px 90px 24px;
+      overflow: hidden;
+      box-shadow: 0 18px 44px rgba(15, 23, 42, 0.14);
+      background: #f1f5f9;
+      user-select: none;
     }
-    #hiw-slider::-moz-range-thumb {
-      width: 22px; height: 22px; border-radius: 50%;
-      background: #1a96e8; border: 3px solid white; cursor: pointer;
+    .hiw-half {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      -webkit-user-drag: none;
+    }
+    .hiw-divider {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      width: 3px;
+      transform: translateX(-50%);
+      background: #fff;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06);
+      pointer-events: none;
+    }
+
+    /* Floating chips: prominent vertical bob + subtle rotation for life */
+    @keyframes hiw-chip-float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50%      { transform: translateY(-16px) rotate(-1.5deg); }
+    }
+    @keyframes hiw-chip-float-alt {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50%      { transform: translateY(-16px) rotate(1.5deg); }
+    }
+    .hiw-chip {
+      position: absolute;
+      padding: 0.6rem 1.15rem;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.22);
+      white-space: nowrap;
+      font-family: 'sahar', 'Open Sans', sans-serif;
+      pointer-events: none;
+    }
+    .hiw-chip-now   { bottom: -0.75rem; left: -0.75rem; animation: hiw-chip-float 3s ease-in-out infinite; }
+    .hiw-chip-later { top: -0.75rem;    right: -0.75rem; background: #1e88e5; animation: hiw-chip-float-alt 3s ease-in-out infinite; animation-delay: 1.5s; }
+    @media (prefers-reduced-motion: reduce) {
+      .hiw-chip { animation: none; }
+    }
+
+    /* ── Step-number squares (Opendoor-style: light gray, prominent) ── */
+    .v3-step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px;
+      border-radius: 10px;
+      background: #F1F5F9;
+      color: #475569;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 0.125rem;
+    }
+  </style>
+
+
+  <!-- ─── SECTION 2: THE 3-STEP PROCESS (with scroll-linked progress bar) ─── -->
+  <section id="hiw" class="py-24 lg:py-28 px-6 bg-white">
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-32 xl:gap-48 items-start" id="hiw-container">
+
+      <!-- Left: section title -->
+      <div>
+        <h2 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-[1.1]" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+          How FlipSplit works
+        </h2>
+      </div>
+
+      <!-- Right: steps with per-step progress bar segments -->
+      <div class="hiw-right">
+        <div class="hiw-steps">
+          <div class="hiw-row" data-step="1">
+            <div class="hiw-bar" aria-hidden="true"><div class="hiw-bar-fill"></div></div>
+            <div class="hiw-content">
+              <h3 class="text-xl font-semibold mb-2" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">Tell us about your home</h3>
+              <p class="text-slate-500 leading-relaxed">Share your address, a few photos, and a quick walkthrough. Most sellers finish in under three minutes.</p>
+            </div>
+          </div>
+
+          <div class="hiw-row" data-step="2">
+            <div class="hiw-bar" aria-hidden="true"><div class="hiw-bar-fill"></div></div>
+            <div class="hiw-content">
+              <h3 class="text-xl font-semibold mb-2" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">Customize your offer</h3>
+              <p class="text-slate-500 leading-relaxed">Pick the mix that fits you — maximum cash today, or trade some upfront cash for a larger share of the resale profit.</p>
+            </div>
+          </div>
+
+          <div class="hiw-row" data-step="3">
+            <div class="hiw-bar" aria-hidden="true"><div class="hiw-bar-fill"></div></div>
+            <div class="hiw-content">
+              <h3 class="text-xl font-semibold mb-2" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">We renovate. We resell. You get paid again.</h3>
+              <p class="text-slate-500 leading-relaxed">We cover 100% of the renovation cost. Once your home resells, your bonus check is wired within ten days.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style is:global>
+    .hiw-right { position: relative; }
+    .hiw-steps { display: flex; flex-direction: column; gap: 3rem; }
+    .hiw-row { display: flex; align-items: stretch; gap: 1.5rem; }
+    .hiw-bar {
+      flex-shrink: 0;
+      width: 4px;
+      min-height: 100px;
+      background: #CBD5E1;
+      border-radius: 999px;
+      position: relative;
+      overflow: hidden;
+      align-self: stretch;
+    }
+    .hiw-bar-fill {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 0;
+      background: #1e88e5;
+      border-radius: 999px;
+      transition: height 0.15s ease-out;
+    }
+    .hiw-content { flex: 1; padding-top: 2px; padding-bottom: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      .hiw-bar-fill { transition: none; }
     }
   </style>
 
   <script is:inline>
-    (function () {
-      var slider = document.getElementById('hiw-slider');
-      var offerEl = document.getElementById('hiw-offer');
-      var splitEl = document.getElementById('hiw-split');
-      var hintEl  = document.getElementById('hiw-hint');
-      if (!slider) return;
+    (function(){
+      var container = document.getElementById('hiw-container');
+      if (!container) return;
+      var rows = container.querySelectorAll('.hiw-row');
+      if (!rows.length) return;
 
-      function fmt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+      var rafPending = false;
+      function update(){
+        rafPending = false;
+        var anchor = window.innerHeight * 0.5;
 
-      function update(val) {
-        // val 0 = max cash, 100 = max upside
-        // Offer slides from $1,050,000 (max cash) down to $900,000 (max upside)
-        var offer = Math.round(1050000 - (val / 100) * 150000);
-        // Split slides from 0% up to 75%
-        var split = Math.round(val * 0.75);
-        // Threshold: at val=0 no participation, otherwise slides from $1,300K down to $1,150K
-        var threshold = Math.round(1300000 - (val / 100) * 150000);
-
-        offerEl.textContent = fmt(offer);
-        splitEl.textContent = split + '%';
-
-        // Update slider track fill
-        slider.style.background = 'linear-gradient(to right, #1a96e8 ' + val + '%, #e2e8f0 ' + val + '%)';
-
-        var hint = '';
-        if (val === 0) {
-          hint = 'Maximum cash at closing. No backend participation — your payout is fixed regardless of resale.';
-        } else if (val < 35) {
-          hint = 'Higher upfront cash with a small backend. You benefit modestly if the home outperforms our projection.';
-        } else if (val < 65) {
-          hint = 'Balanced offer. Full cash at closing with a ' + split + '% bonus if the home sells above the ' + fmt(threshold) + ' projection.';
-        } else if (val < 90) {
-          hint = 'You\'re trading some upfront cash for a bigger backend share. Strong upside if the market beats our projection.';
-        } else {
-          hint = 'Maximum backend participation. Lower cash now, but the highest possible bonus if the home significantly outperforms.';
+        for (var i = 0; i < rows.length; i++) {
+          var row = rows[i];
+          var rect = row.getBoundingClientRect();
+          var raw = (anchor - rect.top) / rect.height;
+          var progress = Math.max(0, Math.min(1, raw));
+          var fill = row.querySelector('.hiw-bar-fill');
+          if (fill) fill.style.height = (progress * 100) + '%';
         }
-        hintEl.textContent = hint;
       }
 
-      slider.addEventListener('input', function () { update(parseInt(this.value)); });
-      update(50);
+      function schedule(){
+        if (rafPending) return;
+        rafPending = true;
+        requestAnimationFrame(update);
+      }
+
+      window.addEventListener('scroll', schedule, { passive: true });
+      window.addEventListener('resize', schedule);
+      update();
     })();
-
-    // ── How It Works auto-tour ──
-    document.addEventListener('DOMContentLoaded', function () {
-      var hiwSteps = document.querySelectorAll('.hiw-step');
-      var hiwIndex = 0;
-      var hiwTimer;
-      var hiwAutoPlay = true;
-
-      function hiwActivate(idx) {
-        hiwIndex = ((idx % hiwSteps.length) + hiwSteps.length) % hiwSteps.length;
-        hiwSteps.forEach(function (s, i) {
-          s.classList.toggle('hiw-active', i === hiwIndex);
-          var bar = s.querySelector('.hiw-bar');
-          if (i !== hiwIndex) {
-            bar.style.animation = 'none';
-            bar.style.width = '0%';
-          } else {
-            bar.style.animation = 'none';
-            bar.offsetWidth; // force reflow
-            if (hiwAutoPlay) {
-              bar.style.width = '';
-              bar.style.animation = '';
-            } else {
-              bar.style.width = '100%';
-            }
-          }
-        });
-        clearTimeout(hiwTimer);
-        if (hiwAutoPlay) hiwTimer = setTimeout(function () { hiwActivate(hiwIndex + 1); }, 4000);
-      }
-
-      hiwSteps.forEach(function (step, i) {
-        step.addEventListener('click', function () {
-          hiwAutoPlay = false;
-          clearTimeout(hiwTimer);
-          hiwActivate(i);
-        });
-      });
-
-      hiwActivate(0);
-    });
   </script>
 
-  <!-- ─── SECTION 2: HOME SALE RECIPE ─── -->
-  <section class="py-28 px-6 bg-white border-t border-slate-100">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">Simple by design</p>
-        <h2 class="text-4xl md:text-5xl font-black" style="color: var(--brand-dark);">Our home sale recipe.</h2>
+  <!-- ─── SECTION 3: OUR OFFERS EXPLAINED ─── -->
+  <section class="py-24 px-6 bg-white border-t border-slate-100">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-14 max-w-2xl">
+        <p class="text-sm font-semibold mb-3" style="color:#4B5563;">Valuing your home</p>
+        <h2 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1E2A3A;">
+          Our offers, explained.
+        </h2>
+        <p class="text-slate-500 text-lg leading-relaxed">
+          Every FlipSplit offer is grounded in real data — not guesswork. Here's exactly what goes into yours.
+        </p>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-16 items-center">
-
-        <!-- Left: app screenshot -->
-        <div class="flex items-center justify-center">
-          <img src="/app-screenshot.png" alt="FlipSplit app" class="w-full max-w-xs mx-auto" />
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="rounded-2xl p-8 border border-slate-200" style="background:#F1F5F9;">
+          <h3 class="text-xl font-semibold mb-3" style="color:#1E2A3A;">Market forecast</h3>
+          <p class="text-slate-500 leading-relaxed">We pull 12-month appreciation projections for your zip code from current market data, so the offer reflects where prices are heading — not just where they are today.</p>
         </div>
 
-        <!-- Right: auto-advancing tour -->
-        <div class="flex flex-col gap-3">
-          {[
-            { num: '01', title: 'Submit your property details', body: 'Submit your property details, a few photos, and a quick home walkthrough to receive a "no-contingencies" offer from FlipSplit within 24–48 hours.' },
-            { num: '02', title: 'Customize your home offer', body: 'Choose your upfront offer price! Offer price can move up or down based on how much of the backend profit you desire from a newly renovated home.' },
-            { num: '03', title: 'We handle the hard stuff', body: "From tenant issues to permitting to renovation — we take care of it all. You don't spend a dollar or lift a finger." },
-            { num: '04', title: 'You get paid — twice', body: "Once the home is renovated and resold, you'll be notified within 10 days of the resale of the bonus check headed your way." },
-          ].map(({ num, title, body }) => (
-            <button class="hiw-step relative w-full text-left pl-5 pr-4 py-5 rounded-xl border border-slate-200 border-l-4 border-l-transparent bg-white">
-              <div class="flex gap-4 items-start">
-                <span class="hiw-num text-sm font-black shrink-0 mt-0.5" style="color: #CBD5E1;">{num}</span>
-                <div class="flex-1">
-                  <div class="hiw-title font-bold text-sm text-slate-400">{title}</div>
-                  <div class="hiw-body text-sm text-slate-500 leading-relaxed">{body}</div>
-                </div>
-              </div>
-              <div class="hiw-bar absolute bottom-0 left-0 h-0.5" style="background: var(--brand-cyan); width: 0%;"></div>
-            </button>
-          ))}
-          <div class="flex items-center gap-4 pt-6 pl-5">
-            <a href="#get-offer" class="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold">
-              Get My Free Offer →
-            </a>
-            <span class="text-xs text-slate-400">No obligation. Results in 24–48 hrs.</span>
-          </div>
+        <div class="rounded-2xl p-8 border border-slate-200" style="background:#F1F5F9;">
+          <h3 class="text-xl font-semibold mb-3" style="color:#1E2A3A;">Comparable sales</h3>
+          <p class="text-slate-500 leading-relaxed">Recently sold properties on your block and in your neighborhood — same size, age, and condition tier — set the floor for your home's current market value.</p>
         </div>
 
+        <div class="rounded-2xl p-8 border border-slate-200" style="background:#F1F5F9;">
+          <h3 class="text-xl font-semibold mb-3" style="color:#1E2A3A;">Home condition</h3>
+          <p class="text-slate-500 leading-relaxed">Your photos and walkthrough tell us what's working as-is and what's holding the home back. No surprise inspection deductions — we price condition into the offer up front.</p>
+        </div>
+
+        <div class="rounded-2xl p-8 border border-slate-200" style="background:#F1F5F9;">
+          <h3 class="text-xl font-semibold mb-3" style="color:#1E2A3A;">After-renovation value</h3>
+          <p class="text-slate-500 leading-relaxed">Once renovated, what would your home sell for? We model the resale price using top-tier comps in your area, then share that upside with you above the renovation cost.</p>
+        </div>
       </div>
+
+      <p class="text-sm text-slate-500 mt-12 max-w-2xl leading-relaxed">
+        Every input above is shown to you alongside your offer. If a number doesn't make sense, we'll walk you through it line by line.
+      </p>
     </div>
   </section>
 
-  <!-- ─── SECTION 3: CREATE YOUR OFFER ─── -->
-  <section class="py-24 px-6" style="background:#F8FAFC;">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-16">
-        <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">Your choice</p>
-        <h2 class="text-4xl font-black mb-4" style="color:#1E2A3A;">Create your offer.</h2>
-        <p class="text-slate-500 text-base max-w-2xl mx-auto">Every FlipSplit offer starts with the maximum cash we can justify. From there, you decide how to structure it — more cash at closing, more backend participation, or anywhere in between.</p>
-      </div>
+  <!-- ─── SECTION 5: CHOOSE YOUR MIX (interactive slider) ─── -->
+  <section class="py-24 px-6 bg-white border-t border-slate-100">
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 xl:gap-24 items-start">
 
-      <!-- Three positions -->
-      <div class="grid md:grid-cols-3 gap-5 mb-12">
-        {[
-          {
-            label: "Max Cash",
-            icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#1a96e8" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#1a96e8" stroke-width="1.8" stroke-linecap="round"/></svg>`,
-            offer: "$1,050,000",
-            split: "0%",
-            threshold: "None",
-            desc: "Take the highest possible upfront offer. You walk away at first closing with the maximum guaranteed cash. No backend participation — your payout is locked regardless of how the renovation performs.",
-            best: "Best for: sellers who need maximum certainty and don't want to wait for a second check.",
-            featured: false,
-          },
-          {
-            label: "Balanced",
-            icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="#1a96e8" stroke-width="1.8" stroke-linecap="round"/></svg>`,
-            offer: "$1,000,000",
-            split: "50%",
-            threshold: "$1,250,000",
-            desc: "Our standard offer — the maximum cash we can justify today, with a 50/50 split on anything the home sells above our projected resale. At the projected price, your bonus is $0. Any outperformance is split equally.",
-            best: "Best for: sellers who want maximum upfront cash and a fair share of any upside.",
-            featured: true,
-          },
-          {
-            label: "Max Upside",
-            icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 17l4-8 4 5 3-3 4 6" stroke="#1a96e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-            offer: "$900,000",
-            split: "75%",
-            threshold: "$1,150,000",
-            desc: "Trade some upfront cash for a bigger share of the backend. The participation threshold is lowered, so you benefit from outperformance sooner — and at a higher rate. Higher potential, lower guaranteed floor.",
-            best: "Best for: sellers who believe strongly the home will significantly beat our projection.",
-            featured: false,
-          },
-        ].map(({ label, icon, offer, split, threshold, desc, best, featured }) => (
-          <div class={`rounded-2xl border p-7 flex flex-col ${featured ? 'border-[#1a96e8] shadow-lg' : 'border-slate-200 bg-white'}`} style={featured ? "background:rgba(26,150,232,0.03);" : ""}>
-            {featured && <div class="text-xs font-bold uppercase tracking-widest mb-4 px-3 py-1 rounded-full self-start" style="background:rgba(26,150,232,0.15); color:#1E2A3A;">Default offer</div>}
-            <div class="flex items-center gap-3 mb-5">
-              <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(26,150,232,0.1);" set:html={icon}></div>
-              <h3 class="font-black text-lg" style="color:#1E2A3A;">{label}</h3>
-            </div>
-            <div class="grid grid-cols-2 gap-3 mb-5">
-              <div class="rounded-xl p-3 text-center" style="background:#F8FAFC;">
-                <div class="text-xs text-slate-400 mb-1">Cash offer</div>
-                <div class="font-black text-sm" style="color:#1E2A3A;">{offer}</div>
-              </div>
-              <div class="rounded-xl p-3 text-center" style="background:#F8FAFC;">
-                <div class="text-xs text-slate-400 mb-1">Backend split</div>
-                <div class="font-black text-sm" style="color:#1a96e8;">{split}</div>
-              </div>
-            </div>
-            <p class="text-slate-500 text-sm leading-relaxed mb-4 flex-1">{desc}</p>
-            <p class="text-xs font-semibold" style="color:#1E2A3A;">{best}</p>
-          </div>
-        ))}
-      </div>
-
-      <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-5">How we arrive at your numbers</p>
-      <div class="grid md:grid-cols-3 gap-5 mb-10">
-        {[
-          {
-            step: "Step 1",
-            title: "Recent comparable sales",
-            body: "We pull the last 90 days of closed sales within a half-mile of your home — filtering for similar square footage, lot size, bed/bath count, and condition. This sets your as-is baseline.",
-            icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 3h18M3 9h18M3 15h10M3 21h7" stroke="#1a96e8" stroke-width="1.8" stroke-linecap="round"/></svg>`,
-          },
-          {
-            step: "Step 2",
-            title: "Renovation value analysis",
-            body: "We model the after-renovation value using recent sales of fully updated homes in your neighborhood. The difference between your as-is baseline and that number is the renovation spread — and the source of your profit share.",
-            icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 17l4-8 4 5 3-3 4 6" stroke="#1a96e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-          },
-          {
-            step: "Step 3",
-            title: "Maximizing your offer",
-            body: "We set your cash offer at the highest amount we can justify given the projected resale value and renovation costs. The goal is to put as much money in your pocket at closing as possible. The profit participation threshold is set at the projected resale — meaning your backend bonus only kicks in if the market outperforms our projection.",
-            icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="#1a96e8" stroke-width="1.8"/><path d="M8 12h8M12 8v8" stroke="#1a96e8" stroke-width="1.8" stroke-linecap="round"/></svg>`,
-          },
-        ].map(({ step, title, body, icon }) => (
-          <div class="bg-white rounded-2xl border border-slate-200 p-8">
-            <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5" style="background:rgba(26,150,232,0.1);" set:html={icon}></div>
-            <div class="text-xs font-bold uppercase tracking-widest mb-2 text-slate-400">{step}</div>
-            <h3 class="font-black text-lg mb-3" style="color:#1E2A3A;">{title}</h3>
-            <p class="text-slate-500 text-sm leading-relaxed">{body}</p>
-          </div>
-        ))}
-      </div>
-
-      <!-- Math breakdown -->
-      <div class="rounded-2xl p-8 sm:p-10 border border-slate-200" style="background:#F8FAFC;">
-        <div class="flex flex-wrap items-start justify-between gap-2 mb-8">
-          <div>
-            <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color:#1a96e8;">Real customer example</p>
-            <p class="text-sm text-slate-400">Home sold $100,000 above the projected resale value</p>
-          </div>
-        </div>
-        <div class="grid sm:grid-cols-2 gap-10 items-start">
-          <!-- Left: the numbers -->
-          <div class="space-y-0">
-            <div class="flex items-start justify-between gap-4 pb-5 border-b border-slate-200">
-              <div>
-                <div class="text-sm font-bold" style="color:#1E2A3A;">Cash offer (at closing)</div>
-                <div class="text-xs mt-0.5 text-slate-400">Maximum we can justify — paid at first closing</div>
-              </div>
-              <div class="text-sm font-black whitespace-nowrap" style="color:#1E2A3A;">$1,000,000</div>
-            </div>
-            <div class="flex items-start justify-between gap-4 py-5 border-b border-slate-200">
-              <div>
-                <div class="text-sm font-bold" style="color:#1E2A3A;">Total renovation cost</div>
-                <div class="text-xs mt-0.5 text-slate-400">Funded entirely by FlipSplit — $0 from seller</div>
-              </div>
-              <div class="text-sm font-black whitespace-nowrap text-slate-500">$200,000</div>
-            </div>
-            <div class="flex items-start justify-between gap-4 py-5 border-b border-slate-200">
-              <div>
-                <div class="text-sm font-bold" style="color:#1E2A3A;">Projected resale value</div>
-                <div class="text-xs mt-0.5 text-slate-400">Also the profit participation threshold</div>
-              </div>
-              <div class="text-sm font-black whitespace-nowrap text-slate-500">$1,250,000</div>
-            </div>
-            <div class="flex items-start justify-between gap-4 py-5 border-b border-slate-200">
-              <div>
-                <div class="text-sm font-bold" style="color:#1E2A3A;">Actual resale price</div>
-                <div class="text-xs mt-0.5 text-slate-400">$100,000 above projection — triggers bonus</div>
-              </div>
-              <div class="text-sm font-black whitespace-nowrap" style="color:#1E2A3A;">$1,350,000</div>
-            </div>
-            <div class="flex items-start justify-between gap-4 pt-5">
-              <div>
-                <div class="text-sm font-bold" style="color:#1a96e8;">Seller bonus (50% of $100K)</div>
-                <div class="text-xs mt-0.5 text-slate-400">Issued as second check after resale closes</div>
-              </div>
-              <div class="text-sm font-black whitespace-nowrap" style="color:#1a96e8;">+ $50,000</div>
-            </div>
-          </div>
-
-          <!-- Right: summary callout -->
-          <div class="space-y-4">
-            <div class="rounded-2xl p-7 border" style="background:#ffffff; border-color:rgba(26,150,232,0.2);">
-              <p class="text-xs font-bold uppercase tracking-widest mb-4" style="color:#1a96e8;">Total seller payout</p>
-              <div class="text-5xl font-black mb-1" style="color:#1E2A3A;">$1,050,000</div>
-              <p class="text-sm mb-6 text-slate-400">$1,000,000 at closing + $50,000 bonus check</p>
-              <div class="border-t pt-5 border-slate-200">
-                <div class="text-2xl font-black mb-1" style="color:#1a96e8;">+$200,000</div>
-                <p class="text-xs text-slate-400">more than a typical cash buyer would have paid</p>
-              </div>
-            </div>
-            <div class="rounded-xl p-5 border border-slate-200" style="background:#ffffff;">
-              <p class="text-xs font-semibold mb-2" style="color:#1E2A3A;">Key point</p>
-              <p class="text-xs leading-relaxed text-slate-500">We set the cash offer as high as possible so you receive maximum value at closing. The backend bonus is purely upside — it only applies if the market outperforms our projection.</p>
-            </div>
-          </div>
-        </div>
-        <p class="text-xs mt-8 text-slate-300">* Based on a real FlipSplit transaction. Actual results vary by market, condition, and agreed split percentage.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── SECTION 4: WHY WE EXIST ─── -->
-  <section class="py-24 px-6 bg-white">
-    <div class="max-w-5xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+      <!-- Left: text (left-justified, top-aligned with card) -->
       <div>
-        <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">Why we exist</p>
-        <h2 class="text-4xl font-black mb-6 leading-snug" style="color:#1E2A3A;">The system was rigged against homeowners.</h2>
-        <p class="text-slate-500 leading-relaxed mb-5">For decades, homeowners have been forced into a bad tradeoff. If your home needs work, you have two options: spend tens of thousands on repairs before listing, or sell to a cash buyer who discounts your home 15–25% and pockets the renovation profit himself.</p>
-        <p class="text-slate-500 leading-relaxed mb-5">The average Southern California home that needs renovation has an <strong class="text-[#1E2A3A]">$80,000–$300,000 gap</strong> between its as-is value and what a fully renovated comparable sells for. Cash buyers have captured that spread for years. Homeowners never saw a dollar of it.</p>
-        <p class="text-slate-500 leading-relaxed">FlipSplit was built to change that. We fund the renovation, take on the risk, and share the upside with the homeowner. You get the speed of a cash sale and the value of a renovated listing — without doing any of the work.</p>
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color:#1e88e5;">The FlipSplit Difference</p>
+        <h2 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1E2A3A;">
+          You choose the upside
+        </h2>
+        <p class="text-slate-500 text-lg leading-relaxed">
+          Take the highest upfront offer or unlock 80% of your equity and keep all the backend upside for yourself. Your choice.
+        </p>
       </div>
-      <div class="space-y-4">
-        {[
-          {
-            title: "The old cash buyer model",
-            items: ["Offer 15–25% below market value", "Buy fast, renovate cheaply", "Keep 100% of renovation profit", "Homeowner leaves $80K–$300K on the table"],
-            dark: true,
-          },
-          {
-            title: "The FlipSplit model",
-            items: ["Maximum cash offer at closing — as high as we can justify", "Fund and manage the full renovation at zero cost", "Bonus check if home sells above projected value", "Homeowner captures the upside without lifting a finger"],
-            dark: false,
-          },
-        ].map(({ title, items, dark }) => (
-          <div class="rounded-2xl p-7 border" style={dark ? "background:#F8FAFC; border-color:#e2e8f0;" : "border-color:#1a96e8; background:rgba(26,150,232,0.04);"}>
-            <h3 class="font-black mb-4 text-base" style={dark ? "color:#94a3b8;" : "color:#1E2A3A;"}>{title}</h3>
-            <ul class="space-y-2.5">
-              {items.map((item, i) => (
-                <li class="flex items-start gap-3 text-sm" style={dark ? "color:#94a3b8;" : "color:#374151;"}>
-                  {dark
-                    ? <svg class="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#cbd5e1" stroke-width="1.5"/><path d="M5 11L11 5M5 5l6 6" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></svg>
-                    : <svg class="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#1a96e8" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#1a96e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  }
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
 
-  <!-- ─── SECTION 5: WHAT'S INCLUDED ─── -->
-  <section class="py-24 px-6" style="background:#F8FAFC;">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-16">
-        <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">Everything covered</p>
-        <h2 class="text-4xl font-black mb-4" style="color:#1E2A3A;">What's included with FlipSplit.</h2>
-        <p class="text-slate-500 text-base max-w-lg mx-auto">Every FlipSplit sale comes with the full package — at zero cost to you.</p>
-      </div>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {[
-          {
-            title: "Full renovation funding",
-            body: "FlipSplit pays for everything — materials, labor, permits, inspections. No loans, no liens, nothing deducted from your guaranteed offer.",
-          },
-          {
-            title: "Licensed contractor management",
-            body: "We source and manage all contractors through our vetted network. Scheduling, quality control, and accountability are handled entirely by our team.",
-          },
-          {
-            title: "Permit pulling & compliance",
-            body: "All required permits are pulled and closed properly. We handle the city, the inspectors, and the paperwork — so the buyer's lender has nothing to flag.",
-          },
-          {
-            title: "Professional staging & photography",
-            body: "Before listing, every home is professionally staged and photographed. Staged homes sell faster and for more — and that directly benefits your profit share.",
-          },
-          {
-            title: "Flexible closing timeline",
-            body: "Need to close in 7 days? Need 60? We work around your schedule, not ours. Your move-out date is part of the offer — not an afterthought.",
-          },
-          {
-            title: "Transparent offer walkthrough",
-            body: "We walk you through every comparable sale, renovation projection, and number behind your offer. You see exactly what we see, and you can push back on anything.",
-          },
-          {
-            title: "Negotiable profit split",
-            body: "The split percentage is yours to negotiate. Want more upside and a slightly lower base offer? We can structure it that way. The deal is designed around you.",
-          },
-          {
-            title: "No contingencies",
-            body: "No financing contingency. No inspection contingency. No appraisal contingency. Once we agree on terms, the deal is done.",
-          },
-          {
-            title: "Dedicated transaction team",
-            body: "One team handles your deal from first offer to final payout. You're never bounced between departments or handed off mid-process.",
-          },
-        ].map(({ title, body }) => (
-          <div class="bg-white rounded-2xl border border-slate-200 p-7 hover:border-[#1a96e8] hover:shadow-sm transition-all">
-            <div class="w-9 h-9 rounded-lg flex items-center justify-center mb-5 shrink-0" style="background:rgba(26,150,232,0.12);">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#1a96e8" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#1a96e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <!-- Right: slider card -->
+      <div>
+        <div class="rounded-3xl p-8 lg:p-12" style="background:#F8FAFC;">
+          <div class="grid grid-cols-2 gap-6 mb-10">
+            <div class="text-center">
+              <div class="text-xs font-bold tracking-widest uppercase text-slate-400 mb-2">Cash at closing</div>
+              <div id="mix-cash" class="text-3xl sm:text-4xl font-black" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">$900,000</div>
             </div>
-            <h3 class="font-black text-base mb-2" style="color:#1E2A3A;">{title}</h3>
-            <p class="text-slate-500 text-sm leading-relaxed">{body}</p>
+            <div class="text-center">
+              <div class="text-xs font-bold tracking-widest uppercase mb-2" style="color:#1e88e5;">Bonus check later</div>
+              <div id="mix-bonus" class="text-3xl sm:text-4xl font-black" style="color:#1e88e5; font-family:'sahar','Open Sans',sans-serif;">+$0</div>
+            </div>
           </div>
-        ))}
-      </div>
-    </div>
-  </section>
 
-  <!-- ─── SECTION 6: TESTIMONIALS ─── -->
-  <section class="py-24 px-6" style="background:#F8FAFC;">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-16">
-        <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color:#1a96e8;">Homeowner stories</p>
-        <h2 class="text-4xl font-black" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">Real sellers. Real results.</h2>
-      </div>
+          <div class="px-2 mix-slider-wrap" id="mix-slider-wrap">
+            <div class="mix-tooltip" id="mix-tooltip"><span id="mix-pct-label">0%</span> split</div>
+            <input id="mix-slider" type="range" min="0" max="100" value="0" class="mix-range" aria-label="Mix between cash now and upside later" />
+            <div class="flex justify-between mt-3 text-xs font-semibold tracking-wide text-slate-500">
+              <span>Max cash now</span>
+              <span>Max upside later</span>
+            </div>
+          </div>
 
-      <!-- Featured quote -->
-      <div class="rounded-2xl p-10 mb-6 border" style="background:#ffffff; border-color:rgba(26,150,232,0.2);">
-        <div class="flex gap-1 mb-6" style="color:#FBBC05;">★★★★★</div>
-        <blockquote class="text-xl leading-relaxed font-medium mb-8" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
-          "Working with FlipSplit was amazing from start to finish. Their responsive and knowledgeable team handled everything and made what is often a stressful experience extremely smooth — without leaving a lot of money on the table thanks to their resale bonus mechanism."
-        </blockquote>
-        <div class="flex items-center gap-4">
-          <div class="w-12 h-12 rounded-full flex items-center justify-center font-black text-base shrink-0" style="background:rgba(26,150,232,0.1); color:#1a96e8;">V</div>
-          <div>
-            <div class="font-bold" style="color:#1E2A3A;">Val Briot</div>
-            <div class="text-sm text-slate-400">Los Angeles, CA</div>
+          <p id="mix-summary" class="text-center text-sm text-slate-500 mt-8 mb-8">Take the full guaranteed cash offer today. No bonus.</p>
+
+          <!-- Est. Net Proceeds callout — sums the two columns above -->
+          <div class="rounded-2xl px-6 py-5 flex items-center justify-between" style="background: linear-gradient(135deg, #1e88e5 0%, #0d7ac4 100%); box-shadow: 0 8px 22px rgba(30,136,229,0.25);">
+            <div>
+              <div class="text-[11px] font-bold tracking-widest uppercase" style="color: rgba(255,255,255,0.85);">Est. Net Proceeds</div>
+              <div class="text-[10px] mt-0.5" style="color: rgba(255,255,255,0.65);">Cash at closing + bonus check later</div>
+            </div>
+            <div id="mix-total" class="text-3xl sm:text-4xl font-black" style="color:#ffffff; font-family:'sahar','Open Sans',sans-serif;">$900,000</div>
           </div>
         </div>
+
+        <p class="text-xs text-slate-400 mt-6 italic">Example based on a $1.2M projected resale · actual numbers vary by property</p>
       </div>
 
-      <!-- Two smaller quotes -->
-      <div class="grid sm:grid-cols-2 gap-5">
-        {[
-          {
-            quote: "FlipSplit was the best decision we made when we needed to sell our investment property quickly. Fair, transparent throughout, and they delivered on everything they promised.",
-            name: "Nick Boyd",
-            location: "San Diego, CA",
-            initial: "N",
-          },
-          {
-            quote: "Easy, no hassle, and an extra bonus check at the end — more than I expected. I called three cash buyers first. FlipSplit wasn't even a comparison.",
-            name: "Grace G.",
-            location: "San Juan Capistrano, CA",
-            initial: "G",
-          },
-        ].map(({ quote, name, location, initial }) => (
-          <div class="rounded-2xl p-8 border border-slate-200" style="background:#ffffff;">
-            <div class="flex gap-0.5 mb-4" style="color:#FBBC05; font-size:13px;">★★★★★</div>
-            <p class="text-slate-600 text-sm leading-relaxed mb-6">"{quote}"</p>
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full flex items-center justify-center font-black text-sm shrink-0" style="background:rgba(26,150,232,0.1); color:#1a96e8;">{initial}</div>
-              <div>
-                <div class="text-sm font-bold" style="color:#1E2A3A;">{name}</div>
-                <div class="text-xs text-slate-400">{location}</div>
-              </div>
-            </div>
-          </div>
-        ))}
+    </div>
+  </section>
+
+  <style>
+    .mix-range { width: 100%; -webkit-appearance: none; appearance: none; background: transparent; }
+    .mix-range:focus { outline: none; }
+    .mix-range::-webkit-slider-runnable-track { height: 8px; background: linear-gradient(to right, #1e88e5 var(--mix-pct, 0%), #E2E8F0 var(--mix-pct, 0%)); border-radius: 999px; }
+    .mix-range::-moz-range-track { height: 8px; background: linear-gradient(to right, #1e88e5 var(--mix-pct, 0%), #E2E8F0 var(--mix-pct, 0%)); border-radius: 999px; }
+    .mix-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 4px solid #1e88e5; box-shadow: 0 4px 14px rgba(0,0,0,0.18); cursor: grab; margin-top: -10px; }
+    .mix-range::-moz-range-thumb { width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 4px solid #1e88e5; box-shadow: 0 4px 14px rgba(0,0,0,0.18); cursor: grab; }
+    .mix-range:active::-webkit-slider-thumb { cursor: grabbing; }
+
+    .mix-slider-wrap { position: relative; padding-top: 38px; }
+    .mix-tooltip {
+      position: absolute;
+      top: 0;
+      left: var(--mix-pct, 0%);
+      transform: translateX(-50%);
+      background: #1e88e5;
+      color: #ffffff;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      pointer-events: none;
+      box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+      transition: left 0.05s linear;
+    }
+    .mix-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid #1e88e5;
+    }
+  </style>
+
+  <script is:inline>
+    (function(){
+      var slider = document.getElementById('mix-slider');
+      var wrap = document.getElementById('mix-slider-wrap');
+      var cashEl = document.getElementById('mix-cash');
+      var bonusEl = document.getElementById('mix-bonus');
+      var totalEl = document.getElementById('mix-total');
+      var pctLabel = document.getElementById('mix-pct-label');
+      var summary = document.getElementById('mix-summary');
+      if (!slider || !cashEl || !bonusEl) return;
+      var fmt = function(n){ return '$' + Math.round(n).toLocaleString(); };
+      function update(){
+        var v = parseFloat(slider.value) / 100;
+        var pct = Math.round(v * 100);
+        var cash = 900000 - v * 150000;
+        var bonus = v * 250000;
+        cashEl.textContent = fmt(cash);
+        bonusEl.textContent = '+' + fmt(bonus);
+        if (totalEl) totalEl.textContent = fmt(cash + bonus);
+        if (pctLabel) pctLabel.textContent = pct + '%';
+        slider.style.setProperty('--mix-pct', pct + '%');
+        if (wrap) wrap.style.setProperty('--mix-pct', pct + '%');
+        var msg;
+        if (v === 0)         msg = 'Take the full guaranteed cash offer today. No bonus.';
+        else if (v < 0.34)   msg = 'Mostly cash today, a small bonus check after resale.';
+        else if (v < 0.67)   msg = 'A balanced mix — solid cash now, meaningful bonus later.';
+        else if (v < 1)      msg = 'Trade some cash today for a much bigger bonus when we resell.';
+        else                 msg = 'Maximum upside. Less cash up front, biggest bonus check at resale.';
+        if (summary) summary.textContent = msg;
+      }
+      slider.addEventListener('input', update);
+      update();
+    })();
+  </script>
+
+  <!-- ─── SECTION 6: UNDERSTANDING YOUR OFFER (costs + fees breakdown) ─── -->
+  <section class="py-24 px-6 bg-white border-t border-slate-100">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-14 max-w-2xl">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color:#4B5563;">Understanding your offer</p>
+        <h2 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1E2A3A;">
+          Understand total costs and fees
+        </h2>
+        <p class="text-slate-500 text-lg leading-relaxed">
+          Once we've finalized the offer, we'll provide a full breakdown of all charges, costs, and the total amount you can expect to walk away with.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="rounded-2xl p-8 border border-slate-200" style="background:#F1F5F9;">
+          <h3 class="text-xl font-semibold mb-3" style="color:#1E2A3A;">Closing Costs</h3>
+          <p class="text-slate-500 leading-relaxed">Title insurance, escrow fees, county transfer taxes, and prorated property taxes typically run 1–2% of your sale price. You'll see every line item itemized before close — no surprise deductions.</p>
+        </div>
+
+        <div class="rounded-2xl p-8 border border-slate-200" style="background:#F1F5F9;">
+          <h3 class="text-xl font-semibold mb-3" style="color:#1E2A3A;">Program Fee</h3>
+          <p class="text-slate-500 leading-relaxed">If you decide to take a FlipSplit profit split, we charge a 2.5% program fee for managing the renovation project. Pure cash-offer sellers don't pay this fee.</p>
+        </div>
+
+        <div class="rounded-2xl p-8 border border-slate-200" style="background:#F1F5F9;">
+          <h3 class="text-xl font-semibold mb-3" style="color:#1E2A3A;">Net Proceeds</h3>
+          <p class="text-slate-500 leading-relaxed">Your final take-home amount is your offer minus closing costs and any program fee attributed to your sale. We show this number clearly on every offer summary.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ─── SECTION 7: FAQ ─── -->
-  <section class="py-24 px-6 bg-white">
+  <!-- ─── SECTION 9: REVIEWS + PRESS STRIP ─── -->
+  <section class="py-16 px-6 bg-white border-t border-slate-100">
+    <div class="max-w-5xl mx-auto">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 items-center divide-x divide-slate-200">
+        <div class="text-center px-4">
+          <div class="font-black text-5xl" style="color:#1E2A3A;">5.0</div>
+          <div style="color:#FBBC05; letter-spacing:2px; font-size:18px;" class="mt-2">★★★★★</div>
+          <div class="text-sm text-slate-400 mt-2">Average rating</div>
+        </div>
+        <div class="text-center px-4">
+          <div class="font-black text-5xl" style="color:#1E2A3A;">100%</div>
+          <div class="text-sm text-slate-400 mt-4">5-star reviews</div>
+        </div>
+        <div class="text-center px-4">
+          <div class="font-black text-5xl" style="color:#1E2A3A;">10+</div>
+          <div class="text-sm text-slate-400 mt-4">Verified homeowners</div>
+        </div>
+        <div class="text-center px-4">
+          <div class="font-black text-lg" style="color:#1E2A3A;">REVIEWS.IO</div>
+          <div class="text-sm text-slate-400 mt-2">Verified source</div>
+          <a href="https://www.reviews.io" target="_blank" rel="noopener" class="inline-block text-sm font-semibold mt-2 hover:opacity-80 transition-opacity" style="color:#1e88e5;">View all →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SECTION 10: FAQ ─── -->
+  <section id="faq" class="py-24 px-6 bg-slate-50 border-t border-slate-100">
     <div class="max-w-3xl mx-auto">
-      <div class="text-center mb-14">
-        <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">FAQ</p>
-        <h2 class="text-4xl font-black" style="color:#1E2A3A;">Common questions.</h2>
+      <div class="mb-14 text-center">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color:#4B5563;">FAQ</p>
+        <h2 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1E2A3A;">Still have questions?</h2>
       </div>
       <div>
         {[
-          { q: "Do I pay anything upfront?", a: "No. FlipSplit covers 100% of renovation costs — materials, labor, permits, staging. You pay nothing before, during, or after the renovation. Our return comes from our share of the resale proceeds." },
-          { q: "What if the home sells for less than projected?", a: "Your guaranteed cash offer is locked in and doesn't change regardless of market conditions or renovation outcome. If the home underperforms, FlipSplit absorbs the difference — your check is protected." },
-          { q: "Can I negotiate the profit split?", a: "Yes. The split percentage — applied to any amount the home sells above the projected resale value — is fully negotiable before you sign anything. We structure the deal around what works best for you." },
-          { q: "How long does the full process take?", a: "The initial cash purchase closes in as few as 7–14 days. Renovation takes 6–10 weeks. Your second check arrives when the renovated home closes — typically within 4–6 months of the initial sale." },
-          { q: "Is my home eligible if it's in bad condition?", a: "Yes. Deferred maintenance, fire or water damage, outdated systems, full estate cleanouts — none of that disqualifies you. Homes in poor condition are exactly what FlipSplit is designed for." },
-          { q: "What's the difference between FlipSplit and an iBuyer?", a: "iBuyers (Opendoor, Offerpad) buy at a discount and keep all renovation profit for themselves. FlipSplit funds the renovation and shares the resulting upside with you. The structure — and the outcome for the seller — is fundamentally different." },
-          { q: "Can I stay in the home during renovation?", a: "In most cases we ask that the home be vacated during active renovation work. We can accommodate your move-out timeline as part of the offer terms." },
-          { q: "What markets does FlipSplit operate in?", a: "We currently buy homes throughout Southern California: Los Angeles County, Orange County, San Diego County, Riverside County, San Bernardino County, Long Beach, and Anaheim." },
+          { q: "What fees do I pay to FlipSplit?", a: "Pure cash-offer sellers pay $0 in FlipSplit fees — you receive 100% of the amount we offer you. If you choose the profit-split path, we charge a 2.5% program fee for managing the renovation. Either way, standard seller closing costs (title, escrow, transfer taxes) apply and are itemized line-by-line before close — no hidden fees." },
+          { q: "What if the renovated home doesn't sell for what you projected?", a: "Your upfront cash offer is yours regardless. FlipSplit carries 100% of the construction and downside market risk. The profit-split bonus only pays out if the renovated home sells above your offer — if the market underperforms, your upfront amount doesn't change. You're guaranteed the cash, not guaranteed the bonus." },
+          { q: "Who decides what gets renovated, and will I see the budget?", a: "We do — but you receive our estimated renovation budget AND a projected resale price upfront, before you sign. No surprises. Once construction starts, our team manages every contractor, permit, and material." },
+          { q: "Can I visit the property during construction?", a: "Unfortunately no — it's an insurance restriction during active work. Once renovations are complete, we'll happily schedule a walk-through preview before the home goes back on the market." },
+          { q: "How fast can you buy my home?", a: "If you move quickly, we can close in as little as 48–72 hours. We can also accommodate timelines out to 90 days if you need more flexibility — the choice is yours." },
+          { q: "Can I get cash before closing?", a: "Yes. We can advance you up to $20,000 prior to the close of escrow for cash-flow needs while you wait for the full payment at close." },
+          { q: "When do I receive the profit-split bonus check?", a: "Within 10 days after the renovated home is resold. From your signing day to bonus-check delivery, expect roughly 90–120 days total depending on renovation scope and market conditions." },
+          { q: "What kinds of homes do you buy?", a: "Any condition, any type — single-family homes, condos, distressed properties, inherited homes, tenant-occupied rentals, even homes already in great shape. We specialize in the situations other buyers won't touch, but we also work with sellers who just want a fast, hassle-free sale." },
+          { q: "What areas does FlipSplit serve?", a: "We currently buy homes throughout Southern California — Los Angeles, Ventura, Orange, Riverside, San Bernardino, and San Diego counties. New markets are coming." },
+          { q: "Can I leave trash or furniture behind when I sell?", a: "Yes. Take what you want, leave the rest. Trash, old furniture, even years of accumulated stuff — we've seen it all and handle the cleanout ourselves." },
         ].map(({ q, a }) => (
           <details class="group border-b border-slate-200 py-1">
-            <summary class="flex justify-between items-center py-5 font-semibold" style="color:#1E2A3A;">
+            <summary class="flex justify-between items-center py-5 cursor-pointer font-semibold transition-colors hover:opacity-80" style="color:#1E2A3A;">
               {q}
               <span class="faq-icon text-slate-400 text-2xl leading-none ml-6 shrink-0">+</span>
             </summary>
-            <div class="pb-5 text-slate-500 leading-relaxed text-sm">{a}</div>
+            <div class="pb-5 text-slate-500 leading-relaxed">
+              {a}
+            </div>
           </details>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- ─── SECTION 8: CLOSING CTA ─── -->
-  <section id="get-offer" class="py-24 px-6" style="background: linear-gradient(135deg, #1E2A3A 0%, #1a2744 100%);">
-    <div class="max-w-2xl mx-auto text-center">
-      <p class="text-xs font-semibold tracking-widest uppercase mb-4" style="color:rgba(26,150,232,0.8);">Free. No obligation.</p>
-      <h2 class="text-4xl sm:text-5xl font-black mb-5" style="color:white; font-family:'sahar','Open Sans',sans-serif;">
-        Ready to see your numbers?
-      </h2>
-      <p class="text-slate-300 text-lg leading-relaxed mb-10">
-        Enter your address and we'll come back within 24–48 hours with your guaranteed offer, renovation scope, and profit projection.
+  <!-- ─── SECTION 11: FINAL CTA ─── -->
+  <section class="py-24 px-6 bg-white border-t border-slate-100">
+    <div class="max-w-xl mx-auto text-center">
+      <p class="text-sm font-semibold tracking-wide mb-4" style="color:#1e88e5;">Free · No obligation</p>
+      <h2 class="text-4xl sm:text-5xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1E2A3A;">See what your home could pay you — twice.</h2>
+      <p class="text-slate-500 text-lg leading-relaxed mb-10">
+        Takes 60 seconds. No credit check. We'll follow up with your guaranteed cash offer and your bonus-check projection.
       </p>
-      <div class="max-w-lg mx-auto">
-        <AddressForm id="cta-form" align="center" />
-      </div>
+      <AddressForm id="how-it-works-footer-form" class="flex flex-col items-center" align="center" />
     </div>
   </section>
 

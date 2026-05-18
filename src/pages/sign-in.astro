@@ -1,0 +1,269 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign in | FlipSplit</title>
+  <meta name="description" content="Sign in to your FlipSplit account or create one to track your offer, manage your sale, and access your dashboard." />
+  <link rel="canonical" href="https://www.flipsplit.com/sign-in" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --brand-cyan: #1e88e5; --brand-dark: #1E2A3A; --brand-body: #374151; }
+    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
+    h1, h2, h3 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
+    a, button { cursor: pointer; }
+  </style>
+</head>
+<body class="bg-slate-50 antialiased">
+
+  <Nav />
+
+  <main class="min-h-[calc(100vh-4rem)] flex items-center justify-center px-6 py-12">
+    <div class="w-full max-w-md">
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
+
+        <div class="w-12 h-12 rounded-full mx-auto mb-5 flex items-center justify-center" style="background: rgba(30,136,229,0.1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1e88e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+        </div>
+
+        <h1 id="auth-title" class="text-2xl font-semibold text-center mb-1.5" style="color:#1E2A3A;">Sign in</h1>
+        <p id="auth-sub" class="text-sm text-slate-500 text-center mb-6">Welcome back to FlipSplit.</p>
+
+        <!-- Google OAuth -->
+        <button
+          id="google-btn"
+          type="button"
+          class="w-full flex items-center justify-center gap-3 border border-slate-300 rounded-xl py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-wait"
+        >
+          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+            <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
+            <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
+            <path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/>
+            <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+          </svg>
+          <span id="google-label">Continue with Google</span>
+        </button>
+
+        <div class="flex items-center gap-3 my-6">
+          <div class="flex-1 h-px bg-slate-200"></div>
+          <span class="text-xs uppercase tracking-widest text-slate-400 font-semibold">or</span>
+          <div class="flex-1 h-px bg-slate-200"></div>
+        </div>
+
+        <!-- Email/password form -->
+        <form id="auth-form" class="space-y-4" novalidate>
+          <div>
+            <label for="auth-email" class="block text-sm font-semibold text-slate-700 mb-1.5">Email address</label>
+            <input
+              id="auth-email"
+              type="email"
+              required
+              autocomplete="email"
+              placeholder="you@example.com"
+              class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#1e88e5] transition-colors disabled:bg-slate-50"
+            />
+          </div>
+          <div>
+            <label for="auth-password" class="block text-sm font-semibold text-slate-700 mb-1.5">Password</label>
+            <div class="relative">
+              <input
+                id="auth-password"
+                type="password"
+                required
+                minlength="6"
+                autocomplete="current-password"
+                placeholder="At least 6 characters"
+                class="w-full border border-slate-300 rounded-xl px-4 py-3 pr-20 text-sm text-slate-900 focus:outline-none focus:border-[#1e88e5] transition-colors disabled:bg-slate-50"
+              />
+              <button
+                id="toggle-password"
+                type="button"
+                tabindex="-1"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-500 hover:text-slate-700"
+              >Show</button>
+            </div>
+          </div>
+
+          <p id="auth-error" class="hidden text-sm text-red-600 font-medium"></p>
+          <p id="auth-success" class="hidden text-sm font-medium" style="color:#1e88e5;"></p>
+
+          <button
+            id="submit-btn"
+            type="submit"
+            class="w-full text-white font-bold py-3 rounded-xl text-sm transition-all hover:brightness-110 disabled:opacity-60 disabled:cursor-wait"
+            style="background:#1e88e5;"
+          >
+            <span id="submit-label">Sign in</span>
+          </button>
+        </form>
+      </div>
+
+      <p class="text-sm text-slate-500 text-center mt-6">
+        <span id="toggle-prompt">New to FlipSplit?</span>
+        <a id="toggle-link" href="#" class="font-semibold ml-1 hover:opacity-80 transition-opacity" style="color:#1e88e5;">Create an account</a>
+      </p>
+    </div>
+  </main>
+
+  <script>
+    import { getSupabase } from '../lib/supabase';
+
+    const supabase = getSupabase();
+
+    const titleEl       = document.getElementById('auth-title')      as HTMLElement;
+    const subEl         = document.getElementById('auth-sub')        as HTMLElement;
+    const googleLabelEl = document.getElementById('google-label')    as HTMLElement;
+    const submitLabelEl = document.getElementById('submit-label')    as HTMLElement;
+    const togglePrompt  = document.getElementById('toggle-prompt')   as HTMLElement;
+    const toggleLink    = document.getElementById('toggle-link')     as HTMLAnchorElement;
+    const passwordEl    = document.getElementById('auth-password')   as HTMLInputElement;
+    const passwordToggle= document.getElementById('toggle-password') as HTMLButtonElement;
+    const emailEl       = document.getElementById('auth-email')      as HTMLInputElement;
+    const googleBtn     = document.getElementById('google-btn')      as HTMLButtonElement;
+    const submitBtn     = document.getElementById('submit-btn')      as HTMLButtonElement;
+    const form          = document.getElementById('auth-form')       as HTMLFormElement;
+    const errorEl       = document.getElementById('auth-error')      as HTMLElement;
+    const successEl     = document.getElementById('auth-success')    as HTMLElement;
+
+    type Mode = 'signin' | 'signup';
+    let mode: Mode = window.location.hash === '#signup' ? 'signup' : 'signin';
+
+    function applyMode() {
+      const isSignup = mode === 'signup';
+      titleEl.textContent       = isSignup ? 'Create your account' : 'Sign in';
+      subEl.textContent         = isSignup ? 'Get started with FlipSplit in seconds.' : 'Welcome back to FlipSplit.';
+      googleLabelEl.textContent = isSignup ? 'Sign up with Google'  : 'Continue with Google';
+      submitLabelEl.textContent = isSignup ? 'Create account'       : 'Sign in';
+      togglePrompt.textContent  = isSignup ? 'Already have an account?' : 'New to FlipSplit?';
+      toggleLink.textContent    = isSignup ? 'Sign in'             : 'Create an account';
+      passwordEl.autocomplete   = isSignup ? 'new-password'         : 'current-password';
+      passwordEl.placeholder    = isSignup ? 'At least 6 characters' : 'Your password';
+      clearMessages();
+    }
+
+    function showError(msg: string) {
+      errorEl.textContent = msg;
+      errorEl.classList.remove('hidden');
+      successEl.classList.add('hidden');
+    }
+    function showSuccess(msg: string) {
+      successEl.textContent = msg;
+      successEl.classList.remove('hidden');
+      errorEl.classList.add('hidden');
+    }
+    function clearMessages() {
+      errorEl.classList.add('hidden');
+      successEl.classList.add('hidden');
+    }
+    function setBusy(busy: boolean) {
+      submitBtn.disabled = busy;
+      googleBtn.disabled = busy;
+      submitLabelEl.textContent = busy
+        ? (mode === 'signup' ? 'Creating account…' : 'Signing in…')
+        : (mode === 'signup' ? 'Create account'    : 'Sign in');
+    }
+
+    // ─ Redirect already-authenticated users straight home ─
+    supabase.auth.getUser().then(({ data }) => {
+      if (data?.user && !data.user.is_anonymous) {
+        window.location.assign('/');
+      }
+    });
+
+    // ─ Mode toggle ─
+    toggleLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      mode = mode === 'signup' ? 'signin' : 'signup';
+      window.location.hash = mode === 'signup' ? 'signup' : '';
+      applyMode();
+    });
+    window.addEventListener('hashchange', () => {
+      const next: Mode = window.location.hash === '#signup' ? 'signup' : 'signin';
+      if (next !== mode) { mode = next; applyMode(); }
+    });
+
+    // ─ Password show/hide ─
+    passwordToggle.addEventListener('click', () => {
+      const showing = passwordEl.type === 'text';
+      passwordEl.type = showing ? 'password' : 'text';
+      passwordToggle.textContent = showing ? 'Show' : 'Hide';
+    });
+
+    // ─ Google OAuth ─
+    googleBtn.addEventListener('click', async () => {
+      clearMessages();
+      setBusy(true);
+      try {
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: { redirectTo: `${window.location.origin}/` },
+        });
+        if (error) throw error;
+        // Browser is redirecting to Google now…
+      } catch (err: any) {
+        console.error('Google OAuth failed:', err);
+        showError(err?.message || 'Could not start Google sign-in. Try again.');
+        setBusy(false);
+      }
+    });
+
+    // ─ Email + password ─
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearMessages();
+
+      const email = emailEl.value.trim();
+      const password = passwordEl.value;
+
+      if (!email)                  return showError('Please enter your email address.');
+      if (!password)               return showError('Please enter your password.');
+      if (mode === 'signup' && password.length < 6) return showError('Password must be at least 6 characters.');
+
+      setBusy(true);
+      try {
+        if (mode === 'signup') {
+          const { data, error } = await supabase.auth.signUp({ email, password });
+          if (error) throw error;
+          // Some Supabase projects require email confirmation; in that case
+          // signUp returns a user but no session. Otherwise we get a session
+          // back immediately and can ship them home.
+          if (data?.session) {
+            window.location.assign('/');
+          } else {
+            showSuccess('Check your email for a confirmation link to finish creating your account.');
+            setBusy(false);
+          }
+        } else {
+          const { error } = await supabase.auth.signInWithPassword({ email, password });
+          if (error) throw error;
+          window.location.assign('/');
+        }
+      } catch (err: any) {
+        console.error('Auth failed:', err);
+        const msg = err?.message || (mode === 'signup'
+          ? 'Could not create your account. Please try again.'
+          : 'Could not sign you in. Check your email and password.');
+        showError(msg);
+        setBusy(false);
+      }
+    });
+
+    // ─ Init ─
+    applyMode();
+  </script>
+
+</body>
+</html>
