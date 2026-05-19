@@ -247,6 +247,15 @@ import Footer from '../components/Footer.astro';
           </div>
           <div id="earnings-table" class="space-y-1"></div>
           <p class="text-xs text-slate-400 mt-3">* Resale price not guaranteed.</p>
+
+          <!-- Est. Net Proceeds callout — base-case total (cash + bonus at projected resale) -->
+          <div class="mt-5 rounded-2xl px-5 py-4 flex items-center justify-between" style="background: linear-gradient(135deg, #1e88e5 0%, #0d7ac4 100%); box-shadow: 0 8px 22px rgba(30,136,229,0.25);">
+            <div>
+              <div class="text-[11px] font-bold tracking-widest uppercase" style="color: rgba(255,255,255,0.85);">Est. Net Proceeds</div>
+              <div class="text-[10px] mt-0.5" style="color: rgba(255,255,255,0.65);">Cash at closing + bonus check later</div>
+            </div>
+            <div id="net-proceeds" class="text-2xl sm:text-3xl font-black" style="color:#ffffff; font-family:'sahar','Open Sans',sans-serif;">$465,000</div>
+          </div>
         </div>
       </div>
     </div>
@@ -507,6 +516,7 @@ import Footer from '../components/Footer.astro';
     const splitEl = document.getElementById('split-pct');
     const badgeEl = document.getElementById('split-badge');
     const tableEl = document.getElementById('earnings-table');
+    const netEl   = document.getElementById('net-proceeds');
 
     // maxOffer = the upfront cash at slider=0 (max upfront cash position).
     // Resale projections are anchored to this so they stay static as the
@@ -519,12 +529,16 @@ import Footer from '../components/Footer.astro';
 
     function updateTable(currentOffer, pct) {
       const projected  = Math.round(maxOffer * 1.2);
-      const steps      = [0, 20000, 40000, 60000, 80000, 100000];
+      const steps      = [0, 20000, 40000, 60000];
       const resaleRows = steps.map(s => projected + s);
 
       splitEl.textContent = pct + '%';
       badgeEl.textContent = pct + '% split';
       slider.style.setProperty('--fill', pct + '%');
+
+      // Net proceeds = base-case total (first row in table: cash + bonus at projected resale)
+      const baseBackend = Math.max(0, resaleRows[0] - currentOffer) * (pct / 100);
+      netEl.textContent = fmt(currentOffer + baseBackend);
 
       tableEl.innerHTML = resaleRows.map((resale, i) => {
         const above   = Math.max(0, resale - currentOffer);

@@ -165,6 +165,60 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
       let pickedPlace: google.maps.places.PlaceResult | null = null;
 
+      // Background work kicked off the moment a place is picked — auth + row
+      // insert + RentCast lookup all start while the user is reading the modal,
+      // so by the time they click Confirm and reach the property-details step,
+      // RentCast usually has the data already.
+      let bgWork: { promise: Promise<string>; address: string } | null = null;
+
+      // Self-healing auth bootstrap. Reads existing session; falls back to a
+      // fresh anonymous sign-in if the stored JWT points to a deleted user.
+      async function ensureUserId(): Promise<string> {
+        const supabase = getSupabase();
+        const { data: existing, error: getUserErr } = await supabase.auth.getUser();
+        if (existing?.user?.id && !getUserErr) return existing.user.id;
+        try { await supabase.auth.signOut(); } catch { /* ignore */ }
+        const { data: signin, error: authErr } = await supabase.auth.signInAnonymously();
+        if (authErr) {
+          throw new Error(
+            authErr.message?.includes('Anonymous sign-ins are disabled')
+              ? 'Anonymous sign-ins are disabled for this project. Enable them in Supabase → Authentication → Sign In/Up → "Allow anonymous sign-ins".'
+              : `Sign-in failed: ${authErr.message}`
+          );
+        }
+        const userId = signin?.user?.id;
+        if (!userId) throw new Error('Could not establish a session. Please refresh and try again.');
+        return userId;
+      }
+
+      // Kicked off at place-picked. Auth → insert qualification_sessions row →
+      // fire lookup-property (non-awaited). Resolves with the new session id.
+      async function startEagerLookup(place: google.maps.places.PlaceResult): Promise<string> {
+        const supabase = getSupabase();
+        const userId = await ensureUserId();
+        const parts = parseAddressParts(place);
+        const { data: row, error: insertErr } = await supabase
+          .from('qualification_sessions')
+          .insert({
+            user_id: userId,
+            address: place.formatted_address!,
+            street: parts.street,
+            city: parts.city,
+            state: parts.state,
+            zip: parts.zip,
+            current_step: 0,
+          })
+          .select('id')
+          .single();
+        if (insertErr) throw insertErr;
+        // Fire the RentCast lookup immediately — non-awaited, runs server-side
+        // while the user reads the modal.
+        supabase.functions
+          .invoke('lookup-property', { body: { session_id: row.id } })
+          .catch((e: any) => console.warn('lookup-property invoke failed:', e));
+        return row.id;
+      }
+
       const ac = new (window as any).google.maps.places.Autocomplete(input, {
         types: ['address'],
         componentRestrictions: { country: 'us' },
@@ -201,6 +255,8 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
       }
 
       // Open modal as soon as the user picks an address from the dropdown.
+      // ⚡ Also fires the background lookup immediately — RentCast is in flight
+      // before the user even reads the modal.
       ac.addListener('place_changed', () => {
         const place = ac.getPlace();
         if (place?.formatted_address) {
@@ -208,23 +264,37 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
           pickedPlace = place;
           input.setCustomValidity('');
           openModal(place);
+
+          // Reuse existing background work if the address didn't change
+          // (e.g. user closed the modal and re-submitted). Otherwise kick off
+          // a fresh lookup.
+          if (!bgWork || bgWork.address !== place.formatted_address) {
+            bgWork = {
+              address: place.formatted_address,
+              promise: startEagerLookup(place),
+            };
+            bgWork.promise.catch(() => { bgWork = null; }); // reset on failure
+          }
         }
       });
 
       input.addEventListener('input', () => {
         pickedPlace = null;
+        bgWork = null; // user is typing a new query — abandon prior work
         input.setCustomValidity(
           input.value.trim() ? 'Please select an address from the dropdown suggestions.' : ''
         );
       });
 
-      // Close modal — keeps the address in the input field.
+      // Close modal — keeps the address in the input field AND keeps bgWork
+      // so a re-open from the same address doesn't redo the lookup.
       modalClose?.addEventListener('click', closeModal);
       // Edit — close + clear so user can search again.
       modalEdit?.addEventListener('click', () => {
         closeModal();
         input.value = '';
         pickedPlace = null;
+        bgWork = null; // explicit address change — drop the in-flight work
         setTimeout(() => input.focus(), 50);
       });
       // Esc + backdrop close
@@ -249,79 +319,53 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
         openModal(pickedPlace);
       });
 
-      // Confirm — actually submits address + unit # to the funnel.
+      // Confirm — by now the background lookup has either finished or is well
+      // along. Wait for the session id, add unit_number if provided, then nav.
       modalConfirm?.addEventListener('click', async () => {
         if (!pickedPlace) return;
         const unitNumber = (modalUnit?.value || '').trim() || null;
 
-        // Loading state on the confirm button.
         modalConfirm.setAttribute('disabled', 'true');
         if (modalLabel) modalLabel.textContent = 'Confirming…';
         if (modalError) modalError.classList.add('hidden');
 
         try {
+          // Fallback: if the eager work never fired (rare — e.g. user pasted
+          // a value without triggering place_changed), kick it off here.
+          if (!bgWork) {
+            bgWork = {
+              address: pickedPlace.formatted_address!,
+              promise: startEagerLookup(pickedPlace),
+            };
+          }
+
+          const sessionId = await bgWork.promise;
           const supabase = getSupabase();
 
-          // 1. Ensure we have a *valid* authenticated session.
-          // We don't trust getSession() alone — its session may point to a
-          // deleted user (common in dev when auth.users gets reset). We verify
-          // via getUser() (server round-trip); on failure we clear the stale
-          // token and start a fresh anonymous session.
-          async function ensureUserId(): Promise<string> {
-            const { data: existing, error: getUserErr } = await supabase.auth.getUser();
-            if (existing?.user?.id && !getUserErr) return existing.user.id;
-            // Either no session or the stored JWT points to a user that no
-            // longer exists. Clear it and start fresh.
-            try { await supabase.auth.signOut(); } catch { /* ignore */ }
-            const { data: signin, error: authErr } = await supabase.auth.signInAnonymously();
-            if (authErr) {
-              throw new Error(
-                authErr.message?.includes('Anonymous sign-ins are disabled')
-                  ? 'Anonymous sign-ins are disabled for this project. Enable them in Supabase → Authentication → Sign In/Up → "Allow anonymous sign-ins".'
-                  : `Sign-in failed: ${authErr.message}`
-              );
-            }
-            const userId = signin?.user?.id;
-            if (!userId) throw new Error('Could not establish a session. Please refresh and try again.');
-            return userId;
+          // If the user typed a unit number, update the row and re-invoke the
+          // lookup so it can fetch with the unit-aware address. (~10% of users.)
+          if (unitNumber) {
+            await supabase
+              .from('qualification_sessions')
+              .update({ unit_number: unitNumber })
+              .eq('id', sessionId);
+            supabase.functions
+              .invoke('lookup-property', { body: { session_id: sessionId } })
+              .catch((e: any) => console.warn('re-lookup-property invoke failed:', e));
           }
-          const userId = await ensureUserId();
 
-          // 2. Insert qualification_sessions row (includes unit_number for condos/apts).
-          const parts = parseAddressParts(pickedPlace);
-          const { data: row, error: insertErr } = await supabase
-            .from('qualification_sessions')
-            .insert({
-              user_id: userId,
-              address: pickedPlace.formatted_address!,
-              street: parts.street,
-              city: parts.city,
-              state: parts.state,
-              zip: parts.zip,
-              unit_number: unitNumber,
-              current_step: 0,
-            })
-            .select('id')
-            .single();
-          if (insertErr) throw insertErr;
-
-          // 3. Kick off RentCast property lookup (unit_number is on the session
-          //    row, so the edge function reads it directly).
-          supabase.functions
-            .invoke('lookup-property', { body: { session_id: row.id } })
-            .catch((e: any) => console.warn('lookup-property invoke failed:', e));
-
-          // 3b. funnel_started analytics event (don't block on it).
+          // funnel_started analytics event (fire and forget).
+          const { data: { user: authedUser } } = await supabase.auth.getUser();
           supabase.from('events')
             .insert({
-              session_id: row.id,
-              user_id: userId,
+              session_id: sessionId,
+              user_id: authedUser?.id,
               event_name: 'funnel_started',
               payload: { address: pickedPlace.formatted_address, unit_number: unitNumber },
             })
             .then((res: any) => { if (res?.error) console.warn('funnel_started event failed:', res.error); });
 
-          // 4. Off to step 1.
+          // Off to step 1.
           window.location.assign('/offer/step-1/');
         } catch (err: any) {
           console.error('Funnel start failed:', err);
@@ -331,6 +375,8 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
           }
           modalConfirm.removeAttribute('disabled');
           if (modalLabel) modalLabel.textContent = 'Confirm address';
+          // Drop the failed bgWork so next click retries fresh.
+          bgWork = null;
         }
       });
     });

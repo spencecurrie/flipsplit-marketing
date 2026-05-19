@@ -1,86 +1,31 @@
 ---
 import OfferLayout from '../../layouts/OfferLayout.astro';
 
-const numericOptions = [1, 2, 3, 4, 5, 6];
-const numericLabel = (n: number) => (n === 6 ? '6+' : String(n));
-
-const sqftOptions = [
-  { value: 'under_1000',  label: 'Under 1,000 sq ft' },
-  { value: '1000_1500',   label: '1,000 – 1,500 sq ft' },
-  { value: '1500_2000',   label: '1,500 – 2,000 sq ft' },
-  { value: '2000_2500',   label: '2,000 – 2,500 sq ft' },
-  { value: '2500_3000',   label: '2,500 – 3,000 sq ft' },
-  { value: '3000_plus',   label: '3,000+ sq ft' },
+const options = [
+  { value: 'owner', label: "Yes, I'm the owner" },
+  { value: 'agent', label: "No, I'm an agent" },
+  { value: 'other', label: 'Other' },
 ];
 ---
 
 <OfferLayout
   step={1}
-  title="Let's confirm your home's details"
-  subtitle="We've filled in what we could find from public records — review them and correct anything that's off."
+  title="Are you the current owner of the home?"
+  subtitle="Please select your current selling situation."
   backHref="/"
   nextHref="/offer/step-2/"
+  autoAdvance={true}
 >
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8 max-w-4xl mx-auto">
-
-    <div>
-      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Bedrooms</label>
-      <select id="f-bedrooms" class="offer-select">
-        <option value="">Select one…</option>
-        {numericOptions.map((n) => <option value={n}>{numericLabel(n)}</option>)}
-      </select>
-    </div>
-
-    <div>
-      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Full Bathrooms</label>
-      <select id="f-full-baths" class="offer-select">
-        <option value="">Select one…</option>
-        {numericOptions.map((n) => <option value={n}>{numericLabel(n)}</option>)}
-      </select>
-    </div>
-
-    <div>
-      <label class="block text-base font-bold text-[#1E2A3A] mb-2">
-        Partial Bathrooms <span class="text-slate-400 font-normal text-sm">(toilet + sink)</span>
-      </label>
-      <select id="f-partial-baths" class="offer-select">
-        <option value="">Select one…</option>
-        <option value="0">0</option>
-        {numericOptions.map((n) => <option value={n}>{numericLabel(n)}</option>)}
-      </select>
-    </div>
-
-    <div>
-      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Square Footage</label>
-      <select id="f-sqft" class="offer-select">
-        <option value="">Select one…</option>
-        {sqftOptions.map((o) => <option value={o.value}>{o.label}</option>)}
-      </select>
-    </div>
-
-    <div>
-      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Pool</label>
-      <select id="f-pool" class="offer-select">
-        <option value="">Select one…</option>
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-      </select>
-    </div>
-
-    <div>
-      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Floors (above ground)</label>
-      <select id="f-floors" class="offer-select">
-        <option value="">Select one…</option>
-        {numericOptions.map((n) => <option value={n}>{numericLabel(n)}</option>)}
-      </select>
-    </div>
-
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
+    {options.map((opt) => (
+      <button type="button" class="offer-card-btn" data-value={opt.value} aria-pressed="false">
+        {opt.label}
+      </button>
+    ))}
   </div>
 </OfferLayout>
 
 <script>
-  import { getSupabase } from '../../lib/supabase';
-
   declare global {
     interface Window {
       __funnel: {
@@ -94,88 +39,32 @@ const sqftOptions = [
     }
   }
 
-  const FIELDS: Array<[string, string, 'int' | 'string' | 'bool']> = [
-    ['f-bedrooms', 'bedrooms', 'int'],
-    ['f-full-baths', 'full_bathrooms', 'int'],
-    ['f-partial-baths', 'partial_bathrooms', 'int'],
-    ['f-sqft', 'square_footage_range', 'string'],
-    ['f-pool', 'has_pool', 'bool'],
-    ['f-floors', 'floors_above_ground', 'int'],
-  ];
-
-  const setup = (session: Record<string, any>) => {
+  const setup = (session: { owner_status?: string | null }) => {
+    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.offer-card-btn'));
     const nextBtn = document.getElementById('offer-next') as HTMLButtonElement;
-    const els = () => FIELDS.map(([id]) => document.getElementById(id) as HTMLSelectElement);
+    let selected: string | null = session.owner_status ?? null;
+    let advancing = false;
 
-    const collect = (): Record<string, unknown> | null => {
-      const out: Record<string, unknown> = {};
-      for (const [id, col, kind] of FIELDS) {
-        const raw = (document.getElementById(id) as HTMLSelectElement).value;
-        if (raw === '') return null;
-        if (kind === 'int') out[col] = parseInt(raw, 10);
-        else if (kind === 'bool') out[col] = raw === 'true';
-        else out[col] = raw;
-      }
-      return out;
-    };
-    const update = () => { nextBtn.disabled = collect() === null; };
-
-    // Fill any blank dropdown from the (possibly RentCast-prefilled) session
-    // row — never overwrite a value the user has already picked.
-    const applyValues = (src: Record<string, any>) => {
-      for (const [id, col] of FIELDS) {
-        const el = document.getElementById(id) as HTMLSelectElement;
-        if (el.value !== '') continue;
-        const v = src?.[col];
-        if (v !== null && v !== undefined && v !== '') el.value = String(v);
-      }
-      update();
+    const render = () => {
+      buttons.forEach((b) => {
+        b.setAttribute('aria-pressed', b.dataset.value === selected ? 'true' : 'false');
+        b.disabled = advancing;
+      });
+      nextBtn.disabled = !selected || advancing;
     };
 
-    applyValues(session);
+    buttons.forEach((b) => {
+      b.addEventListener('click', () => {
+        if (advancing) return;
+        selected = b.dataset.value!;
+        advancing = true;
+        render();
+        setTimeout(() => window.__funnel.advance(), 280);
+      });
+    });
 
-    // If the RentCast pre-fill (kicked off from the homepage) hasn't landed
-    // yet, lock the dropdowns and poll for it — so the user can't start picking
-    // values that are about to be overwritten. They re-enable the moment the
-    // data lands (or after the fallback below). Only if it never shows up do we
-    // invoke the lookup ourselves (so we don't double-charge RentCast).
-    const allBlank = () => els().every((el) => el.value === '');
-    if (allBlank() && session?.id && session.id !== 'preview') {
-      const supabase = getSupabase();
-
-      const setLoading = (on: boolean) => {
-        els().forEach((el) => { el.disabled = on; });
-      };
-      const finish = (data?: any) => { setLoading(false); if (data) applyValues(data); update(); };
-      setLoading(true);
-
-      let tries = 0;
-      const MAX_TRIES = 7; // ≈ 5s at 700ms
-      const poll = setInterval(async () => {
-        tries++;
-        try {
-          const { data } = await supabase
-            .from('qualification_sessions').select('*').eq('id', session.id).maybeSingle();
-          if (data && (data.rentcast_property_fetched_at || data.bedrooms != null || data.square_footage_range)) {
-            clearInterval(poll); finish(data); return;
-          }
-        } catch { /* keep polling */ }
-        if (tries >= MAX_TRIES) {
-          clearInterval(poll);
-          // Pre-fill never landed — try once ourselves, then fall back to manual entry.
-          try {
-            await supabase.functions.invoke('lookup-property', { body: { session_id: session.id } });
-            const { data } = await supabase
-              .from('qualification_sessions').select('*').eq('id', session.id).maybeSingle();
-            finish(data);
-          } catch { finish(); }
-        }
-      }, 700);
-    }
-
-    FIELDS.forEach(([id]) => document.getElementById(id)!.addEventListener('change', update));
-    window.__funnel.getSelected = collect;
-    update();
+    window.__funnel.getSelected = () => (selected ? { owner_status: selected } : null);
+    render();
   };
 
   if ((window as any).__funnel?.session) {
