@@ -1,0 +1,179 @@
+---
+import OfferLayout from '../../layouts/OfferLayout.astro';
+
+const programs = [
+  {
+    value: 'instant_cash',
+    name: 'Instant Cash Offer',
+    tagline: 'All your cash upfront',
+    bestFor: 'Sellers who prioritize speed and certainty above all else.',
+    highlights: [
+      'Quick close — pick your date',
+      'Zero seller fees',
+      'No repairs needed',
+    ],
+    recommended: false,
+  },
+  {
+    value: 'cash_plus_upside',
+    name: 'Cash + Upside',
+    tagline: 'Cash now plus a share of the resale profit',
+    bestFor: 'Sellers who want to maximize value while still getting cash today.',
+    highlights: [
+      'Strong cash payment at closing',
+      'Share the upside when we resell',
+      'We handle the renovation + sale',
+    ],
+    recommended: true,
+  },
+];
+---
+
+<OfferLayout
+  step={7}
+  title="Which program do you want to explore?"
+  subtitle="You're not locked in — your final offer details get finalized after our walkthrough."
+  backHref="/offer/step-6/"
+  nextHref="/offer/finish/"
+>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+    {programs.map((p) => (
+      <button
+        type="button"
+        class="program-card group"
+        data-value={p.value}
+        aria-pressed="false"
+      >
+        {p.recommended && (
+          <span class="program-card-badge">★ Recommended</span>
+        )}
+        <h3 class="text-2xl font-bold text-[#1E2A3A] mb-1.5">{p.name}</h3>
+        <p class="text-sm text-slate-500 mb-5">{p.tagline}</p>
+
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Best for</p>
+        <p class="text-sm text-slate-700 mb-5 leading-relaxed">{p.bestFor}</p>
+
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3 mt-auto">Feature highlights</p>
+        <ul class="space-y-2.5 mb-6">
+          {p.highlights.map((h) => (
+            <li class="flex items-start gap-2 text-sm text-slate-700">
+              <svg class="w-4 h-4 text-[#1e88e5] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+              <span>{h}</span>
+            </li>
+          ))}
+        </ul>
+
+        <span class="program-card-cta">
+          <span class="program-card-cta-default">Select option</span>
+          <span class="program-card-cta-selected">
+            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            Selected
+          </span>
+        </span>
+      </button>
+    ))}
+  </div>
+
+  <style>
+    .program-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 1rem;
+      padding: 1.75rem 1.5rem;
+      cursor: pointer;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+    }
+    .program-card:hover {
+      border-color: #1e88e5;
+      box-shadow: 0 6px 18px rgba(30,136,229,0.10);
+    }
+    .program-card:active { transform: scale(0.995); }
+    .program-card[aria-pressed="true"] {
+      border-color: #1e88e5;
+      box-shadow: 0 0 0 3px rgba(30,136,229,0.15);
+      background: #f5fbff;
+    }
+
+    .program-card-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #d6f3ff;
+      color: #0d7ac4;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+
+    .program-card-cta {
+      display: block;
+      text-align: center;
+      padding: 0.75rem 1rem;
+      border-radius: 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      color: #475569;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+    .program-card[aria-pressed="true"] .program-card-cta {
+      background: #1e88e5;
+      color: #ffffff;
+      border-color: #1e88e5;
+    }
+    .program-card-cta-selected { display: none; }
+    .program-card[aria-pressed="true"] .program-card-cta-default  { display: none; }
+    .program-card[aria-pressed="true"] .program-card-cta-selected { display: inline-flex; align-items: center; justify-content: center; }
+  </style>
+</OfferLayout>
+
+<script>
+  declare global {
+    interface Window {
+      __funnel: {
+        sessionId: string;
+        session: any;
+        getSelected: () => Record<string, unknown> | null;
+        advance: () => Promise<void>;
+        setError: (msg: string) => void;
+        clearError: () => void;
+      };
+    }
+  }
+
+  const setup = (session: { program_preference?: string | null }) => {
+    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.program-card'));
+    const nextBtn = document.getElementById('offer-next') as HTMLButtonElement;
+    let selected: string | null = session.program_preference ?? null;
+
+    const render = () => {
+      buttons.forEach((b) => {
+        b.setAttribute('aria-pressed', b.dataset.value === selected ? 'true' : 'false');
+      });
+      nextBtn.disabled = !selected;
+    };
+
+    buttons.forEach((b) => {
+      b.addEventListener('click', () => {
+        selected = b.dataset.value!;
+        render();
+      });
+    });
+
+    window.__funnel.getSelected = () => (selected ? { program_preference: selected } : null);
+    render();
+  };
+
+  if ((window as any).__funnel?.session) {
+    setup((window as any).__funnel.session);
+  } else {
+    window.addEventListener('funnel-ready', (e) => setup((e as CustomEvent).detail), { once: true });
+  }
+</script>

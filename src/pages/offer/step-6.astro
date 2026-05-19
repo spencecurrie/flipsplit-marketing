@@ -1,0 +1,216 @@
+---
+import OfferLayout from '../../layouts/OfferLayout.astro';
+
+const options = [
+  {
+    value: 'renovate_max_value',
+    label: 'Renovate to achieve max value',
+    description: 'Take a smaller cash payment now, then share in the resale upside after we renovate.',
+    accent: 'blue',
+    pill: 'Maximize Your Return',
+    icon: 'trending',
+  },
+  {
+    value: 'quick_sale',
+    label: 'Quick sale to access funds now',
+    description: 'Take the full cash offer at closing. Skip the wait, skip the upside.',
+    accent: 'blue',
+    pill: 'Simple & Fast',
+    icon: 'bolt',
+  },
+  {
+    value: 'convenient_sale',
+    label: 'Convenient sale',
+    description: 'Coordinate the sale of your current home with the purchase of your next one.',
+    accent: 'blue',
+    pill: 'Move on Your Schedule',
+    icon: 'calendar',
+  },
+];
+---
+
+<OfferLayout
+  step={6}
+  title="What are your goals in your home sale?"
+  subtitle="There are no wrong answers — your goal helps us recommend the right offer."
+  backHref="/offer/step-5/"
+  nextHref="/offer/step-7/"
+  autoAdvance={true}
+>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+    {options.map((opt) => (
+      <button
+        type="button"
+        class={`goal-card goal-card--${opt.accent}`}
+        data-value={opt.value}
+        aria-pressed="false"
+      >
+        <div class="goal-card-icon">
+          {opt.icon === 'bolt' && (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+          )}
+          {opt.icon === 'trending' && (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>
+          )}
+          {opt.icon === 'calendar' && (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
+          )}
+        </div>
+
+        <span class="goal-card-pill">{opt.pill}</span>
+
+        <h3 class="goal-card-label">{opt.label}</h3>
+        <p class="goal-card-desc">{opt.description}</p>
+
+        <span class="goal-card-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </button>
+    ))}
+  </div>
+
+  <style>
+    .goal-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 1.25rem;
+      padding: 2rem 1.75rem 1.75rem;
+      cursor: pointer;
+      transition: border-color 0.15s ease, box-shadow 0.18s ease, transform 0.1s ease;
+      font-family: 'Open Sans', sans-serif;
+    }
+    .goal-card:hover { transform: translateY(-2px); }
+    .goal-card:active { transform: scale(0.995); }
+    .goal-card[disabled] { cursor: not-allowed; opacity: 0.6; }
+
+    .goal-card--blue { --accent: #1e88e5; --accent-soft: #e7f3fd; --accent-deep: #0d7ac4; }
+    .goal-card--emerald { --accent: #059669; --accent-soft: #d1fae5; --accent-deep: #047857; }
+
+    .goal-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 10px 28px -8px color-mix(in srgb, var(--accent) 28%, transparent);
+    }
+    .goal-card[aria-pressed="true"] {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent), 0 10px 28px -8px color-mix(in srgb, var(--accent) 30%, transparent);
+    }
+
+    .goal-card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.1rem;
+    }
+    .goal-card-icon svg { width: 28px; height: 28px; }
+
+    .goal-card-pill {
+      display: inline-block;
+      align-self: flex-start;
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 0.85rem;
+    }
+
+    .goal-card-label {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1E2A3A;
+      line-height: 1.25;
+      margin-bottom: 0.55rem;
+    }
+    .goal-card-desc {
+      font-size: 0.95rem;
+      color: #64748b;
+      line-height: 1.55;
+      margin-bottom: 0;
+    }
+
+    .goal-card-arrow {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #cbd5e1;
+      transition: color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+    }
+    .goal-card-arrow svg { width: 16px; height: 16px; }
+    .goal-card:hover .goal-card-arrow {
+      color: var(--accent);
+      background: var(--accent-soft);
+      transform: translateX(2px);
+    }
+    .goal-card[aria-pressed="true"] .goal-card-arrow {
+      color: #ffffff;
+      background: var(--accent);
+    }
+  </style>
+</OfferLayout>
+
+<script>
+  declare global {
+    interface Window {
+      __funnel: {
+        sessionId: string;
+        session: any;
+        getSelected: () => Record<string, unknown> | null;
+        advance: () => Promise<void>;
+        setError: (msg: string) => void;
+        clearError: () => void;
+      };
+    }
+  }
+
+  const setup = (session: { selling_goal?: string | null }) => {
+    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.goal-card'));
+    const nextBtn = document.getElementById('offer-next') as HTMLButtonElement;
+    let selected: string | null = session.selling_goal ?? null;
+    let advancing = false;
+
+    const render = () => {
+      buttons.forEach((b) => {
+        b.setAttribute('aria-pressed', b.dataset.value === selected ? 'true' : 'false');
+        b.disabled = advancing;
+      });
+      nextBtn.disabled = !selected || advancing;
+    };
+
+    buttons.forEach((b) => {
+      b.addEventListener('click', () => {
+        if (advancing) return;
+        selected = b.dataset.value!;
+        advancing = true;
+        render();
+        setTimeout(() => window.__funnel.advance(), 280);
+      });
+    });
+
+    window.__funnel.getSelected = () => (selected ? { selling_goal: selected } : null);
+    render();
+  };
+
+  if ((window as any).__funnel?.session) {
+    setup((window as any).__funnel.session);
+  } else {
+    window.addEventListener('funnel-ready', (e) => setup((e as CustomEvent).detail), { once: true });
+  }
+</script>

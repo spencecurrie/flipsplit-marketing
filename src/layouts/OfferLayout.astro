@@ -2,7 +2,7 @@
 import '../styles/global.css';
 
 interface Props {
-  step: 1 | 2 | 3 | 4 | 5;
+  step: 1 | 2 | 3 | 4 | 5 | 6 | 7;
   title: string;
   subtitle?: string;
   /** Path of the previous step's URL (or "/" for back to home) */
@@ -13,7 +13,7 @@ interface Props {
   autoAdvance?: boolean;
 }
 const { step, title, subtitle, backHref, nextHref, autoAdvance = false } = Astro.props;
-const totalSteps = 5;
+const totalSteps = 7;
 const progressPct = Math.round((step / totalSteps) * 100);
 ---
 
@@ -65,15 +65,43 @@ const progressPct = Math.round((step / totalSteps) * 100);
       box-shadow: 0 4px 12px rgba(26,150,232,0.08);
     }
     .offer-card-btn:active { transform: scale(0.98); }
+
+    /* Suppress hover/focus visuals until the user moves the mouse on this page.
+       Prevents the first card from looking pre-selected after auto-advance. */
+    body.no-hover .offer-card-btn:hover,
+    body.no-hover .offer-card-btn:focus,
+    body.no-hover .offer-card-btn:focus-visible,
+    body.no-hover .goal-card:hover,
+    body.no-hover .goal-card:focus,
+    body.no-hover .goal-card:focus-visible,
+    body.no-hover .program-card:hover,
+    body.no-hover .program-card:focus,
+    body.no-hover .program-card:focus-visible {
+      border-color: #e2e8f0;
+      background: #ffffff;
+      color: #1E2A3A;
+      box-shadow: none;
+      transform: none;
+    }
+    body.no-hover .offer-card-btn:focus,
+    body.no-hover .goal-card:focus,
+    body.no-hover .program-card:focus { outline: none; }
+    /* Selected state still wins over no-hover */
+    body.no-hover .offer-card-btn[aria-pressed="true"] {
+      border-color: #1e88e5;
+      background: #F1F8FE;
+      color: #1E2A3A;
+      box-shadow: 0 0 0 3px rgba(30,136,229,0.22), 0 10px 28px -8px rgba(30,136,229,0.30);
+    }
     .offer-card-btn[aria-pressed="true"] {
       border-color: #1e88e5;
-      background: #1e88e5;
-      color: #fff;
-      box-shadow: 0 6px 16px rgba(26,150,232,0.25);
+      background: #F1F8FE;
+      color: #1E2A3A;
+      box-shadow: 0 0 0 3px rgba(30,136,229,0.22), 0 10px 28px -8px rgba(30,136,229,0.30);
     }
     .offer-card-btn[aria-pressed="true"]:hover {
-      background: #1e88e5;
-      color: #fff;
+      background: #F1F8FE;
+      color: #1E2A3A;
     }
     .offer-card-btn[disabled] { opacity: 0.6; cursor: not-allowed; }
 
@@ -146,7 +174,7 @@ const progressPct = Math.round((step / totalSteps) * 100);
     </header>
 
     <!-- Question content -->
-    <main class="flex-1 px-6 py-8 max-w-6xl mx-auto w-full">
+    <main class="flex-1 px-6 pt-8 pb-8 lg:pt-20 max-w-6xl mx-auto w-full">
       <div class="text-center mb-14">
         <h1 class="text-4xl md:text-5xl font-semibold mb-4" style="color: var(--brand-dark);">{title}</h1>
         {subtitle && <p class="text-base md:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">{subtitle}</p>}
@@ -195,6 +223,14 @@ const progressPct = Math.round((step / totalSteps) * 100);
         };
       }
     }
+
+    // Suppress hover styles on landing so the option under the cursor doesn't
+    // look pre-selected after auto-advance. Cleared on first real mouse move.
+    document.body.classList.add('no-hover');
+    const _clearNoHover = () => document.body.classList.remove('no-hover');
+    window.addEventListener('mousemove', _clearNoHover, { once: true });
+    window.addEventListener('touchstart', _clearNoHover, { once: true });
+    window.addEventListener('keydown', _clearNoHover, { once: true });
 
     (async () => {
       const supabase = getSupabase();
