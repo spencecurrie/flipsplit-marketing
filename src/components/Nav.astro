@@ -56,6 +56,27 @@ const { variant = 'solid' } = Astro.props;
   .mobile-dropdown > summary::-webkit-details-marker { display: none; }
   .mobile-dropdown[open] .mobile-chevron { transform: rotate(90deg); }
   .mobile-chevron { transition: transform 0.2s; }
+
+  /* ── Light-theme override for the scrolled-mobile state ── */
+  #main-nav.nav-light { border-bottom: 1px solid #e2e8f0; }
+  #main-nav.nav-light #nav-offer-form-wrap .field {
+    background: #F1F5F9;
+    border: 1px solid #E2E8F0;
+  }
+  #main-nav.nav-light #nav-offer-form-wrap input {
+    color: #0f172a;
+  }
+  #main-nav.nav-light #nav-offer-form-wrap input::placeholder { color: #94a3b8; }
+  #main-nav.nav-light #nav-offer-form-wrap .submit-icon {
+    background: #1e88e5;
+    color: #fff;
+  }
+  #main-nav.nav-light #t-signin-link {
+    display: inline-block;
+    color: #0f172a;
+    font-size: 0.875rem;
+  }
+  #main-nav.nav-light #menu-toggle { color: #0f172a; }
 </style>
 
 <!-- Top progress bar — controlled by Astro View Transitions lifecycle below -->
@@ -64,8 +85,8 @@ const { variant = 'solid' } = Astro.props;
 {variant === 'transparent' ? (
   <!-- ─── TRANSPARENT NAV (homepage) ─── -->
   <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style="background: transparent;">
-    <div class="max-w-[1500px] mx-auto px-6 h-20 flex items-center">
-      <div class="flex-1">
+    <div class="max-w-[1500px] mx-auto px-6 h-20 flex items-center gap-3 md:gap-0">
+      <div class="shrink-0 md:flex-1">
         <a href="/"><img id="nav-logo" src="/wordmark-dark.png" alt="FlipSplit" class="h-9" /></a>
       </div>
 
@@ -86,18 +107,23 @@ const { variant = 'solid' } = Astro.props;
         <a href="/reviews/" class="text-white/90 hover:text-white transition-colors">Reviews</a>
       </div>
 
-      <div id="nav-offer-form-wrap" class="hidden flex-[5] max-w-4xl mx-auto">
-        <form>
-          <div class="flex items-center rounded-xl overflow-hidden border border-white/20" style="background: rgba(255,255,255,0.1);">
-            <input type="text" name="address" placeholder="Enter your home address..." class="flex-1 bg-transparent text-white text-sm placeholder:text-white/50 focus:outline-none px-4 py-2.5" />
-            <button type="submit" class="shrink-0 text-white text-xs font-bold px-4 py-2.5 transition-all hover:bg-white/10 whitespace-nowrap rounded-lg" style="border: 1.5px solid rgba(255,255,255,0.7); background: transparent;">
+      <div id="nav-offer-form-wrap" class="hidden min-w-0 flex-1 md:flex-[5] md:max-w-4xl md:mx-auto">
+        <form action="/" method="get" class="w-full">
+          <div class="field flex items-center rounded-xl overflow-hidden border border-white/20" style="background: rgba(255,255,255,0.1);">
+            <input type="text" name="address" placeholder="Enter home address" class="flex-1 min-w-0 bg-transparent text-white text-sm placeholder:text-white/60 focus:outline-none px-3 md:px-4 py-2.5" />
+            <!-- Compact icon submit (visible on mobile) -->
+            <button type="submit" class="submit-icon md:hidden shrink-0 w-9 h-9 mr-1.5 flex items-center justify-center rounded-lg transition-transform active:scale-95" aria-label="Search">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+            <!-- Wider "Get My Offer" button (desktop only) -->
+            <button type="submit" class="hidden md:inline-flex shrink-0 text-white text-xs font-bold px-4 py-2.5 transition-all hover:bg-white/10 whitespace-nowrap rounded-lg" style="border: 1.5px solid rgba(255,255,255,0.7); background: transparent;">
               Get My Offer
             </button>
           </div>
         </form>
       </div>
 
-      <div id="nav-right" class="flex-1 flex items-center justify-end gap-5">
+      <div id="nav-right" class="shrink-0 md:flex-1 flex items-center justify-end gap-3 md:gap-5">
         <a id="t-signin-link" href="/sign-in/" class="hidden md:inline-block text-white/90 hover:text-white transition-colors text-[15px] font-medium">Sign in</a>
         <div id="t-profile-wrap" class="hidden relative">
           <button id="t-profile-btn" class="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden hover:opacity-90 transition-opacity" style="background:#1e88e5;" aria-label="Account menu" aria-expanded="false">
@@ -298,21 +324,32 @@ const { variant = 'solid' } = Astro.props;
     tSignoutBtn.addEventListener('click', tHandleSignOut);
     tMSignout.addEventListener('click', tHandleSignOut);
 
+    const navLogo = document.getElementById('nav-logo') as HTMLImageElement;
+
     function updateNav() {
       const scrolled = window.scrollY > 80;
       const isMobile = window.innerWidth < 768;
       if (scrolled) {
-        nav.style.background = '#1E2A3A';
         navLinks.style.display = 'none';
+        navOfferFormWrap.style.display = 'flex';
         if (isMobile) {
-          navOfferFormWrap.style.display = 'none';
+          // White nav: logo dark, form + sign-in + hamburger all visible
+          nav.classList.add('nav-light');
+          nav.style.background = '#ffffff';
+          if (navLogo) navLogo.src = '/wordmark-on-white.png';
           navRight.style.display = '';
         } else {
-          navOfferFormWrap.style.display = 'flex';
+          // Existing dark scrolled state (desktop)
+          nav.classList.remove('nav-light');
+          nav.style.background = '#1E2A3A';
+          if (navLogo) navLogo.src = '/wordmark-dark.png';
           navRight.style.display = 'none';
         }
       } else {
+        // Top of page — transparent over hero
+        nav.classList.remove('nav-light');
         nav.style.background = 'transparent';
+        if (navLogo) navLogo.src = '/wordmark-dark.png';
         navLinks.style.display = '';
         navRight.style.display = '';
         navOfferFormWrap.style.display = 'none';
