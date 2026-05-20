@@ -363,7 +363,7 @@ const { variant = 'solid' } = Astro.props;
     const navLogo = document.getElementById('nav-logo') as HTMLImageElement;
 
     function updateNav() {
-      const scrolled = window.scrollY > 320;
+      const scrolled = window.scrollY > 480;
       if (scrolled) {
         // Unified scrolled state: white nav, compact form, sign-in visible
         nav.classList.add('nav-light');
@@ -615,7 +615,7 @@ const { variant = 'solid' } = Astro.props;
     // white on mobile (matches Opendoor-style mobile bar); switches to dark
     // navy on desktop scrolled (existing behavior).
     function updateSolidNav() {
-      const scrolled = window.scrollY > 320;
+      const scrolled = window.scrollY > 480;
       if (scrolled) {
         // Unified scrolled state across screen sizes: white + compact form
         solidNav.classList.add('nav-light');
