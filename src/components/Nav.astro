@@ -89,6 +89,27 @@ const { variant = 'solid' } = Astro.props;
     background: #1976d2 !important;
     border-color: #1976d2 !important;
   }
+
+  /* Smooth fade-in for the address form when the nav transitions into
+     its scrolled state. */
+  @keyframes nav-form-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  #nav-offer-form-wrap,
+  #solid-nav-offer-form-wrap {
+    animation: nav-form-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  /* Slower, smoother background swap. The Tailwind utility on the nav
+     already does background transitions but we explicitly tune it here. */
+  #main-nav,
+  #solid-nav {
+    transition: background-color 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease !important;
+  }
+  #nav-logo,
+  #solid-nav-logo {
+    transition: opacity 0.3s ease;
+  }
 </style>
 
 <!-- Top progress bar — controlled by Astro View Transitions lifecycle below -->
@@ -339,7 +360,7 @@ const { variant = 'solid' } = Astro.props;
     const navLogo = document.getElementById('nav-logo') as HTMLImageElement;
 
     function updateNav() {
-      const scrolled = window.scrollY > 80;
+      const scrolled = window.scrollY > 240;
       if (scrolled) {
         // Unified scrolled state: white nav, compact form, sign-in visible
         nav.classList.add('nav-light');
@@ -588,7 +609,7 @@ const { variant = 'solid' } = Astro.props;
     // white on mobile (matches Opendoor-style mobile bar); switches to dark
     // navy on desktop scrolled (existing behavior).
     function updateSolidNav() {
-      const scrolled = window.scrollY > 80;
+      const scrolled = window.scrollY > 240;
       if (scrolled) {
         // Unified scrolled state across screen sizes: white + compact form
         solidNav.classList.add('nav-light');
