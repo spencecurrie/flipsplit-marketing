@@ -151,7 +151,7 @@ const programs = [
   const setup = (session: { program_preference?: string | null }) => {
     const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.program-card'));
     const nextBtn = document.getElementById('offer-next') as HTMLButtonElement;
-    let selected: string | null = session.program_preference ?? null;
+    let selected: string | null = null;
 
     const render = () => {
       buttons.forEach((b) => {

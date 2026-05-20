@@ -45,7 +45,7 @@ const options = [
   const setup = (session: { home_category?: string | null }) => {
     const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.offer-card-btn'));
     const nextBtn = document.getElementById('offer-next') as HTMLButtonElement;
-    let selected: string | null = session.home_category ?? null;
+    let selected: string | null = null;
     let advancing = false;
 
     const render = () => {

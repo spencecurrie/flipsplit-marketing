@@ -183,7 +183,7 @@ const options = [
   const setup = (session: { selling_goal?: string | null }) => {
     const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.goal-card'));
     const nextBtn = document.getElementById('offer-next') as HTMLButtonElement;
-    let selected: string | null = session.selling_goal ?? null;
+    let selected: string | null = null;
     let advancing = false;
 
     const render = () => {
