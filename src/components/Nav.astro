@@ -362,20 +362,8 @@ const { variant = 'solid' } = Astro.props;
 
     const navLogo = document.getElementById('nav-logo') as HTMLImageElement;
 
-    // Compute the y-offset at which the hero section ends. Used as the scroll
-    // threshold so the nav doesn't transform until the hero is out of view.
-    // Cached + recomputed on resize and after View Transitions navigation.
-    let _navThreshold = 240;
-    const _computeThreshold = () => {
-      const hero = document.querySelector('[data-nav-hero]') as HTMLElement | null;
-      _navThreshold = hero ? hero.offsetTop + hero.offsetHeight : 120;
-    };
-    _computeThreshold();
-    window.addEventListener('resize', _computeThreshold);
-    document.addEventListener('astro:page-load', _computeThreshold);
-
     function updateNav() {
-      const scrolled = window.scrollY > _navThreshold;
+      const scrolled = window.scrollY > 240;
       if (scrolled) {
         // Unified scrolled state: white nav, compact form, sign-in visible
         nav.classList.add('nav-light');
@@ -626,19 +614,8 @@ const { variant = 'solid' } = Astro.props;
     // Mirror homepage nav: after scrolling, show the address form. Stays
     // white on mobile (matches Opendoor-style mobile bar); switches to dark
     // navy on desktop scrolled (existing behavior).
-    // Same hero-aware threshold as the transparent nav. For pages without a
-    // hero section (most non-homepage pages) it falls back to 120.
-    let _solidNavThreshold = 240;
-    const _computeSolidThreshold = () => {
-      const hero = document.querySelector('[data-nav-hero]') as HTMLElement | null;
-      _solidNavThreshold = hero ? hero.offsetTop + hero.offsetHeight : 120;
-    };
-    _computeSolidThreshold();
-    window.addEventListener('resize', _computeSolidThreshold);
-    document.addEventListener('astro:page-load', _computeSolidThreshold);
-
     function updateSolidNav() {
-      const scrolled = window.scrollY > _solidNavThreshold;
+      const scrolled = window.scrollY > 240;
       if (scrolled) {
         // Unified scrolled state across screen sizes: white + compact form
         solidNav.classList.add('nav-light');
