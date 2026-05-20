@@ -435,16 +435,56 @@ import { ClientRouter } from 'astro:transitions';
 
   <!-- ─── SO-CAL TRACK RECORD ─── -->
   <section class="relative overflow-hidden py-20 px-6">
-    <!-- Real Google Static Map of Southern California, label-free + desaturated -->
+    <!-- Illustrated-map style background: pastel blocks divided by white streets + pink pins -->
     <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-      <img
-        src="https://maps.googleapis.com/maps/api/staticmap?center=Los+Angeles,CA&zoom=11&size=640x400&scale=2&maptype=roadmap&style=feature:poi%7Cvisibility:off&style=feature:transit%7Cvisibility:off&style=feature:all%7Celement:labels%7Cvisibility:off&style=feature:road%7Csaturation:-100%7Clightness:10&style=feature:water%7Ccolor:0xdbeafe&style=feature:landscape%7Ccolor:0xf8fafc&key=AIzaSyArzPR5lnfheBpgpS98ZrQWO949cB1ty30"
-        alt=""
-        class="w-full h-full object-cover"
-        loading="lazy"
-      />
-      <!-- Soft white wash so the card stands out -->
-      <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 0%, rgba(248,250,252,0.8) 75%);"></div>
+      <svg class="w-full h-full" preserveAspectRatio="xMidYMid slice" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+        <!-- Base + irregular color blocks -->
+        <rect width="100%" height="100%" fill="#e6ebf2" />
+        <polygon points="0,0 280,-20 250,170 80,200 0,180" fill="#e9eff6" />
+        <polygon points="280,-20 820,-10 820,140 580,240 360,210" fill="#edf1f6" />
+        <polygon points="80,200 250,170 360,210 320,420 50,440 -20,300" fill="#e7ece8" />
+        <polygon points="360,210 580,240 720,420 460,520 280,460 320,300" fill="#f1ede1" />
+        <polygon points="580,240 820,140 820,470 720,420" fill="#edf0ec" />
+        <polygon points="50,440 280,460 460,520 250,640 -20,640" fill="#e8eef0" />
+        <polygon points="460,520 720,420 820,470 820,640 250,640" fill="#eaeaf2" />
+
+        <!-- Wide white streets at varying angles -->
+        <g stroke="#ffffff" stroke-linecap="round" fill="none">
+          <path d="M-40 110 L860 220" stroke-width="28" />
+          <path d="M-40 380 L860 320" stroke-width="22" />
+          <path d="M-40 540 L860 510" stroke-width="20" />
+          <path d="M280 -40 L160 660" stroke-width="22" />
+          <path d="M520 -40 L580 660" stroke-width="20" />
+          <path d="M740 -40 L780 660" stroke-width="16" />
+          <!-- secondary thinner streets -->
+          <path d="M60 -40 L100 660" stroke-width="10" />
+          <path d="M-40 250 L860 270" stroke-width="8" />
+          <path d="M-40 450 L860 440" stroke-width="8" />
+          <path d="M400 -40 L380 660" stroke-width="10" />
+        </g>
+
+        <!-- Pink/red map pins (with subtle white inner circle) -->
+        <g opacity="0.8">
+          <g transform="translate(120 90)">
+            <path d="M16 0C9 0 3 6 3 13c0 8 13 23 13 23s13-15 13-23C29 6 23 0 16 0z" fill="#f3b5be" />
+            <circle cx="16" cy="13" r="5" fill="#ffffff" />
+          </g>
+          <g transform="translate(660 130)">
+            <path d="M16 0C9 0 3 6 3 13c0 8 13 23 13 23s13-15 13-23C29 6 23 0 16 0z" fill="#f3b5be" />
+            <circle cx="16" cy="13" r="5" fill="#ffffff" />
+          </g>
+          <g transform="translate(220 470)">
+            <path d="M16 0C9 0 3 6 3 13c0 8 13 23 13 23s13-15 13-23C29 6 23 0 16 0z" fill="#f3b5be" />
+            <circle cx="16" cy="13" r="5" fill="#ffffff" />
+          </g>
+          <g transform="translate(580 380)">
+            <path d="M16 0C9 0 3 6 3 13c0 8 13 23 13 23s13-15 13-23C29 6 23 0 16 0z" fill="#f3b5be" />
+            <circle cx="16" cy="13" r="5" fill="#ffffff" />
+          </g>
+        </g>
+      </svg>
+      <!-- Soft radial wash so the centered card stands out -->
+      <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, rgba(248,250,252,0.65) 70%);"></div>
     </div>
 
     <div class="relative max-w-[1500px] mx-auto">
