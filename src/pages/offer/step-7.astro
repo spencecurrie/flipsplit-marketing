@@ -35,6 +35,7 @@ const programs = [
   subtitle="You're not locked in — your final offer details get finalized after our walkthrough."
   backHref="/offer/step-6/"
   nextHref="/offer/finish/"
+  autoAdvance={true}
 >
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
     {programs.map((p) => (
@@ -152,18 +153,23 @@ const programs = [
     const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.program-card'));
     const nextBtn = document.getElementById('offer-next') as HTMLButtonElement;
     let selected: string | null = null;
+    let advancing = false;
 
     const render = () => {
       buttons.forEach((b) => {
         b.setAttribute('aria-pressed', b.dataset.value === selected ? 'true' : 'false');
+        b.disabled = advancing;
       });
-      nextBtn.disabled = !selected;
+      if (nextBtn) nextBtn.disabled = !selected || advancing;
     };
 
     buttons.forEach((b) => {
       b.addEventListener('click', () => {
+        if (advancing) return;
         selected = b.dataset.value!;
+        advancing = true;
         render();
+        setTimeout(() => window.__funnel.advance(), 280);
       });
     });
 
