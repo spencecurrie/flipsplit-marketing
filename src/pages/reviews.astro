@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import AddressForm from '../components/AddressForm.astro'
 import Nav from '../components/Nav.astro';
@@ -29,6 +30,7 @@ import Footer from '../components/Footer.astro';
     .review-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); border-color: #cbd5e1; }
     .review-card.featured { border-color: #1e88e5; box-shadow: 0 4px 24px rgba(26,150,232,0.1); }
   </style>
+  <ClientRouter />
 </head>
 <body class="bg-white antialiased">
 

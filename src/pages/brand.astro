@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 ---
 <!DOCTYPE html>
@@ -29,6 +30,7 @@ import '../styles/global.css';
     .demo-card { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; }
     .demo-card.featured { border-color: #1e88e5; box-shadow: 0 4px 24px rgba(26,150,232,0.12); }
   </style>
+  <ClientRouter />
 </head>
 <body style="max-width:960px; margin:0 auto; padding:48px 24px;">
 

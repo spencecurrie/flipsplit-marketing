@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css'
 import Nav from '../components/Nav.astro';
 import AddressForm from '../components/AddressForm.astro';
@@ -158,6 +159,7 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
       margin-top: 3px;
     }
   </style>
+  <ClientRouter />
 </head>
 <body class="bg-white antialiased">
 

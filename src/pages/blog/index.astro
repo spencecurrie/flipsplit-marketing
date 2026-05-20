@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import Nav from '../../components/Nav.astro'
 import { getCollection } from 'astro:content';
 import '../../styles/global.css';
@@ -42,6 +43,7 @@ function formatDate(d: Date) {
     .card-img:hover { transform: scale(1.03); }
     .post-card:hover h3 { color: var(--brand-cyan); }
   </style>
+  <ClientRouter />
 </head>
 <body class="bg-white antialiased">
 

@@ -5,6 +5,41 @@ interface Props {
 const { variant = 'solid' } = Astro.props;
 ---
 
+<style is:global>
+  /* ── Top-of-page navigation progress bar (Astro View Transitions) ── */
+  #nav-progress-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    z-index: 9999;
+    pointer-events: none;
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    opacity: 0;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+    background: linear-gradient(90deg, #1e88e5 0%, #4ba2ef 100%);
+    box-shadow: 0 0 6px rgba(30,136,229,0.45);
+  }
+  #nav-progress-bar.is-loading {
+    opacity: 1;
+    transform: scaleX(0.7);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.15s ease;
+  }
+  #nav-progress-bar.is-done {
+    opacity: 1;
+    transform: scaleX(1);
+    transition: transform 0.18s ease-out, opacity 0.3s ease 0.15s;
+  }
+  #nav-progress-bar.is-done.is-fade {
+    opacity: 0;
+  }
+
+  /* Slightly slower default fade between pages so navigation feels intentional */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 320ms;
+  }
+</style>
 <style>
   .nav-btn { background: #1e88e5; color: #fff; font-weight: 700; font-size: 0.875rem; padding: 0.625rem 1.25rem; border-radius: 8px; transition: filter 0.15s; white-space: nowrap; }
   .nav-btn:hover { filter: brightness(1.08); }
@@ -22,6 +57,9 @@ const { variant = 'solid' } = Astro.props;
   .mobile-dropdown[open] .mobile-chevron { transform: rotate(90deg); }
   .mobile-chevron { transition: transform 0.2s; }
 </style>
+
+<!-- Top progress bar — controlled by Astro View Transitions lifecycle below -->
+<div id="nav-progress-bar" data-astro-transition-persist="nav-progress-bar"></div>
 
 {variant === 'transparent' ? (
   <!-- ─── TRANSPARENT NAV (homepage) ─── -->
@@ -128,6 +166,36 @@ const { variant = 'solid' } = Astro.props;
 
   <script>
     import { getSupabase } from '../lib/supabase';
+
+    // ── Nav progress bar wired to Astro View Transitions lifecycle ──
+    // Visible flash of progress + slight delay on every internal click so
+    // navigation feels intentional. Bar element lives in Nav (persisted).
+    {
+      const showBar = () => {
+        const bar = document.getElementById('nav-progress-bar');
+        if (!bar) return;
+        bar.classList.remove('is-done', 'is-fade');
+        // force reflow so transition restarts
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        bar.offsetWidth;
+        bar.classList.add('is-loading');
+      };
+      const completeBar = () => {
+        const bar = document.getElementById('nav-progress-bar');
+        if (!bar) return;
+        bar.classList.remove('is-loading');
+        bar.classList.add('is-done');
+        // brief moment at 100%, then fade
+        setTimeout(() => bar.classList.add('is-fade'), 120);
+        // and finally reset
+        setTimeout(() => {
+          bar.classList.remove('is-done', 'is-fade');
+        }, 600);
+      };
+      document.addEventListener('astro:before-preparation', showBar);
+      document.addEventListener('astro:after-swap', completeBar);
+      document.addEventListener('astro:page-load', completeBar);
+    }
 
     const nav = document.getElementById('main-nav') as HTMLElement;
     const navLinks = document.getElementById('nav-links') as HTMLElement;

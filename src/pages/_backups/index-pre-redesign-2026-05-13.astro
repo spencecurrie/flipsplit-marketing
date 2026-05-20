@@ -1,0 +1,578 @@
+---
+import '../styles/global.css'
+import AddressForm from '../components/AddressForm.astro'
+import Nav from '../components/Nav.astro'
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="generator" content={Astro.generator} />
+  <title>FlipSplit — Sell Your Home For More, Without the Hassle</title>
+  <meta name="description" content="FlipSplit renovates your home before it hits the market. Get a guaranteed cash offer today plus a share of the upside when it sells for more. No repairs, no stress." />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand-cyan: #1a96e8;
+      --brand-dark: #1E2A3A;
+      --brand-body: #374151;
+      --brand-blue: #1a96e8;
+      --brand-coral: #F97066;
+    }
+    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); overflow-x: hidden; }
+    h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
+    details > summary { list-style: none; }
+    details > summary::-webkit-details-marker { display: none; }
+    .faq-icon { transition: transform 0.2s ease; display: inline-block; }
+    details[open] .faq-icon { transform: rotate(45deg); }
+    .hiw-item[open] .hiw-chevron { transform: rotate(180deg); }
+    @keyframes hiw-fill { from { width: 0%; } to { width: 100%; } }
+    .hiw-step { transition: border-color 0.2s, box-shadow 0.2s; }
+    .hiw-step.hiw-active { border-left-color: var(--brand-cyan) !important; box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+    .hiw-step.hiw-active .hiw-num { color: var(--brand-cyan) !important; }
+    .hiw-step.hiw-active .hiw-title { color: var(--brand-dark) !important; }
+    .hiw-step .hiw-body { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease; margin-top: 0; }
+    .hiw-step.hiw-active .hiw-body { max-height: 100px; opacity: 1; margin-top: 0.375rem; }
+    .hiw-step.hiw-active .hiw-bar { animation: hiw-fill 4s linear forwards; }
+    .btn-primary { background: var(--brand-cyan); color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary:hover { filter: brightness(1.08); }
+    .text-brand-dark { color: var(--brand-dark); }
+    .text-brand-cyan { color: var(--brand-cyan); }
+    .bg-brand-dark { background: #1E2A3A; }
+    input::placeholder { color: #9ca3af; }
+    .dark-placeholder::placeholder { color: rgba(255,255,255,0.35); }
+    select option { background: #fff; color: #374151; }
+    .deal-slider {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 6px; border-radius: 3px;
+      background: linear-gradient(to right, #1a96e8 var(--fill, 50%), #e2e8f0 var(--fill, 50%));
+      outline: none; cursor: pointer;
+    }
+    .deal-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
+      background: #1a96e8; border: 3px solid white; box-shadow: 0 1px 6px rgba(0,0,0,0.2); cursor: pointer;
+    }
+    .deal-slider::-moz-range-thumb {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: #1a96e8; border: 3px solid white; box-shadow: 0 1px 6px rgba(0,0,0,0.2); cursor: pointer;
+    }
+  </style>
+</head>
+<body class="bg-white antialiased">
+
+  <Nav variant="transparent" />
+
+  <!-- ─── HERO ─── -->
+  <section class="relative overflow-hidden rounded-b-[2.5rem]" style="min-height: 560px;">
+    <!-- Background photo -->
+    <img
+      src="/hero-family.png"
+      alt="Family in front of their new home"
+      class="absolute inset-0 w-full h-full object-cover object-right lg:object-center"
+    />
+    <!-- Gradient overlay: dark on left for text, fades right -->
+    <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(10,20,35,0.78) 0%, rgba(10,20,35,0.55) 50%, rgba(10,20,35,0.15) 100%);"></div>
+
+    <div class="relative max-w-6xl mx-auto px-6 flex flex-col justify-center" style="min-height: 560px; padding-top: 8rem; padding-bottom: 5rem;">
+      <div class="max-w-2xl">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08] mb-6" style="color: #ffffff;">
+          Choose your home offer with FlipSplit.
+        </h1>
+        <p class="text-lg mb-8 leading-relaxed" style="color: rgba(255,255,255,0.78);">
+          FlipSplit lets you unlock your home equity fast with a cash offer while allowing you to still benefit from a newly renovated home later.
+        </p>
+        <AddressForm id="hero-form" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CREATE YOUR OFFER ─── -->
+  <section class="py-20 px-6 bg-white">
+    <div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-start gap-12 xl:gap-20">
+      <div class="flex-1 pt-2">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">Flexible by design</p>
+        <h2 class="text-4xl font-black text-brand-dark mb-4">Create your offer.</h2>
+        <p class="text-slate-500 leading-relaxed max-w-md">Adjust how much cash you want upfront versus how much you want to earn on the backend. Every FlipSplit offer starts with the maximum cash we can justify.</p>
+      </div>
+      <div class="w-full lg:w-[440px] shrink-0 bg-white rounded-2xl shadow-md border border-slate-200 p-7">
+        <h3 class="text-lg font-black text-brand-dark mb-1">Create Your Offer</h3>
+        <p class="text-slate-400 text-sm mb-5">Adjust upfront cash vs. backend upside.</p>
+
+        <div class="flex justify-between text-xs font-medium text-slate-400 mb-2">
+          <span>Max Upfront Cash</span>
+          <span>Max Backend Upside</span>
+        </div>
+        <input type="range" id="deal-slider" min="0" max="100" value="50" class="deal-slider mb-5" />
+
+        <div class="grid grid-cols-2 gap-3 mb-5">
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+            <div class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Upfront Offer</div>
+            <div class="flex items-center gap-0.5 border border-slate-200 hover:border-[#1a96e8] focus-within:border-[#1a96e8] rounded-lg px-2 py-1 bg-white transition-colors">
+              <span class="text-xl font-black text-brand-dark">$</span>
+              <input
+                id="offer-amount"
+                type="text"
+                inputmode="numeric"
+                value="415,000"
+                class="text-xl font-black text-brand-dark bg-transparent w-full focus:outline-none min-w-0"
+              />
+            </div>
+            <div class="text-xs text-slate-400 mt-1.5">Cash at closing</div>
+          </div>
+          <div class="rounded-xl p-4 border" style="background:#1a96e808; border-color:#1a96e840;">
+            <div class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Backend Split</div>
+            <div id="split-pct" class="text-xl font-black" style="color:var(--brand-cyan);">50%</div>
+            <div class="text-xs text-slate-400 mt-1.5">Of profit above offer</div>
+          </div>
+        </div>
+
+        <div class="border-t border-slate-100 pt-4">
+          <div class="flex justify-between items-center mb-3">
+            <span class="text-sm font-black text-brand-dark">Your Potential Earnings</span>
+            <span id="split-badge" class="text-xs font-semibold" style="color:var(--brand-cyan);">50% split</span>
+          </div>
+          <div class="grid grid-cols-3 gap-x-2 text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2 px-1">
+            <span>Resale</span>
+            <span class="text-center">Backend</span>
+            <span class="text-right">Total</span>
+          </div>
+          <div id="earnings-table" class="space-y-1"></div>
+          <p class="text-xs text-slate-400 mt-3">* Resale price not guaranteed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SOCIAL PROOF ─── -->
+  <section class="py-20 px-6 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <div class="mb-12">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">Why sellers choose FlipSplit</p>
+        <h2 class="text-4xl font-black text-brand-dark mb-2">Real stories from real homeowners.</h2>
+        <p class="text-slate-500 text-base">No pressure, no gimmicks. Just homeowners who found a better way to sell.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        {[
+          {
+            quote: "Working with FlipSplit was amazing from start to finish. Their responsive and knowledgeable team handled everything and made what is often a stressful experience extremely smooth, without leaving a lot of money on the table thanks to their resale bonus mechanism! Highly recommended!",
+            name: "Val Briot",
+            location: "Los Angeles, CA",
+            photo: "/val-briot.png",
+          },
+          {
+            quote: "FlipSplit was the best decision we ever made when we needed to sell our investment property quickly. They were fair and offered us the best deal. FlipSplit was transparent throughout the entire process and delivered on everything they said they would.",
+            name: "Nick Boyd",
+            location: "San Diego, CA",
+            photo: "/nick-boyd.png",
+          },
+          {
+            quote: "Working with FlipSplit was the best decision I've made so far in 2021! Easy, no hassle, and an extra bonus check at the end… more than I expected!",
+            name: "Grace G.",
+            location: "San Juan, CA",
+            photo: "/grace-g.png",
+          },
+        ].map(({ quote, name, location, photo }) => (
+          <div class="rounded-2xl p-8 flex flex-col items-center text-center" style="background: #F8FAFC;">
+            <img src={photo} alt={name} class="w-16 h-16 rounded-full object-cover mb-6 shrink-0" />
+            <p class="text-slate-600 leading-relaxed text-sm flex-1 mb-6">"{quote}"</p>
+            <div>
+              <div class="font-bold text-brand-dark text-sm">{name}</div>
+              <div class="text-xs text-slate-400 mt-1">{location}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HOW IT WORKS ─── -->
+  <section class="py-28 px-6 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">Simple by design</p>
+        <h2 class="text-4xl md:text-5xl font-black text-brand-dark">Our home sale recipe.</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-16 items-center">
+
+        <!-- Left: image -->
+        <div class="flex items-center justify-center">
+          <img src="/app-screenshot.png" alt="FlipSplit app" class="w-full max-w-xs mx-auto" />
+        </div>
+
+        <!-- Right: auto-advancing tour -->
+        <div class="flex flex-col gap-3">
+          {[
+            { num: '01', title: 'Submit your property details', body: 'Submit your property details, a few photos, and a quick home walkthrough to receive a "no-contingencies" offer from FlipSplit within 24–48 hours.' },
+            { num: '02', title: 'Customize your home offer', body: 'Choose your upfront offer price! Offer price can move up or down based on how much of the backend profit you desire from a newly renovated home.' },
+            { num: '03', title: 'We handle the hard stuff', body: 'From tenant issues to permitting to renovation — we take care of it all. You don\'t spend a dollar or lift a finger.' },
+            { num: '04', title: 'You get paid — twice', body: 'Once the home is renovated and resold, you\'ll be notified within 10 days of the resale of the bonus check headed your way.' },
+          ].map(({ num, title, body }) => (
+            <button class="hiw-step relative w-full text-left pl-5 pr-4 py-5 rounded-xl border border-slate-200 border-l-4 border-l-transparent bg-white">
+              <div class="flex gap-4 items-start">
+                <span class="hiw-num text-sm font-black shrink-0 mt-0.5" style="color: #CBD5E1;">{num}</span>
+                <div class="flex-1">
+                  <div class="hiw-title font-bold text-sm text-slate-400">{title}</div>
+                  <div class="hiw-body text-sm text-slate-500 leading-relaxed">{body}</div>
+                </div>
+              </div>
+              <div class="hiw-bar absolute bottom-0 left-0 h-0.5" style="background: var(--brand-cyan); width: 0%;"></div>
+            </button>
+          ))}
+          <div class="flex items-center gap-4 pt-6 pl-5">
+            <a href="#get-offer" class="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold">
+              Get My Free Offer →
+            </a>
+            <span class="text-xs text-slate-400">No obligation. Results in 24–48 hrs.</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CASE STUDIES ─── -->
+  <section class="py-28 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">Real case studies</p>
+        <h2 class="text-4xl font-black text-brand-dark">When it gets complicated,<br class="hidden md:block" /> we get to work.</h2>
+      </div>
+
+      <!-- Case study card -->
+      <div class="rounded-2xl overflow-hidden shadow-md border border-slate-200 grid md:grid-cols-[1fr_360px]">
+
+        <!-- Left: story -->
+        <div class="p-8 md:p-10 bg-white flex flex-col gap-6">
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-red-50 text-red-500">Hostile tenant</span>
+            <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 text-amber-600">Non-standard layout</span>
+            <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-500">Eviction moratorium</span>
+          </div>
+
+          <div>
+            <p class="text-slate-600 leading-relaxed text-sm">
+              Mursalin had been subletting to a rental company that added extra walls to maximize rooms — making the home nearly unsellable on the open market. Tenants turned hostile mid-eviction, blocking inspections and appraisals. No traditional transaction was going to work.
+            </p>
+          </div>
+
+          <ul class="space-y-2.5 text-sm text-slate-600">
+            {[
+              'Resolved hostile tenant situation and handled full eviction',
+              'Removed added walls to restore open-concept living space',
+              'Full kitchen & bathroom renovation',
+              'Exterior and interior repaint + new appliances',
+            ].map((item) => (
+              <li class="flex items-start gap-2.5">
+                <span class="mt-0.5 w-4 h-4 rounded-full flex items-center justify-center shrink-0 text-xs font-bold" style="background: rgba(26,150,232,0.2); color: var(--brand-cyan);">✓</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <div class="border-t border-slate-100 pt-5 mt-auto">
+            <p class="text-brand-dark italic leading-relaxed mb-3">"Selling a house is stressful — none of the stress came from FlipSplit."</p>
+            <div class="flex items-center gap-2.5">
+              <img src="/mursalin.png" alt="Mursalin H." class="w-8 h-8 rounded-full object-cover shrink-0" />
+              <div>
+                <span class="text-sm font-bold text-brand-dark">Mursalin H.</span>
+                <span class="text-xs text-slate-400 ml-1.5">San Diego, CA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: comparison -->
+        <div class="p-8 flex flex-col gap-5 border-t md:border-t-0 md:border-l border-slate-200" style="background: #F8FAFC;">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-widest" style="color: #1a96e8;">Deal snapshot</span>
+            <span class="text-xs font-semibold px-2.5 py-1 rounded-full" style="background: rgba(249,112,102,0.12); color: #F97066;">Closed in 10 days</span>
+          </div>
+
+          <!-- Comparison table -->
+          <div>
+            <!-- Column headers -->
+            <div class="grid grid-cols-[1fr_1fr_1fr] gap-1 pb-2.5 border-b border-slate-200">
+              <div></div>
+              <div class="text-center text-xs font-semibold text-slate-400 uppercase tracking-wide">Traditional</div>
+              <div class="text-center text-xs font-semibold uppercase tracking-wide" style="color: #1a96e8;">FlipSplit</div>
+            </div>
+            <!-- Offer price -->
+            <div class="grid grid-cols-[1fr_1fr_1fr] gap-1 py-3 border-b border-slate-200 items-center">
+              <div class="text-xs text-slate-500">Offer</div>
+              <div class="text-center text-xs font-bold" style="color: #1E2A3A;">$1,101,000</div>
+              <div class="text-center text-xs font-bold" style="color: #1E2A3A;">$1,101,000</div>
+            </div>
+            <!-- Profit share -->
+            <div class="grid grid-cols-[1fr_1fr_1fr] gap-1 py-3 border-b border-slate-200 items-center">
+              <div class="text-xs text-slate-500 leading-tight">Profit Share</div>
+              <div class="text-center text-xs font-bold text-slate-400">0%</div>
+              <div class="text-center text-xs font-bold" style="color: #1a96e8;">40%</div>
+            </div>
+            <!-- Net proceeds -->
+            <div class="grid grid-cols-[1fr_1fr_1fr] gap-1 py-3 items-center">
+              <div class="text-xs text-slate-500 leading-tight">Net Proceeds</div>
+              <div class="text-center text-xs font-bold" style="color: #1E2A3A;">$1,101,000</div>
+              <div class="text-center text-xs font-bold" style="color: #1E2A3A;">$1,144,167</div>
+            </div>
+          </div>
+
+          <div class="rounded-xl p-5 mt-auto" style="background: #ffffff; border: 1px solid rgba(26,150,232,0.2);">
+            <div class="text-xs font-semibold uppercase tracking-widest mb-1.5" style="color: #1a96e8;">Extra earned with FlipSplit</div>
+            <div class="text-3xl font-black" style="color: #F97066;">+$43,167</div>
+            <div class="text-xs text-slate-500 mt-1">vs. a traditional cash offer</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── SITUATION TARGETING ─── -->
+  <section class="py-20 px-6" style="background: #F8FAFC;">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">We help in any situation</p>
+        <h2 class="text-4xl font-black text-brand-dark mb-4">Whatever brought you here.</h2>
+        <p class="text-slate-500 leading-relaxed max-w-md mx-auto">We work with homeowners in every situation — no judgment, no pressure.</p>
+      </div>
+      {(() => {
+        const tags = [
+          { label: 'Need to downsize', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="3" y2="21"/><line x1="21" y1="3" x2="14" y2="10"/></svg>' },
+          { label: 'Relocating for work', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' },
+          { label: 'Inherited a property', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>' },
+          { label: 'Behind on payments', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>' },
+          { label: 'Home needs major repairs', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>' },
+          { label: 'Tired of being a landlord', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>' },
+          { label: 'Need to sell fast', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' },
+          { label: 'Avoiding foreclosure', icon: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' },
+        ];
+        const chip = ({ label, icon }: { label: string; icon: string }) => (
+          <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-sm font-medium text-brand-dark shadow-sm" style="border: 1px solid rgba(26,150,232,0.35);">
+            <span class="shrink-0" set:html={icon} />
+            {label}
+          </span>
+        );
+        return (
+          <div class="flex flex-wrap justify-center gap-3">
+            {tags.map(chip)}
+          </div>
+        );
+      })()}
+    </div>
+  </section>
+
+  <!-- ─── COMPARISON ─── -->
+  <section id="why-flipsplit" class="py-28 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="mb-14 text-center">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">Why FlipSplit</p>
+        <h2 class="text-4xl md:text-5xl font-black text-brand-dark">Not all home sales are equal.</h2>
+      </div>
+      <div class="rounded-2xl overflow-hidden shadow-md border border-slate-200 grid md:grid-cols-2">
+        <div class="p-8 bg-white border-b md:border-b-0 md:border-r border-slate-200">
+          <h3 class="font-black text-sm uppercase tracking-widest text-slate-400 mb-7">Traditional sale</h3>
+          <ul class="space-y-5">
+            {[
+              'Pay $15k–$60k+ in repairs upfront',
+              'Wait 60–90 days on market',
+              'Lose $3k–6k/mo in holding costs',
+              'Deals fall through on contingencies',
+              'Sell as-is or with cheap patches',
+              'No share of the upside — buyer keeps it all',
+            ].map((item) => (
+              <li class="flex items-start gap-3 text-slate-500">
+                <span class="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center text-red-400 shrink-0 text-xs bg-red-50">✕</span>
+                <span class="text-sm">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="p-8" style="background: #1E2A3A;">
+          <h3 class="font-black text-sm uppercase tracking-widest mb-7" style="color: var(--brand-cyan);">FlipSplit</h3>
+          <ul class="space-y-5">
+            {[
+              '$0 out of pocket — we front all repair costs',
+              'Faster close: 30–45 days average',
+              'Minimized holding period cuts carrying costs',
+              'Guaranteed cash offer, no contingency risk',
+              'Fully renovated, top-of-market sale price',
+              'You keep a share of the profit above your offer',
+            ].map((item) => (
+              <li class="flex items-start gap-3">
+                <span class="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-xs font-bold" style="background: rgba(26,150,232,0.2); color: var(--brand-cyan);">✓</span>
+                <span class="text-sm font-medium text-slate-200">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- ─── FAQ ─── -->
+  <section id="faq" class="py-28 px-6">
+    <div class="max-w-3xl mx-auto">
+      <div class="mb-14 text-center">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">FAQ</p>
+        <h2 class="text-4xl font-black text-brand-dark">Common questions.</h2>
+      </div>
+      <div>
+        {[
+          { q: "Do I have to pay anything upfront?", a: "No. FlipSplit covers 100% of renovation costs. You don't pay anything until the home sells, and even then it comes out of proceeds — never out of your pocket." },
+          { q: "What if the home doesn't sell for more than expected?", a: "Your guaranteed cash offer is locked in regardless of how the market performs. If the home sells below our projection, you still get your guaranteed amount. FlipSplit absorbs the renovation risk." },
+          { q: "How long does the renovation take?", a: "Most renovations take 4–8 weeks depending on scope. We target a 30–45 day total close timeline — significantly faster than the 60–90 day traditional sale." },
+          { q: "Can I stay in the home during renovation?", a: "In most cases we ask that the home be vacated during active renovation work. We can work around your schedule as part of your offer review." },
+          { q: "Is FlipSplit the same as iBuying?", a: "No. iBuyers give you a discounted cash offer and keep all the upside. FlipSplit renovates your home to maximize its value — and gives you a share of that upside through profit participation." },
+          { q: "What types of homes does FlipSplit work with?", a: "Single-family homes in Southern California. Condition doesn't matter — that's the point. Whether it needs cosmetic updates or significant repairs, we'll make it work." },
+        ].map(({ q, a }) => (
+          <details class="group border-b border-slate-200 py-1">
+            <summary class="flex justify-between items-center py-5 cursor-pointer font-semibold text-brand-dark hover:text-brand-cyan transition-colors">
+              {q}
+              <span class="faq-icon text-slate-400 text-2xl leading-none ml-6 shrink-0">+</span>
+            </summary>
+            <div class="pb-5 text-slate-500 leading-relaxed">
+              {a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── LEAD CAPTURE FORM ─── -->
+  <section id="get-offer" class="py-28 px-6 bg-slate-50">
+    <div class="max-w-xl mx-auto text-center">
+      <p class="text-sm font-semibold tracking-wide mb-4" style="color: #4B5563;">Free. No obligation.</p>
+      <h2 class="text-4xl md:text-5xl font-black mb-4 text-brand-dark">Get your free offer today.</h2>
+      <p class="text-slate-500 text-lg leading-relaxed mb-10">
+        Takes 2 minutes. We'll follow up with your cash offer amount, renovation plan, and profit participation projection.
+      </p>
+      <AddressForm id="footer-form" class="flex flex-col items-center" align="center" />
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="bg-brand-dark py-12 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-slate-500">
+      <img src="/wordmark-dark.png" alt="FlipSplit" class="h-9" />
+      <div class="flex gap-8">
+        <a href="#how-it-works" class="hover:text-white transition-colors">How It Works</a>
+        <a href="#why-flipsplit" class="hover:text-white transition-colors">Why FlipSplit</a>
+        <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+        <a href="mailto:hello@flipsplit.com" class="hover:text-white transition-colors">Contact</a>
+      </div>
+      <p>© 2026 FlipSplit. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const slider  = document.getElementById('deal-slider');
+    const offerEl = document.getElementById('offer-amount');
+    const splitEl = document.getElementById('split-pct');
+    const badgeEl = document.getElementById('split-badge');
+    const tableEl = document.getElementById('earnings-table');
+
+    let baseOffer = 415000;
+
+    function fmt(n) {
+      return '$' + Math.round(n).toLocaleString('en-US');
+    }
+
+    function updateTable(offer, pct) {
+      const projected  = Math.round(offer * 1.2);
+      const steps      = [0, 25000, 50000, 100000, 150000, 250000];
+      const resaleRows = steps.map(s => projected + s);
+
+      splitEl.textContent = pct + '%';
+      badgeEl.textContent = pct + '% split';
+      slider.style.setProperty('--fill', pct + '%');
+
+      tableEl.innerHTML = resaleRows.map((resale, i) => {
+        const above   = Math.max(0, resale - projected);
+        const backend = above * (pct / 100);
+        const total   = offer + backend;
+        const isBase  = i === 0;
+        return `
+          <div class="grid grid-cols-3 gap-x-2 px-1 py-1.5 rounded-lg ${isBase ? 'bg-slate-50' : ''}">
+            <span class="text-brand-dark font-semibold text-xs">
+              ${fmt(resale)}${isBase ? '<span class="ml-1 text-slate-400 font-normal">proj.</span>' : ''}
+            </span>
+            <span class="text-center text-xs ${backend > 0 ? 'font-semibold' : 'text-slate-400'}" style="${backend > 0 ? 'color:var(--brand-cyan)' : ''}">
+              ${backend > 0 ? '+' + fmt(backend) : '—'}
+            </span>
+            <span class="text-right font-bold text-xs text-brand-dark">${fmt(total)}</span>
+          </div>`;
+      }).join('');
+    }
+
+    offerEl.addEventListener('input', () => {
+      const raw = offerEl.value.replace(/[^0-9]/g, '');
+      offerEl.value = parseInt(raw || '0').toLocaleString('en-US');
+      baseOffer = parseInt(raw) || 415000;
+      slider.value = 50;
+      updateTable(baseOffer, 50);
+    });
+
+    slider.addEventListener('input', () => {
+      const pct   = parseInt(slider.value);
+      const offer = baseOffer + (50 - pct) * 1000;
+      offerEl.value = Math.max(0, offer).toLocaleString('en-US');
+      updateTable(Math.max(0, offer), pct);
+    });
+
+    updateTable(baseOffer, 50);
+
+    // ── How It Works auto-tour ──
+    const hiwSteps = document.querySelectorAll('.hiw-step');
+    let hiwIndex = 0;
+    let hiwTimer;
+
+    function hiwActivate(idx) {
+      hiwIndex = ((idx % hiwSteps.length) + hiwSteps.length) % hiwSteps.length;
+      hiwSteps.forEach((s, i) => {
+        s.classList.toggle('hiw-active', i === hiwIndex);
+        if (i !== hiwIndex) {
+          const bar = s.querySelector('.hiw-bar');
+          bar.style.animation = 'none';
+          bar.style.width = '0%';
+        }
+        if (i === hiwIndex) {
+          const bar = s.querySelector('.hiw-bar');
+          bar.style.animation = 'none';
+          bar.offsetWidth;
+          if (hiwAutoPlay) {
+            bar.style.width = '';
+            bar.style.animation = '';
+          } else {
+            bar.style.width = '100%';
+          }
+        }
+      });
+      clearTimeout(hiwTimer);
+      if (hiwAutoPlay) hiwTimer = setTimeout(() => hiwActivate(hiwIndex + 1), 4000);
+    }
+
+    let hiwAutoPlay = true;
+
+    hiwSteps.forEach((step, i) => step.addEventListener('click', () => {
+      hiwAutoPlay = false;
+      clearTimeout(hiwTimer);
+      hiwActivate(i);
+    }));
+    hiwActivate(0);
+
+  </script>
+
+</body>
+</html>

@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css'
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -29,6 +30,7 @@ import Footer from '../components/Footer.astro';
     .prose li { margin-bottom: 0.25rem; }
     a { cursor: pointer; }
   </style>
+  <ClientRouter />
 </head>
 <body class="bg-white antialiased">
 

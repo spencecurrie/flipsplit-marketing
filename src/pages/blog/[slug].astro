@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import Nav from '../../components/Nav.astro'
 import { getCollection, render } from 'astro:content';
 import '../../styles/global.css';
@@ -93,6 +94,7 @@ function formatDate(d: Date) {
       display: none !important;
     }
   </style>
+  <ClientRouter />
 </head>
 <body class="bg-white antialiased">
 
