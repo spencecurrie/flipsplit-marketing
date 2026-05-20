@@ -130,6 +130,7 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
 <script>
   import { getSupabase } from '../lib/supabase';
+  import { navigate } from 'astro:transitions/client';
 
   declare global {
     interface Window {
@@ -365,8 +366,9 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
             })
             .then((res: any) => { if (res?.error) console.warn('funnel_started event failed:', res.error); });
 
-          // Off to step 1.
-          window.location.assign('/offer/step-1/');
+          // Off to step 1 — use Astro's transition router so the
+          // homepage cross-fades into the funnel layout.
+          navigate('/offer/step-1/');
         } catch (err: any) {
           console.error('Funnel start failed:', err);
           if (modalError) {

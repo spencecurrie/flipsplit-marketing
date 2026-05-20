@@ -3,6 +3,7 @@ import '../styles/global.css'
 import AddressForm from '../components/AddressForm.astro'
 import Nav from '../components/Nav.astro'
 import Footer from '../components/Footer.astro';
+import { ClientRouter } from 'astro:transitions';
 ---
 
 <!DOCTYPE html>
@@ -13,6 +14,7 @@ import Footer from '../components/Footer.astro';
   <meta name="generator" content={Astro.generator} />
   <title>FlipSplit — Sell Your Home For More, Without the Hassle</title>
   <meta name="description" content="FlipSplit renovates your home before it hits the market. Get a guaranteed cash offer today plus a share of the upside when it sells for more. No repairs, no stress." />
+  <ClientRouter />
   <link rel="icon" href="/favicon.ico" />
   <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
