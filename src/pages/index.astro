@@ -435,39 +435,16 @@ import { ClientRouter } from 'astro:transitions';
 
   <!-- ─── SO-CAL TRACK RECORD ─── -->
   <section class="relative overflow-hidden py-20 px-6">
-    <!-- Stylized neighborhood-grid background -->
-    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-      <svg class="w-full h-full" preserveAspectRatio="xMidYMid slice" viewBox="0 0 1600 600" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <pattern id="streets" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse" patternTransform="rotate(-12)">
-            <rect width="200" height="200" fill="#eef2f7" />
-            <path d="M0 100 L200 100 M100 0 L100 200" stroke="#cbd5e1" stroke-width="2" />
-            <path d="M0 50 L200 50 M0 150 L200 150 M50 0 L50 200 M150 0 L150 200" stroke="#dde3ec" stroke-width="1" />
-          </pattern>
-          <radialGradient id="fade" cx="50%" cy="50%" r="70%">
-            <stop offset="0%" stop-color="rgba(248,250,252,0)" />
-            <stop offset="100%" stop-color="rgba(248,250,252,0.85)" />
-          </radialGradient>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#streets)" />
-        <rect width="100%" height="100%" fill="url(#fade)" />
-        <!-- Scattered map pins -->
-        <g fill="#1e88e5">
-          <path d="M180 110a12 12 0 1 1 0 24 12 12 0 0 1 0-24zm0 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12z" transform="translate(0,0)" />
-        </g>
-        <g fill="#ef4444">
-          <circle cx="280" cy="180" r="6" />
-          <circle cx="1380" cy="120" r="6" />
-          <circle cx="1180" cy="460" r="6" />
-          <circle cx="420" cy="500" r="6" />
-        </g>
-        <g fill="#1e88e5">
-          <circle cx="620" cy="120" r="5" />
-          <circle cx="980" cy="220" r="5" />
-          <circle cx="1480" cy="330" r="5" />
-          <circle cx="140" cy="380" r="5" />
-        </g>
-      </svg>
+    <!-- Real Google Static Map of Southern California, label-free + desaturated -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+      <img
+        src="https://maps.googleapis.com/maps/api/staticmap?center=Los+Angeles,CA&zoom=11&size=640x400&scale=2&maptype=roadmap&style=feature:poi%7Cvisibility:off&style=feature:transit%7Cvisibility:off&style=feature:all%7Celement:labels%7Cvisibility:off&style=feature:road%7Csaturation:-100%7Clightness:10&style=feature:water%7Ccolor:0xdbeafe&style=feature:landscape%7Ccolor:0xf8fafc&key=AIzaSyArzPR5lnfheBpgpS98ZrQWO949cB1ty30"
+        alt=""
+        class="w-full h-full object-cover"
+        loading="lazy"
+      />
+      <!-- Soft white wash so the card stands out -->
+      <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 0%, rgba(248,250,252,0.8) 75%);"></div>
     </div>
 
     <div class="relative max-w-[1500px] mx-auto">
