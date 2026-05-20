@@ -360,35 +360,9 @@ const { variant = 'solid' } = Astro.props;
     tSignoutBtn.addEventListener('click', tHandleSignOut);
     tMSignout.addEventListener('click', tHandleSignOut);
 
-    const navLogo = document.getElementById('nav-logo') as HTMLImageElement;
-
-    function updateNav() {
-      const scrolled = window.scrollY > 480;
-      if (scrolled) {
-        // Unified scrolled state: white nav, compact form, sign-in visible
-        nav.classList.add('nav-light');
-        nav.style.background = '#ffffff';
-        if (navLogo) navLogo.src = '/wordmark-on-white.png';
-        navLinks.style.display = 'none';
-        navOfferFormWrap.style.display = 'flex';
-        navRight.style.display = '';
-      } else {
-        // Top of page — transparent over hero
-        nav.classList.remove('nav-light');
-        nav.style.background = 'transparent';
-        if (navLogo) navLogo.src = '/wordmark-dark.png';
-        navLinks.style.display = '';
-        navRight.style.display = '';
-        navOfferFormWrap.style.display = 'none';
-      }
-    }
-
-    window.addEventListener('scroll', updateNav);
-    window.addEventListener('resize', updateNav);
-    updateNav();
-
-    // Mobile hamburger open/close is handled by the shared delegated handler
-    // at the bottom of this component, so it survives ClientRouter navigations.
+    // Scroll-driven state (show the address form past the hero) and the mobile
+    // hamburger are both handled by the shared, ClientRouter-safe handler at the
+    // bottom of this component.
   </script>
 ) : (
   <!-- ─── SOLID NAV (all other pages — mirrors homepage scroll behavior) ─── -->
@@ -589,62 +563,24 @@ const { variant = 'solid' } = Astro.props;
     sSignoutBtn.addEventListener('click', sHandleSignOut);
     sMSignout.addEventListener('click', sHandleSignOut);
 
-    const solidNav = document.getElementById('solid-nav') as HTMLElement;
-    const solidNavLogo = document.getElementById('solid-nav-logo') as HTMLImageElement;
-    const solidNavLinks = document.getElementById('solid-nav-links') as HTMLElement;
-    const solidNavOfferFormWrap = document.getElementById('solid-nav-offer-form-wrap') as HTMLElement;
-    const solidNavRight = document.getElementById('solid-nav-right') as HTMLElement;
-    const toggle = document.getElementById('solid-menu-toggle');
-    const menu = document.getElementById('solid-mobile-menu');
-
-    // Mirror homepage nav: after scrolling, show the address form. Stays
-    // white on mobile (matches Opendoor-style mobile bar); switches to dark
-    // navy on desktop scrolled (existing behavior).
-    function updateSolidNav() {
-      const scrolled = window.scrollY > 480;
-      if (scrolled) {
-        // Unified scrolled state across screen sizes: white + compact form
-        solidNav.classList.add('nav-light');
-        solidNav.style.background = '#ffffff';
-        solidNav.style.borderBottomColor = '';
-        solidNavLogo.src = '/wordmark-on-white.png';
-        solidNavLinks.style.display = 'none';
-        solidNavOfferFormWrap.style.display = 'flex';
-        solidNavRight.style.display = '';
-      } else {
-        solidNav.classList.remove('nav-light');
-        solidNav.style.background = '';
-        solidNav.style.borderBottomColor = '';
-        solidNavLogo.src = '/wordmark-on-white.png';
-        solidNavLinks.style.display = '';
-        solidNavRight.style.display = '';
-        solidNavOfferFormWrap.style.display = 'none';
-      }
-    }
-
-    window.addEventListener('scroll', updateSolidNav);
-    window.addEventListener('resize', updateSolidNav);
-    updateSolidNav();
-
-    // Mobile hamburger open/close is handled by the shared delegated handler
-    // at the bottom of this component, so it survives ClientRouter navigations.
+    // Scroll-driven state (show the address form past the hero) and the mobile
+    // hamburger are both handled by the shared, ClientRouter-safe handler at the
+    // bottom of this component.
   </script>
 )}
 
-<!-- Mobile hamburger — one delegated handler shared by both nav variants.
-     Delegation on `document` survives Astro ClientRouter view-transition swaps.
-     Bundled module scripts run only once and do NOT re-execute after a
-     client-side navigation, so binding straight to the button left the
-     hamburger dead on every page reached by in-app navigation. A single
-     listener on the persistent `document` keeps working everywhere. -->
+<!-- Shared, ClientRouter-safe nav interactivity for both nav variants.
+     Listeners live on `document`/`window`, which persist across Astro view-
+     transition swaps, and elements are re-queried on each event. A run-once
+     guard stops them from stacking, since ClientRouter re-executes inline
+     scripts on every navigation. This replaces the old approach of binding
+     straight to elements on first load, which silently died (no hamburger, no
+     scroll-reveal) on every page reached by in-app navigation. -->
 <script>
-  // Run-once guard: ClientRouter re-executes inline scripts on every
-  // navigation, so without this the delegated listener would stack up and a
-  // single tap would toggle the menu an even number of times (= nothing
-  // happens). `document` persists across swaps, so adding it once is enough.
-  if (!(window as any).__fsHamburgerWired) {
-    (window as any).__fsHamburgerWired = true;
+  if (!(window as any).__fsNavWired) {
+    (window as any).__fsNavWired = true;
 
+    // ── Mobile hamburger open/close (delegated) ──
     const fsSetMenu = (menu: HTMLElement | null, open: boolean) => {
       if (!menu) return;
       menu.classList.toggle('hidden', !open);
@@ -674,5 +610,42 @@ const { variant = 'solid' } = Astro.props;
         }
       }
     });
+
+    // ── Scroll state: past the hero (480px) the bar goes white and reveals
+    //    the address form. Re-queries elements each call so it targets the
+    //    current page's nav after a ClientRouter swap. ──
+    const fsApplyNavScroll = () => {
+      const scrolled = window.scrollY > 480;
+
+      // Transparent variant (homepage hero overlay).
+      const nav = document.getElementById('main-nav');
+      if (nav) {
+        const logo = document.getElementById('nav-logo') as HTMLImageElement | null;
+        const links = document.getElementById('nav-links');
+        const form = document.getElementById('nav-offer-form-wrap');
+        nav.classList.toggle('nav-light', scrolled);
+        nav.style.background = scrolled ? '#ffffff' : 'transparent';
+        if (logo) logo.src = scrolled ? '/wordmark-on-white.png' : '/wordmark-dark.png';
+        if (links) links.style.display = scrolled ? 'none' : '';
+        if (form) form.style.display = scrolled ? 'flex' : 'none';
+      }
+
+      // Solid variant (every other page).
+      const solidNav = document.getElementById('solid-nav');
+      if (solidNav) {
+        const links = document.getElementById('solid-nav-links');
+        const form = document.getElementById('solid-nav-offer-form-wrap');
+        solidNav.classList.toggle('nav-light', scrolled);
+        solidNav.style.background = scrolled ? '#ffffff' : '';
+        if (links) links.style.display = scrolled ? 'none' : '';
+        if (form) form.style.display = scrolled ? 'flex' : 'none';
+      }
+    };
+
+    window.addEventListener('scroll', fsApplyNavScroll, { passive: true });
+    window.addEventListener('resize', fsApplyNavScroll);
+    // Re-apply on initial load and after every ClientRouter navigation.
+    document.addEventListener('astro:page-load', fsApplyNavScroll);
+    fsApplyNavScroll();
   }
 </script>
