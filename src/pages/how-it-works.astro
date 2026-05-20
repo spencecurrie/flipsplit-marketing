@@ -65,8 +65,8 @@ import Footer from '../components/Footer.astro';
       <div class="flex items-center justify-center">
         <div class="hiw-frame">
           <div class="hiw-split">
-            <img src="/casestudies/hero-before.jpg" alt="Home before FlipSplit renovation" class="hiw-half" style="object-position: left center;" draggable="false" />
-            <img src="/casestudies/hero-after.jpg"  alt="Home after FlipSplit renovation"  class="hiw-half" style="object-position: right center;" draggable="false" />
+            <img src="/casestudies/hero-before.jpg" alt="Home before FlipSplit renovation" class="hiw-half hiw-before" draggable="false" />
+            <img src="/casestudies/hero-after.jpg"  alt="Home after FlipSplit renovation"  class="hiw-half hiw-after" draggable="false" />
             <div class="hiw-divider" aria-hidden="true"></div>
           </div>
           <!-- Cash now (bottom-left, white pill) -->
@@ -100,21 +100,28 @@ import Footer from '../components/Footer.astro';
       position: relative;
       width: 100%;
       height: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
       border-radius: 50% 50% 0 0 / 100% 100% 0 0;
       overflow: hidden;
       box-shadow: 0 -6px 20px rgba(15, 23, 42, 0.06);
       background: #f1f5f9;
       user-select: none;
     }
+    /* Both photos are the SAME kitchen shot from the same angle (before/after).
+       Render each across the FULL frame with identical cover + centering, then
+       reveal only the left half of "before" and the right half of "after" so
+       the two line up into one continuous kitchen with the seam dead center. */
     .hiw-half {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center;
       display: block;
       -webkit-user-drag: none;
     }
+    .hiw-before { clip-path: inset(0 50% 0 0); }
+    .hiw-after  { clip-path: inset(0 0 0 50%); }
     .hiw-divider {
       position: absolute;
       top: 0; bottom: 0;
