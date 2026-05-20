@@ -387,22 +387,8 @@ const { variant = 'solid' } = Astro.props;
     window.addEventListener('resize', updateNav);
     updateNav();
 
-    function closeMobileMenu() {
-      mobileMenu.classList.add('hidden');
-      document.body.style.overflow = '';
-    }
-
-    menuToggle.addEventListener('click', () => {
-      const willOpen = mobileMenu.classList.contains('hidden');
-      mobileMenu.classList.toggle('hidden');
-      document.body.style.overflow = willOpen ? 'hidden' : '';
-    });
-
-    document.getElementById('menu-close')?.addEventListener('click', closeMobileMenu);
-
-    mobileMenu.querySelectorAll('.mobile-nav-link').forEach(link => {
-      link.addEventListener('click', closeMobileMenu);
-    });
+    // Mobile hamburger open/close is handled by the shared delegated handler
+    // at the bottom of this component, so it survives ClientRouter navigations.
   </script>
 ) : (
   <!-- ─── SOLID NAV (all other pages — mirrors homepage scroll behavior) ─── -->
@@ -640,21 +626,53 @@ const { variant = 'solid' } = Astro.props;
     window.addEventListener('resize', updateSolidNav);
     updateSolidNav();
 
-    function closeSolidMenu() {
-      menu?.classList.add('hidden');
-      document.body.style.overflow = '';
-    }
-
-    toggle?.addEventListener('click', () => {
-      const willOpen = menu!.classList.contains('hidden');
-      menu!.classList.toggle('hidden');
-      document.body.style.overflow = willOpen ? 'hidden' : '';
-    });
-
-    document.getElementById('solid-menu-close')?.addEventListener('click', closeSolidMenu);
-
-    menu?.querySelectorAll('.solid-mobile-link').forEach(link => {
-      link.addEventListener('click', closeSolidMenu);
-    });
+    // Mobile hamburger open/close is handled by the shared delegated handler
+    // at the bottom of this component, so it survives ClientRouter navigations.
   </script>
 )}
+
+<!-- Mobile hamburger — one delegated handler shared by both nav variants.
+     Delegation on `document` survives Astro ClientRouter view-transition swaps.
+     Bundled module scripts run only once and do NOT re-execute after a
+     client-side navigation, so binding straight to the button left the
+     hamburger dead on every page reached by in-app navigation. A single
+     listener on the persistent `document` keeps working everywhere. -->
+<script>
+  // Run-once guard: ClientRouter re-executes inline scripts on every
+  // navigation, so without this the delegated listener would stack up and a
+  // single tap would toggle the menu an even number of times (= nothing
+  // happens). `document` persists across swaps, so adding it once is enough.
+  if (!(window as any).__fsHamburgerWired) {
+    (window as any).__fsHamburgerWired = true;
+
+    const fsSetMenu = (menu: HTMLElement | null, open: boolean) => {
+      if (!menu) return;
+      menu.classList.toggle('hidden', !open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+
+    const FS_MENUS = [
+      { toggle: 'menu-toggle',       close: 'menu-close',       menu: 'mobile-menu' },
+      { toggle: 'solid-menu-toggle', close: 'solid-menu-close', menu: 'solid-mobile-menu' },
+    ];
+
+    document.addEventListener('click', (e) => {
+      const el = e.target instanceof Element ? e.target : null;
+      if (!el) return;
+      for (const m of FS_MENUS) {
+        const menu = document.getElementById(m.menu);
+        // Tap the hamburger → toggle that variant's menu.
+        if (el.closest('#' + m.toggle)) {
+          fsSetMenu(menu, menu?.classList.contains('hidden') ?? false);
+          return;
+        }
+        // Tap the X, or any link inside an open menu → close it.
+        const anchor = el.closest('a[href]');
+        if (el.closest('#' + m.close) || (anchor && menu?.contains(anchor))) {
+          fsSetMenu(menu, false);
+          return;
+        }
+      }
+    });
+  }
+</script>
