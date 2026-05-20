@@ -77,6 +77,18 @@ const { variant = 'solid' } = Astro.props;
   }
   .nav-light #menu-toggle,
   .nav-light #solid-menu-toggle { color: #0f172a !important; }
+
+  /* Desktop "Get My Offer" button (white text/border) needs a brand-blue
+     pill treatment when the nav is in light mode. */
+  .nav-light .field .desktop-cta {
+    background: #1e88e5 !important;
+    color: #ffffff !important;
+    border-color: #1e88e5 !important;
+  }
+  .nav-light .field .desktop-cta:hover {
+    background: #1976d2 !important;
+    border-color: #1976d2 !important;
+  }
 </style>
 
 <!-- Top progress bar — controlled by Astro View Transitions lifecycle below -->
@@ -107,7 +119,7 @@ const { variant = 'solid' } = Astro.props;
         <a href="/reviews/" class="text-white/90 hover:text-white transition-colors">Reviews</a>
       </div>
 
-      <div id="nav-offer-form-wrap" class="hidden min-w-0 flex-1 md:flex-[5] md:max-w-4xl md:mx-auto">
+      <div id="nav-offer-form-wrap" class="hidden min-w-0 flex-1 md:flex-1 md:max-w-md md:mx-auto">
         <form action="/" method="get" class="w-full">
           <div class="field flex items-center rounded-xl overflow-hidden border border-white/20" style="background: rgba(255,255,255,0.1);">
             <input type="text" name="address" placeholder="Enter home address" class="flex-1 min-w-0 bg-transparent text-white text-sm placeholder:text-white/60 focus:outline-none px-3 md:px-4 py-2.5" />
@@ -116,7 +128,7 @@ const { variant = 'solid' } = Astro.props;
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
             <!-- Wider "Get My Offer" button (desktop only) -->
-            <button type="submit" class="hidden md:inline-flex shrink-0 text-white text-xs font-bold px-4 py-2.5 transition-all hover:bg-white/10 whitespace-nowrap rounded-lg" style="border: 1.5px solid rgba(255,255,255,0.7); background: transparent;">
+            <button type="submit" class="desktop-cta hidden md:inline-flex shrink-0 text-white text-xs font-bold px-4 py-2.5 transition-all hover:bg-white/10 whitespace-nowrap rounded-lg" style="border: 1.5px solid rgba(255,255,255,0.7); background: transparent;">
               Get My Offer
             </button>
           </div>
@@ -328,23 +340,14 @@ const { variant = 'solid' } = Astro.props;
 
     function updateNav() {
       const scrolled = window.scrollY > 80;
-      const isMobile = window.innerWidth < 768;
       if (scrolled) {
+        // Unified scrolled state: white nav, compact form, sign-in visible
+        nav.classList.add('nav-light');
+        nav.style.background = '#ffffff';
+        if (navLogo) navLogo.src = '/wordmark-on-white.png';
         navLinks.style.display = 'none';
         navOfferFormWrap.style.display = 'flex';
-        if (isMobile) {
-          // White nav: logo dark, form + sign-in + hamburger all visible
-          nav.classList.add('nav-light');
-          nav.style.background = '#ffffff';
-          if (navLogo) navLogo.src = '/wordmark-on-white.png';
-          navRight.style.display = '';
-        } else {
-          // Existing dark scrolled state (desktop)
-          nav.classList.remove('nav-light');
-          nav.style.background = '#1E2A3A';
-          if (navLogo) navLogo.src = '/wordmark-dark.png';
-          navRight.style.display = 'none';
-        }
+        navRight.style.display = '';
       } else {
         // Top of page — transparent over hero
         nav.classList.remove('nav-light');
@@ -402,14 +405,14 @@ const { variant = 'solid' } = Astro.props;
         <a href="/reviews/" class="hover:text-[#1E2A3A] transition-colors">Reviews</a>
       </div>
 
-      <div id="solid-nav-offer-form-wrap" class="hidden min-w-0 flex-1 md:flex-[5] md:max-w-4xl md:mx-auto">
+      <div id="solid-nav-offer-form-wrap" class="hidden min-w-0 flex-1 md:flex-1 md:max-w-md md:mx-auto">
         <form action="/" method="get" class="w-full">
           <div class="field flex items-center rounded-xl overflow-hidden border border-white/20" style="background: rgba(255,255,255,0.1);">
             <input type="text" name="address" placeholder="Enter home address" class="flex-1 min-w-0 bg-transparent text-white text-sm placeholder:text-white/60 focus:outline-none px-3 md:px-4 py-2.5" />
             <button type="submit" class="submit-icon md:hidden shrink-0 w-9 h-9 mr-1.5 flex items-center justify-center rounded-lg transition-transform active:scale-95" aria-label="Search">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
-            <button type="submit" class="hidden md:inline-flex shrink-0 text-white text-xs font-bold px-4 py-2.5 transition-all hover:bg-white/10 whitespace-nowrap rounded-lg" style="border: 1.5px solid rgba(255,255,255,0.7); background: transparent;">
+            <button type="submit" class="desktop-cta hidden md:inline-flex shrink-0 text-white text-xs font-bold px-4 py-2.5 transition-all hover:bg-white/10 whitespace-nowrap rounded-lg" style="border: 1.5px solid rgba(255,255,255,0.7); background: transparent;">
               Get My Offer
             </button>
           </div>
@@ -586,23 +589,15 @@ const { variant = 'solid' } = Astro.props;
     // navy on desktop scrolled (existing behavior).
     function updateSolidNav() {
       const scrolled = window.scrollY > 80;
-      const isMobile = window.innerWidth < 768;
       if (scrolled) {
+        // Unified scrolled state across screen sizes: white + compact form
+        solidNav.classList.add('nav-light');
+        solidNav.style.background = '#ffffff';
+        solidNav.style.borderBottomColor = '';
+        solidNavLogo.src = '/wordmark-on-white.png';
         solidNavLinks.style.display = 'none';
         solidNavOfferFormWrap.style.display = 'flex';
-        if (isMobile) {
-          solidNav.classList.add('nav-light');
-          solidNav.style.background = '#ffffff';
-          solidNav.style.borderBottomColor = '';
-          solidNavLogo.src = '/wordmark-on-white.png';
-          solidNavRight.style.display = '';
-        } else {
-          solidNav.classList.remove('nav-light');
-          solidNav.style.background = '#1E2A3A';
-          solidNav.style.borderBottomColor = 'rgba(255,255,255,0.06)';
-          solidNavLogo.src = '/wordmark-dark.png';
-          solidNavRight.style.display = 'none';
-        }
+        solidNavRight.style.display = '';
       } else {
         solidNav.classList.remove('nav-light');
         solidNav.style.background = '';
