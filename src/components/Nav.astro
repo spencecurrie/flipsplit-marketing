@@ -227,8 +227,6 @@ const { variant = 'solid' } = Astro.props;
   </nav>
 
   <script>
-    import { getSupabase } from '../lib/supabase';
-
     // ── Nav progress bar wired to Astro View Transitions lifecycle ──
     // Visible flash of progress + slight delay on every internal click so
     // navigation feels intentional. Bar element lives in Nav (persisted).
@@ -259,106 +257,9 @@ const { variant = 'solid' } = Astro.props;
       document.addEventListener('astro:page-load', completeBar);
     }
 
-    const nav = document.getElementById('main-nav') as HTMLElement;
-    const navLinks = document.getElementById('nav-links') as HTMLElement;
-    const navOfferFormWrap = document.getElementById('nav-offer-form-wrap') as HTMLElement;
-    const navRight = document.getElementById('nav-right') as HTMLElement;
-    const menuToggle = document.getElementById('menu-toggle') as HTMLButtonElement;
-    const mobileMenu = document.getElementById('mobile-menu') as HTMLElement;
-    const iconOpen = document.getElementById('icon-open') as HTMLElement;
-    const iconClose = document.getElementById('icon-close') as HTMLElement;
-
-    // ─── Auth state: swap Sign in link with profile icon when logged in ───
-    const tSignin       = document.getElementById('t-signin-link') as HTMLAnchorElement;
-    const tProfileWrap  = document.getElementById('t-profile-wrap') as HTMLElement;
-    const tProfileBtn   = document.getElementById('t-profile-btn') as HTMLButtonElement;
-    const tProfileImg   = document.getElementById('t-profile-avatar') as HTMLImageElement;
-    const tProfileInit  = document.getElementById('t-profile-initial') as HTMLElement;
-    const tProfileMenu  = document.getElementById('t-profile-menu') as HTMLElement;
-    const tProfileEmail = document.getElementById('t-profile-email') as HTMLElement;
-    const tSignoutBtn   = document.getElementById('t-signout-btn') as HTMLButtonElement;
-    const tMSignin      = document.getElementById('t-mobile-signin-link') as HTMLAnchorElement;
-    const tMSignout     = document.getElementById('t-mobile-signout-btn') as HTMLButtonElement;
-    const tSupabase = getSupabase();
-
-    const tMProfile     = document.getElementById('t-mobile-profile') as HTMLElement;
-    const tMProfileImg  = document.getElementById('t-mobile-profile-avatar') as HTMLImageElement;
-    const tMProfileInit = document.getElementById('t-mobile-profile-initial') as HTMLElement;
-    const tMProfileEmail= document.getElementById('t-mobile-profile-email') as HTMLElement;
-
-    function tApplyAuth(user: any) {
-      const signedIn = !!user && !user.is_anonymous;
-      if (signedIn) {
-        // Desktop: hide Sign in text (inline beats md:inline-block), show
-        // profile button only at md+ (don't show on mobile — that's what the
-        // hamburger menu is for).
-        tSignin.style.display = 'none';
-        tProfileWrap.classList.remove('hidden');
-        tProfileWrap.style.display = window.innerWidth >= 768 ? 'block' : 'none';
-        // Mobile menu: swap Sign in link for the profile row + Sign out.
-        tMSignin.classList.add('hidden');
-        tMSignout.classList.remove('hidden');
-        tMProfile.classList.remove('hidden');
-        tMProfile.style.display = 'flex';
-        const email = user.email || '';
-        tProfileEmail.textContent = email;
-        tMProfileEmail.textContent = email;
-        const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture;
-        if (avatarUrl) {
-          tProfileImg.src = avatarUrl;
-          tMProfileImg.src = avatarUrl;
-          tProfileImg.classList.remove('hidden');
-          tMProfileImg.classList.remove('hidden');
-          tProfileInit.classList.add('hidden');
-          tMProfileInit.classList.add('hidden');
-        } else {
-          tProfileImg.classList.add('hidden');
-          tMProfileImg.classList.add('hidden');
-          tProfileInit.classList.remove('hidden');
-          tMProfileInit.classList.remove('hidden');
-          const initial = (email[0] || 'U').toUpperCase();
-          tProfileInit.textContent = initial;
-          tMProfileInit.textContent = initial;
-        }
-      } else {
-        tSignin.style.display = '';
-        tProfileWrap.classList.add('hidden');
-        tProfileWrap.style.display = '';
-        tMSignin.classList.remove('hidden');
-        tMSignout.classList.add('hidden');
-        tMProfile.classList.add('hidden');
-        tMProfile.style.display = '';
-        tProfileMenu.classList.add('hidden');
-      }
-    }
-    // Keep mobile-vs-desktop visibility correct on viewport resize.
-    window.addEventListener('resize', () => {
-      if (tProfileWrap.style.display && tProfileWrap.style.display !== '') {
-        tProfileWrap.style.display = window.innerWidth >= 768 ? 'block' : 'none';
-      }
-    });
-    tSupabase.auth.getUser().then(({ data }) => tApplyAuth(data.user));
-    tSupabase.auth.onAuthStateChange((_event, session) => tApplyAuth(session?.user || null));
-
-    tProfileBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const willShow = tProfileMenu.classList.contains('hidden');
-      tProfileMenu.classList.toggle('hidden');
-      tProfileBtn.setAttribute('aria-expanded', String(willShow));
-    });
-    document.addEventListener('click', (e) => {
-      if (!tProfileWrap.contains(e.target as Node)) {
-        tProfileMenu.classList.add('hidden');
-        tProfileBtn.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    async function tHandleSignOut() {
-      await tSupabase.auth.signOut();
-      window.location.assign('/');
-    }
-    tSignoutBtn.addEventListener('click', tHandleSignOut);
-    tMSignout.addEventListener('click', tHandleSignOut);
+    // Auth UI (profile icon / sign-out swap) is handled by the shared,
+    // ClientRouter-safe handler at the bottom of this component, so it
+    // re-applies after every navigation.
 
     // Scroll-driven state (show the address form past the hero) and the mobile
     // hamburger are both handled by the shared, ClientRouter-safe handler at the
@@ -474,98 +375,8 @@ const { variant = 'solid' } = Astro.props;
   </nav>
 
   <script>
-    import { getSupabase } from '../lib/supabase';
-
-    // ─── Auth state: swap Sign in link with profile icon when logged in ───
-    const sSignin       = document.getElementById('s-signin-link') as HTMLAnchorElement;
-    const sProfileWrap  = document.getElementById('s-profile-wrap') as HTMLElement;
-    const sProfileBtn   = document.getElementById('s-profile-btn') as HTMLButtonElement;
-    const sProfileImg   = document.getElementById('s-profile-avatar') as HTMLImageElement;
-    const sProfileInit  = document.getElementById('s-profile-initial') as HTMLElement;
-    const sProfileMenu  = document.getElementById('s-profile-menu') as HTMLElement;
-    const sProfileEmail = document.getElementById('s-profile-email') as HTMLElement;
-    const sSignoutBtn   = document.getElementById('s-signout-btn') as HTMLButtonElement;
-    const sMSignin      = document.getElementById('s-mobile-signin-link') as HTMLAnchorElement;
-    const sMSignout     = document.getElementById('s-mobile-signout-btn') as HTMLButtonElement;
-    const sSupabase = getSupabase();
-
-    const sMProfile     = document.getElementById('s-mobile-profile') as HTMLElement;
-    const sMProfileImg  = document.getElementById('s-mobile-profile-avatar') as HTMLImageElement;
-    const sMProfileInit = document.getElementById('s-mobile-profile-initial') as HTMLElement;
-    const sMProfileEmail= document.getElementById('s-mobile-profile-email') as HTMLElement;
-
-    function sApplyAuth(user: any) {
-      const signedIn = !!user && !user.is_anonymous;
-      if (signedIn) {
-        sSignin.style.display = 'none';
-        sProfileWrap.classList.remove('hidden');
-        sProfileWrap.style.display = window.innerWidth >= 768 ? 'block' : 'none';
-        sMSignin.classList.add('hidden');
-        sMSignout.classList.remove('hidden');
-        sMProfile.classList.remove('hidden');
-        sMProfile.style.display = 'flex';
-        const email = user.email || '';
-        sProfileEmail.textContent = email;
-        sMProfileEmail.textContent = email;
-        const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture;
-        if (avatarUrl) {
-          sProfileImg.src = avatarUrl;
-          sMProfileImg.src = avatarUrl;
-          sProfileImg.classList.remove('hidden');
-          sMProfileImg.classList.remove('hidden');
-          sProfileInit.classList.add('hidden');
-          sMProfileInit.classList.add('hidden');
-        } else {
-          sProfileImg.classList.add('hidden');
-          sMProfileImg.classList.add('hidden');
-          sProfileInit.classList.remove('hidden');
-          sMProfileInit.classList.remove('hidden');
-          const initial = (email[0] || 'U').toUpperCase();
-          sProfileInit.textContent = initial;
-          sMProfileInit.textContent = initial;
-        }
-      } else {
-        sSignin.style.display = '';
-        sProfileWrap.classList.add('hidden');
-        sProfileWrap.style.display = '';
-        sMSignin.classList.remove('hidden');
-        sMSignout.classList.add('hidden');
-        sMProfile.classList.add('hidden');
-        sMProfile.style.display = '';
-        sProfileMenu.classList.add('hidden');
-      }
-    }
-    window.addEventListener('resize', () => {
-      if (sProfileWrap.style.display && sProfileWrap.style.display !== '') {
-        sProfileWrap.style.display = window.innerWidth >= 768 ? 'block' : 'none';
-      }
-    });
-    sSupabase.auth.getUser().then(({ data }) => sApplyAuth(data.user));
-    sSupabase.auth.onAuthStateChange((_event, session) => sApplyAuth(session?.user || null));
-
-    sProfileBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const willShow = sProfileMenu.classList.contains('hidden');
-      sProfileMenu.classList.toggle('hidden');
-      sProfileBtn.setAttribute('aria-expanded', String(willShow));
-    });
-    document.addEventListener('click', (e) => {
-      if (!sProfileWrap.contains(e.target as Node)) {
-        sProfileMenu.classList.add('hidden');
-        sProfileBtn.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    async function sHandleSignOut() {
-      await sSupabase.auth.signOut();
-      window.location.assign('/');
-    }
-    sSignoutBtn.addEventListener('click', sHandleSignOut);
-    sMSignout.addEventListener('click', sHandleSignOut);
-
-    // Scroll-driven state (show the address form past the hero) and the mobile
-    // hamburger are both handled by the shared, ClientRouter-safe handler at the
-    // bottom of this component.
+    // Auth UI, scroll-driven state, and the mobile hamburger are all handled by
+    // the shared, ClientRouter-safe handler at the bottom of this component.
   </script>
 )}
 
@@ -577,6 +388,8 @@ const { variant = 'solid' } = Astro.props;
      straight to elements on first load, which silently died (no hamburger, no
      scroll-reveal) on every page reached by in-app navigation. -->
 <script>
+  import { getSupabase } from '../lib/supabase';
+
   if (!(window as any).__fsNavWired) {
     (window as any).__fsNavWired = true;
 
@@ -647,5 +460,113 @@ const { variant = 'solid' } = Astro.props;
     // Re-apply on initial load and after every ClientRouter navigation.
     document.addEventListener('astro:page-load', fsApplyNavScroll);
     fsApplyNavScroll();
+
+    // ── Auth UI: swap the "Sign in" link for a profile icon + sign-out when
+    //    logged in. We subscribe once, cache the user, and re-apply to the
+    //    (re-created) DOM on every navigation. Dropdown toggle, outside-click
+    //    close, and sign-out are delegated so they survive ClientRouter swaps.
+    //    Handles both nav variants by id prefix: 't' (transparent), 's' (solid).
+    const fsSupabase = getSupabase();
+    let fsUser: any = null;
+
+    const fsApplyAuthFor = (p: string) => {
+      const wrap = document.getElementById(`${p}-profile-wrap`);
+      if (!wrap) return; // this variant isn't the one rendered on this page
+      const signin   = document.getElementById(`${p}-signin-link`);
+      const img      = document.getElementById(`${p}-profile-avatar`) as HTMLImageElement | null;
+      const initEl   = document.getElementById(`${p}-profile-initial`);
+      const menu     = document.getElementById(`${p}-profile-menu`);
+      const emailEl  = document.getElementById(`${p}-profile-email`);
+      const mSignin  = document.getElementById(`${p}-mobile-signin-link`);
+      const mSignout = document.getElementById(`${p}-mobile-signout-btn`);
+      const mProfile = document.getElementById(`${p}-mobile-profile`);
+      const mImg     = document.getElementById(`${p}-mobile-profile-avatar`) as HTMLImageElement | null;
+      const mInit    = document.getElementById(`${p}-mobile-profile-initial`);
+      const mEmail   = document.getElementById(`${p}-mobile-profile-email`);
+
+      const signedIn = !!fsUser && !fsUser.is_anonymous;
+      if (signedIn) {
+        // Desktop: hide "Sign in", show the profile button at md+ only.
+        if (signin) signin.style.display = 'none';
+        wrap.classList.remove('hidden');
+        wrap.style.display = window.innerWidth >= 768 ? 'block' : 'none';
+        // Mobile menu: swap the Sign in link for the profile row + Sign out.
+        mSignin?.classList.add('hidden');
+        mSignout?.classList.remove('hidden');
+        mProfile?.classList.remove('hidden');
+        if (mProfile) mProfile.style.display = 'flex';
+        const email = fsUser.email || '';
+        if (emailEl) emailEl.textContent = email;
+        if (mEmail) mEmail.textContent = email;
+        const avatarUrl = fsUser.user_metadata?.avatar_url || fsUser.user_metadata?.picture;
+        if (avatarUrl) {
+          if (img) { img.src = avatarUrl; img.classList.remove('hidden'); }
+          if (mImg) { mImg.src = avatarUrl; mImg.classList.remove('hidden'); }
+          initEl?.classList.add('hidden');
+          mInit?.classList.add('hidden');
+        } else {
+          img?.classList.add('hidden');
+          mImg?.classList.add('hidden');
+          initEl?.classList.remove('hidden');
+          mInit?.classList.remove('hidden');
+          const initial = (email[0] || 'U').toUpperCase();
+          if (initEl) initEl.textContent = initial;
+          if (mInit) mInit.textContent = initial;
+        }
+      } else {
+        if (signin) signin.style.display = '';
+        wrap.classList.add('hidden');
+        wrap.style.display = '';
+        mSignin?.classList.remove('hidden');
+        mSignout?.classList.add('hidden');
+        mProfile?.classList.add('hidden');
+        if (mProfile) mProfile.style.display = '';
+        menu?.classList.add('hidden');
+      }
+    };
+
+    const fsApplyAuth = () => { fsApplyAuthFor('t'); fsApplyAuthFor('s'); };
+
+    document.addEventListener('click', (e) => {
+      const el = e.target instanceof Element ? e.target : null;
+      if (!el) return;
+      // Profile button → toggle that variant's dropdown.
+      const btn = el.closest('#t-profile-btn, #s-profile-btn') as HTMLElement | null;
+      if (btn) {
+        const p = btn.id.charAt(0);
+        const menu = document.getElementById(`${p}-profile-menu`);
+        const willShow = menu?.classList.contains('hidden') ?? false;
+        menu?.classList.toggle('hidden');
+        btn.setAttribute('aria-expanded', String(willShow));
+        return;
+      }
+      // Any sign-out button (desktop dropdown or mobile menu).
+      if (el.closest('#t-signout-btn, #s-signout-btn, #t-mobile-signout-btn, #s-mobile-signout-btn')) {
+        fsSupabase.auth.signOut().then(() => window.location.assign('/'));
+        return;
+      }
+      // Click anywhere outside an open dropdown → close it.
+      for (const p of ['t', 's']) {
+        const wrap = document.getElementById(`${p}-profile-wrap`);
+        if (wrap && !wrap.contains(el)) {
+          document.getElementById(`${p}-profile-menu`)?.classList.add('hidden');
+          document.getElementById(`${p}-profile-btn`)?.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
+
+    // Keep the desktop profile button from showing at mobile widths.
+    window.addEventListener('resize', () => {
+      for (const p of ['t', 's']) {
+        const wrap = document.getElementById(`${p}-profile-wrap`);
+        if (wrap && wrap.style.display && wrap.style.display !== '') {
+          wrap.style.display = window.innerWidth >= 768 ? 'block' : 'none';
+        }
+      }
+    });
+
+    fsSupabase.auth.getUser().then(({ data }) => { fsUser = data.user; fsApplyAuth(); });
+    fsSupabase.auth.onAuthStateChange((_e, session) => { fsUser = session?.user || null; fsApplyAuth(); });
+    document.addEventListener('astro:page-load', fsApplyAuth);
   }
 </script>
