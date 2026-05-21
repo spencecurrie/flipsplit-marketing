@@ -486,8 +486,11 @@ const { variant = 'solid' } = Astro.props;
 
       const signedIn = !!fsUser && !fsUser.is_anonymous;
       if (signedIn) {
-        // Desktop: hide "Sign in", show the profile button at md+ only.
-        if (signin) signin.style.display = 'none';
+        // Hide "Sign in", show the profile button at md+ only. Use !important
+        // because the `.nav-light #*-signin-link` scrolled-bar rule forces the
+        // link visible with !important and would otherwise win over a plain
+        // inline style — leaving "Sign in" showing for logged-in users.
+        if (signin) signin.style.setProperty('display', 'none', 'important');
         wrap.classList.remove('hidden');
         wrap.style.display = window.innerWidth >= 768 ? 'block' : 'none';
         // Mobile menu: swap the Sign in link for the profile row + Sign out.
@@ -514,7 +517,7 @@ const { variant = 'solid' } = Astro.props;
           if (mInit) mInit.textContent = initial;
         }
       } else {
-        if (signin) signin.style.display = '';
+        if (signin) signin.style.removeProperty('display');
         wrap.classList.add('hidden');
         wrap.style.display = '';
         mSignin?.classList.remove('hidden');
