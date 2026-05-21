@@ -78,6 +78,30 @@ const { variant = 'solid' } = Astro.props;
   .nav-light #menu-toggle,
   .nav-light #solid-menu-toggle { color: #0f172a !important; }
 
+  /* ── Mobile menu: slide in from the right ──
+     Closed state lives in CSS (off-screen + hidden) and JS toggles `is-open`.
+     `visibility` is delayed on close so the panel finishes sliding out before
+     it's removed from the a11y/hit-testing tree. */
+  .fs-drawer {
+    transform: translateX(100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease,
+                visibility 0s linear 0.3s;
+  }
+  .fs-drawer.is-open {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease,
+                visibility 0s;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fs-drawer, .fs-drawer.is-open { transition: none; }
+  }
+
   /* Desktop "Get My Offer" button (white text/border) needs a brand-blue
      pill treatment when the nav is in light mode. */
   .nav-light .field .desktop-cta {
@@ -181,7 +205,7 @@ const { variant = 'solid' } = Astro.props;
       </div>
     </div>
 
-    <div id="mobile-menu" class="hidden fixed inset-0 bg-white z-[60] flex flex-col">
+    <div id="mobile-menu" class="fs-drawer fixed inset-0 bg-white z-[60] flex flex-col">
       <div class="flex items-center justify-between px-6 h-20 border-b border-slate-100 shrink-0">
         <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
         <button id="menu-close" class="p-2 text-slate-700" aria-label="Close menu">
@@ -329,7 +353,7 @@ const { variant = 'solid' } = Astro.props;
       </div>
     </div>
 
-    <div id="solid-mobile-menu" class="hidden md:hidden fixed inset-0 bg-white z-[60] flex flex-col">
+    <div id="solid-mobile-menu" class="fs-drawer md:hidden fixed inset-0 bg-white z-[60] flex flex-col">
       <div class="flex items-center justify-between px-6 h-16 border-b border-slate-100 shrink-0">
         <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
         <button id="solid-menu-close" class="p-2 text-slate-700" aria-label="Close menu">
@@ -396,7 +420,7 @@ const { variant = 'solid' } = Astro.props;
     // ── Mobile hamburger open/close (delegated) ──
     const fsSetMenu = (menu: HTMLElement | null, open: boolean) => {
       if (!menu) return;
-      menu.classList.toggle('hidden', !open);
+      menu.classList.toggle('is-open', open);
       document.body.style.overflow = open ? 'hidden' : '';
     };
 
@@ -412,7 +436,7 @@ const { variant = 'solid' } = Astro.props;
         const menu = document.getElementById(m.menu);
         // Tap the hamburger → toggle that variant's menu.
         if (el.closest('#' + m.toggle)) {
-          fsSetMenu(menu, menu?.classList.contains('hidden') ?? false);
+          fsSetMenu(menu, !(menu?.classList.contains('is-open') ?? false));
           return;
         }
         // Tap the X, or any link inside an open menu → close it.
