@@ -108,6 +108,17 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
     </div>
   </div>
 
+  <!-- Full-screen "looking up your property" overlay. Shown for ~1.5s after the
+       address is confirmed so the jump from modal → step 1 has a perceived-
+       loading beat. The eager RentCast lookup is already in flight by this
+       point, so this is purely UX pacing. -->
+  <div class="address-loading-overlay hidden fixed inset-0 z-[150] flex-col items-center justify-center bg-white">
+    <div class="progress-bar w-full absolute top-0 left-0" style="height: 4px; background: #1e88e5;"></div>
+    <div class="address-loading-spinner mb-8" aria-hidden="true"></div>
+    <h1 class="text-3xl md:text-4xl font-semibold mb-3 px-6 text-center" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">Looking up your property…</h1>
+    <p class="text-base md:text-lg text-slate-500 max-w-md text-center px-6">Pulling public records so we can pre-fill what we know about your home.</p>
+  </div>
+
   {showTrust && (
     <Fragment>
       <div class={`flex flex-wrap items-center gap-1.5 text-sm mb-1.5 ${rowCenter}`}>
@@ -142,6 +153,16 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
   .pac-icon { display: none; }
   .pac-item-query { font-weight: 600; color: #1E2A3A; }
   .pac-matched { color: #1e88e5; }
+
+  /* Loading overlay (full-screen, shown briefly after address confirmation) */
+  .address-loading-overlay { font-family: 'Open Sans', sans-serif; }
+  .address-loading-overlay:not(.hidden) { display: flex; }
+  .address-loading-spinner {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 4px solid #e2e8f0; border-top-color: #1e88e5;
+    animation: address-loading-spin 0.85s linear infinite;
+  }
+  @keyframes address-loading-spin { to { transform: rotate(360deg); } }
 </style>
 
 <script>
@@ -424,6 +445,18 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
               payload: { address: pickedPlace.formatted_address, unit_number: unitNumber },
             })
             .then((res: any) => { if (res?.error) console.warn('funnel_started event failed:', res.error); });
+
+          // Hide the modal and show a full-screen loading overlay so the
+          // jump from "Confirm" → step 1 has perceived weight (~1.5s). The
+          // actual backend work is already done by this point — this is pure
+          // UX pacing.
+          closeModal();
+          const overlay = wrap.querySelector<HTMLElement>('.address-loading-overlay');
+          if (overlay) {
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+          }
+          await new Promise((r) => setTimeout(r, 1500));
 
           // Off to step 1 — use Astro's transition router so the
           // homepage cross-fades into the funnel layout.
