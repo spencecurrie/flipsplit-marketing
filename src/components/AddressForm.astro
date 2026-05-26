@@ -22,6 +22,22 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 ---
 
 <div class={className}>
+  <!-- Shown only when a real (non-anonymous) account is already signed in.
+       Makes it obvious why the funnel will attach to that account and gives
+       a one-click escape hatch for users testing/retrying the flow. -->
+  <div class:list={["address-signed-in hidden flex items-center justify-between gap-3 max-w-lg p-3 mb-3 rounded-xl border bg-blue-50 border-blue-100 text-sm", formCenter]}>
+    <span class="text-slate-700 leading-snug">
+      Signed in as <strong class="address-signed-in-email">your account</strong> — this property will be added to your dashboard.
+    </span>
+    <button
+      type="button"
+      class="address-signed-in-out shrink-0 font-semibold text-blue-600 hover:text-blue-700 disabled:opacity-60"
+      style="color: #1e88e5;"
+    >
+      Not you? Sign out
+    </button>
+  </div>
+
   <form
     id={id}
     class:list={["address-form flex items-center bg-white rounded-2xl border border-slate-200 shadow-sm p-2 gap-2 w-full max-w-lg mb-3", formCenter]}
@@ -156,6 +172,49 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
     }
     if (streetNumber || route) parts.street = `${streetNumber} ${route}`.trim();
     return parts;
+  }
+
+  // Show/hide a "Signed in as <email>" banner above each AddressForm. Helps
+  // testers (and any real returning user) see *why* the funnel will skip the
+  // signup detour, and gives a one-click sign-out to start fresh. Runs once
+  // per page-load; the auth state can also change mid-page via the sign-out
+  // button, which re-hides the banner inline.
+  async function refreshSignedInBanners() {
+    const supabase = getSupabase();
+    let email: string | null = null;
+    try {
+      const { data } = await supabase.auth.getUser();
+      const u = data?.user;
+      if (u && !u.is_anonymous) {
+        email = (u.email as string) || (u.user_metadata?.email as string) || 'your account';
+      }
+    } catch { /* unauthenticated or network blip — leave banners hidden */ }
+
+    document.querySelectorAll<HTMLElement>('.address-signed-in').forEach((banner) => {
+      if (banner.dataset.bannerInit === '1' && !email) {
+        banner.classList.add('hidden');
+        return;
+      }
+      banner.dataset.bannerInit = '1';
+      if (!email) { banner.classList.add('hidden'); return; }
+      const emailEl = banner.querySelector<HTMLElement>('.address-signed-in-email');
+      if (emailEl) emailEl.textContent = email;
+      banner.classList.remove('hidden');
+    });
+  }
+
+  function attachSignOutHandlers() {
+    document.querySelectorAll<HTMLButtonElement>('.address-signed-in-out').forEach((btn) => {
+      if (btn.dataset.signoutInit === '1') return;
+      btn.dataset.signoutInit = '1';
+      btn.addEventListener('click', async () => {
+        btn.disabled = true;
+        try { await getSupabase().auth.signOut(); } catch { /* ignore */ }
+        // Hide *all* banner instances on the page, not just the clicked one.
+        document.querySelectorAll<HTMLElement>('.address-signed-in').forEach((b) => b.classList.add('hidden'));
+        btn.disabled = false;
+      });
+    });
   }
 
   // ── Form lifecycle ──────────────────────────────────────────────────────
@@ -383,6 +442,18 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
       });
     });
   }
+
+  // Banner init doesn't depend on Google Places, so kick it off immediately.
+  attachSignOutHandlers();
+  refreshSignedInBanners();
+  // Re-run after Astro view transitions (e.g. user navigates from /about back
+  // to / where another AddressForm renders). astro:page-load fires after each
+  // navigation, including the initial load — so this also covers the
+  // "scripts didn't re-execute" case.
+  document.addEventListener('astro:page-load', () => {
+    attachSignOutHandlers();
+    refreshSignedInBanners();
+  });
 
   // Lazy-load Google Places, then initialize all forms on the page
   if (!(window as any).google?.maps?.places) {
