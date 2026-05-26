@@ -288,18 +288,12 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
       let pickedPlace: google.maps.places.PlaceResult | null = null;
 
-      // Background work kicked off the moment a place is picked. Returns a
-      // discriminated union so we can react to three outcomes:
-      //   - 'new'        — address is new; eager session row was inserted
-      //   - 'existing'   — address already belongs to *this* signed-in user;
-      //                    we'll deep-link them to its dashboard view
-      //   - 'soft-block' — address already belongs to a different real account;
-      //                    we'll show a Sign-in prompt in the modal
-      type BgResult =
-        | { kind: 'new'; sessionId: string }
-        | { kind: 'existing'; sessionId: string }
-        | { kind: 'soft-block' };
-      let bgWork: { promise: Promise<BgResult>; address: string } | null = null;
+      // Background work for the "new address" path only: auth + row insert +
+      // RentCast lookup all start while the user is reading the confirmation
+      // modal, so by the time they click Confirm the data is usually ready.
+      // For existing/soft-block addresses we never set bgWork — those branches
+      // either redirect or surface a sign-in prompt without a session row.
+      let bgWork: { promise: Promise<string>; address: string } | null = null;
 
       // Self-healing auth bootstrap. Reads existing session; falls back to a
       // fresh anonymous sign-in if the stored JWT points to a deleted user.
@@ -319,34 +313,6 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
         const userId = signin?.user?.id;
         if (!userId) throw new Error('Could not establish a session. Please refresh and try again.');
         return userId;
-      }
-
-      // Wraps the place-picked side effects with a server-side check first:
-      // if the address is already on FlipSplit for a real account, we *don't*
-      // create a duplicate funnel session — we either deep-link (owner) or
-      // soft-block (different account).
-      async function checkOrEagerLookup(place: google.maps.places.PlaceResult): Promise<BgResult> {
-        const supabase = getSupabase();
-        let status: { exists?: boolean; is_owner?: boolean; session_id?: string } | null = null;
-        try {
-          const { data, error } = await supabase.rpc('check_address_status', {
-            p_address: place.formatted_address!,
-          });
-          if (error) console.warn('check_address_status failed:', error.message);
-          else status = data as any;
-        } catch (e) {
-          console.warn('check_address_status threw:', e);
-        }
-
-        if (status?.exists && status.is_owner && status.session_id) {
-          return { kind: 'existing', sessionId: status.session_id };
-        }
-        if (status?.exists && !status.is_owner) {
-          return { kind: 'soft-block' };
-        }
-
-        const sessionId = await startEagerLookup(place);
-        return { kind: 'new', sessionId };
       }
 
       // Kicked off at place-picked. Auth → insert qualification_sessions row →
@@ -438,41 +404,82 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
         setTimeout(() => input.focus(), 50);
       });
 
-      // Open modal as soon as the user picks an address from the dropdown.
-      // ⚡ Also fires the background check + (conditional) RentCast lookup —
-      // the check decides whether this is a new address (proceed), an existing
-      // property of the signed-in user (deep-link to dashboard), or already
-      // owned by a different account (soft-block in the modal).
-      ac.addListener('place_changed', () => {
-        const place = ac.getPlace();
+      // When the user picks an address, run the "already on FlipSplit?" check
+      // BEFORE opening any modal — and show a spinner on the form's submit
+      // button while we wait. Opening the modal in its final state (rather
+      // than opening it in the default state and flipping content ~100ms
+      // later) avoids the jarring "modal swap" effect.
+      const submitBtn = form.querySelector<HTMLButtonElement>('.address-submit');
+      const submitArrow = submitBtn?.querySelector<HTMLElement>('.address-arrow');
+      const submitSpin  = submitBtn?.querySelector<HTMLElement>('.address-spinner');
+      const setChecking = (busy: boolean) => {
+        if (submitBtn) submitBtn.disabled = busy;
+        if (busy) { submitArrow?.classList.add('hidden'); submitSpin?.classList.remove('hidden'); }
+        else      { submitArrow?.classList.remove('hidden'); submitSpin?.classList.add('hidden'); }
+      };
+
+      async function handlePlacePicked(place: google.maps.places.PlaceResult) {
         if (!place?.formatted_address) return;
         input.value = place.formatted_address;
         pickedPlace = place;
         input.setCustomValidity('');
-        openModal(place);
 
-        // Reuse existing background work if the address didn't change
-        // (e.g. user closed the modal and re-submitted). Otherwise kick off
-        // a fresh check.
+        setChecking(true);
+        const supabase = getSupabase();
+        let status: { exists?: boolean; is_owner?: boolean; session_id?: string } | null = null;
+        try {
+          const { data, error } = await supabase.rpc('check_address_status', {
+            p_address: place.formatted_address,
+          });
+          if (error) console.warn('check_address_status failed:', error.message);
+          else status = data as any;
+        } catch (e) {
+          console.warn('check_address_status threw:', e);
+        }
+        setChecking(false);
+
+        // Guard: if the user picked a different place while we waited, the
+        // result we have is stale — discard it.
+        if (pickedPlace !== place) return;
+
+        // Existing property owned by this signed-in caller → skip the modal
+        // entirely and drop straight onto its dashboard view.
+        if (status?.exists && status.is_owner && status.session_id) {
+          const overlay = wrap.querySelector<HTMLElement>('.address-loading-overlay');
+          if (overlay) {
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+          }
+          await new Promise((r) => setTimeout(r, 800));
+          window.location.assign(`${APP_URL}/?session_id=${status.session_id}`);
+          return;
+        }
+
+        // Address already belongs to a different real account → open the
+        // modal directly in the soft-block state. No flip.
+        if (status?.exists && !status.is_owner) {
+          if (!modal) return;
+          showModalBlocked(place);
+          modal.classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+          return;
+        }
+
+        // New address → open modal in default state and start the eager
+        // RentCast lookup in the background so step 1 has data ready.
+        openModal(place);
         if (!bgWork || bgWork.address !== place.formatted_address) {
           bgWork = {
             address: place.formatted_address,
-            promise: checkOrEagerLookup(place),
+            promise: startEagerLookup(place),
           };
-          bgWork.promise.catch(() => { bgWork = null; }); // reset on failure
+          bgWork.promise.catch(() => { bgWork = null; });
         }
+      }
 
-        // The check resolves before the user can usually click Confirm; flip
-        // the modal's UI as soon as we know the address is already claimed.
-        // Guarded by pickedPlace identity so a fast user typing a new address
-        // doesn't get a stale flip from a previous selection.
-        const placeAtPick = place;
-        bgWork.promise.then((result) => {
-          if (pickedPlace !== placeAtPick) return; // user moved on
-          if (result.kind === 'soft-block') showModalBlocked(placeAtPick);
-          // 'existing' and 'new' both leave the default modal visible — the
-          // Confirm handler dispatches on the same `result` when clicked.
-        }).catch(() => { /* check failed — modal stays in default state */ });
+      ac.addListener('place_changed', () => {
+        const place = ac.getPlace();
+        if (place?.formatted_address) handlePlacePicked(place);
       });
 
       input.addEventListener('input', () => {
@@ -502,8 +509,9 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
         if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) closeModal();
       });
 
-      // Submit button — if a place is picked, re-open modal; otherwise show
-      // the usual "select from dropdown" error.
+      // Submit button — if a place is picked, run it back through the same
+      // decision path (which re-checks the address and opens the right modal
+      // state, or redirects). If no place was picked, show the usual error.
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const errorEl = wrap.querySelector<HTMLElement>('.address-error');
@@ -513,7 +521,7 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
         errorEl?.classList.add('hidden');
         if (!input.value.trim()) return showError('Please enter your property address.');
         if (!pickedPlace) return showError('Please select an address from the dropdown suggestions.');
-        openModal(pickedPlace);
+        handlePlacePicked(pickedPlace);
       });
 
       // Confirm — by now the background lookup has either finished or is well
@@ -527,41 +535,19 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
         if (modalError) modalError.classList.add('hidden');
 
         try {
-          // Fallback: if the eager work never fired (rare — e.g. user pasted
-          // a value without triggering place_changed), kick it off here.
+          // The Confirm button is only visible when handlePlacePicked decided
+          // the address is *new* — soft-block and existing-owner cases never
+          // show this button. So bgWork should be set. Defensive fallback:
+          // if it isn't (rare paste-then-confirm edge case), kick it off now.
           if (!bgWork) {
             bgWork = {
               address: pickedPlace.formatted_address!,
-              promise: checkOrEagerLookup(pickedPlace),
+              promise: startEagerLookup(pickedPlace),
             };
           }
 
-          const result = await bgWork.promise;
+          const sessionId = await bgWork.promise;
           const supabase = getSupabase();
-
-          // Soft-block: place_changed already flipped the modal to the Sign-in
-          // prompt; Confirm shouldn't ever be visible here. Just bail.
-          if (result.kind === 'soft-block') {
-            modalConfirm.removeAttribute('disabled');
-            if (modalLabel) modalLabel.textContent = 'Confirm address';
-            return;
-          }
-
-          // Existing property owned by the signed-in caller — skip the funnel
-          // and drop them directly onto that property's dashboard view.
-          if (result.kind === 'existing') {
-            closeModal();
-            const overlay = wrap.querySelector<HTMLElement>('.address-loading-overlay');
-            if (overlay) {
-              overlay.classList.remove('hidden');
-              document.body.style.overflow = 'hidden';
-            }
-            await new Promise((r) => setTimeout(r, 800));
-            window.location.assign(`${APP_URL}/?session_id=${result.sessionId}`);
-            return;
-          }
-
-          const sessionId = result.sessionId;
 
           // If the user typed a unit number, update the row and re-invoke the
           // lookup so it can fetch with the unit-aware address. (~10% of users.)
