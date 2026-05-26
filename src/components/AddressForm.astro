@@ -11,6 +11,7 @@ interface Props {
   responsive?: boolean;
 }
 const { id = 'address-form', class: className = '', align = 'left', showTrust = true, theme = 'light', responsive = false } = Astro.props;
+const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
 const trustStrong = theme === 'dark' ? 'text-white' : 'text-slate-400';
 const trustSoft   = theme === 'dark' ? 'text-white/80' : 'text-slate-400';
 const trustHint   = theme === 'dark' ? 'text-white/70' : 'text-slate-400';
@@ -69,42 +70,83 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
   <p class="address-error hidden text-xs text-red-500 font-medium mb-2"></p>
 
-  <!-- Address-confirmation modal (one per AddressForm instance, hidden by default) -->
+  <!-- Address-confirmation modal (one per AddressForm instance, hidden by default).
+       Has two states: the default "confirm + unit number" form, and a
+       "soft-block" state shown when the address is already on FlipSplit for a
+       real account. The block state surfaces a sign-in CTA instead of letting
+       the visitor start a duplicate funnel. -->
   <div class="address-modal hidden fixed inset-0 z-[100] flex items-center justify-center px-4 py-8" style="background: rgba(15, 23, 42, 0.55);">
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 relative" role="dialog" aria-modal="true" aria-labelledby={`${id}-modal-title`}>
       <button type="button" class="address-modal-close absolute top-5 right-5 p-1 text-slate-400 hover:text-slate-700 transition-colors" aria-label="Close">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
 
-      <h2 id={`${id}-modal-title`} class="text-2xl font-bold mb-6 pr-8" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
-        Is this the correct home address?
-      </h2>
+      <!-- Default state: "is this your address?" -->
+      <div class="address-modal-state-default">
+        <h2 id={`${id}-modal-title`} class="text-2xl font-bold mb-6 pr-8" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+          Is this the correct home address?
+        </h2>
 
-      <div class="rounded-2xl p-4 flex items-start justify-between gap-3 mb-6" style="background:#F1F5F9;">
-        <p class="address-modal-address text-sm font-medium leading-relaxed flex-1" style="color:#1E2A3A; white-space: pre-line;"></p>
-        <button type="button" class="address-modal-edit text-sm font-semibold shrink-0 hover:opacity-80 transition-opacity" style="color:#1e88e5;">Edit</button>
+        <div class="rounded-2xl p-4 flex items-start justify-between gap-3 mb-6" style="background:#F1F5F9;">
+          <p class="address-modal-address text-sm font-medium leading-relaxed flex-1" style="color:#1E2A3A; white-space: pre-line;"></p>
+          <button type="button" class="address-modal-edit text-sm font-semibold shrink-0 hover:opacity-80 transition-opacity" style="color:#1e88e5;">Edit</button>
+        </div>
+
+        <label class="block">
+          <span class="text-sm font-semibold text-slate-700">Unit, Apt, or Suite # <span class="text-slate-400 font-normal">(optional)</span></span>
+          <input
+            type="text"
+            class="address-modal-unit mt-2 w-full border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#1e88e5] transition-colors"
+            placeholder="e.g. 30, 4B, Suite C"
+            autocomplete="off"
+            maxlength="20"
+          />
+        </label>
+        <p class="text-xs text-slate-400 mt-2">Leave blank if your home is single-family.</p>
+
+        <button
+          type="button"
+          class="address-modal-confirm w-full mt-6 text-white font-bold py-3.5 rounded-xl text-sm transition-all hover:brightness-110 disabled:opacity-60 disabled:cursor-wait"
+          style="background:#1e88e5;"
+        >
+          <span class="address-modal-confirm-label">Confirm address</span>
+        </button>
+        <p class="address-modal-error hidden text-sm text-red-500 font-medium mt-3 text-center"></p>
       </div>
 
-      <label class="block">
-        <span class="text-sm font-semibold text-slate-700">Unit, Apt, or Suite # <span class="text-slate-400 font-normal">(optional)</span></span>
-        <input
-          type="text"
-          class="address-modal-unit mt-2 w-full border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#1e88e5] transition-colors"
-          placeholder="e.g. 30, 4B, Suite C"
-          autocomplete="off"
-          maxlength="20"
-        />
-      </label>
-      <p class="text-xs text-slate-400 mt-2">Leave blank if your home is single-family.</p>
+      <!-- Soft-block state: address already belongs to a real account -->
+      <div class="address-modal-state-blocked hidden">
+        <h2 class="text-2xl font-bold mb-3 pr-8" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+          Looks like this home is already on FlipSplit
+        </h2>
+        <p class="text-sm text-slate-500 leading-relaxed mb-5">
+          You've already started selling this property. Sign in to pick up where you left off.
+        </p>
 
-      <button
-        type="button"
-        class="address-modal-confirm w-full mt-6 text-white font-bold py-3.5 rounded-xl text-sm transition-all hover:brightness-110 disabled:opacity-60 disabled:cursor-wait"
-        style="background:#1e88e5;"
-      >
-        <span class="address-modal-confirm-label">Confirm address</span>
-      </button>
-      <p class="address-modal-error hidden text-sm text-red-500 font-medium mt-3 text-center"></p>
+        <div class="rounded-2xl p-4 mb-6" style="background:#F1F5F9;">
+          <p class="address-modal-blocked-address text-sm font-medium leading-relaxed" style="color:#1E2A3A; white-space: pre-line;"></p>
+        </div>
+
+        <a
+          href={`${APP_URL}/login`}
+          class="address-modal-signin block w-full text-center text-white font-bold py-3.5 rounded-xl text-sm transition-all hover:brightness-110"
+          style="background:#1e88e5;"
+        >
+          Sign in
+        </a>
+        <button
+          type="button"
+          class="address-modal-different w-full mt-3 text-sm font-semibold text-slate-700 hover:text-slate-900 py-2 transition-colors"
+        >
+          Use a different address
+        </button>
+        <a
+          href="mailto:hello@flipsplit.com?subject=I'm the new owner of a FlipSplit-listed property"
+          class="address-modal-contact block text-center text-xs text-slate-400 hover:text-slate-600 mt-2 transition-colors"
+        >
+          Not the current owner? Contact us
+        </a>
+      </div>
     </div>
   </div>
 
@@ -246,11 +288,18 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
       let pickedPlace: google.maps.places.PlaceResult | null = null;
 
-      // Background work kicked off the moment a place is picked — auth + row
-      // insert + RentCast lookup all start while the user is reading the modal,
-      // so by the time they click Confirm and reach the property-details step,
-      // RentCast usually has the data already.
-      let bgWork: { promise: Promise<string>; address: string } | null = null;
+      // Background work kicked off the moment a place is picked. Returns a
+      // discriminated union so we can react to three outcomes:
+      //   - 'new'        — address is new; eager session row was inserted
+      //   - 'existing'   — address already belongs to *this* signed-in user;
+      //                    we'll deep-link them to its dashboard view
+      //   - 'soft-block' — address already belongs to a different real account;
+      //                    we'll show a Sign-in prompt in the modal
+      type BgResult =
+        | { kind: 'new'; sessionId: string }
+        | { kind: 'existing'; sessionId: string }
+        | { kind: 'soft-block' };
+      let bgWork: { promise: Promise<BgResult>; address: string } | null = null;
 
       // Self-healing auth bootstrap. Reads existing session; falls back to a
       // fresh anonymous sign-in if the stored JWT points to a deleted user.
@@ -270,6 +319,34 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
         const userId = signin?.user?.id;
         if (!userId) throw new Error('Could not establish a session. Please refresh and try again.');
         return userId;
+      }
+
+      // Wraps the place-picked side effects with a server-side check first:
+      // if the address is already on FlipSplit for a real account, we *don't*
+      // create a duplicate funnel session — we either deep-link (owner) or
+      // soft-block (different account).
+      async function checkOrEagerLookup(place: google.maps.places.PlaceResult): Promise<BgResult> {
+        const supabase = getSupabase();
+        let status: { exists?: boolean; is_owner?: boolean; session_id?: string } | null = null;
+        try {
+          const { data, error } = await supabase.rpc('check_address_status', {
+            p_address: place.formatted_address!,
+          });
+          if (error) console.warn('check_address_status failed:', error.message);
+          else status = data as any;
+        } catch (e) {
+          console.warn('check_address_status threw:', e);
+        }
+
+        if (status?.exists && status.is_owner && status.session_id) {
+          return { kind: 'existing', sessionId: status.session_id };
+        }
+        if (status?.exists && !status.is_owner) {
+          return { kind: 'soft-block' };
+        }
+
+        const sessionId = await startEagerLookup(place);
+        return { kind: 'new', sessionId };
       }
 
       // Kicked off at place-picked. Auth → insert qualification_sessions row →
@@ -321,11 +398,27 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
       const modalEdit   = wrap.querySelector<HTMLButtonElement>('.address-modal-edit');
       const modalError  = wrap.querySelector<HTMLElement>('.address-modal-error');
 
-      function openModal(place: google.maps.places.PlaceResult) {
-        if (!modal || !modalAddr) return;
-        modalAddr.textContent = place.formatted_address || '';
+      const stateDefault = wrap.querySelector<HTMLElement>('.address-modal-state-default');
+      const stateBlocked = wrap.querySelector<HTMLElement>('.address-modal-state-blocked');
+      const blockedAddr  = wrap.querySelector<HTMLElement>('.address-modal-blocked-address');
+      const useDifferent = wrap.querySelector<HTMLButtonElement>('.address-modal-different');
+
+      function showModalDefault(place: google.maps.places.PlaceResult) {
+        if (modalAddr) modalAddr.textContent = place.formatted_address || '';
         if (modalUnit) modalUnit.value = '';
         if (modalError) modalError.classList.add('hidden');
+        stateDefault?.classList.remove('hidden');
+        stateBlocked?.classList.add('hidden');
+      }
+      function showModalBlocked(place: google.maps.places.PlaceResult) {
+        if (blockedAddr) blockedAddr.textContent = place.formatted_address || '';
+        stateBlocked?.classList.remove('hidden');
+        stateDefault?.classList.add('hidden');
+      }
+
+      function openModal(place: google.maps.places.PlaceResult) {
+        if (!modal) return;
+        showModalDefault(place);
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
         setTimeout(() => modalUnit?.focus(), 50);
@@ -335,28 +428,51 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
         document.body.style.overflow = '';
       }
 
+      // "Use a different address" inside the soft-block state — close, clear,
+      // and put the cursor back in the input so the user can pick another.
+      useDifferent?.addEventListener('click', () => {
+        closeModal();
+        input.value = '';
+        pickedPlace = null;
+        bgWork = null;
+        setTimeout(() => input.focus(), 50);
+      });
+
       // Open modal as soon as the user picks an address from the dropdown.
-      // ⚡ Also fires the background lookup immediately — RentCast is in flight
-      // before the user even reads the modal.
+      // ⚡ Also fires the background check + (conditional) RentCast lookup —
+      // the check decides whether this is a new address (proceed), an existing
+      // property of the signed-in user (deep-link to dashboard), or already
+      // owned by a different account (soft-block in the modal).
       ac.addListener('place_changed', () => {
         const place = ac.getPlace();
-        if (place?.formatted_address) {
-          input.value = place.formatted_address;
-          pickedPlace = place;
-          input.setCustomValidity('');
-          openModal(place);
+        if (!place?.formatted_address) return;
+        input.value = place.formatted_address;
+        pickedPlace = place;
+        input.setCustomValidity('');
+        openModal(place);
 
-          // Reuse existing background work if the address didn't change
-          // (e.g. user closed the modal and re-submitted). Otherwise kick off
-          // a fresh lookup.
-          if (!bgWork || bgWork.address !== place.formatted_address) {
-            bgWork = {
-              address: place.formatted_address,
-              promise: startEagerLookup(place),
-            };
-            bgWork.promise.catch(() => { bgWork = null; }); // reset on failure
-          }
+        // Reuse existing background work if the address didn't change
+        // (e.g. user closed the modal and re-submitted). Otherwise kick off
+        // a fresh check.
+        if (!bgWork || bgWork.address !== place.formatted_address) {
+          bgWork = {
+            address: place.formatted_address,
+            promise: checkOrEagerLookup(place),
+          };
+          bgWork.promise.catch(() => { bgWork = null; }); // reset on failure
         }
+
+        // The check resolves before the user can usually click Confirm; flip
+        // the modal's UI as soon as we know the address is already claimed.
+        // Guarded by pickedPlace identity so a fast user typing a new address
+        // doesn't get a stale flip from a previous selection.
+        const placeAtPick = place;
+        bgWork.promise.then((result) => {
+          if (pickedPlace !== placeAtPick) return; // user moved on
+          if (result.kind === 'soft-block') showModalBlocked(placeAtPick);
+          // 'existing' and 'new' both leave the default modal visible — the
+          // Confirm handler dispatches on the same `result` when clicked.
+        }).catch(() => { /* check failed — modal stays in default state */ });
       });
 
       input.addEventListener('input', () => {
@@ -416,12 +532,36 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
           if (!bgWork) {
             bgWork = {
               address: pickedPlace.formatted_address!,
-              promise: startEagerLookup(pickedPlace),
+              promise: checkOrEagerLookup(pickedPlace),
             };
           }
 
-          const sessionId = await bgWork.promise;
+          const result = await bgWork.promise;
           const supabase = getSupabase();
+
+          // Soft-block: place_changed already flipped the modal to the Sign-in
+          // prompt; Confirm shouldn't ever be visible here. Just bail.
+          if (result.kind === 'soft-block') {
+            modalConfirm.removeAttribute('disabled');
+            if (modalLabel) modalLabel.textContent = 'Confirm address';
+            return;
+          }
+
+          // Existing property owned by the signed-in caller — skip the funnel
+          // and drop them directly onto that property's dashboard view.
+          if (result.kind === 'existing') {
+            closeModal();
+            const overlay = wrap.querySelector<HTMLElement>('.address-loading-overlay');
+            if (overlay) {
+              overlay.classList.remove('hidden');
+              document.body.style.overflow = 'hidden';
+            }
+            await new Promise((r) => setTimeout(r, 800));
+            window.location.assign(`${APP_URL}/?session_id=${result.sessionId}`);
+            return;
+          }
+
+          const sessionId = result.sessionId;
 
           // If the user typed a unit number, update the row and re-invoke the
           // lookup so it can fetch with the unit-aware address. (~10% of users.)
