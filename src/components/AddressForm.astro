@@ -378,6 +378,14 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
       }
       function showModalBlocked(place: google.maps.places.PlaceResult) {
         if (blockedAddr) blockedAddr.textContent = place.formatted_address || '';
+        // Carry the address through to the app's /login so that after sign-in
+        // the dashboard can resolve it to *this user's* matching session
+        // (instead of silently defaulting to their most-recent property).
+        // The app validates ownership; non-owners will see an interstitial.
+        const signInLink = wrap?.querySelector<HTMLAnchorElement>('.address-modal-signin');
+        if (signInLink && place.formatted_address) {
+          signInLink.href = `${APP_URL}/login?address=${encodeURIComponent(place.formatted_address)}`;
+        }
         stateBlocked?.classList.remove('hidden');
         stateDefault?.classList.add('hidden');
       }
