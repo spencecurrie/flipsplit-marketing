@@ -400,36 +400,52 @@ import { ClientRouter } from 'astro:transitions';
 
   <script is:inline>
     // Bind drag/touch/keyboard handlers to every .ba-slider on the page.
-    (function () {
-      document.querySelectorAll('.ba-slider').forEach(function (el) {
-        var active = false;
-        function setPos(pct) {
-          var p = Math.max(0, Math.min(100, pct));
-          el.style.setProperty('--pos', p + '%');
-        }
-        function xFrom(e) {
-          return (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
-        }
-        function updateFromEvent(e) {
-          var rect = el.getBoundingClientRect();
-          setPos(((xFrom(e) - rect.left) / rect.width) * 100);
-        }
-        el.addEventListener('mousedown',  function (e) { active = true; updateFromEvent(e); e.preventDefault(); });
-        el.addEventListener('touchstart', function (e) { active = true; updateFromEvent(e); }, { passive: true });
-        window.addEventListener('mousemove', function (e) { if (active) updateFromEvent(e); });
-        window.addEventListener('touchmove', function (e) { if (active) updateFromEvent(e); }, { passive: true });
-        window.addEventListener('mouseup',     function () { active = false; });
-        window.addEventListener('touchend',    function () { active = false; });
-        window.addEventListener('touchcancel', function () { active = false; });
+    // Wrapped in a run-once guard + re-run on astro:page-load so the sliders
+    // are (re)wired after every ClientRouter view-transition swap — otherwise
+    // landing on this page via an in-app link (e.g. the header logo) leaves
+    // the freshly-swapped sliders with no handlers. Per-element dataset guard
+    // keeps re-runs from binding the same slider twice. The window-level
+    // pointer listeners are bound once and act on the slider tracked in
+    // window.__baActive (set on press) to avoid stale-closure issues.
+    if (!window.__baWired) {
+      window.__baWired = true;
 
-        el.setAttribute('tabindex', '0');
-        el.addEventListener('keydown', function (e) {
-          var cur = parseFloat(getComputedStyle(el).getPropertyValue('--pos')) || 50;
-          if (e.key === 'ArrowLeft')  { setPos(cur - 5); e.preventDefault(); }
-          if (e.key === 'ArrowRight') { setPos(cur + 5); e.preventDefault(); }
+      function baInitSliders() {
+        document.querySelectorAll('.ba-slider').forEach(function (el) {
+          if (el.dataset.baInit === '1') return;
+          el.dataset.baInit = '1';
+
+          function setPos(pct) {
+            el.style.setProperty('--pos', Math.max(0, Math.min(100, pct)) + '%');
+          }
+          function updateFromEvent(e) {
+            var rect = el.getBoundingClientRect();
+            var x = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+            setPos(((x - rect.left) / rect.width) * 100);
+          }
+
+          el.addEventListener('mousedown',  function (e) { window.__baActive = updateFromEvent; updateFromEvent(e); e.preventDefault(); });
+          el.addEventListener('touchstart', function (e) { window.__baActive = updateFromEvent; updateFromEvent(e); }, { passive: true });
+
+          el.setAttribute('tabindex', '0');
+          el.addEventListener('keydown', function (e) {
+            var cur = parseFloat(getComputedStyle(el).getPropertyValue('--pos')) || 50;
+            if (e.key === 'ArrowLeft')  { setPos(cur - 5); e.preventDefault(); }
+            if (e.key === 'ArrowRight') { setPos(cur + 5); e.preventDefault(); }
+          });
         });
-      });
-    })();
+      }
+
+      // Bound once: drag the slider currently held down (window.__baActive).
+      window.addEventListener('mousemove', function (e) { if (window.__baActive) window.__baActive(e); });
+      window.addEventListener('touchmove', function (e) { if (window.__baActive) window.__baActive(e); }, { passive: true });
+      window.addEventListener('mouseup',     function () { window.__baActive = null; });
+      window.addEventListener('touchend',    function () { window.__baActive = null; });
+      window.addEventListener('touchcancel', function () { window.__baActive = null; });
+
+      baInitSliders();
+      document.addEventListener('astro:page-load', baInitSliders);
+    }
   </script>
 
 
@@ -547,112 +563,137 @@ import { ClientRouter } from 'astro:transitions';
   <Footer />
 
   <script>
-    const slider  = document.getElementById('deal-slider');
-    const offerEl = document.getElementById('offer-amount');
-    const splitEl = document.getElementById('split-pct');
-    const badgeEl = document.getElementById('split-badge');
-    const tableEl = document.getElementById('earnings-table');
-    const netEl   = document.getElementById('net-proceeds');
+    // Both the offer calculator and the How-It-Works tour are (re)initialized
+    // on astro:page-load so they work after every ClientRouter swap — landing
+    // here via an in-app link (e.g. the header logo) re-runs these instead of
+    // leaving fresh DOM uninitialized (slider stuck at its default --fill,
+    // no input handlers). Each block re-queries its current elements and uses
+    // a dataset guard so a re-run never double-binds the same instance.
 
-    // maxOffer = the upfront cash at slider=0 (max upfront cash position).
-    // Resale projections are anchored to this so they stay static as the
-    // slider moves — only the upfront/backend mix changes.
-    let maxOffer = 465000;
+    // ── Offer calculator ──
+    function initDealCalculator() {
+      const slider  = document.getElementById('deal-slider');
+      const offerEl = document.getElementById('offer-amount');
+      const splitEl = document.getElementById('split-pct');
+      const badgeEl = document.getElementById('split-badge');
+      const tableEl = document.getElementById('earnings-table');
+      const netEl   = document.getElementById('net-proceeds');
+      if (!slider || !offerEl || !splitEl || !badgeEl || !tableEl || !netEl) return;
+      if (slider.dataset.dealInit === '1') return;
+      slider.dataset.dealInit = '1';
 
-    function fmt(n) {
-      return '$' + Math.round(n).toLocaleString('en-US');
-    }
+      // maxOffer = the upfront cash at slider=0 (max upfront cash position).
+      // Resale projections are anchored to this so they stay static as the
+      // slider moves — only the upfront/backend mix changes.
+      let maxOffer = 465000;
 
-    function updateTable(currentOffer, pct) {
-      const projected  = Math.round(maxOffer * 1.2);
-      const steps      = [0, 20000, 40000, 60000];
-      const resaleRows = steps.map(s => projected + s);
+      const fmt = (n) => '$' + Math.round(n).toLocaleString('en-US');
 
-      splitEl.textContent = pct + '%';
-      badgeEl.textContent = pct + '% split';
-      slider.style.setProperty('--fill', pct + '%');
+      function updateTable(currentOffer, pct) {
+        const projected  = Math.round(maxOffer * 1.2);
+        const steps      = [0, 20000, 40000, 60000];
+        const resaleRows = steps.map(s => projected + s);
 
-      // Net proceeds = base-case total (first row in table: cash + bonus at projected resale)
-      const baseBackend = Math.max(0, resaleRows[0] - currentOffer) * (pct / 100);
-      netEl.textContent = fmt(currentOffer + baseBackend);
+        splitEl.textContent = pct + '%';
+        badgeEl.textContent = pct + '% split';
+        slider.style.setProperty('--fill', pct + '%');
 
-      tableEl.innerHTML = resaleRows.map((resale, i) => {
-        const above   = Math.max(0, resale - currentOffer);
-        const backend = above * (pct / 100);
-        const total   = currentOffer + backend;
-        const isBase  = i === 0;
-        return `
-          <div class="grid grid-cols-3 gap-x-2 px-1 py-1.5 rounded-lg ${isBase ? 'bg-slate-50' : ''}">
-            <span class="text-brand-dark font-semibold text-xs">
-              ${fmt(resale)}${isBase ? '<span class="ml-1 text-slate-400 font-normal">proj.</span>' : ''}
-            </span>
-            <span class="text-center text-xs ${backend > 0 ? 'font-semibold' : 'text-slate-400'}" style="${backend > 0 ? 'color:var(--brand-cyan)' : ''}">
-              ${backend > 0 ? '+' + fmt(backend) : '—'}
-            </span>
-            <span class="text-right font-bold text-xs text-brand-dark">${fmt(total)}</span>
-          </div>`;
-      }).join('');
-    }
+        // Net proceeds = base-case total (first row: cash + bonus at projected resale)
+        const baseBackend = Math.max(0, resaleRows[0] - currentOffer) * (pct / 100);
+        netEl.textContent = fmt(currentOffer + baseBackend);
 
-    // Typing in the upfront offer field sets the new max-upfront amount
-    // and snaps the slider back to 0% backend.
-    offerEl.addEventListener('input', () => {
-      const raw = offerEl.value.replace(/[^0-9]/g, '');
-      offerEl.value = parseInt(raw || '0').toLocaleString('en-US');
-      maxOffer = parseInt(raw) || 465000;
+        tableEl.innerHTML = resaleRows.map((resale, i) => {
+          const above   = Math.max(0, resale - currentOffer);
+          const backend = above * (pct / 100);
+          const total   = currentOffer + backend;
+          const isBase  = i === 0;
+          return `
+            <div class="grid grid-cols-3 gap-x-2 px-1 py-1.5 rounded-lg ${isBase ? 'bg-slate-50' : ''}">
+              <span class="text-brand-dark font-semibold text-xs">
+                ${fmt(resale)}${isBase ? '<span class="ml-1 text-slate-400 font-normal">proj.</span>' : ''}
+              </span>
+              <span class="text-center text-xs ${backend > 0 ? 'font-semibold' : 'text-slate-400'}" style="${backend > 0 ? 'color:var(--brand-cyan)' : ''}">
+                ${backend > 0 ? '+' + fmt(backend) : '—'}
+              </span>
+              <span class="text-right font-bold text-xs text-brand-dark">${fmt(total)}</span>
+            </div>`;
+        }).join('');
+      }
+
+      // Typing in the upfront offer field sets the new max-upfront amount
+      // and snaps the slider back to 0% backend.
+      offerEl.addEventListener('input', () => {
+        const raw = offerEl.value.replace(/[^0-9]/g, '');
+        offerEl.value = parseInt(raw || '0').toLocaleString('en-US');
+        maxOffer = parseInt(raw) || 465000;
+        slider.value = 0;
+        updateTable(maxOffer, 0);
+      });
+
+      // Each 1% of backend trades $1,000 of upfront cash.
+      slider.addEventListener('input', () => {
+        const pct          = parseInt(slider.value);
+        const currentOffer = Math.max(0, maxOffer - pct * 1000);
+        offerEl.value = currentOffer.toLocaleString('en-US');
+        updateTable(currentOffer, pct);
+      });
+
+      // Reset to a known state and paint the initial fill/table.
       slider.value = 0;
       updateTable(maxOffer, 0);
-    });
-
-    // Each 1% of backend trades $1,000 of upfront cash.
-    slider.addEventListener('input', () => {
-      const pct          = parseInt(slider.value);
-      const currentOffer = Math.max(0, maxOffer - pct * 1000);
-      offerEl.value = currentOffer.toLocaleString('en-US');
-      updateTable(currentOffer, pct);
-    });
-
-    updateTable(maxOffer, 0);
-
-    // ── How It Works auto-tour ──
-    const hiwSteps = document.querySelectorAll('.hiw-step');
-    let hiwIndex = 0;
-    let hiwTimer;
-
-    function hiwActivate(idx) {
-      hiwIndex = ((idx % hiwSteps.length) + hiwSteps.length) % hiwSteps.length;
-      hiwSteps.forEach((s, i) => {
-        s.classList.toggle('hiw-active', i === hiwIndex);
-        if (i !== hiwIndex) {
-          const bar = s.querySelector('.hiw-bar');
-          bar.style.animation = 'none';
-          bar.style.width = '0%';
-        }
-        if (i === hiwIndex) {
-          const bar = s.querySelector('.hiw-bar');
-          bar.style.animation = 'none';
-          bar.offsetWidth;
-          if (hiwAutoPlay) {
-            bar.style.width = '';
-            bar.style.animation = '';
-          } else {
-            bar.style.width = '100%';
-          }
-        }
-      });
-      clearTimeout(hiwTimer);
-      if (hiwAutoPlay) hiwTimer = setTimeout(() => hiwActivate(hiwIndex + 1), 4000);
     }
 
-    let hiwAutoPlay = true;
+    // ── How It Works auto-tour ──
+    function initHiwTour() {
+      const hiwSteps = document.querySelectorAll('.hiw-step');
+      if (!hiwSteps.length) return;
+      if (hiwSteps[0].dataset.hiwInit === '1') return;
+      hiwSteps.forEach((s) => { s.dataset.hiwInit = '1'; });
 
-    hiwSteps.forEach((step, i) => step.addEventListener('click', () => {
-      hiwAutoPlay = false;
-      clearTimeout(hiwTimer);
-      hiwActivate(i);
-    }));
-    hiwActivate(0);
+      let hiwIndex = 0;
+      let hiwTimer;
+      let hiwAutoPlay = true;
 
+      function hiwActivate(idx) {
+        hiwIndex = ((idx % hiwSteps.length) + hiwSteps.length) % hiwSteps.length;
+        hiwSteps.forEach((s, i) => {
+          s.classList.toggle('hiw-active', i === hiwIndex);
+          if (i !== hiwIndex) {
+            const bar = s.querySelector('.hiw-bar');
+            bar.style.animation = 'none';
+            bar.style.width = '0%';
+          }
+          if (i === hiwIndex) {
+            const bar = s.querySelector('.hiw-bar');
+            bar.style.animation = 'none';
+            bar.offsetWidth;
+            if (hiwAutoPlay) {
+              bar.style.width = '';
+              bar.style.animation = '';
+            } else {
+              bar.style.width = '100%';
+            }
+          }
+        });
+        clearTimeout(hiwTimer);
+        if (hiwAutoPlay) hiwTimer = setTimeout(() => hiwActivate(hiwIndex + 1), 4000);
+      }
+
+      hiwSteps.forEach((step, i) => step.addEventListener('click', () => {
+        hiwAutoPlay = false;
+        clearTimeout(hiwTimer);
+        hiwActivate(i);
+      }));
+      hiwActivate(0);
+    }
+
+    function initHomeInteractions() {
+      initDealCalculator();
+      initHiwTour();
+    }
+
+    initHomeInteractions();
+    document.addEventListener('astro:page-load', initHomeInteractions);
   </script>
 
 </body>
