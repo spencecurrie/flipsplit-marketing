@@ -257,11 +257,17 @@ function formatDate(d: Date) {
   <Footer />
 
   <script>
-    // ── Reading progress bar ──
-    const bar = document.getElementById('progress-bar')!;
-    const article = document.getElementById('article-body')!;
+    // Reading progress + active-TOC highlight. Re-initialized on
+    // astro:page-load so navigating post→post (or index→post) via ClientRouter
+    // re-wires the new article. The scroll listener is bound once and
+    // re-queries the current article each call; the IntersectionObserver is
+    // rebuilt per article and the previous one disconnected to avoid leaks.
+    let blogTocObserver: IntersectionObserver | null = null;
 
-    function updateProgress() {
+    function updateBlogProgress() {
+      const bar = document.getElementById('progress-bar');
+      const article = document.getElementById('article-body');
+      if (!bar || !article) return;
       const rect = article.getBoundingClientRect();
       const total = rect.height - window.innerHeight;
       const scrolled = Math.max(0, -rect.top);
@@ -269,17 +275,16 @@ function formatDate(d: Date) {
       bar.style.width = pct + '%';
     }
 
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    updateProgress();
+    function initBlogToc() {
+      const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-link[data-heading]');
+      blogTocObserver?.disconnect();
+      if (!tocLinks.length) return;
 
-    // ── Active TOC highlight ──
-    const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-link[data-heading]');
-    if (tocLinks.length) {
       const headingEls = Array.from(tocLinks)
         .map(a => document.getElementById(a.dataset.heading!))
         .filter(Boolean) as HTMLElement[];
 
-      const observer = new IntersectionObserver(
+      blogTocObserver = new IntersectionObserver(
         entries => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -294,8 +299,20 @@ function formatDate(d: Date) {
         { rootMargin: '-80px 0px -60% 0px' }
       );
 
-      headingEls.forEach(el => observer.observe(el));
+      headingEls.forEach(el => blogTocObserver!.observe(el));
     }
+
+    function initBlogPost() {
+      updateBlogProgress();
+      initBlogToc();
+    }
+
+    if (!(window as any).__blogPostWired) {
+      (window as any).__blogPostWired = true;
+      window.addEventListener('scroll', updateBlogProgress, { passive: true });
+      document.addEventListener('astro:page-load', initBlogPost);
+    }
+    initBlogPost();
   </script>
 
 </body>

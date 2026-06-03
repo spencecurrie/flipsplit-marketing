@@ -125,6 +125,18 @@ import Nav from '../components/Nav.astro';
 
     const supabase = getSupabase();
 
+    // Wrapped in initAuthPage() and re-run on astro:page-load so the form is
+    // wired up after a ClientRouter swap — e.g. revisiting /sign-in via the
+    // nav link rather than a full reload, which would otherwise leave the
+    // form and buttons without their handlers. A dataset guard on the form
+    // keeps a re-run from binding the same instance twice.
+    type Mode = 'signin' | 'signup';
+
+    function initAuthPage() {
+    const form          = document.getElementById('auth-form')       as HTMLFormElement | null;
+    if (!form || form.dataset.authInit === '1') return;
+    form.dataset.authInit = '1';
+
     const titleEl       = document.getElementById('auth-title')      as HTMLElement;
     const subEl         = document.getElementById('auth-sub')        as HTMLElement;
     const googleLabelEl = document.getElementById('google-label')    as HTMLElement;
@@ -136,11 +148,9 @@ import Nav from '../components/Nav.astro';
     const emailEl       = document.getElementById('auth-email')      as HTMLInputElement;
     const googleBtn     = document.getElementById('google-btn')      as HTMLButtonElement;
     const submitBtn     = document.getElementById('submit-btn')      as HTMLButtonElement;
-    const form          = document.getElementById('auth-form')       as HTMLFormElement;
     const errorEl       = document.getElementById('auth-error')      as HTMLElement;
     const successEl     = document.getElementById('auth-success')    as HTMLElement;
 
-    type Mode = 'signin' | 'signup';
     let mode: Mode = window.location.hash === '#signup' ? 'signup' : 'signin';
 
     function applyMode() {
@@ -265,6 +275,10 @@ import Nav from '../components/Nav.astro';
 
     // ─ Init ─
     applyMode();
+    }
+
+    initAuthPage();
+    document.addEventListener('astro:page-load', initAuthPage);
   </script>
 
 </body>

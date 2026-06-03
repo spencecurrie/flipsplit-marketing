@@ -247,22 +247,34 @@ function formatDate(d: Date) {
   <Footer />
 
   <script>
-    const BATCH = 12;
-    const cards = Array.from(document.querySelectorAll<HTMLElement>('#recent-grid [data-index]'));
-    const btn = document.getElementById('load-more-btn');
-    const wrap = document.getElementById('load-more-wrap');
-    const countEl = document.getElementById('load-more-count');
-    let shown = BATCH;
+    // Re-initialized on astro:page-load so the "Load more" button works after
+    // a ClientRouter swap (landing on /blog via an in-app link, not a reload).
+    // Elements are re-queried each run and a dataset guard keeps a re-run from
+    // binding the same button twice.
+    function initLoadMore() {
+      const BATCH = 12;
+      const btn = document.getElementById('load-more-btn');
+      if (!btn || btn.dataset.loadMoreInit === '1') return;
+      btn.dataset.loadMoreInit = '1';
 
-    btn?.addEventListener('click', () => {
-      const next = Math.min(shown + BATCH, cards.length);
-      for (let i = shown; i < next; i++) {
-        cards[i].classList.remove('hidden');
-      }
-      shown = next;
-      countEl!.textContent = `Showing ${shown} of ${cards.length}`;
-      if (shown >= cards.length) wrap!.remove();
-    });
+      const cards = Array.from(document.querySelectorAll<HTMLElement>('#recent-grid [data-index]'));
+      const wrap = document.getElementById('load-more-wrap');
+      const countEl = document.getElementById('load-more-count');
+      let shown = BATCH;
+
+      btn.addEventListener('click', () => {
+        const next = Math.min(shown + BATCH, cards.length);
+        for (let i = shown; i < next; i++) {
+          cards[i].classList.remove('hidden');
+        }
+        shown = next;
+        countEl!.textContent = `Showing ${shown} of ${cards.length}`;
+        if (shown >= cards.length) wrap!.remove();
+      });
+    }
+
+    initLoadMore();
+    document.addEventListener('astro:page-load', initLoadMore);
   </script>
 
 </body>

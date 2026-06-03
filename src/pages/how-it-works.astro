@@ -247,37 +247,36 @@ import Footer from '../components/Footer.astro';
   </style>
 
   <script is:inline>
-    (function(){
-      var container = document.getElementById('hiw-container');
-      if (!container) return;
-      var rows = container.querySelectorAll('.hiw-row');
-      if (!rows.length) return;
-
-      var rafPending = false;
-      function update(){
-        rafPending = false;
+    // Scroll-driven fill bars. Run-once guard binds scroll/resize a single
+    // time; hiwUpdate() re-queries rows each call so it targets the current
+    // DOM, and astro:page-load re-paints after every ClientRouter swap (e.g.
+    // landing here via an in-app nav link instead of a full reload).
+    if (!window.__hiwScrollWired) {
+      window.__hiwScrollWired = true;
+      var hiwRafPending = false;
+      function hiwUpdate(){
+        hiwRafPending = false;
+        var container = document.getElementById('hiw-container');
+        if (!container) return;
+        var rows = container.querySelectorAll('.hiw-row');
         var anchor = window.innerHeight * 0.5;
-
         for (var i = 0; i < rows.length; i++) {
-          var row = rows[i];
-          var rect = row.getBoundingClientRect();
-          var raw = (anchor - rect.top) / rect.height;
-          var progress = Math.max(0, Math.min(1, raw));
-          var fill = row.querySelector('.hiw-bar-fill');
+          var rect = rows[i].getBoundingClientRect();
+          var progress = Math.max(0, Math.min(1, (anchor - rect.top) / rect.height));
+          var fill = rows[i].querySelector('.hiw-bar-fill');
           if (fill) fill.style.height = (progress * 100) + '%';
         }
       }
-
-      function schedule(){
-        if (rafPending) return;
-        rafPending = true;
-        requestAnimationFrame(update);
+      function hiwSchedule(){
+        if (hiwRafPending) return;
+        hiwRafPending = true;
+        requestAnimationFrame(hiwUpdate);
       }
-
-      window.addEventListener('scroll', schedule, { passive: true });
-      window.addEventListener('resize', schedule);
-      update();
-    })();
+      window.addEventListener('scroll', hiwSchedule, { passive: true });
+      window.addEventListener('resize', hiwSchedule);
+      hiwUpdate();
+      document.addEventListener('astro:page-load', hiwUpdate);
+    }
   </script>
 
   <!-- ─── SECTION 3: OUR OFFERS EXPLAINED ─── -->
@@ -418,38 +417,49 @@ import Footer from '../components/Footer.astro';
   </style>
 
   <script is:inline>
-    (function(){
-      var slider = document.getElementById('mix-slider');
-      var wrap = document.getElementById('mix-slider-wrap');
-      var cashEl = document.getElementById('mix-cash');
-      var bonusEl = document.getElementById('mix-bonus');
-      var totalEl = document.getElementById('mix-total');
-      var pctLabel = document.getElementById('mix-pct-label');
-      var summary = document.getElementById('mix-summary');
-      if (!slider || !cashEl || !bonusEl) return;
-      var fmt = function(n){ return '$' + Math.round(n).toLocaleString(); };
-      function update(){
-        var v = parseFloat(slider.value) / 100;
-        var pct = Math.round(v * 100);
-        var cash = 900000 - v * 150000;
-        var bonus = v * 250000;
-        cashEl.textContent = fmt(cash);
-        bonusEl.textContent = '+' + fmt(bonus);
-        if (totalEl) totalEl.textContent = fmt(cash + bonus);
-        if (pctLabel) pctLabel.textContent = pct + '%';
-        slider.style.setProperty('--mix-pct', pct + '%');
-        if (wrap) wrap.style.setProperty('--mix-pct', pct + '%');
-        var msg;
-        if (v === 0)         msg = 'Take the full guaranteed cash offer today. No bonus.';
-        else if (v < 0.34)   msg = 'Mostly cash today, a small bonus check after resale.';
-        else if (v < 0.67)   msg = 'A balanced mix — solid cash now, meaningful bonus later.';
-        else if (v < 1)      msg = 'Trade some cash today for a much bigger bonus when we resell.';
-        else                 msg = 'Maximum upside. Less cash up front, biggest bonus check at resale.';
-        if (summary) summary.textContent = msg;
+    // Interactive cash/upside mix slider. Re-initialized on astro:page-load so
+    // it's wired up after every ClientRouter swap; the per-element dataset
+    // guard keeps a re-run from binding the same slider twice.
+    if (!window.__mixSliderWired) {
+      window.__mixSliderWired = true;
+      function initMixSlider(){
+        var slider = document.getElementById('mix-slider');
+        var wrap = document.getElementById('mix-slider-wrap');
+        var cashEl = document.getElementById('mix-cash');
+        var bonusEl = document.getElementById('mix-bonus');
+        var totalEl = document.getElementById('mix-total');
+        var pctLabel = document.getElementById('mix-pct-label');
+        var summary = document.getElementById('mix-summary');
+        if (!slider || !cashEl || !bonusEl) return;
+        if (slider.dataset.mixInit === '1') return;
+        slider.dataset.mixInit = '1';
+        var fmt = function(n){ return '$' + Math.round(n).toLocaleString(); };
+        function update(){
+          var v = parseFloat(slider.value) / 100;
+          var pct = Math.round(v * 100);
+          var cash = 900000 - v * 150000;
+          var bonus = v * 250000;
+          cashEl.textContent = fmt(cash);
+          bonusEl.textContent = '+' + fmt(bonus);
+          if (totalEl) totalEl.textContent = fmt(cash + bonus);
+          if (pctLabel) pctLabel.textContent = pct + '%';
+          slider.style.setProperty('--mix-pct', pct + '%');
+          if (wrap) wrap.style.setProperty('--mix-pct', pct + '%');
+          var msg;
+          if (v === 0)         msg = 'Take the full guaranteed cash offer today. No bonus.';
+          else if (v < 0.34)   msg = 'Mostly cash today, a small bonus check after resale.';
+          else if (v < 0.67)   msg = 'A balanced mix — solid cash now, meaningful bonus later.';
+          else if (v < 1)      msg = 'Trade some cash today for a much bigger bonus when we resell.';
+          else                 msg = 'Maximum upside. Less cash up front, biggest bonus check at resale.';
+          if (summary) summary.textContent = msg;
+        }
+        slider.addEventListener('input', update);
+        slider.value = '0'; // reset to a known state on (re)init
+        update();
       }
-      slider.addEventListener('input', update);
-      update();
-    })();
+      initMixSlider();
+      document.addEventListener('astro:page-load', initMixSlider);
+    }
   </script>
 
   <!-- ─── SECTION 6: UNDERSTANDING YOUR OFFER (costs + fees breakdown) ─── -->
