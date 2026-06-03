@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
+import TapFeedback from '../components/TapFeedback.astro';
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +34,7 @@ import '../styles/global.css';
   <ClientRouter />
 </head>
 <body style="max-width:960px; margin:0 auto; padding:48px 24px;">
+<TapFeedback />
 
   <!-- Header -->
   <div style="margin-bottom:48px;">

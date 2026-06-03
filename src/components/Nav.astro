@@ -1,4 +1,5 @@
 ---
+import TapFeedback from './TapFeedback.astro';
 interface Props {
   variant?: 'solid' | 'transparent';
 }
@@ -135,6 +136,9 @@ const { variant = 'solid' } = Astro.props;
     transition: opacity 0.3s ease;
   }
 </style>
+
+<!-- Site-wide tap feedback (press animation + haptic on every control). -->
+<TapFeedback />
 
 <!-- Top progress bar — controlled by Astro View Transitions lifecycle below -->
 <div id="nav-progress-bar" data-astro-transition-persist="nav-progress-bar"></div>

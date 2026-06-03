@@ -1,0 +1,56 @@
+---
+// Site-wide tap feedback. On press of ANY interactive control (button, link,
+// summary, role=button, submit inputs) it gives instant tactile feedback:
+//   • a subtle scale-down "press" animation, and
+//   • a short haptic buzz on devices that support it (mobile; no-op on desktop).
+// This is the immediate "something happened" cue — distinct from the top
+// navigation progress bar in Nav.astro, which only covers page-to-page loads.
+//
+// Pure behaviour, no markup. Listener is delegated on `document` (capture
+// phase) so it works for elements added by view-transition swaps, and a
+// run-once guard stops it stacking when ClientRouter re-runs inline scripts.
+---
+
+<style is:global>
+  /* Brief press-down on any tapped control. !important so it wins over the
+     many buttons that set `transform`/`transition` via inline styles. */
+  .tap-press {
+    transform: scale(0.96) !important;
+    transition: transform 0.09s ease !important;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tap-press { transform: none !important; }
+  }
+</style>
+
+<script>
+  if (!(window as any).__fsTapFeedback) {
+    (window as any).__fsTapFeedback = true;
+
+    const TAP_SEL =
+      'a[href], button, summary, [role="button"], input[type="submit"], input[type="button"]';
+
+    document.addEventListener(
+      'pointerdown',
+      (e) => {
+        const target = e.target instanceof Element ? e.target : null;
+        const el = target?.closest(TAP_SEL) as HTMLElement | null;
+        if (!el) return;
+        if (el.hasAttribute('disabled') || el.getAttribute('aria-disabled') === 'true') return;
+
+        // Subtle haptic on supported devices (mobile). Silent no-op elsewhere.
+        try { (navigator as any).vibrate?.(8); } catch { /* unsupported */ }
+
+        el.classList.add('tap-press');
+        const clear = () => el.classList.remove('tap-press');
+        el.addEventListener('pointerup', clear, { once: true });
+        el.addEventListener('pointerleave', clear, { once: true });
+        el.addEventListener('pointercancel', clear, { once: true });
+        // Safety net: always release, even if no pointerup fires (e.g. the
+        // element gets detached by a navigation mid-press).
+        window.setTimeout(clear, 280);
+      },
+      true,
+    );
+  }
+</script>
