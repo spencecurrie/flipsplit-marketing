@@ -610,26 +610,24 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
     });
   }
 
-  // Banner init doesn't depend on Google Places, so kick it off immediately.
-  attachSignOutHandlers();
-  refreshSignedInBanners();
-  // Re-run after Astro view transitions (e.g. user navigates from /about back
-  // to / where another AddressForm renders). astro:page-load fires after each
-  // navigation, including the initial load — so this also covers the
-  // "scripts didn't re-execute" case.
-  document.addEventListener('astro:page-load', () => {
-    attachSignOutHandlers();
-    refreshSignedInBanners();
-  });
-
-  // Lazy-load Google Places, then initialize all forms on the page
-  if (!(window as any).google?.maps?.places) {
+  // Lazy-load Google Places (once per session), then initialize all forms
+  // currently on the page. Safe to call repeatedly: if Places is already
+  // loaded it wires up forms immediately; otherwise it queues until the
+  // script's callback fires. The per-input `dataset.placesInit` guard inside
+  // attachAutocomplete() prevents any input from being wired up twice.
+  function bootPlaces() {
+    if ((window as any).google?.maps?.places) {
+      attachAutocomplete();
+      return;
+    }
     window.__placesQueue = window.__placesQueue || [];
     window.__placesQueue.push(attachAutocomplete);
     if (!document.getElementById('gplaces-script')) {
       window.__onPlacesReady = () => {
         window.__placesReady = true;
-        (window.__placesQueue || []).forEach((fn) => fn());
+        const queue = window.__placesQueue || [];
+        window.__placesQueue = []; // clear so later page-loads don't re-run stale entries
+        queue.forEach((fn) => fn());
       };
       const s = document.createElement('script');
       s.id = 'gplaces-script';
@@ -638,7 +636,22 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
       s.defer = true;
       document.head.appendChild(s);
     }
-  } else {
-    attachAutocomplete();
   }
+
+  // Banner init doesn't depend on Google Places, so kick it off immediately.
+  attachSignOutHandlers();
+  refreshSignedInBanners();
+  bootPlaces();
+  // Re-run after Astro view transitions (e.g. user navigates from /about back
+  // to / where another AddressForm renders). With <ClientRouter /> the page's
+  // <script> modules execute only ONCE per session — on a client-side
+  // navigation the DOM is swapped in with brand-new address inputs but this
+  // module is NOT re-run. astro:page-load fires after every navigation
+  // (including the initial load), so re-wiring autocomplete here is what makes
+  // the Google dropdown work without a hard refresh.
+  document.addEventListener('astro:page-load', () => {
+    attachSignOutHandlers();
+    refreshSignedInBanners();
+    bootPlaces();
+  });
 </script>
