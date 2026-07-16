@@ -12,9 +12,9 @@ interface Props {
 }
 const { id = 'address-form', class: className = '', align = 'left', showTrust = true, theme = 'light', responsive = false } = Astro.props;
 const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
-const trustStrong = theme === 'dark' ? 'text-white' : 'text-slate-400';
-const trustSoft   = theme === 'dark' ? 'text-white/80' : 'text-slate-400';
-const trustHint   = theme === 'dark' ? 'text-white/70' : 'text-slate-400';
+const trustStrong = theme === 'dark' ? 'text-white' : 'text-[#1f1f1f]';
+const trustSoft   = theme === 'dark' ? 'text-white/80' : 'text-[#1f1f1f]';
+const trustHint   = theme === 'dark' ? 'text-white/70' : 'text-[#1f1f1f]';
 const centerOnly  = align === 'center' && !responsive;
 const centerResp  = align === 'center' && responsive;
 const formCenter  = centerOnly ? 'mx-auto' : centerResp ? 'mx-auto lg:mx-0' : '';
@@ -26,14 +26,14 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
   <!-- Shown only when a real (non-anonymous) account is already signed in.
        Makes it obvious why the funnel will attach to that account and gives
        a one-click escape hatch for users testing/retrying the flow. -->
-  <div class:list={["address-signed-in hidden flex items-center justify-between gap-3 max-w-lg p-3 mb-3 rounded-xl border bg-blue-50 border-blue-100 text-sm", formCenter]}>
-    <span class="text-slate-700 leading-snug">
+  <div class:list={["address-signed-in hidden flex items-center justify-between gap-3 max-w-lg p-3 mb-3 rounded-xl border bg-[#f6f7ed] border-[#e6e6e2] text-sm", formCenter]}>
+    <span class="text-[#1f1f1f] leading-snug">
       Signed in as <strong class="address-signed-in-email">your account</strong> — this property will be added to your dashboard.
     </span>
     <button
       type="button"
-      class="address-signed-in-out shrink-0 font-semibold text-blue-600 hover:text-blue-700 disabled:opacity-60"
-      style="color: #1e88e5;"
+      class="address-signed-in-out shrink-0 font-semibold text-[#1f1f1f] hover:text-[#1f1f1f] disabled:opacity-60"
+      style="color: #1f1f1f;"
     >
       Not you? Sign out
     </button>
@@ -41,7 +41,7 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
   <form
     id={id}
-    class:list={["address-form flex items-center bg-white rounded-2xl border border-slate-200 shadow-sm p-2 gap-2 w-full max-w-lg mb-3", formCenter]}
+    class:list={["address-form flex items-center bg-white rounded-2xl border border-[#e6e6e2] shadow-sm p-2 gap-2 w-full max-w-lg mb-3", formCenter]}
     novalidate
   >
     <input
@@ -50,13 +50,13 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
       required
       placeholder="Enter your home address..."
       autocomplete="off"
-      class="flex-1 text-[#1E2A3A] text-[17px] focus:outline-none bg-transparent min-w-0 py-4 px-4 placeholder-slate-400"
+      class="flex-1 text-[#1f1f1f] text-[17px] focus:outline-none bg-transparent min-w-0 py-4 px-4 placeholder-slate-400"
     />
     <button
       type="submit"
       aria-label="Get my offer"
       class="address-submit shrink-0 rounded-xl p-4 transition-all hover:brightness-110 disabled:opacity-60 disabled:cursor-wait"
-      style="background: #1e88e5;"
+      style="background: #1f1f1f;"
     >
       <svg class="address-arrow w-5 h-5" style="color: #ffffff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -77,37 +77,37 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
        the visitor start a duplicate funnel. -->
   <div class="address-modal hidden fixed inset-0 z-[100] flex items-center justify-center px-4 py-8" style="background: rgba(15, 23, 42, 0.55);">
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 relative" role="dialog" aria-modal="true" aria-labelledby={`${id}-modal-title`}>
-      <button type="button" class="address-modal-close absolute top-5 right-5 p-1 text-slate-400 hover:text-slate-700 transition-colors" aria-label="Close">
+      <button type="button" class="address-modal-close absolute top-5 right-5 p-1 text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors" aria-label="Close">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
 
       <!-- Default state: "is this your address?" -->
       <div class="address-modal-state-default">
-        <h2 id={`${id}-modal-title`} class="text-2xl font-bold mb-6 pr-8" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+        <h2 id={`${id}-modal-title`} class="text-2xl font-bold mb-6 pr-8" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">
           Is this the correct home address?
         </h2>
 
         <div class="rounded-2xl p-4 flex items-start justify-between gap-3 mb-6" style="background:#F1F5F9;">
-          <p class="address-modal-address text-sm font-medium leading-relaxed flex-1" style="color:#1E2A3A; white-space: pre-line;"></p>
-          <button type="button" class="address-modal-edit text-sm font-semibold shrink-0 hover:opacity-80 transition-opacity" style="color:#1e88e5;">Edit</button>
+          <p class="address-modal-address text-sm font-medium leading-relaxed flex-1" style="color:#1f1f1f; white-space: pre-line;"></p>
+          <button type="button" class="address-modal-edit text-sm font-semibold shrink-0 hover:opacity-80 transition-opacity" style="color:#1f1f1f;">Edit</button>
         </div>
 
         <label class="block">
-          <span class="text-sm font-semibold text-slate-700">Unit, Apt, or Suite # <span class="text-slate-400 font-normal">(optional)</span></span>
+          <span class="text-sm font-semibold text-[#1f1f1f]">Unit, Apt, or Suite # <span class="text-[#1f1f1f] font-normal">(optional)</span></span>
           <input
             type="text"
-            class="address-modal-unit mt-2 w-full border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-[#1e88e5] transition-colors"
+            class="address-modal-unit mt-2 w-full border border-[#e6e6e2] rounded-xl px-4 py-3 text-sm text-[#1f1f1f] focus:outline-none focus:border-[#1f1f1f] transition-colors"
             placeholder="e.g. 30, 4B, Suite C"
             autocomplete="off"
             maxlength="20"
           />
         </label>
-        <p class="text-xs text-slate-400 mt-2">Leave blank if your home is single-family.</p>
+        <p class="text-xs text-[#1f1f1f] mt-2">Leave blank if your home is single-family.</p>
 
         <button
           type="button"
           class="address-modal-confirm w-full mt-6 text-white font-bold py-3.5 rounded-xl text-sm transition-all hover:brightness-110 disabled:opacity-60 disabled:cursor-wait"
-          style="background:#1e88e5;"
+          style="background:#1f1f1f;"
         >
           <span class="address-modal-confirm-label">Confirm address</span>
         </button>
@@ -116,33 +116,33 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
       <!-- Soft-block state: address already belongs to a real account -->
       <div class="address-modal-state-blocked hidden">
-        <h2 class="text-2xl font-bold mb-3 pr-8" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+        <h2 class="text-2xl font-bold mb-3 pr-8" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">
           Looks like this home is already on FlipSplit
         </h2>
-        <p class="text-sm text-slate-500 leading-relaxed mb-5">
+        <p class="text-sm text-[#1f1f1f] leading-relaxed mb-5">
           You've already started selling this property. Sign in to pick up where you left off.
         </p>
 
         <div class="rounded-2xl p-4 mb-6" style="background:#F1F5F9;">
-          <p class="address-modal-blocked-address text-sm font-medium leading-relaxed" style="color:#1E2A3A; white-space: pre-line;"></p>
+          <p class="address-modal-blocked-address text-sm font-medium leading-relaxed" style="color:#1f1f1f; white-space: pre-line;"></p>
         </div>
 
         <a
           href={`${APP_URL}/login`}
           class="address-modal-signin block w-full text-center text-white font-bold py-3.5 rounded-xl text-sm transition-all hover:brightness-110"
-          style="background:#1e88e5;"
+          style="background:#1f1f1f;"
         >
           Sign in
         </a>
         <button
           type="button"
-          class="address-modal-different w-full mt-3 text-sm font-semibold text-slate-700 hover:text-slate-900 py-2 transition-colors"
+          class="address-modal-different w-full mt-3 text-sm font-semibold text-[#1f1f1f] hover:text-[#1f1f1f] py-2 transition-colors"
         >
           Use a different address
         </button>
         <a
           href="mailto:hello@flipsplit.com?subject=I'm the new owner of a FlipSplit-listed property"
-          class="address-modal-contact block text-center text-xs text-slate-400 hover:text-slate-600 mt-2 transition-colors"
+          class="address-modal-contact block text-center text-xs text-[#1f1f1f] hover:text-[#1f1f1f] mt-2 transition-colors"
         >
           Not the current owner? Contact us
         </a>
@@ -155,16 +155,16 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
        loading beat. The eager RentCast lookup is already in flight by this
        point, so this is purely UX pacing. -->
   <div class="address-loading-overlay hidden fixed inset-0 z-[150] flex-col items-center justify-center bg-white">
-    <div class="progress-bar w-full absolute top-0 left-0" style="height: 4px; background: #1e88e5;"></div>
+    <div class="progress-bar w-full absolute top-0 left-0" style="height: 4px; background: #1f1f1f;"></div>
     <div class="address-loading-spinner mb-8" aria-hidden="true"></div>
-    <h1 class="text-3xl md:text-4xl font-semibold mb-3 px-6 text-center" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">Looking up your property…</h1>
-    <p class="text-base md:text-lg text-slate-500 max-w-md text-center px-6">Pulling public records so we can pre-fill what we know about your home.</p>
+    <h1 class="text-3xl md:text-4xl font-semibold mb-3 px-6 text-center" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">Looking up your property…</h1>
+    <p class="text-base md:text-lg text-[#1f1f1f] max-w-md text-center px-6">Pulling public records so we can pre-fill what we know about your home.</p>
   </div>
 
   {showTrust && (
     <Fragment>
       <div class={`flex flex-wrap items-center gap-1.5 text-sm mb-1.5 ${rowCenter}`}>
-        <span style="color: #FBBC05; letter-spacing: 1px;">★★★★★</span>
+        <span style="color: #1f1f1f; letter-spacing: 1px;">★★★★★</span>
         <span class={`font-bold ${trustStrong}`}>5.0</span>
         <span class={trustSoft}>· Verified reviews on</span>
         <span class={`font-bold ${trustStrong}`}>REVIEWS.IO</span>
@@ -179,29 +179,29 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
     border-radius: 12px;
     border: 1px solid #e2e8f0;
     box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'General Sans', sans-serif;
     margin-top: 4px;
     overflow: hidden;
   }
   .pac-item {
     padding: 10px 14px;
     font-size: 13px;
-    color: #1E2A3A;
+    color: #1f1f1f;
     cursor: pointer;
     border-top: 1px solid #f1f5f9;
   }
   .pac-item:first-child { border-top: none; }
-  .pac-item:hover, .pac-item-selected { background: #F8FAFC; }
+  .pac-item:hover, .pac-item-selected { background: #f6f7ed; }
   .pac-icon { display: none; }
-  .pac-item-query { font-weight: 600; color: #1E2A3A; }
-  .pac-matched { color: #1e88e5; }
+  .pac-item-query { font-weight: 600; color: #1f1f1f; }
+  .pac-matched { color: #1f1f1f; }
 
   /* Loading overlay (full-screen, shown briefly after address confirmation) */
-  .address-loading-overlay { font-family: 'Open Sans', sans-serif; }
+  .address-loading-overlay { font-family: 'General Sans', sans-serif; }
   .address-loading-overlay:not(.hidden) { display: flex; }
   .address-loading-spinner {
     width: 56px; height: 56px; border-radius: 50%;
-    border: 4px solid #e2e8f0; border-top-color: #1e88e5;
+    border: 4px solid #e2e8f0; border-top-color: #1f1f1f;
     animation: address-loading-spin 0.85s linear infinite;
   }
   @keyframes address-loading-spin { to { transform: rotate(360deg); } }

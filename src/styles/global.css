@@ -1,10 +1,28 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Self-hosted General Sans (Fontshare) — headings + body across the whole site.
+   Replaces Typekit 'sahar' + Google 'Open Sans'. */
+@font-face { font-family: 'General Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/general-sans-400.woff2') format('woff2'); }
+@font-face { font-family: 'General Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/general-sans-500.woff2') format('woff2'); }
+@font-face { font-family: 'General Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/general-sans-600.woff2') format('woff2'); }
+@font-face { font-family: 'General Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/general-sans-700.woff2') format('woff2'); }
+
 /* Global typography bump — body text sizes are ~3pt (4px) larger than Tailwind
    defaults so copy reads bigger across every marketing page. Headings
    (text-2xl+) keep their default sizes. */
 @theme {
+  --font-sans: 'General Sans', system-ui, sans-serif;
+
+  /* Monochrome brand tokens — shared with flipsplit-app/src/index.css.
+     Enables utilities like bg-ink, text-cream, border-line. No blue. */
+  --color-ink:   #1f1f1f;
+  --color-cream: #f6f7ed;
+  --color-paper: #ffffff;
+  --color-mist:  #f4f4f4;
+  --color-line:  #e6e6e2;
+  --color-muted: #6b6b66;
+
   --text-base: 1.25rem;        /* 20px (was 16px) */
   --text-base--line-height: 1.6;
   --text-lg: 1.13rem;          /* ~18.1px (2pt up from prior 15.5px) */
@@ -17,15 +35,19 @@
   --text-4xl--line-height: 1.08;
 }
 
+/* Base type — General Sans everywhere. */
+body { font-family: 'General Sans', system-ui, sans-serif; color: #2a2a27; }
+h1, h2, h3, h4 { font-family: 'General Sans', system-ui, sans-serif; color: #1f1f1f; }
+
 /* Reusable outline button — apply class="btn-transparent" to any <a> or <button> */
 .btn-transparent {
   display: inline-block;
   background: transparent;
-  color: #1E2A3A;
+  color: #1f1f1f;
   font-weight: 600;
   font-size: 1rem;
   padding: 0.75rem 1.75rem;
-  border: 1.5px solid #1E2A3A;
+  border: 1.5px solid #1f1f1f;
   border-radius: 10px;
   text-align: center;
   cursor: pointer;
@@ -33,28 +55,28 @@
   transition: background 0.15s ease;
   white-space: nowrap;
 }
-.btn-transparent:hover { background: rgba(30, 42, 58, 0.06); }
+.btn-transparent:hover { background: rgba(31, 31, 31, 0.06); }
 
 /* Blog prose overrides */
 .prose {
-  --tw-prose-body: #374151;
-  --tw-prose-headings: #1E2A3A;
-  --tw-prose-links: #1E2A3A;
-  --tw-prose-bold: #1E2A3A;
-  --tw-prose-bullets: #1e88e5;
-  --tw-prose-counters: #1e88e5;
-  --tw-prose-hr: #e2e8f0;
-  --tw-prose-quotes: #1E2A3A;
-  --tw-prose-quote-borders: #1e88e5;
-  --tw-prose-th-borders: #e2e8f0;
-  --tw-prose-td-borders: #f1f5f9;
+  --tw-prose-body: #2a2a27;
+  --tw-prose-headings: #1f1f1f;
+  --tw-prose-links: #1f1f1f;
+  --tw-prose-bold: #1f1f1f;
+  --tw-prose-bullets: #1f1f1f;
+  --tw-prose-counters: #6b6b66;
+  --tw-prose-hr: #e6e6e2;
+  --tw-prose-quotes: #1f1f1f;
+  --tw-prose-quote-borders: #1f1f1f;
+  --tw-prose-th-borders: #e6e6e2;
+  --tw-prose-td-borders: #f4f4f0;
 }
 
 .prose h2 { scroll-margin-top: 96px; }
 .prose h3 { scroll-margin-top: 96px; }
 
 .prose a {
-  text-decoration-color: #1e88e5;
+  text-decoration-color: #1f1f1f;
   text-decoration-thickness: 2px;
 }
-.prose a:hover { color: #1e88e5; }
+.prose a:hover { color: #000000; }

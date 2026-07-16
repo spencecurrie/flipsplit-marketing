@@ -18,7 +18,7 @@ const { variant = 'solid' } = Astro.props;
     transform: scaleX(0);
     opacity: 0;
     transition: transform 0.25s ease, opacity 0.2s ease;
-    background: linear-gradient(90deg, #1e88e5 0%, #4ba2ef 100%);
+    background: linear-gradient(90deg, #1f1f1f 0%, #3a3a37 100%);
     box-shadow: 0 0 6px rgba(30,136,229,0.45);
   }
   #nav-progress-bar.is-loading {
@@ -42,10 +42,10 @@ const { variant = 'solid' } = Astro.props;
   }
 </style>
 <style>
-  .nav-btn { background: #1e88e5; color: #fff; font-weight: 700; font-size: 0.875rem; padding: 0.625rem 1.25rem; border-radius: 8px; transition: filter 0.15s; white-space: nowrap; }
+  .nav-btn { background: #1f1f1f; color: #fff; font-weight: 700; font-size: 0.875rem; padding: 0.625rem 1.25rem; border-radius: 8px; transition: filter 0.15s; white-space: nowrap; }
   .nav-btn:hover { filter: brightness(1.08); }
   .nav-dropdown-wrap { position: relative; }
-  .nav-dropdown { position: absolute; top: calc(100% + 12px); left: 0; width: 14rem; border-radius: 12px; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s; z-index: 60; background: #1E2A3A; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 16px 40px rgba(0,0,0,0.2); }
+  .nav-dropdown { position: absolute; top: calc(100% + 12px); left: 0; width: 14rem; border-radius: 12px; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s; z-index: 60; background: #1f1f1f; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 16px 40px rgba(0,0,0,0.2); }
   .nav-dropdown-wrap:hover .nav-dropdown,
   .nav-dropdown-wrap:focus-within .nav-dropdown { opacity: 1; visibility: visible; }
   .nav-chevron { transition: transform 0.2s; display: inline-block; }
@@ -67,7 +67,7 @@ const { variant = 'solid' } = Astro.props;
   .nav-light .field input { color: #0f172a !important; }
   .nav-light .field input::placeholder { color: #94a3b8 !important; }
   .nav-light .submit-icon {
-    background: #1e88e5 !important;
+    background: #1f1f1f !important;
     color: #fff !important;
   }
   .nav-light #t-signin-link,
@@ -106,13 +106,13 @@ const { variant = 'solid' } = Astro.props;
   /* Desktop "Get My Offer" button (white text/border) needs a brand-blue
      pill treatment when the nav is in light mode. */
   .nav-light .field .desktop-cta {
-    background: #1e88e5 !important;
+    background: #1f1f1f !important;
     color: #ffffff !important;
-    border-color: #1e88e5 !important;
+    border-color: #1f1f1f !important;
   }
   .nav-light .field .desktop-cta:hover {
-    background: #1976d2 !important;
-    border-color: #1976d2 !important;
+    background: #000000 !important;
+    border-color: #000000 !important;
   }
 
   /* Smooth fade-in for the address form when the nav transitions into
@@ -190,16 +190,16 @@ const { variant = 'solid' } = Astro.props;
       <div id="nav-right" class="shrink-0 md:flex-1 ml-auto md:ml-0 flex items-center justify-end gap-3 md:gap-5">
         <a id="t-signin-link" href="/sign-in/" class="hidden md:inline-block text-white/90 hover:text-white transition-colors text-[15px] font-medium">Sign in</a>
         <div id="t-profile-wrap" class="hidden relative">
-          <button id="t-profile-btn" class="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden hover:opacity-90 transition-opacity" style="background:#1e88e5;" aria-label="Account menu" aria-expanded="false">
+          <button id="t-profile-btn" class="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden hover:opacity-90 transition-opacity" style="background:#1f1f1f;" aria-label="Account menu" aria-expanded="false">
             <img id="t-profile-avatar" alt="" class="w-full h-full object-cover hidden" />
             <span id="t-profile-initial" class="text-sm font-bold text-white">U</span>
           </button>
-          <div id="t-profile-menu" class="hidden absolute right-0 top-12 w-56 bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden" style="z-index:100;">
-            <div class="px-4 py-3 border-b border-slate-100">
-              <p class="text-xs text-slate-400">Signed in as</p>
-              <p id="t-profile-email" class="text-sm font-semibold text-slate-700 truncate"></p>
+          <div id="t-profile-menu" class="hidden absolute right-0 top-12 w-56 bg-white rounded-xl shadow-lg border border-[#e6e6e2] overflow-hidden" style="z-index:100;">
+            <div class="px-4 py-3 border-b border-[#e6e6e2]">
+              <p class="text-xs text-[#1f1f1f]">Signed in as</p>
+              <p id="t-profile-email" class="text-sm font-semibold text-[#1f1f1f] truncate"></p>
             </div>
-            <button id="t-signout-btn" class="w-full text-left px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">Sign out</button>
+            <button id="t-signout-btn" class="w-full text-left px-4 py-3 text-sm font-medium text-[#1f1f1f] hover:bg-[#f6f7ed] transition-colors">Sign out</button>
           </div>
         </div>
         <button id="menu-toggle" class="md:hidden p-2 text-white transition-colors" aria-label="Toggle menu">
@@ -210,45 +210,45 @@ const { variant = 'solid' } = Astro.props;
     </div>
 
     <div id="mobile-menu" class="fs-drawer fixed inset-0 bg-white z-[60] flex flex-col">
-      <div class="flex items-center justify-between px-6 h-20 border-b border-slate-100 shrink-0">
+      <div class="flex items-center justify-between px-6 h-20 border-b border-[#e6e6e2] shrink-0">
         <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
-        <button id="menu-close" class="p-2 text-slate-700" aria-label="Close menu">
+        <button id="menu-close" class="p-2 text-[#1f1f1f]" aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <div id="t-mobile-profile" class="hidden items-center gap-3 px-6 py-5 border-b border-slate-200 shrink-0" style="background:#F8FAFC;">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden shrink-0" style="background:#1e88e5;">
+      <div id="t-mobile-profile" class="hidden items-center gap-3 px-6 py-5 border-b border-[#e6e6e2] shrink-0" style="background:#f6f7ed;">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden shrink-0" style="background:#1f1f1f;">
           <img id="t-mobile-profile-avatar" alt="" class="w-full h-full object-cover hidden" />
           <span id="t-mobile-profile-initial" class="text-sm font-bold text-white">U</span>
         </div>
-        <p id="t-mobile-profile-email" class="font-semibold text-slate-900 truncate"></p>
+        <p id="t-mobile-profile-email" class="font-semibold text-[#1f1f1f] truncate"></p>
       </div>
       <div class="flex-1 overflow-y-auto px-6">
-        <a href="/how-it-works/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sell</a>
-        <details class="mobile-dropdown border-b border-slate-200">
-          <summary class="flex items-center justify-between py-6 text-2xl font-medium text-slate-900 cursor-pointer">
+        <a href="/how-it-works/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Sell</a>
+        <details class="mobile-dropdown border-b border-[#e6e6e2]">
+          <summary class="flex items-center justify-between py-6 text-2xl font-medium text-[#1f1f1f] cursor-pointer">
             <span>Where We Buy</span>
-            <svg class="mobile-chevron text-slate-700" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+            <svg class="mobile-chevron text-[#1f1f1f]" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
           </summary>
           <div class="pb-5 ml-1 space-y-1">
-            <a href="/location-la-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">Los Angeles County</a>
-            <a href="/location-orange-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">Orange County</a>
-            <a href="/location-riverside-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">Riverside County</a>
-            <a href="/location-san-bernardino-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">San Bernardino County</a>
-            <a href="/location-san-diego-county/" class="mobile-nav-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">San Diego County</a>
+            <a href="/location-la-county/" class="mobile-nav-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">Los Angeles County</a>
+            <a href="/location-orange-county/" class="mobile-nav-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">Orange County</a>
+            <a href="/location-riverside-county/" class="mobile-nav-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">Riverside County</a>
+            <a href="/location-san-bernardino-county/" class="mobile-nav-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">San Bernardino County</a>
+            <a href="/location-san-diego-county/" class="mobile-nav-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">San Diego County</a>
           </div>
         </details>
-        <a href="/reviews/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Reviews</a>
-        <a id="t-mobile-signin-link" href="/sign-in/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sign in</a>
-        <button id="t-mobile-signout-btn" class="hidden w-full text-left flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sign out</button>
+        <a href="/reviews/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Reviews</a>
+        <a id="t-mobile-signin-link" href="/sign-in/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Sign in</a>
+        <button id="t-mobile-signout-btn" class="hidden w-full text-left flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Sign out</button>
       </div>
       <div class="p-6 shrink-0">
-        <a href="#get-offer" class="mobile-nav-link flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors">
+        <a href="#get-offer" class="mobile-nav-link flex items-center justify-between gap-3 p-4 rounded-xl bg-[#f6f7ed] hover:bg-[#f4f4f0] transition-colors">
           <div>
-            <div class="font-bold text-slate-900 text-base">Ready to get started?</div>
-            <div class="text-sm text-slate-500 mt-0.5">Get your free offer in 24–48 hours</div>
+            <div class="font-bold text-[#1f1f1f] text-base">Ready to get started?</div>
+            <div class="text-sm text-[#1f1f1f] mt-0.5">Get your free offer in 24–48 hours</div>
           </div>
-          <svg class="text-slate-700 shrink-0" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+          <svg class="text-[#1f1f1f] shrink-0" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
         </a>
       </div>
     </div>
@@ -295,7 +295,7 @@ const { variant = 'solid' } = Astro.props;
   </script>
 ) : (
   <!-- ─── SOLID NAV (all other pages — mirrors homepage scroll behavior) ─── -->
-  <nav id="solid-nav" class="sticky top-0 z-50 bg-white border-b border-slate-100 transition-all duration-300">
+  <nav id="solid-nav" class="sticky top-0 z-50 bg-white border-b border-[#e6e6e2] transition-all duration-300">
     <div class="max-w-[1500px] mx-auto px-6 h-16 flex items-center gap-3 md:gap-0">
       <div class="shrink-0 md:flex-1">
         <a href="/" class="inline-flex items-center">
@@ -304,10 +304,10 @@ const { variant = 'solid' } = Astro.props;
         </a>
       </div>
 
-      <div id="solid-nav-links" class="hidden md:flex items-center gap-8 text-[15px] text-slate-500 font-medium">
-        <a href="/how-it-works/" class="hover:text-[#1E2A3A] transition-colors">Sell</a>
+      <div id="solid-nav-links" class="hidden md:flex items-center gap-8 text-[15px] text-[#1f1f1f] font-medium">
+        <a href="/how-it-works/" class="hover:text-[#1f1f1f] transition-colors">Sell</a>
         <div class="nav-dropdown-wrap">
-          <button class="flex items-center gap-1 text-slate-500 hover:text-[#1E2A3A] transition-colors text-[15px] font-medium">
+          <button class="flex items-center gap-1 text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors text-[15px] font-medium">
             Where We Buy <svg class="nav-chevron mt-0.5" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="nav-dropdown">
@@ -318,7 +318,7 @@ const { variant = 'solid' } = Astro.props;
             <a href="/location-san-diego-county/" class="nav-drop-item">San Diego County</a>
           </div>
         </div>
-        <a href="/reviews/" class="hover:text-[#1E2A3A] transition-colors">Reviews</a>
+        <a href="/reviews/" class="hover:text-[#1f1f1f] transition-colors">Reviews</a>
       </div>
 
       <div id="solid-nav-offer-form-wrap" class="hidden min-w-0 flex-1 md:flex-1 md:max-w-md md:mx-auto">
@@ -336,21 +336,21 @@ const { variant = 'solid' } = Astro.props;
       </div>
 
       <div id="solid-nav-right" class="shrink-0 md:flex-1 ml-auto md:ml-0 flex items-center justify-end gap-3 md:gap-5">
-        <a id="s-signin-link" href="/sign-in/" class="hidden md:inline-block text-slate-500 hover:text-[#1E2A3A] transition-colors text-[15px] font-medium">Sign in</a>
+        <a id="s-signin-link" href="/sign-in/" class="hidden md:inline-block text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors text-[15px] font-medium">Sign in</a>
         <div id="s-profile-wrap" class="hidden relative">
-          <button id="s-profile-btn" class="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden hover:opacity-90 transition-opacity" style="background:#1e88e5;" aria-label="Account menu" aria-expanded="false">
+          <button id="s-profile-btn" class="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden hover:opacity-90 transition-opacity" style="background:#1f1f1f;" aria-label="Account menu" aria-expanded="false">
             <img id="s-profile-avatar" alt="" class="w-full h-full object-cover hidden" />
             <span id="s-profile-initial" class="text-sm font-bold text-white">U</span>
           </button>
-          <div id="s-profile-menu" class="hidden absolute right-0 top-12 w-56 bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden" style="z-index:100;">
-            <div class="px-4 py-3 border-b border-slate-100">
-              <p class="text-xs text-slate-400">Signed in as</p>
-              <p id="s-profile-email" class="text-sm font-semibold text-slate-700 truncate"></p>
+          <div id="s-profile-menu" class="hidden absolute right-0 top-12 w-56 bg-white rounded-xl shadow-lg border border-[#e6e6e2] overflow-hidden" style="z-index:100;">
+            <div class="px-4 py-3 border-b border-[#e6e6e2]">
+              <p class="text-xs text-[#1f1f1f]">Signed in as</p>
+              <p id="s-profile-email" class="text-sm font-semibold text-[#1f1f1f] truncate"></p>
             </div>
-            <button id="s-signout-btn" class="w-full text-left px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">Sign out</button>
+            <button id="s-signout-btn" class="w-full text-left px-4 py-3 text-sm font-medium text-[#1f1f1f] hover:bg-[#f6f7ed] transition-colors">Sign out</button>
           </div>
         </div>
-        <button id="solid-menu-toggle" class="md:hidden p-2 text-slate-600" aria-label="Toggle menu">
+        <button id="solid-menu-toggle" class="md:hidden p-2 text-[#1f1f1f]" aria-label="Toggle menu">
           <svg id="solid-icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           <svg id="solid-icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
@@ -358,45 +358,45 @@ const { variant = 'solid' } = Astro.props;
     </div>
 
     <div id="solid-mobile-menu" class="fs-drawer md:hidden fixed inset-0 bg-white z-[60] flex flex-col">
-      <div class="flex items-center justify-between px-6 h-16 border-b border-slate-100 shrink-0">
+      <div class="flex items-center justify-between px-6 h-16 border-b border-[#e6e6e2] shrink-0">
         <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
-        <button id="solid-menu-close" class="p-2 text-slate-700" aria-label="Close menu">
+        <button id="solid-menu-close" class="p-2 text-[#1f1f1f]" aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <div id="s-mobile-profile" class="hidden items-center gap-3 px-6 py-5 border-b border-slate-200 shrink-0" style="background:#F8FAFC;">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden shrink-0" style="background:#1e88e5;">
+      <div id="s-mobile-profile" class="hidden items-center gap-3 px-6 py-5 border-b border-[#e6e6e2] shrink-0" style="background:#f6f7ed;">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden shrink-0" style="background:#1f1f1f;">
           <img id="s-mobile-profile-avatar" alt="" class="w-full h-full object-cover hidden" />
           <span id="s-mobile-profile-initial" class="text-sm font-bold text-white">U</span>
         </div>
-        <p id="s-mobile-profile-email" class="font-semibold text-slate-900 truncate"></p>
+        <p id="s-mobile-profile-email" class="font-semibold text-[#1f1f1f] truncate"></p>
       </div>
       <div class="flex-1 overflow-y-auto px-6">
-        <a href="/how-it-works/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sell</a>
-        <details class="mobile-dropdown border-b border-slate-200">
-          <summary class="flex items-center justify-between py-6 text-2xl font-medium text-slate-900 cursor-pointer">
+        <a href="/how-it-works/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Sell</a>
+        <details class="mobile-dropdown border-b border-[#e6e6e2]">
+          <summary class="flex items-center justify-between py-6 text-2xl font-medium text-[#1f1f1f] cursor-pointer">
             <span>Where We Buy</span>
-            <svg class="mobile-chevron text-slate-700" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+            <svg class="mobile-chevron text-[#1f1f1f]" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
           </summary>
           <div class="pb-5 ml-1 space-y-1">
-            <a href="/location-la-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">Los Angeles County</a>
-            <a href="/location-orange-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">Orange County</a>
-            <a href="/location-riverside-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">Riverside County</a>
-            <a href="/location-san-bernardino-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">San Bernardino County</a>
-            <a href="/location-san-diego-county/" class="solid-mobile-link block text-base text-slate-600 hover:text-[#1e88e5] transition-colors py-2">San Diego County</a>
+            <a href="/location-la-county/" class="solid-mobile-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">Los Angeles County</a>
+            <a href="/location-orange-county/" class="solid-mobile-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">Orange County</a>
+            <a href="/location-riverside-county/" class="solid-mobile-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">Riverside County</a>
+            <a href="/location-san-bernardino-county/" class="solid-mobile-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">San Bernardino County</a>
+            <a href="/location-san-diego-county/" class="solid-mobile-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">San Diego County</a>
           </div>
         </details>
-        <a href="/reviews/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Reviews</a>
-        <a id="s-mobile-signin-link" href="/sign-in/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sign in</a>
-        <button id="s-mobile-signout-btn" class="hidden w-full text-left flex items-center justify-between py-6 border-b border-slate-200 text-2xl font-medium text-slate-900">Sign out</button>
+        <a href="/reviews/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Reviews</a>
+        <a id="s-mobile-signin-link" href="/sign-in/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Sign in</a>
+        <button id="s-mobile-signout-btn" class="hidden w-full text-left flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Sign out</button>
       </div>
       <div class="p-6 shrink-0">
-        <a href="/request-offer/" class="solid-mobile-link flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors">
+        <a href="/request-offer/" class="solid-mobile-link flex items-center justify-between gap-3 p-4 rounded-xl bg-[#f6f7ed] hover:bg-[#f4f4f0] transition-colors">
           <div>
-            <div class="font-bold text-slate-900 text-base">Ready to get started?</div>
-            <div class="text-sm text-slate-500 mt-0.5">Get your free offer in 24–48 hours</div>
+            <div class="font-bold text-[#1f1f1f] text-base">Ready to get started?</div>
+            <div class="text-sm text-[#1f1f1f] mt-0.5">Get your free offer in 24–48 hours</div>
           </div>
-          <svg class="text-slate-700 shrink-0" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+          <svg class="text-[#1f1f1f] shrink-0" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
         </a>
       </div>
     </div>

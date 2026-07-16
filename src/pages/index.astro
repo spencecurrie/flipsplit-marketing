@@ -16,20 +16,16 @@ import { ClientRouter } from 'astro:transitions';
   <meta name="description" content="FlipSplit renovates your home before it hits the market. Get a guaranteed cash offer today plus a share of the upside when it sells for more. No repairs, no stress." />
   <ClientRouter />
   <link rel="icon" href="/favicon.ico" />
-  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
+<style>
     :root {
-      --brand-cyan: #1e88e5;
-      --brand-dark: #1E2A3A;
-      --brand-body: #374151;
-      --brand-blue: #1e88e5;
-      --brand-coral: #F97066;
+      --brand-cyan: #1f1f1f;
+      --brand-dark: #1f1f1f;
+      --brand-body: #2a2a27;
+      --brand-blue: #1f1f1f;
+      --brand-coral: #1f1f1f;
     }
-    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); overflow-x: hidden; }
-    h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
+    body { font-family: 'General Sans', sans-serif; color: var(--brand-body); overflow-x: hidden; }
+    h1, h2, h3, h4 { font-family: 'General Sans', 'General Sans', sans-serif; color: var(--brand-dark); }
     details > summary { list-style: none; }
     details > summary::-webkit-details-marker { display: none; }
     .faq-icon { transition: transform 0.2s ease; display: inline-block; }
@@ -47,23 +43,23 @@ import { ClientRouter } from 'astro:transitions';
     .btn-primary:hover { filter: brightness(1.08); }
     .text-brand-dark { color: var(--brand-dark); }
     .text-brand-cyan { color: var(--brand-cyan); }
-    .bg-brand-dark { background: #1E2A3A; }
+    .bg-brand-dark { background: #1f1f1f; }
     input::placeholder { color: #9ca3af; }
     .dark-placeholder::placeholder { color: rgba(255,255,255,0.35); }
-    select option { background: #fff; color: #374151; }
+    select option { background: #fff; color: #2a2a27; }
     .deal-slider {
       -webkit-appearance: none; appearance: none;
       width: 100%; height: 6px; border-radius: 3px;
-      background: linear-gradient(to right, #1e88e5 var(--fill, 50%), #e2e8f0 var(--fill, 50%));
+      background: linear-gradient(to right, #1f1f1f var(--fill, 50%), #e2e8f0 var(--fill, 50%));
       outline: none; cursor: pointer;
     }
     .deal-slider::-webkit-slider-thumb {
       -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
-      background: #1e88e5; border: 3px solid white; box-shadow: 0 1px 6px rgba(0,0,0,0.2); cursor: pointer;
+      background: #1f1f1f; border: 3px solid white; box-shadow: 0 1px 6px rgba(0,0,0,0.2); cursor: pointer;
     }
     .deal-slider::-moz-range-thumb {
       width: 20px; height: 20px; border-radius: 50%;
-      background: #1e88e5; border: 3px solid white; box-shadow: 0 1px 6px rgba(0,0,0,0.2); cursor: pointer;
+      background: #1f1f1f; border: 3px solid white; box-shadow: 0 1px 6px rgba(0,0,0,0.2); cursor: pointer;
     }
 
     /* ── Draggable before/after sliders (case studies section) ─────────── */
@@ -120,7 +116,7 @@ import { ClientRouter } from 'astro:transitions';
       pointer-events: none;
     }
     .ba-label-before { left: 12px;  background: rgba(15,23,42,0.7); color: #fff; }
-    .ba-label-after  { right: 12px; background: #1e88e5;            color: #fff; }
+    .ba-label-after  { right: 12px; background: #1f1f1f;            color: #fff; }
   </style>
 </head>
 <body class="bg-white antialiased">
@@ -161,7 +157,7 @@ import { ClientRouter } from 'astro:transitions';
       <div class="mb-12">
         <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">Why sellers choose FlipSplit</p>
         <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] text-brand-dark mb-5">Real stories from real homeowners.</h2>
-        <p class="text-slate-500 text-lg leading-relaxed">No pressure, no gimmicks. Just homeowners who found a better way to sell.</p>
+        <p class="text-[#1f1f1f] text-lg leading-relaxed">No pressure, no gimmicks. Just homeowners who found a better way to sell.</p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-6">
@@ -185,12 +181,12 @@ import { ClientRouter } from 'astro:transitions';
             photo: "/grace-g.png",
           },
         ].map(({ quote, name, location, photo }) => (
-          <div class="rounded-2xl p-8 flex flex-col items-center text-center" style="background: #F8FAFC;">
+          <div class="rounded-2xl p-8 flex flex-col items-center text-center" style="background: #f6f7ed;">
             <img src={photo} alt={name} class="w-16 h-16 rounded-full object-cover mb-6 shrink-0" />
-            <p class="text-slate-700 leading-relaxed text-[17px] flex-1 mb-6">"{quote}"</p>
+            <p class="text-[#1f1f1f] leading-relaxed text-[17px] flex-1 mb-6">"{quote}"</p>
             <div>
               <div class="font-bold text-brand-dark text-[15px]">{name}</div>
-              <div class="text-[13px] text-slate-400 mt-1">{location}</div>
+              <div class="text-[13px] text-[#1f1f1f] mt-1">{location}</div>
             </div>
           </div>
         ))}
@@ -203,22 +199,22 @@ import { ClientRouter } from 'astro:transitions';
     <div class="max-w-[1500px] mx-auto flex flex-col items-center gap-12">
       <div class="text-center max-w-2xl">
         <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] text-brand-dark mb-5">Your home offer redefined</h2>
-        <p class="text-slate-500 text-lg leading-relaxed">Sell for cash upfront, then get paid again once your home resells.</p>
+        <p class="text-[#1f1f1f] text-lg leading-relaxed">Sell for cash upfront, then get paid again once your home resells.</p>
       </div>
-      <div class="w-full max-w-[520px] bg-white rounded-2xl shadow-md border border-slate-200 p-7">
+      <div class="w-full max-w-[520px] bg-white rounded-2xl shadow-md border border-[#e6e6e2] p-7">
         <h3 class="text-lg font-semibold text-brand-dark mb-1">Choose your offer</h3>
-        <p class="text-slate-400 text-sm mb-5">Adjust upfront cash vs. backend upside.</p>
+        <p class="text-[#1f1f1f] text-sm mb-5">Adjust upfront cash vs. backend upside.</p>
 
-        <div class="flex justify-between text-xs font-medium text-slate-400 mb-2">
+        <div class="flex justify-between text-xs font-medium text-[#1f1f1f] mb-2">
           <span>Max Upfront Cash</span>
           <span>Max Backend Upside</span>
         </div>
         <input type="range" id="deal-slider" min="0" max="100" value="0" class="deal-slider mb-5" />
 
         <div class="grid grid-cols-2 gap-3 mb-5">
-          <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
-            <div class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Upfront Offer</div>
-            <div class="flex items-center gap-0.5 border border-slate-200 hover:border-[#1e88e5] focus-within:border-[#1e88e5] rounded-lg px-2 py-1 bg-white transition-colors">
+          <div class="bg-[#f6f7ed] border border-[#e6e6e2] rounded-xl p-4">
+            <div class="text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-2">Upfront Offer</div>
+            <div class="flex items-center gap-0.5 border border-[#e6e6e2] hover:border-[#1f1f1f] focus-within:border-[#1f1f1f] rounded-lg px-2 py-1 bg-white transition-colors">
               <span class="text-xl font-black text-brand-dark">$</span>
               <input
                 id="offer-amount"
@@ -228,35 +224,35 @@ import { ClientRouter } from 'astro:transitions';
                 class="text-xl font-black text-brand-dark bg-transparent w-full focus:outline-none min-w-0"
               />
             </div>
-            <div class="text-xs text-slate-400 mt-1.5">Cash at closing</div>
+            <div class="text-xs text-[#1f1f1f] mt-1.5">Cash at closing</div>
           </div>
-          <div class="rounded-xl p-4 border" style="background:#1e88e508; border-color:#1e88e540;">
-            <div class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Backend Split</div>
+          <div class="rounded-xl p-4 border" style="background:#1f1f1f08; border-color:#1f1f1f40;">
+            <div class="text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-2">Backend Split</div>
             <div id="split-pct" class="text-xl font-black" style="color:var(--brand-cyan);">0%</div>
-            <div class="text-xs text-slate-400 mt-1.5">Of profit above offer</div>
+            <div class="text-xs text-[#1f1f1f] mt-1.5">Of profit above offer</div>
           </div>
         </div>
 
-        <div class="border-t border-slate-100 pt-4">
+        <div class="border-t border-[#e6e6e2] pt-4">
           <div class="flex justify-between items-center mb-3">
             <span class="text-sm font-black text-brand-dark">Your Potential Earnings</span>
             <span id="split-badge" class="text-xs font-semibold" style="color:var(--brand-cyan);">0% split</span>
           </div>
-          <div class="grid grid-cols-3 gap-x-2 text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2 px-1">
+          <div class="grid grid-cols-3 gap-x-2 text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-2 px-1">
             <span>Resale</span>
             <span class="text-center">Backend</span>
             <span class="text-right">Total</span>
           </div>
           <div id="earnings-table" class="space-y-1"></div>
-          <p class="text-xs text-slate-400 mt-3">* Resale price not guaranteed.</p>
+          <p class="text-xs text-[#1f1f1f] mt-3">* Resale price not guaranteed.</p>
 
           <!-- Est. Net Proceeds callout — base-case total (cash + bonus at projected resale) -->
-          <div class="mt-5 rounded-2xl px-5 py-4 flex items-center justify-between" style="background: linear-gradient(135deg, #1e88e5 0%, #0d7ac4 100%); box-shadow: 0 8px 22px rgba(30,136,229,0.25);">
+          <div class="mt-5 rounded-2xl px-5 py-4 flex items-center justify-between" style="background: linear-gradient(135deg, #1f1f1f 0%, #0d7ac4 100%); box-shadow: 0 8px 22px rgba(30,136,229,0.25);">
             <div>
               <div class="text-[11px] font-bold tracking-widest uppercase" style="color: rgba(255,255,255,0.85);">Est. Net Proceeds</div>
               <div class="text-[10px] mt-0.5" style="color: rgba(255,255,255,0.65);">Cash at closing + bonus check later</div>
             </div>
-            <div id="net-proceeds" class="text-2xl sm:text-3xl font-black" style="color:#ffffff; font-family:'sahar','Open Sans',sans-serif;">$465,000</div>
+            <div id="net-proceeds" class="text-2xl sm:text-3xl font-black" style="color:#ffffff; font-family:'General Sans','General Sans',sans-serif;">$465,000</div>
           </div>
         </div>
       </div>
@@ -265,12 +261,12 @@ import { ClientRouter } from 'astro:transitions';
 
   <!-- ─── TWO PAYMENTS, ONE SALE ─── -->
   <section class="py-20 lg:py-24 px-6 bg-white">
-    <div class="max-w-[1500px] mx-auto rounded-3xl p-10 sm:p-14 lg:p-20" style="background:#F8FAFC;">
+    <div class="max-w-[1500px] mx-auto rounded-3xl p-10 sm:p-14 lg:p-20" style="background:#f6f7ed;">
       <div class="text-center mb-14">
         <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] text-brand-dark mb-5">
           Two payments. One simple sale.
         </h2>
-        <p class="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed">
+        <p class="text-[#1f1f1f] text-lg max-w-2xl mx-auto leading-relaxed">
           Every other home buyer pays you once. With FlipSplit, you get cash now <em>and</em> share the upside when your home resells.
         </p>
       </div>
@@ -278,20 +274,20 @@ import { ClientRouter } from 'astro:transitions';
       <div class="max-w-[1500px] mx-auto grid md:grid-cols-2 gap-6 lg:gap-8">
         <!-- Payment 1: cash at closing (white now that outer card is gray) -->
         <div class="rounded-3xl p-10 lg:p-12 bg-white">
-          <div class="text-sm font-bold tracking-widest uppercase mb-4" style="color:#1e88e5;">Payment 1 · At closing</div>
-          <div class="text-5xl sm:text-6xl font-black mb-3 text-brand-dark" style="font-family:'sahar','Open Sans',sans-serif;">$900k</div>
-          <p class="text-slate-600 leading-relaxed">A guaranteed cash payment, wired the day we close. Use it however you want — buy your next home, pay down debt, retire early.</p>
+          <div class="text-sm font-bold tracking-widest uppercase mb-4" style="color:#1f1f1f;">Payment 1 · At closing</div>
+          <div class="text-5xl sm:text-6xl font-black mb-3 text-brand-dark" style="font-family:'General Sans','General Sans',sans-serif;">$900k</div>
+          <p class="text-[#1f1f1f] leading-relaxed">A guaranteed cash payment, wired the day we close. Use it however you want — buy your next home, pay down debt, retire early.</p>
         </div>
 
         <!-- Payment 2: bonus after resale -->
-        <div class="rounded-3xl p-10 lg:p-12 text-white" style="background:linear-gradient(135deg,#1e88e5 0%,#0d7ac4 100%);">
+        <div class="rounded-3xl p-10 lg:p-12 text-white" style="background:linear-gradient(135deg,#1f1f1f 0%,#0d7ac4 100%);">
           <div class="text-sm font-bold tracking-widest uppercase mb-4" style="color:rgba(255,255,255,0.85);">Payment 2 · After resale</div>
-          <div class="text-5xl sm:text-6xl font-black mb-3" style="color:#fff; font-family:'sahar','Open Sans',sans-serif;">+$125k</div>
+          <div class="text-5xl sm:text-6xl font-black mb-3" style="color:#fff; font-family:'General Sans','General Sans',sans-serif;">+$125k</div>
           <p class="leading-relaxed" style="color:rgba(255,255,255,0.92);">A bonus check after we renovate and resell. Most sellers walk away with a six-figure backend.</p>
         </div>
       </div>
 
-      <p class="text-center text-xs text-slate-400 mt-8 italic">Example scenario · actual numbers vary by property</p>
+      <p class="text-center text-xs text-[#1f1f1f] mt-8 italic">Example scenario · actual numbers vary by property</p>
     </div>
   </section>
 
@@ -304,19 +300,19 @@ import { ClientRouter } from 'astro:transitions';
         <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] text-brand-dark mb-5">
           Real homes.<br/>Real numbers.
         </h2>
-        <p class="text-slate-500 text-lg leading-relaxed mb-10 max-w-md">
+        <p class="text-[#1f1f1f] text-lg leading-relaxed mb-10 max-w-md">
           Here's what a typical FlipSplit sale looks like end-to-end. Drag any photo to see the transformation.
         </p>
 
         <!-- Experience stats -->
         <div class="grid grid-cols-2 gap-8 mb-2 max-w-md">
           <div>
-            <div class="text-4xl sm:text-5xl font-black leading-none mb-2 text-brand-dark" style="font-family:'sahar','Open Sans',sans-serif;">2,500+</div>
-            <div class="text-sm text-slate-500 leading-snug">Homes renovated and resold</div>
+            <div class="text-4xl sm:text-5xl font-black leading-none mb-2 text-brand-dark" style="font-family:'General Sans','General Sans',sans-serif;">2,500+</div>
+            <div class="text-sm text-[#1f1f1f] leading-snug">Homes renovated and resold</div>
           </div>
           <div>
-            <div class="text-4xl sm:text-5xl font-black leading-none mb-2" style="color:#1e88e5; font-family:'sahar','Open Sans',sans-serif;">20 yrs</div>
-            <div class="text-sm text-slate-500 leading-snug">Of home-flipping experience</div>
+            <div class="text-4xl sm:text-5xl font-black leading-none mb-2" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">20 yrs</div>
+            <div class="text-sm text-[#1f1f1f] leading-snug">Of home-flipping experience</div>
           </div>
         </div>
       </div>
@@ -325,14 +321,14 @@ import { ClientRouter } from 'astro:transitions';
       <div class="flex flex-col gap-8">
 
         <!-- Case 1: Kimball -->
-        <article class="rounded-3xl overflow-hidden bg-white border border-slate-200">
+        <article class="rounded-3xl overflow-hidden bg-white border border-[#e6e6e2]">
           <div class="ba-slider" role="img" aria-label="Kimball Ave kitchen — drag to compare before and after">
             <img class="ba-after"  src="/casestudies/kimball-kitchen-after.jpg"  alt="Kimball Ave kitchen after renovation"  draggable="false" />
             <img class="ba-before" src="/casestudies/kimball-kitchen-before.jpg" alt="Kimball Ave kitchen before renovation" draggable="false" />
             <div class="ba-handle" aria-hidden="true">
               <div class="ba-handle-line"></div>
               <div class="ba-handle-grip">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1E2A3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f1f1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="9 18 3 12 9 6"/>
                   <polyline points="15 6 21 12 15 18"/>
                 </svg>
@@ -340,33 +336,33 @@ import { ClientRouter } from 'astro:transitions';
             </div>
           </div>
           <div class="p-7 lg:p-8">
-            <div class="text-xs font-bold tracking-widest uppercase text-slate-400 mb-4">Kimball Ave · 4 bed · single-family</div>
+            <div class="text-xs font-bold tracking-widest uppercase text-[#1f1f1f] mb-4">Kimball Ave · 4 bed · single-family</div>
             <div class="grid grid-cols-3 gap-3">
               <div>
-                <div class="text-[10px] uppercase tracking-wide text-slate-400 mb-1">Cash now</div>
-                <div class="text-xl font-black text-brand-dark" style="font-family:'sahar','Open Sans',sans-serif;">$850k</div>
+                <div class="text-[10px] uppercase tracking-wide text-[#1f1f1f] mb-1">Cash now</div>
+                <div class="text-xl font-black text-brand-dark" style="font-family:'General Sans','General Sans',sans-serif;">$850k</div>
               </div>
               <div>
-                <div class="text-[10px] uppercase tracking-wide text-slate-400 mb-1">Bonus check</div>
-                <div class="text-xl font-black" style="color:#1e88e5; font-family:'sahar','Open Sans',sans-serif;">+$128k</div>
+                <div class="text-[10px] uppercase tracking-wide text-[#1f1f1f] mb-1">Bonus check</div>
+                <div class="text-xl font-black" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">+$128k</div>
               </div>
               <div>
-                <div class="text-[10px] uppercase tracking-wide text-slate-400 mb-1">Total to seller</div>
-                <div class="text-xl font-black text-brand-dark" style="font-family:'sahar','Open Sans',sans-serif;">$978k</div>
+                <div class="text-[10px] uppercase tracking-wide text-[#1f1f1f] mb-1">Total to seller</div>
+                <div class="text-xl font-black text-brand-dark" style="font-family:'General Sans','General Sans',sans-serif;">$978k</div>
               </div>
             </div>
           </div>
         </article>
 
         <!-- Case 2: Via Viente -->
-        <article class="rounded-3xl overflow-hidden bg-white border border-slate-200">
+        <article class="rounded-3xl overflow-hidden bg-white border border-[#e6e6e2]">
           <div class="ba-slider" role="img" aria-label="Via Viente kitchen — drag to compare before and after">
             <img class="ba-after"  src="/casestudies/viaviente-kitchen-after.jpg"  alt="Via Viente kitchen after renovation"  draggable="false" />
             <img class="ba-before" src="/casestudies/viaviente-kitchen-before.jpg" alt="Via Viente kitchen before renovation" draggable="false" />
             <div class="ba-handle" aria-hidden="true">
               <div class="ba-handle-line"></div>
               <div class="ba-handle-grip">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1E2A3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f1f1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="9 18 3 12 9 6"/>
                   <polyline points="15 6 21 12 15 18"/>
                 </svg>
@@ -374,25 +370,25 @@ import { ClientRouter } from 'astro:transitions';
             </div>
           </div>
           <div class="p-7 lg:p-8">
-            <div class="text-xs font-bold tracking-widest uppercase text-slate-400 mb-4">Via Viente · 5 bed · luxury</div>
+            <div class="text-xs font-bold tracking-widest uppercase text-[#1f1f1f] mb-4">Via Viente · 5 bed · luxury</div>
             <div class="grid grid-cols-3 gap-3">
               <div>
-                <div class="text-[10px] uppercase tracking-wide text-slate-400 mb-1">Cash now</div>
-                <div class="text-xl font-black text-brand-dark" style="font-family:'sahar','Open Sans',sans-serif;">$1.14M</div>
+                <div class="text-[10px] uppercase tracking-wide text-[#1f1f1f] mb-1">Cash now</div>
+                <div class="text-xl font-black text-brand-dark" style="font-family:'General Sans','General Sans',sans-serif;">$1.14M</div>
               </div>
               <div>
-                <div class="text-[10px] uppercase tracking-wide text-slate-400 mb-1">Bonus check</div>
-                <div class="text-xl font-black" style="color:#1e88e5; font-family:'sahar','Open Sans',sans-serif;">+$162k</div>
+                <div class="text-[10px] uppercase tracking-wide text-[#1f1f1f] mb-1">Bonus check</div>
+                <div class="text-xl font-black" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">+$162k</div>
               </div>
               <div>
-                <div class="text-[10px] uppercase tracking-wide text-slate-400 mb-1">Total to seller</div>
-                <div class="text-xl font-black text-brand-dark" style="font-family:'sahar','Open Sans',sans-serif;">$1.30M</div>
+                <div class="text-[10px] uppercase tracking-wide text-[#1f1f1f] mb-1">Total to seller</div>
+                <div class="text-xl font-black text-brand-dark" style="font-family:'General Sans','General Sans',sans-serif;">$1.30M</div>
               </div>
             </div>
           </div>
         </article>
 
-        <p class="text-xs text-slate-400 italic">Example scenarios · representative of typical FlipSplit deal outcomes</p>
+        <p class="text-xs text-[#1f1f1f] italic">Example scenarios · representative of typical FlipSplit deal outcomes</p>
       </div>
 
     </div>
@@ -504,12 +500,12 @@ import { ClientRouter } from 'astro:transitions';
     </div>
 
     <div class="relative max-w-[1500px] mx-auto">
-      <div class="max-w-xl mx-auto bg-white/95 backdrop-blur rounded-2xl shadow-xl border border-slate-100 p-8 lg:p-10 text-center">
+      <div class="max-w-xl mx-auto bg-white/95 backdrop-blur rounded-2xl shadow-xl border border-[#e6e6e2] p-8 lg:p-10 text-center">
         <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4B5563;">Trusted across Southern California</p>
         <h2 class="text-3xl sm:text-4xl font-bold tracking-tight leading-[1.1] text-brand-dark mb-4">
-          Over <span style="color: #1e88e5;">2,500 homes</span> renovated and resold <span class="text-slate-500 font-normal">(and counting)</span>
+          Over <span style="color: #1f1f1f;">2,500 homes</span> renovated and resold <span class="text-[#1f1f1f] font-normal">(and counting)</span>
         </h2>
-        <p class="text-slate-500 text-base lg:text-lg leading-relaxed mb-6">
+        <p class="text-[#1f1f1f] text-base lg:text-lg leading-relaxed mb-6">
           FlipSplit has helped 2,500+ Southern California homeowners unlock the equity in their home — without the stress of repairs, showings, or staging.
         </p>
         <AddressForm id="track-record-form" align="center" showTrust={false} />
@@ -533,12 +529,12 @@ import { ClientRouter } from 'astro:transitions';
           { q: "Is FlipSplit the same as iBuying?", a: "No. iBuyers give you a discounted cash offer and keep all the upside. FlipSplit renovates your home to maximize its value — and gives you a share of that upside through profit participation." },
           { q: "What types of homes does FlipSplit work with?", a: "Single-family homes in Southern California. Condition doesn't matter — that's the point. Whether it needs cosmetic updates or significant repairs, we'll make it work." },
         ].map(({ q, a }) => (
-          <details class="group border-b border-slate-200 py-1">
+          <details class="group border-b border-[#e6e6e2] py-1">
             <summary class="flex justify-between items-center py-5 cursor-pointer font-semibold text-brand-dark hover:text-brand-cyan transition-colors">
               {q}
-              <span class="faq-icon text-slate-400 text-2xl leading-none ml-6 shrink-0">+</span>
+              <span class="faq-icon text-[#1f1f1f] text-2xl leading-none ml-6 shrink-0">+</span>
             </summary>
-            <div class="pb-5 text-slate-500 leading-relaxed">
+            <div class="pb-5 text-[#1f1f1f] leading-relaxed">
               {a}
             </div>
           </details>
@@ -548,11 +544,11 @@ import { ClientRouter } from 'astro:transitions';
   </section>
 
   <!-- ─── LEAD CAPTURE FORM ─── -->
-  <section id="get-offer" class="py-28 px-6 bg-slate-50">
+  <section id="get-offer" class="py-28 px-6 bg-[#f6f7ed]">
     <div class="max-w-xl mx-auto text-center">
       <p class="text-sm font-semibold tracking-wide mb-4" style="color: #4B5563;">Free. No obligation.</p>
       <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] text-brand-dark mb-5">Get your free offer today.</h2>
-      <p class="text-slate-500 text-lg leading-relaxed mb-10">
+      <p class="text-[#1f1f1f] text-lg leading-relaxed mb-10">
         Takes 2 minutes. We'll follow up with your cash offer amount, renovation plan, and profit participation projection.
       </p>
       <AddressForm id="footer-form" class="flex flex-col items-center" align="center" />
@@ -608,11 +604,11 @@ import { ClientRouter } from 'astro:transitions';
           const total   = currentOffer + backend;
           const isBase  = i === 0;
           return `
-            <div class="grid grid-cols-3 gap-x-2 px-1 py-1.5 rounded-lg ${isBase ? 'bg-slate-50' : ''}">
+            <div class="grid grid-cols-3 gap-x-2 px-1 py-1.5 rounded-lg ${isBase ? 'bg-[#f6f7ed]' : ''}">
               <span class="text-brand-dark font-semibold text-xs">
-                ${fmt(resale)}${isBase ? '<span class="ml-1 text-slate-400 font-normal">proj.</span>' : ''}
+                ${fmt(resale)}${isBase ? '<span class="ml-1 text-[#1f1f1f] font-normal">proj.</span>' : ''}
               </span>
-              <span class="text-center text-xs ${backend > 0 ? 'font-semibold' : 'text-slate-400'}" style="${backend > 0 ? 'color:var(--brand-cyan)' : ''}">
+              <span class="text-center text-xs ${backend > 0 ? 'font-semibold' : 'text-[#1f1f1f]'}" style="${backend > 0 ? 'color:var(--brand-cyan)' : ''}">
                 ${backend > 0 ? '+' + fmt(backend) : '—'}
               </span>
               <span class="text-right font-bold text-xs text-brand-dark">${fmt(total)}</span>
