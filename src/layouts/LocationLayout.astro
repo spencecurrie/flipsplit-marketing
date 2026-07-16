@@ -89,14 +89,10 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
   <meta name="description" content={description} />
   <link rel="canonical" href={`https://www.flipsplit.com/${slug}`} />
   <link rel="icon" href="/favicon.ico" />
-  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style is:global>
-    :root { --brand-cyan: #1e88e5; --brand-dark: #1E2A3A; --brand-body: #374151; }
-    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
-    h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
+    :root { --brand-cyan: #1f1f1f; --brand-dark: #1f1f1f; --brand-body: #2a2a27; }
+    body { font-family: 'General Sans', sans-serif; color: var(--brand-body); }
+    h1, h2, h3, h4 { font-family: 'General Sans', 'General Sans', sans-serif; color: var(--brand-dark); }
     .btn-primary { background: var(--brand-cyan); color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
     .btn-primary:hover { filter: brightness(1.08); }
     details > summary { list-style: none; }
@@ -137,7 +133,7 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
       height: 38px;
       border-radius: 50%;
       flex-shrink: 0;
-      background-color: #CBD5E1;
+      background-color: #dcdcd4;
       background-size: cover;
       background-position: center;
       box-shadow: 0 0 0 2px #ffffff;
@@ -146,13 +142,13 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
     .loc-pin-amount {
       font-size: 14px;
       font-weight: 800;
-      color: #1e88e5;
-      font-family: 'sahar', 'Open Sans', sans-serif;
+      color: #1f1f1f;
+      font-family: 'General Sans', 'General Sans', sans-serif;
       line-height: 1;
     }
     .loc-pin-label {
       font-size: 10px;
-      color: #64748B;
+      color: #8a8a83;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       font-weight: 600;
@@ -167,17 +163,17 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
   <Nav />
 
   <!-- HERO -->
-  <section class="py-20 px-6 bg-white border-b border-slate-100">
+  <section class="py-20 px-6 bg-white border-b border-[#e6e6e2]">
     <div class="max-w-[1500px] mx-auto grid lg:grid-cols-2 gap-16 lg:gap-32 xl:gap-40 items-center">
       <div>
-        <span class="inline-block text-xs font-semibold tracking-wide mb-5 px-4 py-1.5 rounded-full" style="background:rgba(26,150,232,0.1); color:#1e88e5;">{city}</span>
-        <h1 class="text-4xl sm:text-5xl font-semibold leading-tight mb-6" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+        <span class="inline-block text-xs font-semibold tracking-wide mb-5 px-4 py-1.5 rounded-full" style="background:rgba(31,31,31,0.1); color:#1f1f1f;">{city}</span>
+        <h1 class="text-4xl sm:text-5xl font-semibold leading-tight mb-6" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">
           {heroHeadline}
         </h1>
-        <p class="text-slate-500 text-lg leading-relaxed mb-8">{heroSub}</p>
+        <p class="text-[#1f1f1f] text-lg leading-relaxed mb-8">{heroSub}</p>
         <AddressForm id={`loc-${slug}-hero`} class="max-w-lg w-full" />
       </div>
-      <div class="loc-map-frame rounded-3xl overflow-hidden border border-slate-200 shadow-md relative" style="height:520px; background:#E2E8F0;">
+      <div class="loc-map-frame rounded-3xl overflow-hidden border border-[#e6e6e2] shadow-md relative" style="height:520px; background:#e6e6e2;">
         <iframe
           src={`https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(mapBbox)}&layer=mapnik`}
           style="border:0; display:block; pointer-events:none; filter:saturate(0.9); position:absolute; top:0; left:0; width:calc(100% + 60px); height:calc(100% + 35px);"
@@ -207,21 +203,21 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
   <!-- WHY FLIPSPLIT -->
   <section class="py-20 px-6 bg-white">
     <div class="max-w-4xl mx-auto">
-      <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">Your options</p>
-      <h2 class="text-3xl font-semibold mb-6" style="color:#1E2A3A;">Why {city} homeowners choose FlipSplit.</h2>
+      <p class="text-xs font-semibold tracking-widest uppercase text-[#1f1f1f] mb-3">Your options</p>
+      <h2 class="text-3xl font-semibold mb-6" style="color:#1f1f1f;">Why {city} homeowners choose FlipSplit.</h2>
       <div class="space-y-4 mb-12">
         {whySellBody.split('\\n\\n').map(para => (
-          <p class="text-slate-600 leading-relaxed text-base">{para}</p>
+          <p class="text-[#1f1f1f] leading-relaxed text-base">{para}</p>
         ))}
       </div>
-      <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+      <div class="overflow-x-auto rounded-2xl border border-[#e6e6e2] shadow-sm">
         <div class="min-w-[560px]">
           <!-- Header -->
-          <div class="grid grid-cols-4 text-sm font-bold text-center" style="background:#F8FAFC;">
-            <div class="px-5 py-4 text-left text-slate-400 text-xs uppercase tracking-widest font-semibold border-b border-slate-200"></div>
-            <div class="px-5 py-5 text-center font-black text-lg border-b border-slate-200" style="color:var(--brand-cyan);">FlipSplit</div>
-            <div class="px-5 py-4 text-slate-400 font-semibold text-sm flex items-center justify-center border-b border-slate-200">Traditional Sale</div>
-            <div class="px-5 py-4 text-slate-400 font-semibold text-sm flex items-center justify-center border-b border-slate-200">Cash Buyer</div>
+          <div class="grid grid-cols-4 text-sm font-bold text-center" style="background:#f6f7ed;">
+            <div class="px-5 py-4 text-left text-[#1f1f1f] text-xs uppercase tracking-widest font-semibold border-b border-[#e6e6e2]"></div>
+            <div class="px-5 py-5 text-center font-black text-lg border-b border-[#e6e6e2]" style="color:var(--brand-cyan);">FlipSplit</div>
+            <div class="px-5 py-4 text-[#1f1f1f] font-semibold text-sm flex items-center justify-center border-b border-[#e6e6e2]">Traditional Sale</div>
+            <div class="px-5 py-4 text-[#1f1f1f] font-semibold text-sm flex items-center justify-center border-b border-[#e6e6e2]">Cash Buyer</div>
           </div>
           <!-- Rows -->
           {[
@@ -233,11 +229,11 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
             { label: "Contingencies",       flip: "None",                       trad: "Inspection, financing, appraisal", cash: "Low" },
             { label: "Net to seller",       flip: "Competitive offer + upside", trad: "Below market after costs",    cash: "Deeply discounted" },
           ].map((row, i) => (
-            <div class={`grid grid-cols-4 text-sm items-start ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}`}>
-              <div class="px-5 py-4 font-bold text-[#1E2A3A]">{row.label}</div>
-              <div class="px-5 py-4 font-semibold text-center" style="color:#1E2A3A; background:rgba(26,150,232,0.06);">{row.flip}</div>
-              <div class="px-5 py-4 text-slate-400 text-center">{row.trad}</div>
-              <div class="px-5 py-4 text-slate-400 text-center">{row.cash}</div>
+            <div class={`grid grid-cols-4 text-sm items-start ${i % 2 === 0 ? 'bg-white' : 'bg-[#f6f7ed]'}`}>
+              <div class="px-5 py-4 font-bold text-[#1f1f1f]">{row.label}</div>
+              <div class="px-5 py-4 font-semibold text-center" style="color:#1f1f1f; background:rgba(31,31,31,0.06);">{row.flip}</div>
+              <div class="px-5 py-4 text-[#1f1f1f] text-center">{row.trad}</div>
+              <div class="px-5 py-4 text-[#1f1f1f] text-center">{row.cash}</div>
             </div>
           ))}
         </div>
@@ -247,9 +243,9 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
 
   <!-- PROCESS CTA -->
   <section class="py-20 px-6 bg-white">
-    <div class="max-w-2xl mx-auto text-center rounded-2xl border border-slate-200 py-12 px-8" style="background:#F8FAFC;">
-      <h2 class="text-2xl font-semibold mb-3" style="color:#1E2A3A;">Ready to see what your {city} home is worth?</h2>
-      <p class="text-slate-500 text-sm mb-7">Get a guaranteed cash offer in 24–48 hours. No repairs, no showings, no obligation.</p>
+    <div class="max-w-2xl mx-auto text-center rounded-2xl border border-[#e6e6e2] py-12 px-8" style="background:#f6f7ed;">
+      <h2 class="text-2xl font-semibold mb-3" style="color:#1f1f1f;">Ready to see what your {city} home is worth?</h2>
+      <p class="text-[#1f1f1f] text-sm mb-7">Get a guaranteed cash offer in 24–48 hours. No repairs, no showings, no obligation.</p>
       <a href="#get-offer" class="btn-primary inline-block px-8 py-4 rounded-xl text-base font-bold">Get My Free Offer →</a>
     </div>
   </section>
@@ -258,24 +254,24 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
   <section class="py-20 px-6 bg-white">
     <div class="max-w-[1500px] mx-auto grid lg:grid-cols-2 gap-12 items-start">
       <div>
-        <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">Where we buy</p>
-        <h2 class="text-3xl font-semibold mb-5" style="color:#1E2A3A;">We help {city} homeowners sell as-is.</h2>
+        <p class="text-xs font-semibold tracking-widest uppercase text-[#1f1f1f] mb-3">Where we buy</p>
+        <h2 class="text-3xl font-semibold mb-5" style="color:#1f1f1f;">We help {city} homeowners sell as-is.</h2>
         <div class="space-y-4 mb-8">
           {serviceAreaBody.split('\\n\\n').map(para => (
-            <p class="text-slate-600 leading-relaxed text-base">{para}</p>
+            <p class="text-[#1f1f1f] leading-relaxed text-base">{para}</p>
           ))}
         </div>
-        <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-4">Cities &amp; areas we serve</p>
+        <p class="text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-4">Cities &amp; areas we serve</p>
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2">
           {places.map(p => (
-            <div class="flex items-center gap-2 text-sm text-slate-600 py-0.5">
+            <div class="flex items-center gap-2 text-sm text-[#1f1f1f] py-0.5">
               <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background:var(--brand-cyan);"></span>
               {p}
             </div>
           ))}
         </div>
       </div>
-      <div class="rounded-2xl overflow-hidden border border-slate-200 shadow-sm lg:sticky lg:top-24" style="height:480px;">
+      <div class="rounded-2xl overflow-hidden border border-[#e6e6e2] shadow-sm lg:sticky lg:top-24" style="height:480px;">
         <iframe
           src={`https://maps.google.com/maps?q=${mapQuery}&output=embed`}
           width="100%"
@@ -295,8 +291,8 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
 
       <!-- Left: heading + accordion steps -->
       <div>
-        <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">The process</p>
-        <h2 class="text-3xl font-semibold mb-10 leading-snug" style="color:#1E2A3A;">How FlipSplit works in {city}.</h2>
+        <p class="text-xs font-semibold tracking-widest uppercase text-[#1f1f1f] mb-3">The process</p>
+        <h2 class="text-3xl font-semibold mb-10 leading-snug" style="color:#1f1f1f;">How FlipSplit works in {city}.</h2>
 
         {[
           { n: "1", title: "Share your address", bullets: [
@@ -320,17 +316,17 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
             "Your full agreed profit share with no hidden deductions",
           ]},
         ].map(({ n, title, bullets }, i) => (
-          <details open={i === 0} class="group border-t border-slate-200">
+          <details open={i === 0} class="group border-t border-[#e6e6e2]">
             <summary class="flex items-center gap-4 py-5 cursor-pointer list-none">
-              <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shrink-0" style="background:#f1f5f9; color:#1E2A3A;">{n}</span>
-              <span class="flex-1 font-black text-base" style="color:#1E2A3A;">{title}</span>
-              <svg class="step-chevron shrink-0 text-slate-400" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shrink-0" style="background:#f4f4f0; color:#1f1f1f;">{n}</span>
+              <span class="flex-1 font-black text-base" style="color:#1f1f1f;">{title}</span>
+              <svg class="step-chevron shrink-0 text-[#1f1f1f]" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </summary>
             <div class="pb-5 pl-12">
               <ul class="space-y-2">
                 {bullets.map(b => (
-                  <li class="flex items-start gap-2.5 text-sm text-slate-500">
-                    <svg class="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#1e88e5" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#1e88e5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <li class="flex items-start gap-2.5 text-sm text-[#1f1f1f]">
+                    <svg class="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#1f1f1f" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#1f1f1f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     {b}
                   </li>
                 ))}
@@ -338,20 +334,20 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
             </div>
           </details>
         ))}
-        <div class="border-t border-slate-200"></div>
+        <div class="border-t border-[#e6e6e2]"></div>
       </div>
 
       <!-- Right: video or placeholder -->
-      <div class="rounded-2xl overflow-hidden w-full border border-slate-200" style="aspect-ratio:16/9; background:#F8FAFC;">
+      <div class="rounded-2xl overflow-hidden w-full border border-[#e6e6e2]" style="aspect-ratio:16/9; background:#f6f7ed;">
         {howItWorksVideoUrl ? (
           <iframe src={howItWorksVideoUrl} width="100%" height="100%" style="border:0;" allow="autoplay; fullscreen" allowfullscreen></iframe>
         ) : (
           <div class="w-full h-full flex flex-col items-center justify-center gap-4">
-            <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background:rgba(26,150,232,0.15); border:2px solid rgba(26,150,232,0.3);">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4l12 6-12 6V4z" fill="#1e88e5"/></svg>
+            <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background:rgba(31,31,31,0.15); border:2px solid rgba(31,31,31,0.3);">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4l12 6-12 6V4z" fill="#1f1f1f"/></svg>
             </div>
-            <p class="text-sm font-semibold" style="color:#1e88e5;">How It Works Video</p>
-            <p class="text-xs text-slate-400">Coming soon</p>
+            <p class="text-sm font-semibold" style="color:#1f1f1f;">How It Works Video</p>
+            <p class="text-xs text-[#1f1f1f]">Coming soon</p>
           </div>
         )}
       </div>
@@ -361,15 +357,15 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
 
   <!-- MARKET OVERVIEW -->
   {marketOverview && (
-    <section class="py-20 px-6" style="background:#F8FAFC;">
+    <section class="py-20 px-6" style="background:#f6f7ed;">
       <div class="max-w-[1500px] mx-auto lg:grid lg:grid-cols-[1fr_2fr] lg:gap-16 lg:items-start">
         <div class="mb-8 lg:mb-0 lg:sticky lg:top-24">
           <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color: var(--brand-cyan);">2026 Market Overview</p>
-          <h2 class="text-3xl font-semibold leading-snug" style="color: #1E2A3A;">{marketHeading}</h2>
+          <h2 class="text-3xl font-semibold leading-snug" style="color: #1f1f1f;">{marketHeading}</h2>
         </div>
         <div class="space-y-5">
           {marketOverview.split('\n\n').map(para => (
-            <p class="text-slate-600 leading-relaxed text-base">{para}</p>
+            <p class="text-[#1f1f1f] leading-relaxed text-base">{para}</p>
           ))}
         </div>
       </div>
@@ -378,19 +374,19 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
 
   <!-- VALUE PROP CALLOUT (Anaheim) -->
   {showValueProp && (
-    <section class="py-16 px-6" style="background:#F8FAFC;">
+    <section class="py-16 px-6" style="background:#f6f7ed;">
       <div class="max-w-4xl mx-auto">
-        <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3 text-center">At a glance</p>
+        <p class="text-xs font-semibold tracking-widest uppercase text-[#1f1f1f] mb-3 text-center">At a glance</p>
         <div class="grid md:grid-cols-3 gap-6">
           {[
             { stat: "0", label: "Upfront costs to you", sub: "We fund 100% of all renovation work" },
             { stat: "30–50%", label: "Profit split for you", sub: "Of the amount above your guaranteed offer" },
             { stat: "7 days", label: "Minimum close time", sub: "Cash in hand in as little as 7 days" },
           ].map(({ stat, label, sub }) => (
-            <div class="text-center bg-white rounded-2xl p-8 border border-slate-100 shadow-sm">
-              <div class="text-4xl font-black mb-2 text-[#1E2A3A]">{stat}</div>
-              <div class="font-bold text-[#1E2A3A] mb-1">{label}</div>
-              <div class="text-xs text-slate-400">{sub}</div>
+            <div class="text-center bg-white rounded-2xl p-8 border border-[#e6e6e2] shadow-sm">
+              <div class="text-4xl font-black mb-2 text-[#1f1f1f]">{stat}</div>
+              <div class="font-bold text-[#1f1f1f] mb-1">{label}</div>
+              <div class="text-xs text-[#1f1f1f]">{sub}</div>
             </div>
           ))}
         </div>
@@ -400,21 +396,21 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
 
   <!-- CASE STUDIES (Long Beach) -->
   {caseStudies && caseStudies.length > 0 && (
-    <section class="py-20 px-6 bg-slate-50">
+    <section class="py-20 px-6 bg-[#f6f7ed]">
       <div class="max-w-[1500px] mx-auto">
         <div class="text-center mb-12">
-          <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">Real cases</p>
-          <h2 class="text-4xl font-semibold text-[#1E2A3A]">{city} homes we've bought.</h2>
+          <p class="text-xs font-semibold tracking-widest uppercase text-[#1f1f1f] mb-3">Real cases</p>
+          <h2 class="text-4xl font-semibold text-[#1f1f1f]">{city} homes we've bought.</h2>
         </div>
         <div class="grid md:grid-cols-2 gap-6">
           {caseStudies.map(c => (
-            <div class="bg-white rounded-2xl border border-slate-200 p-8">
-              <span class="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4" style="background: rgba(26,150,232,0.12); color: #1E2A3A;">{c.tag}</span>
-              <h3 class="text-xl font-semibold text-[#1E2A3A] mb-3">{c.headline}</h3>
-              <p class="text-slate-500 text-sm leading-relaxed mb-5">{c.body}</p>
-              <div class="rounded-xl px-5 py-4 border border-slate-200" style="background:#F8FAFC;">
+            <div class="bg-white rounded-2xl border border-[#e6e6e2] p-8">
+              <span class="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4" style="background: rgba(31,31,31,0.12); color: #1f1f1f;">{c.tag}</span>
+              <h3 class="text-xl font-semibold text-[#1f1f1f] mb-3">{c.headline}</h3>
+              <p class="text-[#1f1f1f] text-sm leading-relaxed mb-5">{c.body}</p>
+              <div class="rounded-xl px-5 py-4 border border-[#e6e6e2]" style="background:#f6f7ed;">
                 <span class="text-xs font-semibold uppercase tracking-widest" style="color: var(--brand-cyan);">Result</span>
-                <p class="font-bold mt-1" style="color:#1E2A3A;">{c.result}</p>
+                <p class="font-bold mt-1" style="color:#1f1f1f;">{c.result}</p>
               </div>
             </div>
           ))}
@@ -429,19 +425,19 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
     <section class="py-24 px-6">
       <div class="max-w-[1500px] mx-auto">
         <div class="text-center mb-12">
-          <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">What homeowners say</p>
-          <h2 class="text-4xl font-semibold text-[#1E2A3A]">Real {testimonialsName} homeowners, real results.</h2>
+          <p class="text-xs font-semibold tracking-widest uppercase text-[#1f1f1f] mb-3">What homeowners say</p>
+          <h2 class="text-4xl font-semibold text-[#1f1f1f]">Real {testimonialsName} homeowners, real results.</h2>
         </div>
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {testimonials.map(t => (
-            <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col">
-              <div class="flex gap-0.5 mb-4" style="color: #FBBC05;">★★★★★</div>
-              <p class="text-sm text-slate-600 leading-relaxed flex-1 mb-5">"{t.quote}"</p>
+            <div class="bg-white rounded-2xl border border-[#e6e6e2] p-6 flex flex-col">
+              <div class="flex gap-0.5 mb-4" style="color: #1f1f1f;">★★★★★</div>
+              <p class="text-sm text-[#1f1f1f] leading-relaxed flex-1 mb-5">"{t.quote}"</p>
               <div class="flex items-center gap-3 mt-auto">
-                <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-[#1E2A3A] shrink-0" style="background: rgba(26,150,232,0.2);">{t.name.charAt(0)}</div>
+                <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-[#1f1f1f] shrink-0" style="background: rgba(31,31,31,0.2);">{t.name.charAt(0)}</div>
                 <div>
-                  <div class="text-sm font-bold text-[#1E2A3A]">{t.name}</div>
-                  <div class="text-xs text-slate-400">{t.location}</div>
+                  <div class="text-sm font-bold text-[#1f1f1f]">{t.name}</div>
+                  <div class="text-xs text-[#1f1f1f]">{t.location}</div>
                 </div>
               </div>
             </div>
@@ -452,20 +448,20 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
   )}
 
   <!-- FAQ -->
-  <section class="py-20 px-6 bg-slate-50">
+  <section class="py-20 px-6 bg-[#f6f7ed]">
     <div class="max-w-3xl mx-auto">
       <div class="text-center mb-12">
-        <p class="text-xs font-semibold tracking-widest uppercase text-slate-500 mb-3">FAQ</p>
-        <h2 class="text-4xl font-semibold text-[#1E2A3A]">Questions about selling in {city}.</h2>
+        <p class="text-xs font-semibold tracking-widest uppercase text-[#1f1f1f] mb-3">FAQ</p>
+        <h2 class="text-4xl font-semibold text-[#1f1f1f]">Questions about selling in {city}.</h2>
       </div>
       <div>
         {faqs.map(({ q, a }) => (
-          <details class="group border-b border-slate-200 py-1">
-            <summary class="flex justify-between items-center py-5 cursor-pointer font-semibold text-[#1E2A3A]">
+          <details class="group border-b border-[#e6e6e2] py-1">
+            <summary class="flex justify-between items-center py-5 cursor-pointer font-semibold text-[#1f1f1f]">
               {q}
-              <span class="faq-icon text-slate-400 text-2xl leading-none ml-6 shrink-0">+</span>
+              <span class="faq-icon text-[#1f1f1f] text-2xl leading-none ml-6 shrink-0">+</span>
             </summary>
-            <div class="pb-5 text-slate-500 leading-relaxed text-sm">{a}</div>
+            <div class="pb-5 text-[#1f1f1f] leading-relaxed text-sm">{a}</div>
           </details>
         ))}
       </div>
@@ -474,19 +470,19 @@ const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
 
 
   <!-- GET OFFER -->
-  <section id="get-offer" class="py-20 px-6" style="background: #1E2A3A;">
+  <section id="get-offer" class="py-20 px-6" style="background: #1f1f1f;">
     <div class="max-w-2xl mx-auto text-center">
       <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color: var(--brand-cyan);">Free. No obligation.</p>
       <h2 class="text-3xl sm:text-4xl font-semibold mb-4 leading-tight" style="color: white;">Get your free {shortName} offer today.</h2>
-      <p class="text-slate-300 text-base leading-relaxed mb-7">Enter your address below. We'll respond within 24–48 hours with a guaranteed cash offer, renovation plan, and profit projection.</p>
+      <p class="text-[#6b6b66] text-base leading-relaxed mb-7">Enter your address below. We'll respond within 24–48 hours with a guaranteed cash offer, renovation plan, and profit projection.</p>
 
       <AddressForm id={`loc-${slug}-bottom`} class="flex flex-col items-center mb-6" align="center" />
 
       <!-- Trust signals -->
       <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mt-4">
         {["No repairs needed", "Cash offer in 24–48 hours", "Zero upfront costs"].map(t => (
-          <span class="flex items-center gap-2 text-sm text-slate-400">
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#1e88e5" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#1e88e5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="flex items-center gap-2 text-sm text-[#1f1f1f]">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#1f1f1f" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#1f1f1f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             {t}
           </span>
         ))}

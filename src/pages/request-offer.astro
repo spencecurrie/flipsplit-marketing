@@ -15,14 +15,10 @@ import Footer from '../components/Footer.astro';
   <meta name="description" content="Request your free cash offer from FlipSplit. Enter your address and get a no-obligation offer within 24–48 hours. No repairs, no fees, no pressure." />
   <link rel="canonical" href="https://www.flipsplit.com/request-offer" />
   <link rel="icon" href="/favicon.ico" />
-  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root { --brand-blue: #1e88e5; --brand-dark: #1E2A3A; --brand-body: #374151; }
-    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
-    h1, h2 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
+    :root { --brand-blue: #1f1f1f; --brand-dark: #1f1f1f; --brand-body: #2a2a27; }
+    body { font-family: 'General Sans', sans-serif; color: var(--brand-body); }
+    h1, h2 { font-family: 'General Sans', 'General Sans', sans-serif; color: var(--brand-dark); }
     a { cursor: pointer; }
   </style>
   <ClientRouter />
@@ -34,10 +30,10 @@ import Footer from '../components/Footer.astro';
   <!-- HEADLINE + INPUT -->
   <section class="px-6 pt-12 pb-6 text-center">
     <div class="max-w-2xl mx-auto">
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight mb-4" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight mb-4" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">
         Let's start your offer
       </h1>
-      <p class="text-slate-500 text-base sm:text-lg leading-relaxed mb-8 max-w-xl mx-auto">
+      <p class="text-[#1f1f1f] text-base sm:text-lg leading-relaxed mb-8 max-w-xl mx-auto">
         Enter your address to get started. This helps us find sales data for your home and other homes nearby.
       </p>
       <AddressForm id="request-form" class="flex flex-col items-center" align="center" showTrust={false} />

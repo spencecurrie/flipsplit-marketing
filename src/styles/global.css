@@ -23,6 +23,12 @@
   --color-line:  #e6e6e2;
   --color-muted: #6b6b66;
 
+  /* Legacy brand-* utility names, remapped to mono so existing
+     text-brand-dark / text-brand-cyan / bg-brand-dark resolve to ink. */
+  --color-brand-dark: #1f1f1f;
+  --color-brand-cyan: #1f1f1f;
+  --color-brand-body: #2a2a27;
+
   --text-base: 1.25rem;        /* 20px (was 16px) */
   --text-base--line-height: 1.6;
   --text-lg: 1.13rem;          /* ~18.1px (2pt up from prior 15.5px) */

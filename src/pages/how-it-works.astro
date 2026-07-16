@@ -15,14 +15,10 @@ import Footer from '../components/Footer.astro';
   <meta name="description" content="See exactly how FlipSplit works — guaranteed cash offer, zero-cost renovation, and a profit split when your home sells for more." />
   <link rel="canonical" href="https://www.flipsplit.com/how-it-works" />
   <link rel="icon" href="/favicon.ico" />
-  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root { --brand-cyan: #1e88e5; --brand-dark: #1E2A3A; --brand-body: #374151; }
-    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
-    h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
+    :root { --brand-cyan: #1f1f1f; --brand-dark: #1f1f1f; --brand-body: #2a2a27; }
+    body { font-family: 'General Sans', sans-serif; color: var(--brand-body); }
+    h1, h2, h3, h4 { font-family: 'General Sans', 'General Sans', sans-serif; color: var(--brand-dark); }
     .btn-primary { background: var(--brand-cyan); color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
     .btn-primary:hover { filter: brightness(1.08); }
     details > summary { list-style: none; }
@@ -52,10 +48,10 @@ import Footer from '../components/Footer.astro';
 
       <!-- Top: centered copy + form -->
       <div class="text-center max-w-3xl mx-auto mb-10 lg:mb-12">
-        <h1 class="text-5xl sm:text-6xl font-semibold leading-tight mb-6" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+        <h1 class="text-5xl sm:text-6xl font-semibold leading-tight mb-6" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">
           Sell Today.<br/>Get Paid Twice.
         </h1>
-        <p class="text-slate-500 text-lg leading-relaxed mb-10 max-w-2xl mx-auto">
+        <p class="text-[#1f1f1f] text-lg leading-relaxed mb-10 max-w-2xl mx-auto">
           Take our maximum cash offer at closing, or trade some upfront cash for a larger share of the resale profit.
         </p>
         <AddressForm id="hero-form" showTrust={false} align="center" />
@@ -71,7 +67,7 @@ import Footer from '../components/Footer.astro';
           </div>
           <!-- Cash now (bottom-left, white pill) -->
           <div class="hiw-chip hiw-chip-now">
-            <div class="text-[10px] uppercase tracking-widest text-slate-400 font-semibold">Cash now</div>
+            <div class="text-[10px] uppercase tracking-widest text-[#1f1f1f] font-semibold">Cash now</div>
             <div class="text-2xl font-black text-brand-dark leading-none mt-1">$900k</div>
           </div>
           <!-- Upside later (top-right, brand-blue pill) -->
@@ -103,7 +99,7 @@ import Footer from '../components/Footer.astro';
       border-radius: 50% 50% 0 0 / 100% 100% 0 0;
       overflow: hidden;
       box-shadow: 0 -6px 20px rgba(15, 23, 42, 0.06);
-      background: #f1f5f9;
+      background: #f4f4f0;
       user-select: none;
     }
     /* Both photos are the SAME kitchen shot from the same angle (before/after).
@@ -149,11 +145,11 @@ import Footer from '../components/Footer.astro';
       background: #fff;
       box-shadow: 0 12px 28px rgba(15, 23, 42, 0.22);
       white-space: nowrap;
-      font-family: 'sahar', 'Open Sans', sans-serif;
+      font-family: 'General Sans', 'General Sans', sans-serif;
       pointer-events: none;
     }
     .hiw-chip-now   { bottom: 22%; left: -1.5rem;  animation: hiw-chip-float 3s ease-in-out infinite; }
-    .hiw-chip-later { bottom: 22%; right: -1.5rem; background: #1e88e5; animation: hiw-chip-float-alt 3s ease-in-out infinite; animation-delay: 1.5s; }
+    .hiw-chip-later { bottom: 22%; right: -1.5rem; background: #1f1f1f; animation: hiw-chip-float-alt 3s ease-in-out infinite; animation-delay: 1.5s; }
     @media (prefers-reduced-motion: reduce) {
       .hiw-chip { animation: none; }
     }
@@ -163,9 +159,9 @@ import Footer from '../components/Footer.astro';
       display: inline-flex; align-items: center; justify-content: center;
       width: 48px; height: 48px;
       border-radius: 10px;
-      background: #F1F5F9;
-      color: #475569;
-      font-family: 'Open Sans', sans-serif;
+      background: #f4f4f0;
+      color: #5a5a54;
+      font-family: 'General Sans', sans-serif;
       font-weight: 700;
       font-size: 1.25rem;
       line-height: 1;
@@ -181,7 +177,7 @@ import Footer from '../components/Footer.astro';
 
       <!-- Left: section title -->
       <div>
-        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1]" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">
+        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1]" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">
           How FlipSplit works
         </h2>
       </div>
@@ -192,24 +188,24 @@ import Footer from '../components/Footer.astro';
           <div class="hiw-row" data-step="1">
             <div class="hiw-bar" aria-hidden="true"><div class="hiw-bar-fill"></div></div>
             <div class="hiw-content">
-              <h3 class="text-xl font-semibold mb-2" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">Tell us about your home</h3>
-              <p class="text-slate-500 leading-relaxed">Share your address, a few photos, and a quick walkthrough. Most sellers finish in under three minutes.</p>
+              <h3 class="text-xl font-semibold mb-2" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">Tell us about your home</h3>
+              <p class="text-[#1f1f1f] leading-relaxed">Share your address, a few photos, and a quick walkthrough. Most sellers finish in under three minutes.</p>
             </div>
           </div>
 
           <div class="hiw-row" data-step="2">
             <div class="hiw-bar" aria-hidden="true"><div class="hiw-bar-fill"></div></div>
             <div class="hiw-content">
-              <h3 class="text-xl font-semibold mb-2" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">Customize your offer</h3>
-              <p class="text-slate-500 leading-relaxed">Pick the mix that fits you — maximum cash today, or trade some upfront cash for a larger share of the resale profit.</p>
+              <h3 class="text-xl font-semibold mb-2" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">Customize your offer</h3>
+              <p class="text-[#1f1f1f] leading-relaxed">Pick the mix that fits you — maximum cash today, or trade some upfront cash for a larger share of the resale profit.</p>
             </div>
           </div>
 
           <div class="hiw-row" data-step="3">
             <div class="hiw-bar" aria-hidden="true"><div class="hiw-bar-fill"></div></div>
             <div class="hiw-content">
-              <h3 class="text-xl font-semibold mb-2" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">We renovate. We resell. You get paid again.</h3>
-              <p class="text-slate-500 leading-relaxed">We cover 100% of the renovation cost. Once your home resells, your bonus check is wired within ten days.</p>
+              <h3 class="text-xl font-semibold mb-2" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">We renovate. We resell. You get paid again.</h3>
+              <p class="text-[#1f1f1f] leading-relaxed">We cover 100% of the renovation cost. Once your home resells, your bonus check is wired within ten days.</p>
             </div>
           </div>
         </div>
@@ -225,7 +221,7 @@ import Footer from '../components/Footer.astro';
       flex-shrink: 0;
       width: 4px;
       min-height: 100px;
-      background: #CBD5E1;
+      background: #dcdcd4;
       border-radius: 999px;
       position: relative;
       overflow: hidden;
@@ -236,7 +232,7 @@ import Footer from '../components/Footer.astro';
       top: 0; left: 0;
       width: 100%;
       height: 0;
-      background: #1e88e5;
+      background: #1f1f1f;
       border-radius: 999px;
       transition: height 0.15s ease-out;
     }
@@ -280,97 +276,97 @@ import Footer from '../components/Footer.astro';
   </script>
 
   <!-- ─── SECTION 3: OUR OFFERS EXPLAINED ─── -->
-  <section class="py-24 px-6 bg-white border-t border-slate-100">
+  <section class="py-24 px-6 bg-white border-t border-[#e6e6e2]">
     <div class="max-w-[1500px] mx-auto">
       <div class="mb-14 max-w-2xl">
-        <p class="text-sm font-semibold mb-3" style="color:#4B5563;">Valuing your home</p>
-        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1E2A3A;">
+        <p class="text-sm font-semibold mb-3" style="color:#4b4b45;">Valuing your home</p>
+        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1f1f1f;">
           Our offers, explained.
         </h2>
-        <p class="text-slate-500 text-lg leading-relaxed">
+        <p class="text-[#1f1f1f] text-lg leading-relaxed">
           Every FlipSplit offer is grounded in real data — not guesswork. Here's exactly what goes into yours.
         </p>
       </div>
 
       <div class="grid md:grid-cols-2 gap-6">
-        <div class="rounded-2xl p-8 border border-slate-200" style="background:#F1F5F9;">
-          <h3 class="text-xl font-semibold mb-3" style="color:#1E2A3A;">Market forecast</h3>
-          <p class="text-slate-500 leading-relaxed">We pull 12-month appreciation projections for your zip code from current market data, so the offer reflects where prices are heading — not just where they are today.</p>
+        <div class="rounded-2xl p-8 border border-[#e6e6e2]" style="background:#f4f4f0;">
+          <h3 class="text-xl font-semibold mb-3" style="color:#1f1f1f;">Market forecast</h3>
+          <p class="text-[#1f1f1f] leading-relaxed">We pull 12-month appreciation projections for your zip code from current market data, so the offer reflects where prices are heading — not just where they are today.</p>
         </div>
 
-        <div class="rounded-2xl p-8 border border-slate-200" style="background:#F1F5F9;">
-          <h3 class="text-xl font-semibold mb-3" style="color:#1E2A3A;">Comparable sales</h3>
-          <p class="text-slate-500 leading-relaxed">Recently sold properties on your block and in your neighborhood — same size, age, and condition tier — set the floor for your home's current market value.</p>
+        <div class="rounded-2xl p-8 border border-[#e6e6e2]" style="background:#f4f4f0;">
+          <h3 class="text-xl font-semibold mb-3" style="color:#1f1f1f;">Comparable sales</h3>
+          <p class="text-[#1f1f1f] leading-relaxed">Recently sold properties on your block and in your neighborhood — same size, age, and condition tier — set the floor for your home's current market value.</p>
         </div>
 
-        <div class="rounded-2xl p-8 border border-slate-200" style="background:#F1F5F9;">
-          <h3 class="text-xl font-semibold mb-3" style="color:#1E2A3A;">Home condition</h3>
-          <p class="text-slate-500 leading-relaxed">Your photos and walkthrough tell us what's working as-is and what's holding the home back. No surprise inspection deductions — we price condition into the offer up front.</p>
+        <div class="rounded-2xl p-8 border border-[#e6e6e2]" style="background:#f4f4f0;">
+          <h3 class="text-xl font-semibold mb-3" style="color:#1f1f1f;">Home condition</h3>
+          <p class="text-[#1f1f1f] leading-relaxed">Your photos and walkthrough tell us what's working as-is and what's holding the home back. No surprise inspection deductions — we price condition into the offer up front.</p>
         </div>
 
-        <div class="rounded-2xl p-8 border border-slate-200" style="background:#F1F5F9;">
-          <h3 class="text-xl font-semibold mb-3" style="color:#1E2A3A;">After-renovation value</h3>
-          <p class="text-slate-500 leading-relaxed">Once renovated, what would your home sell for? We model the resale price using top-tier comps in your area, then share that upside with you above the renovation cost.</p>
+        <div class="rounded-2xl p-8 border border-[#e6e6e2]" style="background:#f4f4f0;">
+          <h3 class="text-xl font-semibold mb-3" style="color:#1f1f1f;">After-renovation value</h3>
+          <p class="text-[#1f1f1f] leading-relaxed">Once renovated, what would your home sell for? We model the resale price using top-tier comps in your area, then share that upside with you above the renovation cost.</p>
         </div>
       </div>
 
-      <p class="text-sm text-slate-500 mt-12 max-w-2xl leading-relaxed">
+      <p class="text-sm text-[#1f1f1f] mt-12 max-w-2xl leading-relaxed">
         Every input above is shown to you alongside your offer. If a number doesn't make sense, we'll walk you through it line by line.
       </p>
     </div>
   </section>
 
   <!-- ─── SECTION 5: CHOOSE YOUR MIX (interactive slider) ─── -->
-  <section class="py-24 px-6 bg-white border-t border-slate-100">
+  <section class="py-24 px-6 bg-white border-t border-[#e6e6e2]">
     <div class="max-w-[1500px] mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 xl:gap-24 items-start">
 
       <!-- Left: text (left-justified, top-aligned with card) -->
       <div>
-        <p class="text-sm font-semibold tracking-wide mb-3" style="color:#1e88e5;">The FlipSplit Difference</p>
-        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1E2A3A;">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color:#1f1f1f;">The FlipSplit Difference</p>
+        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1f1f1f;">
           You choose the upside
         </h2>
-        <p class="text-slate-500 text-lg leading-relaxed">
+        <p class="text-[#1f1f1f] text-lg leading-relaxed">
           Take the highest upfront offer or unlock 80% of your equity and keep all the backend upside for yourself. Your choice.
         </p>
       </div>
 
       <!-- Right: slider card -->
       <div>
-        <div class="rounded-3xl p-8 lg:p-12" style="background:#F8FAFC;">
+        <div class="rounded-3xl p-8 lg:p-12" style="background:#f6f7ed;">
           <div class="grid grid-cols-2 gap-6 mb-10">
             <div class="text-center">
-              <div class="text-xs font-bold tracking-widest uppercase text-slate-400 mb-2">Cash at closing</div>
-              <div id="mix-cash" class="text-3xl sm:text-4xl font-black" style="color:#1E2A3A; font-family:'sahar','Open Sans',sans-serif;">$900,000</div>
+              <div class="text-xs font-bold tracking-widest uppercase text-[#1f1f1f] mb-2">Cash at closing</div>
+              <div id="mix-cash" class="text-3xl sm:text-4xl font-black" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">$900,000</div>
             </div>
             <div class="text-center">
-              <div class="text-xs font-bold tracking-widest uppercase mb-2" style="color:#1e88e5;">Bonus check later</div>
-              <div id="mix-bonus" class="text-3xl sm:text-4xl font-black" style="color:#1e88e5; font-family:'sahar','Open Sans',sans-serif;">+$0</div>
+              <div class="text-xs font-bold tracking-widest uppercase mb-2" style="color:#1f1f1f;">Bonus check later</div>
+              <div id="mix-bonus" class="text-3xl sm:text-4xl font-black" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">+$0</div>
             </div>
           </div>
 
           <div class="px-2 mix-slider-wrap" id="mix-slider-wrap">
             <div class="mix-tooltip" id="mix-tooltip"><span id="mix-pct-label">0%</span> split</div>
             <input id="mix-slider" type="range" min="0" max="100" value="0" class="mix-range" aria-label="Mix between cash now and upside later" />
-            <div class="flex justify-between mt-3 text-xs font-semibold tracking-wide text-slate-500">
+            <div class="flex justify-between mt-3 text-xs font-semibold tracking-wide text-[#1f1f1f]">
               <span>Max cash now</span>
               <span>Max upside later</span>
             </div>
           </div>
 
-          <p id="mix-summary" class="text-center text-sm text-slate-500 mt-8 mb-8">Take the full guaranteed cash offer today. No bonus.</p>
+          <p id="mix-summary" class="text-center text-sm text-[#1f1f1f] mt-8 mb-8">Take the full guaranteed cash offer today. No bonus.</p>
 
           <!-- Est. Net Proceeds callout — sums the two columns above -->
-          <div class="rounded-2xl px-6 py-5 flex items-center justify-between" style="background: linear-gradient(135deg, #1e88e5 0%, #0d7ac4 100%); box-shadow: 0 8px 22px rgba(30,136,229,0.25);">
+          <div class="rounded-2xl px-6 py-5 flex items-center justify-between" style="background: linear-gradient(135deg, #1f1f1f 0%, #1f1f1f 100%); box-shadow: 0 8px 22px rgba(31,31,31,0.25);">
             <div>
               <div class="text-[11px] font-bold tracking-widest uppercase" style="color: rgba(255,255,255,0.85);">Est. Net Proceeds</div>
               <div class="text-[10px] mt-0.5" style="color: rgba(255,255,255,0.65);">Cash at closing + bonus check later</div>
             </div>
-            <div id="mix-total" class="text-3xl sm:text-4xl font-black" style="color:#ffffff; font-family:'sahar','Open Sans',sans-serif;">$900,000</div>
+            <div id="mix-total" class="text-3xl sm:text-4xl font-black" style="color:#ffffff; font-family:'General Sans','General Sans',sans-serif;">$900,000</div>
           </div>
         </div>
 
-        <p class="text-xs text-slate-400 mt-6 italic">Example based on a $1.2M projected resale · actual numbers vary by property</p>
+        <p class="text-xs text-[#1f1f1f] mt-6 italic">Example based on a $1.2M projected resale · actual numbers vary by property</p>
       </div>
 
     </div>
@@ -379,10 +375,10 @@ import Footer from '../components/Footer.astro';
   <style>
     .mix-range { width: 100%; -webkit-appearance: none; appearance: none; background: transparent; }
     .mix-range:focus { outline: none; }
-    .mix-range::-webkit-slider-runnable-track { height: 8px; background: linear-gradient(to right, #1e88e5 var(--mix-pct, 0%), #E2E8F0 var(--mix-pct, 0%)); border-radius: 999px; }
-    .mix-range::-moz-range-track { height: 8px; background: linear-gradient(to right, #1e88e5 var(--mix-pct, 0%), #E2E8F0 var(--mix-pct, 0%)); border-radius: 999px; }
-    .mix-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 4px solid #1e88e5; box-shadow: 0 4px 14px rgba(0,0,0,0.18); cursor: grab; margin-top: -10px; }
-    .mix-range::-moz-range-thumb { width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 4px solid #1e88e5; box-shadow: 0 4px 14px rgba(0,0,0,0.18); cursor: grab; }
+    .mix-range::-webkit-slider-runnable-track { height: 8px; background: linear-gradient(to right, #1f1f1f var(--mix-pct, 0%), #e6e6e2 var(--mix-pct, 0%)); border-radius: 999px; }
+    .mix-range::-moz-range-track { height: 8px; background: linear-gradient(to right, #1f1f1f var(--mix-pct, 0%), #e6e6e2 var(--mix-pct, 0%)); border-radius: 999px; }
+    .mix-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 4px solid #1f1f1f; box-shadow: 0 4px 14px rgba(0,0,0,0.18); cursor: grab; margin-top: -10px; }
+    .mix-range::-moz-range-thumb { width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 4px solid #1f1f1f; box-shadow: 0 4px 14px rgba(0,0,0,0.18); cursor: grab; }
     .mix-range:active::-webkit-slider-thumb { cursor: grabbing; }
 
     .mix-slider-wrap { position: relative; padding-top: 38px; }
@@ -391,7 +387,7 @@ import Footer from '../components/Footer.astro';
       top: 0;
       left: var(--mix-pct, 0%);
       transform: translateX(-50%);
-      background: #1e88e5;
+      background: #1f1f1f;
       color: #ffffff;
       padding: 4px 12px;
       border-radius: 999px;
@@ -400,7 +396,7 @@ import Footer from '../components/Footer.astro';
       letter-spacing: 0.04em;
       white-space: nowrap;
       pointer-events: none;
-      box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+      box-shadow: 0 4px 12px rgba(31,31,31, 0.3);
       transition: left 0.05s linear;
     }
     .mix-tooltip::after {
@@ -412,7 +408,7 @@ import Footer from '../components/Footer.astro';
       width: 0; height: 0;
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
-      border-top: 5px solid #1e88e5;
+      border-top: 5px solid #1f1f1f;
     }
   </style>
 
@@ -463,69 +459,69 @@ import Footer from '../components/Footer.astro';
   </script>
 
   <!-- ─── SECTION 6: UNDERSTANDING YOUR OFFER (costs + fees breakdown) ─── -->
-  <section class="py-24 px-6 bg-white border-t border-slate-100">
+  <section class="py-24 px-6 bg-white border-t border-[#e6e6e2]">
     <div class="max-w-[1500px] mx-auto">
       <div class="mb-14 max-w-2xl">
-        <p class="text-sm font-semibold tracking-wide mb-3" style="color:#4B5563;">Understanding your offer</p>
-        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1E2A3A;">
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color:#4b4b45;">Understanding your offer</p>
+        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1f1f1f;">
           Understand total costs and fees
         </h2>
-        <p class="text-slate-500 text-lg leading-relaxed">
+        <p class="text-[#1f1f1f] text-lg leading-relaxed">
           Once we've finalized the offer, we'll provide a full breakdown of all charges, costs, and the total amount you can expect to walk away with.
         </p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-6">
-        <div class="rounded-2xl p-8 border border-slate-200" style="background:#F1F5F9;">
-          <h3 class="text-xl font-semibold mb-3" style="color:#1E2A3A;">Closing Costs</h3>
-          <p class="text-slate-500 leading-relaxed">Title insurance, escrow fees, county transfer taxes, and prorated property taxes typically run 1–2% of your sale price. You'll see every line item itemized before close — no surprise deductions.</p>
+        <div class="rounded-2xl p-8 border border-[#e6e6e2]" style="background:#f4f4f0;">
+          <h3 class="text-xl font-semibold mb-3" style="color:#1f1f1f;">Closing Costs</h3>
+          <p class="text-[#1f1f1f] leading-relaxed">Title insurance, escrow fees, county transfer taxes, and prorated property taxes typically run 1–2% of your sale price. You'll see every line item itemized before close — no surprise deductions.</p>
         </div>
 
-        <div class="rounded-2xl p-8 border border-slate-200" style="background:#F1F5F9;">
-          <h3 class="text-xl font-semibold mb-3" style="color:#1E2A3A;">Program Fee</h3>
-          <p class="text-slate-500 leading-relaxed">If you decide to take a FlipSplit profit split, we charge a 2.5% program fee for managing the renovation project. Pure cash-offer sellers don't pay this fee.</p>
+        <div class="rounded-2xl p-8 border border-[#e6e6e2]" style="background:#f4f4f0;">
+          <h3 class="text-xl font-semibold mb-3" style="color:#1f1f1f;">Program Fee</h3>
+          <p class="text-[#1f1f1f] leading-relaxed">If you decide to take a FlipSplit profit split, we charge a 2.5% program fee for managing the renovation project. Pure cash-offer sellers don't pay this fee.</p>
         </div>
 
-        <div class="rounded-2xl p-8 border border-slate-200" style="background:#F1F5F9;">
-          <h3 class="text-xl font-semibold mb-3" style="color:#1E2A3A;">Net Proceeds</h3>
-          <p class="text-slate-500 leading-relaxed">Your final take-home amount is your offer minus closing costs and any program fee attributed to your sale. We show this number clearly on every offer summary.</p>
+        <div class="rounded-2xl p-8 border border-[#e6e6e2]" style="background:#f4f4f0;">
+          <h3 class="text-xl font-semibold mb-3" style="color:#1f1f1f;">Net Proceeds</h3>
+          <p class="text-[#1f1f1f] leading-relaxed">Your final take-home amount is your offer minus closing costs and any program fee attributed to your sale. We show this number clearly on every offer summary.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ─── SECTION 9: REVIEWS + PRESS STRIP ─── -->
-  <section class="py-16 px-6 bg-white border-t border-slate-100">
+  <section class="py-16 px-6 bg-white border-t border-[#e6e6e2]">
     <div class="max-w-[1500px] mx-auto">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 items-center divide-x divide-slate-200">
         <div class="text-center px-4">
-          <div class="font-black text-5xl" style="color:#1E2A3A;">5.0</div>
-          <div style="color:#FBBC05; letter-spacing:2px; font-size:18px;" class="mt-2">★★★★★</div>
-          <div class="text-sm text-slate-400 mt-2">Average rating</div>
+          <div class="font-black text-5xl" style="color:#1f1f1f;">5.0</div>
+          <div style="color:#1f1f1f; letter-spacing:2px; font-size:18px;" class="mt-2">★★★★★</div>
+          <div class="text-sm text-[#1f1f1f] mt-2">Average rating</div>
         </div>
         <div class="text-center px-4">
-          <div class="font-black text-5xl" style="color:#1E2A3A;">100%</div>
-          <div class="text-sm text-slate-400 mt-4">5-star reviews</div>
+          <div class="font-black text-5xl" style="color:#1f1f1f;">100%</div>
+          <div class="text-sm text-[#1f1f1f] mt-4">5-star reviews</div>
         </div>
         <div class="text-center px-4">
-          <div class="font-black text-5xl" style="color:#1E2A3A;">10+</div>
-          <div class="text-sm text-slate-400 mt-4">Verified homeowners</div>
+          <div class="font-black text-5xl" style="color:#1f1f1f;">10+</div>
+          <div class="text-sm text-[#1f1f1f] mt-4">Verified homeowners</div>
         </div>
         <div class="text-center px-4">
-          <div class="font-black text-lg" style="color:#1E2A3A;">REVIEWS.IO</div>
-          <div class="text-sm text-slate-400 mt-2">Verified source</div>
-          <a href="https://www.reviews.io" target="_blank" rel="noopener" class="inline-block text-sm font-semibold mt-2 hover:opacity-80 transition-opacity" style="color:#1e88e5;">View all →</a>
+          <div class="font-black text-lg" style="color:#1f1f1f;">REVIEWS.IO</div>
+          <div class="text-sm text-[#1f1f1f] mt-2">Verified source</div>
+          <a href="https://www.reviews.io" target="_blank" rel="noopener" class="inline-block text-sm font-semibold mt-2 hover:opacity-80 transition-opacity" style="color:#1f1f1f;">View all →</a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ─── SECTION 10: FAQ ─── -->
-  <section id="faq" class="py-24 px-6 bg-slate-50 border-t border-slate-100">
+  <section id="faq" class="py-24 px-6 bg-[#f6f7ed] border-t border-[#e6e6e2]">
     <div class="max-w-3xl mx-auto">
       <div class="mb-14 text-center">
-        <p class="text-sm font-semibold tracking-wide mb-3" style="color:#4B5563;">FAQ</p>
-        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1E2A3A;">Still have questions?</h2>
+        <p class="text-sm font-semibold tracking-wide mb-3" style="color:#4b4b45;">FAQ</p>
+        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1f1f1f;">Still have questions?</h2>
       </div>
       <div>
         {[
@@ -540,12 +536,12 @@ import Footer from '../components/Footer.astro';
           { q: "What areas does FlipSplit serve?", a: "We currently buy homes throughout Southern California — Los Angeles, Ventura, Orange, Riverside, San Bernardino, and San Diego counties. New markets are coming." },
           { q: "Can I leave trash or furniture behind when I sell?", a: "Yes. Take what you want, leave the rest. Trash, old furniture, even years of accumulated stuff — we've seen it all and handle the cleanout ourselves." },
         ].map(({ q, a }) => (
-          <details class="group border-b border-slate-200 py-1">
-            <summary class="flex justify-between items-center py-5 cursor-pointer font-semibold transition-colors hover:opacity-80" style="color:#1E2A3A;">
+          <details class="group border-b border-[#e6e6e2] py-1">
+            <summary class="flex justify-between items-center py-5 cursor-pointer font-semibold transition-colors hover:opacity-80" style="color:#1f1f1f;">
               {q}
-              <span class="faq-icon text-slate-400 text-2xl leading-none ml-6 shrink-0">+</span>
+              <span class="faq-icon text-[#1f1f1f] text-2xl leading-none ml-6 shrink-0">+</span>
             </summary>
-            <div class="pb-5 text-slate-500 leading-relaxed">
+            <div class="pb-5 text-[#1f1f1f] leading-relaxed">
               {a}
             </div>
           </details>
@@ -555,11 +551,11 @@ import Footer from '../components/Footer.astro';
   </section>
 
   <!-- ─── SECTION 11: FINAL CTA ─── -->
-  <section class="py-24 px-6 bg-white border-t border-slate-100">
+  <section class="py-24 px-6 bg-white border-t border-[#e6e6e2]">
     <div class="max-w-xl mx-auto text-center">
-      <p class="text-sm font-semibold tracking-wide mb-4" style="color:#1e88e5;">Free · No obligation</p>
-      <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1E2A3A;">See what your home could pay you — twice.</h2>
-      <p class="text-slate-500 text-lg leading-relaxed mb-10">
+      <p class="text-sm font-semibold tracking-wide mb-4" style="color:#1f1f1f;">Free · No obligation</p>
+      <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] mb-5" style="color:#1f1f1f;">See what your home could pay you — twice.</h2>
+      <p class="text-[#1f1f1f] text-lg leading-relaxed mb-10">
         Takes 60 seconds. No credit check. We'll follow up with your guaranteed cash offer and your bonus-check projection.
       </p>
       <AddressForm id="how-it-works-footer-form" class="flex flex-col items-center" align="center" />

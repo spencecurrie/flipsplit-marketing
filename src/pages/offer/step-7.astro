@@ -48,17 +48,17 @@ const programs = [
         {p.recommended && (
           <span class="program-card-badge">★ Recommended</span>
         )}
-        <h3 class="text-2xl font-bold text-[#1E2A3A] mb-1.5">{p.name}</h3>
-        <p class="text-sm text-slate-500 mb-5">{p.tagline}</p>
+        <h3 class="text-2xl font-bold text-[#1f1f1f] mb-1.5">{p.name}</h3>
+        <p class="text-sm text-[#1f1f1f] mb-5">{p.tagline}</p>
 
-        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Best for</p>
-        <p class="text-sm text-slate-700 mb-5 leading-relaxed">{p.bestFor}</p>
+        <p class="text-xs font-bold uppercase tracking-widest text-[#1f1f1f] mb-2">Best for</p>
+        <p class="text-sm text-[#1f1f1f] mb-5 leading-relaxed">{p.bestFor}</p>
 
-        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3 mt-auto">Feature highlights</p>
+        <p class="text-xs font-bold uppercase tracking-widest text-[#1f1f1f] mb-3 mt-auto">Feature highlights</p>
         <ul class="space-y-2.5 mb-6">
           {p.highlights.map((h) => (
-            <li class="flex items-start gap-2 text-sm text-slate-700">
-              <svg class="w-4 h-4 text-[#1e88e5] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            <li class="flex items-start gap-2 text-sm text-[#1f1f1f]">
+              <svg class="w-4 h-4 text-[#1f1f1f] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
               <span>{h}</span>
             </li>
           ))}
@@ -82,29 +82,29 @@ const programs = [
       flex-direction: column;
       text-align: left;
       background: #ffffff;
-      border: 1.5px solid #e2e8f0;
+      border: 1.5px solid #e6e6e2;
       border-radius: 1rem;
       padding: 1.75rem 1.5rem;
       cursor: pointer;
       transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
     }
     .program-card:hover {
-      border-color: #1e88e5;
-      box-shadow: 0 6px 18px rgba(30,136,229,0.10);
+      border-color: #1f1f1f;
+      box-shadow: 0 6px 18px rgba(31,31,31,0.10);
     }
     .program-card:active { transform: scale(0.995); }
     .program-card[aria-pressed="true"] {
-      border-color: #1e88e5;
-      box-shadow: 0 0 0 3px rgba(30,136,229,0.15);
-      background: #f5fbff;
+      border-color: #1f1f1f;
+      box-shadow: 0 0 0 3px rgba(31,31,31,0.15);
+      background: #f6f7ed;
     }
 
     .program-card-badge {
       position: absolute;
       top: 1rem;
       right: 1rem;
-      background: #d6f3ff;
-      color: #0d7ac4;
+      background: #f6f7ed;
+      color: #1f1f1f;
       font-size: 0.7rem;
       font-weight: 700;
       padding: 4px 10px;
@@ -119,15 +119,15 @@ const programs = [
       border-radius: 0.75rem;
       font-size: 0.875rem;
       font-weight: 700;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #e6e6e2;
       background: #ffffff;
-      color: #475569;
+      color: #5a5a54;
       transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     }
     .program-card[aria-pressed="true"] .program-card-cta {
-      background: #1e88e5;
+      background: #1f1f1f;
       color: #ffffff;
-      border-color: #1e88e5;
+      border-color: #1f1f1f;
     }
     .program-card-cta-selected { display: none; }
     .program-card[aria-pressed="true"] .program-card-cta-default  { display: none; }

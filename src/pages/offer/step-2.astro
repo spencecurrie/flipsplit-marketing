@@ -24,7 +24,7 @@ const sqftOptions = [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8 max-w-4xl mx-auto" id="details-grid">
 
     <div>
-      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Bedrooms</label>
+      <label class="block text-base font-bold text-[#1f1f1f] mb-2">Bedrooms</label>
       <select id="f-bedrooms" class="offer-select">
         <option value="">Select one…</option>
         {numericOptions.map((n) => <option value={n}>{numericLabel(n)}</option>)}
@@ -32,7 +32,7 @@ const sqftOptions = [
     </div>
 
     <div>
-      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Full Bathrooms</label>
+      <label class="block text-base font-bold text-[#1f1f1f] mb-2">Full Bathrooms</label>
       <select id="f-full-baths" class="offer-select">
         <option value="">Select one…</option>
         {numericOptions.map((n) => <option value={n}>{numericLabel(n)}</option>)}
@@ -40,8 +40,8 @@ const sqftOptions = [
     </div>
 
     <div>
-      <label class="block text-base font-bold text-[#1E2A3A] mb-2">
-        Partial Bathrooms <span class="text-slate-400 font-normal text-sm">(toilet + sink)</span>
+      <label class="block text-base font-bold text-[#1f1f1f] mb-2">
+        Partial Bathrooms <span class="text-[#1f1f1f] font-normal text-sm">(toilet + sink)</span>
       </label>
       <select id="f-partial-baths" class="offer-select">
         <option value="">Select one…</option>
@@ -51,7 +51,7 @@ const sqftOptions = [
     </div>
 
     <div>
-      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Square Footage</label>
+      <label class="block text-base font-bold text-[#1f1f1f] mb-2">Square Footage</label>
       <select id="f-sqft" class="offer-select">
         <option value="">Select one…</option>
         {sqftOptions.map((o) => <option value={o.value}>{o.label}</option>)}
@@ -59,7 +59,7 @@ const sqftOptions = [
     </div>
 
     <div>
-      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Pool</label>
+      <label class="block text-base font-bold text-[#1f1f1f] mb-2">Pool</label>
       <select id="f-pool" class="offer-select">
         <option value="">Select one…</option>
         <option value="true">Yes</option>
@@ -68,7 +68,7 @@ const sqftOptions = [
     </div>
 
     <div>
-      <label class="block text-base font-bold text-[#1E2A3A] mb-2">Floors (above ground)</label>
+      <label class="block text-base font-bold text-[#1f1f1f] mb-2">Floors (above ground)</label>
       <select id="f-floors" class="offer-select">
         <option value="">Select one…</option>
         {numericOptions.map((n) => <option value={n}>{numericLabel(n)}</option>)}
@@ -78,15 +78,15 @@ const sqftOptions = [
   </div>
 
   <!-- Required-fields hint — appears when any dropdown is unanswered -->
-  <p id="details-hint" class="hidden text-center text-sm font-medium mt-8 text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 max-w-2xl mx-auto">
+  <p id="details-hint" class="hidden text-center text-sm font-medium mt-8 text-[#1f1f1f] bg-[#f6f7ed] border border-[#e6e6e2] rounded-xl px-4 py-3 max-w-2xl mx-auto">
     Please complete <span id="details-missing"></span> before continuing.
   </p>
 
   <style is:global>
     /* Empty dropdowns get an amber outline so it's obvious what still needs an answer. */
     .offer-select.is-empty {
-      border-color: #f59e0b !important;
-      background-color: #fffbeb !important;
+      border-color: #1f1f1f !important;
+      background-color: #f6f7ed !important;
       box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
     }
   </style>

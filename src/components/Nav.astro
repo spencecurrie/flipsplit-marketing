@@ -59,13 +59,13 @@ const { variant = 'solid' } = Astro.props;
   .mobile-chevron { transition: transform 0.2s; }
 
   /* ── Light-theme override for the scrolled-mobile state (both nav variants) ── */
-  .nav-light { border-bottom: 1px solid #e2e8f0; }
+  .nav-light { border-bottom: 1px solid #e6e6e2; }
   .nav-light .field {
-    background: #F1F5F9 !important;
-    border: 1px solid #E2E8F0 !important;
+    background: #f4f4f0 !important;
+    border: 1px solid #e6e6e2 !important;
   }
-  .nav-light .field input { color: #0f172a !important; }
-  .nav-light .field input::placeholder { color: #94a3b8 !important; }
+  .nav-light .field input { color: #1f1f1f !important; }
+  .nav-light .field input::placeholder { color: #8a8a83 !important; }
   .nav-light .submit-icon {
     background: #1f1f1f !important;
     color: #fff !important;
@@ -73,11 +73,11 @@ const { variant = 'solid' } = Astro.props;
   .nav-light #t-signin-link,
   .nav-light #s-signin-link {
     display: inline-block !important;
-    color: #0f172a !important;
+    color: #1f1f1f !important;
     font-size: 0.875rem !important;
   }
   .nav-light #menu-toggle,
-  .nav-light #solid-menu-toggle { color: #0f172a !important; }
+  .nav-light #solid-menu-toggle { color: #1f1f1f !important; }
 
   /* ── Mobile menu: slide in from the right ──
      Closed state lives in CSS (off-screen + hidden) and JS toggles `is-open`.

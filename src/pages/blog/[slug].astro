@@ -39,10 +39,6 @@ function formatDate(d: Date) {
   {description && <meta name="description" content={description} />}
   <link rel="canonical" href={`https://www.flipsplit.com/blog/${post.slug}`} />
   <link rel="icon" href="/favicon.ico" />
-  <link rel="stylesheet" href="https://use.typekit.net/tbd3esf.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Open Graph -->
   <meta property="og:title" content={title} />
@@ -53,12 +49,12 @@ function formatDate(d: Date) {
 
   <style>
     :root {
-      --brand-cyan: #1e88e5;
-      --brand-dark: #1E2A3A;
-      --brand-body: #374151;
+      --brand-cyan: #1f1f1f;
+      --brand-dark: #1f1f1f;
+      --brand-body: #2a2a27;
     }
-    body { font-family: 'Open Sans', sans-serif; color: var(--brand-body); }
-    h1, h2, h3, h4 { font-family: 'sahar', 'Open Sans', sans-serif; color: var(--brand-dark); }
+    body { font-family: 'General Sans', sans-serif; color: var(--brand-body); }
+    h1, h2, h3, h4 { font-family: 'General Sans', 'General Sans', sans-serif; color: var(--brand-dark); }
     .btn-primary { background: var(--brand-cyan); color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
     .btn-primary:hover { filter: brightness(1.08); }
 
@@ -105,32 +101,32 @@ function formatDate(d: Date) {
   <Nav />
 
   <!-- ─── ARTICLE HEADER ─── -->
-  <header class="px-6 pt-10 pb-10 border-b border-slate-200" style="background: linear-gradient(135deg, rgba(26,150,232,0.08) 0%, rgba(26,150,232,0.02) 50%, transparent 100%);">
+  <header class="px-6 pt-10 pb-10 border-b border-[#e6e6e2]" style="background: linear-gradient(135deg, rgba(31,31,31,0.08) 0%, rgba(31,31,31,0.02) 50%, transparent 100%);">
     <div class="max-w-[1500px] mx-auto">
       <div class="lg:grid lg:grid-cols-[1fr_300px] lg:gap-16">
         <div>
 
           <!-- Breadcrumb -->
-          <nav class="flex items-center gap-1.5 text-xs text-slate-400 mb-5">
-            <a href="/" class="hover:text-[#1E2A3A] transition-colors">Home</a>
+          <nav class="flex items-center gap-1.5 text-xs text-[#1f1f1f] mb-5">
+            <a href="/" class="hover:text-[#1f1f1f] transition-colors">Home</a>
             <span>›</span>
-            <a href="/blog" class="hover:text-[#1E2A3A] transition-colors">Blog</a>
+            <a href="/blog" class="hover:text-[#1f1f1f] transition-colors">Blog</a>
             <span>›</span>
-            <span class="text-slate-500 font-medium">{category}</span>
+            <span class="text-[#1f1f1f] font-medium">{category}</span>
           </nav>
 
           <!-- Title -->
-          <h1 class="text-3xl sm:text-4xl lg:text-[2.75rem] font-semibold text-[#1E2A3A] leading-tight mb-5" style="font-family:'sahar','Open Sans',sans-serif; color:#1E2A3A;">
+          <h1 class="text-3xl sm:text-4xl lg:text-[2.75rem] font-semibold text-[#1f1f1f] leading-tight mb-5" style="font-family:'General Sans','General Sans',sans-serif; color:#1f1f1f;">
             {title}
           </h1>
 
           <!-- Meta row -->
           <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background:rgba(26,150,232,0.15);color:#1E2A3A;">{category}</span>
-            <span class="text-xs text-slate-400">{formatDate(pubDate)}</span>
-            {readingTime && <span class="text-xs text-slate-400">{readingTime} min read</span>}
-            {reviewer && <span class="text-xs text-slate-400">Reviewed by <span class="font-semibold text-slate-500">{reviewer}</span></span>}
-            {updatedDate && <span class="text-xs text-slate-400">Updated {formatDate(updatedDate)}</span>}
+            <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background:rgba(31,31,31,0.15);color:#1f1f1f;">{category}</span>
+            <span class="text-xs text-[#1f1f1f]">{formatDate(pubDate)}</span>
+            {readingTime && <span class="text-xs text-[#1f1f1f]">{readingTime} min read</span>}
+            {reviewer && <span class="text-xs text-[#1f1f1f]">Reviewed by <span class="font-semibold text-[#1f1f1f]">{reviewer}</span></span>}
+            {updatedDate && <span class="text-xs text-[#1f1f1f]">Updated {formatDate(updatedDate)}</span>}
           </div>
 
         </div>
@@ -147,8 +143,8 @@ function formatDate(d: Date) {
 
       <!-- Mobile TOC (collapsible) -->
       {tocHeadings.length > 2 && (
-        <details class="lg:hidden mb-10 rounded-xl border border-slate-200 overflow-hidden">
-          <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-semibold text-sm text-[#1E2A3A] bg-slate-50 select-none">
+        <details class="lg:hidden mb-10 rounded-xl border border-[#e6e6e2] overflow-hidden">
+          <summary class="flex justify-between items-center px-5 py-4 cursor-pointer font-semibold text-sm text-[#1f1f1f] bg-[#f6f7ed] select-none">
             <span class="flex items-center gap-2">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h8M2 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
               In this article
@@ -159,7 +155,7 @@ function formatDate(d: Date) {
             <ul class="space-y-2">
               {tocHeadings.map(h => (
                 <li style={`padding-left: ${(h.depth - 2) * 12}px`}>
-                  <a href={`#${h.slug}`} class="text-sm text-slate-600 hover:text-[#1e88e5] transition-colors">
+                  <a href={`#${h.slug}`} class="text-sm text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors">
                     {h.text}
                   </a>
                 </li>
@@ -175,14 +171,14 @@ function formatDate(d: Date) {
       </div>
 
       <!-- Author / Reviewer bio -->
-      <div class="mt-14 pt-10 border-t border-slate-100">
-        <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-5">About the reviewer</p>
+      <div class="mt-14 pt-10 border-t border-[#e6e6e2]">
+        <p class="text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-5">About the reviewer</p>
         <div class="flex items-start gap-4">
-          <div class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-black text-[#1E2A3A] shrink-0" style="background: rgba(26,150,232,0.2);">BB</div>
+          <div class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-black text-[#1f1f1f] shrink-0" style="background: rgba(31,31,31,0.2);">BB</div>
           <div>
-            <p class="font-bold text-[#1E2A3A]">Brandon Brown</p>
-            <p class="text-xs text-slate-400 mb-2">Licensed Real Estate Agent · Southern California</p>
-            <p class="text-sm text-slate-500 leading-relaxed">
+            <p class="font-bold text-[#1f1f1f]">Brandon Brown</p>
+            <p class="text-xs text-[#1f1f1f] mb-2">Licensed Real Estate Agent · Southern California</p>
+            <p class="text-sm text-[#1f1f1f] leading-relaxed">
               Brandon is a licensed real estate professional with years of experience in the Southern California market. He reviews all FlipSplit content for accuracy, market relevance, and compliance.
             </p>
           </div>
@@ -197,17 +193,17 @@ function formatDate(d: Date) {
       <div class="rounded-2xl p-6" style="background: var(--brand-dark);">
         <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color: var(--brand-cyan);">Free. No obligation.</p>
         <h3 class="text-xl font-semibold mb-3 leading-tight" style="color: white;">Choose your home offer price.</h3>
-        <p class="text-slate-400 text-sm mb-5 leading-relaxed">Share your address. We'll respond in 24–48 hours with a cash offer and renovation projection.</p>
+        <p class="text-[#1f1f1f] text-sm mb-5 leading-relaxed">Share your address. We'll respond in 24–48 hours with a cash offer and renovation projection.</p>
         <a href="/#get-offer" class="btn-primary block text-center text-sm px-5 py-3 rounded-xl">
           Get My Free Offer →
         </a>
-        <p class="text-slate-500 text-xs text-center mt-3">Serving Southern California</p>
+        <p class="text-[#1f1f1f] text-xs text-center mt-3">Serving Southern California</p>
       </div>
 
       <!-- Table of contents -->
       {tocHeadings.length > 2 && (
-        <div class="rounded-2xl border border-slate-200 p-6">
-          <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-4">In this article</p>
+        <div class="rounded-2xl border border-[#e6e6e2] p-6">
+          <p class="text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-4">In this article</p>
           <nav id="toc-nav">
             <ul class="space-y-2">
               {tocHeadings.map(h => (
@@ -215,7 +211,7 @@ function formatDate(d: Date) {
                   <a
                     href={`#${h.slug}`}
                     data-heading={h.slug}
-                    class="toc-link text-sm text-slate-500 hover:text-[#1e88e5] block py-0.5 border-l-2 border-transparent pl-3 transition-colors"
+                    class="toc-link text-sm text-[#1f1f1f] hover:text-[#1f1f1f] block py-0.5 border-l-2 border-transparent pl-3 transition-colors"
                   >
                     {h.text}
                   </a>
@@ -230,21 +226,21 @@ function formatDate(d: Date) {
 
   <!-- ─── RELATED POSTS ─── -->
   {related.length > 0 && (
-    <section class="border-t border-slate-100 py-20 px-6">
+    <section class="border-t border-[#e6e6e2] py-20 px-6">
       <div class="max-w-[1500px] mx-auto">
-        <h2 class="text-2xl font-semibold text-[#1E2A3A] mb-10">Keep reading</h2>
+        <h2 class="text-2xl font-semibold text-[#1f1f1f] mb-10">Keep reading</h2>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {related.map(p => (
-            <a href={`/blog/${p.id}`} class="group flex flex-col rounded-2xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-              <div class="aspect-[16/9] bg-slate-100 overflow-hidden shrink-0">
+            <a href={`/blog/${p.id}`} class="group flex flex-col rounded-2xl border border-[#e6e6e2] overflow-hidden hover:shadow-md transition-shadow">
+              <div class="aspect-[16/9] bg-[#f4f4f0] overflow-hidden shrink-0">
                 {p.data.heroImage
                   ? <img src={p.data.heroImage} alt={p.data.title} class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" loading="lazy" />
-                  : <div class="w-full h-full" style="background: linear-gradient(135deg, #1E2A3A 0%, #134a52 100%);"></div>
+                  : <div class="w-full h-full" style="background: linear-gradient(135deg, #1f1f1f 0%, #1f1f1f 100%);"></div>
                 }
               </div>
               <div class="p-6 flex flex-col flex-1">
-                <span class="text-xs text-slate-400 mb-2">{formatDate(p.data.pubDate)}</span>
-                <h3 class="font-semibold text-[#1E2A3A] leading-snug group-hover:text-[#1e88e5] transition-colors line-clamp-3">{p.data.title}</h3>
+                <span class="text-xs text-[#1f1f1f] mb-2">{formatDate(p.data.pubDate)}</span>
+                <h3 class="font-semibold text-[#1f1f1f] leading-snug group-hover:text-[#1f1f1f] transition-colors line-clamp-3">{p.data.title}</h3>
               </div>
             </a>
           ))}
