@@ -133,9 +133,9 @@ import { ClientRouter } from 'astro:transitions';
         class="absolute inset-0 w-full h-full object-cover object-right lg:object-center"
       />
       <!-- Mobile: flat uniform dark overlay (centered text needs even contrast) -->
-      <div class="absolute inset-0 lg:hidden" style="background: rgba(10,20,35,0.6);"></div>
+      <div class="absolute inset-0 lg:hidden" style="background: rgba(20,20,18,0.6);"></div>
       <!-- Desktop: gradient overlay dark-on-left so left-aligned text reads, image shows on right -->
-      <div class="absolute inset-0 hidden lg:block" style="background: linear-gradient(to right, rgba(10,20,35,0.78) 0%, rgba(10,20,35,0.55) 50%, rgba(10,20,35,0.15) 100%);"></div>
+      <div class="absolute inset-0 hidden lg:block" style="background: linear-gradient(to right, rgba(20,20,18,0.78) 0%, rgba(20,20,18,0.55) 50%, rgba(20,20,18,0.15) 100%);"></div>
 
       <div class="relative px-6 sm:px-12 lg:px-16 py-16 lg:py-20 flex flex-col justify-center" style="min-height: 640px;">
         <div class="max-w-2xl lg:max-w-4xl text-center lg:text-left mx-auto lg:mx-0">
@@ -247,7 +247,7 @@ import { ClientRouter } from 'astro:transitions';
           <p class="text-xs text-[#1f1f1f] mt-3">* Resale price not guaranteed.</p>
 
           <!-- Est. Net Proceeds callout — base-case total (cash + bonus at projected resale) -->
-          <div class="mt-5 rounded-2xl px-5 py-4 flex items-center justify-between" style="background: linear-gradient(135deg, #1f1f1f 0%, #0d7ac4 100%); box-shadow: 0 8px 22px rgba(30,136,229,0.25);">
+          <div class="mt-5 rounded-2xl px-5 py-4 flex items-center justify-between" style="background: linear-gradient(135deg, #1f1f1f 0%, #1f1f1f 100%); box-shadow: 0 8px 22px rgba(31,31,31,0.25);">
             <div>
               <div class="text-[11px] font-bold tracking-widest uppercase" style="color: rgba(255,255,255,0.85);">Est. Net Proceeds</div>
               <div class="text-[10px] mt-0.5" style="color: rgba(255,255,255,0.65);">Cash at closing + bonus check later</div>
@@ -280,7 +280,7 @@ import { ClientRouter } from 'astro:transitions';
         </div>
 
         <!-- Payment 2: bonus after resale -->
-        <div class="rounded-3xl p-10 lg:p-12 text-white" style="background:linear-gradient(135deg,#1f1f1f 0%,#0d7ac4 100%);">
+        <div class="rounded-3xl p-10 lg:p-12 text-white" style="background:linear-gradient(135deg,#1f1f1f 0%,#1f1f1f 100%);">
           <div class="text-sm font-bold tracking-widest uppercase mb-4" style="color:rgba(255,255,255,0.85);">Payment 2 · After resale</div>
           <div class="text-5xl sm:text-6xl font-black mb-3" style="color:#fff; font-family:'General Sans','General Sans',sans-serif;">+$125k</div>
           <p class="leading-relaxed" style="color:rgba(255,255,255,0.92);">A bonus check after we renovate and resell. Most sellers walk away with a six-figure backend.</p>
