@@ -1,0 +1,115 @@
+---
+// Desktop profile popover for the nav. Rendered once per nav variant with a
+// distinct id prefix ('t' = transparent nav, 's' = solid nav), matching the
+// existing convention in Nav.astro.
+//
+// Contents and behaviour are wired in Nav.astro's auth script: the offer
+// requests list is fetched from qualification_sessions and injected into
+// #{prefix}-offer-list.
+interface Props { prefix: string }
+const { prefix } = Astro.props;
+const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
+---
+
+<div id={`${prefix}-profile-wrap`} class="hidden relative">
+  <button
+    id={`${prefix}-profile-btn`}
+    class="flex items-center justify-center w-[34px] h-[34px] rounded-full transition-colors"
+    style="background:#1f1f1f;color:#fff;font-size:12px;font-weight:600;letter-spacing:0.02em;"
+    aria-label="Account menu"
+    aria-haspopup="menu"
+    aria-expanded="false"
+  >
+    <span id={`${prefix}-profile-initial`}>U</span>
+  </button>
+
+  <div
+    id={`${prefix}-profile-menu`}
+    role="menu"
+    aria-label="Account"
+    class="hidden absolute right-0 top-12 w-[300px] bg-white p-2"
+    style="border:1px solid #dcdcd4;border-radius:16px;box-shadow:0 12px 32px rgba(31,31,31,0.14);z-index:100;"
+  >
+    <div class="px-3 pt-2.5 pb-2" style="font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:#8a8a83;">
+      Your offer requests
+    </div>
+
+    {/* Populated by Nav.astro's auth script once the session resolves. */}
+    <div id={`${prefix}-offer-list`} class="max-h-[248px] overflow-y-auto"></div>
+
+    <div style="height:1px;background:#f0f0ec;margin:8px 4px;"></div>
+
+    <a role="menuitem" href={`${APP_URL}/settings`} class="fs-pm-row">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"></path></svg>
+      Account
+    </a>
+    <a role="menuitem" href="/faq/" class="fs-pm-row">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><circle cx="12" cy="12" r="9"></circle><path d="M9.2 9a3 3 0 0 1 5.8 1c0 2-3 2.4-3 4"></path><circle cx="12" cy="17.5" r="0.5" fill="currentColor"></circle></svg>
+      Help center
+    </a>
+
+    <div style="height:1px;background:#f0f0ec;margin:8px 4px;"></div>
+
+    <button id={`${prefix}-signout-btn`} role="menuitem" class="fs-pm-row fs-pm-row--muted w-full text-left">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><path d="M14 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h8"></path><path d="M10 12h11"></path><path d="M17 8l4 4-4 4"></path></svg>
+      Sign out
+    </button>
+  </div>
+</div>
+
+<style is:global>
+  /* Shared row styling for both profile popovers and the mobile drawer. */
+  .fs-pm-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    border-radius: 10px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: #1f1f1f;
+    text-decoration: none;
+    transition: background-color 140ms ease-out, color 140ms ease-out;
+    background: none;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .fs-pm-row:hover { background: #f6f7ed; color: #1f1f1f; }
+  .fs-pm-row--muted { color: #6b6b64; }
+
+  /* One submitted offer request. */
+  .fs-pm-prop {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background-color 140ms ease-out;
+  }
+  .fs-pm-prop:hover { background: #f6f7ed; }
+  .fs-pm-prop__icon {
+    width: 30px; height: 30px; border-radius: 9px; background: #f6f7ed;
+    display: inline-flex; align-items: center; justify-content: center; flex: none;
+  }
+  .fs-pm-prop__addr {
+    display: block; font-size: 14.5px; font-weight: 500; color: #1f1f1f;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .fs-pm-prop__status { display: block; font-size: 12px; color: #8a8a83; margin-top: 1px; }
+
+  .fs-pm-empty {
+    margin: 2px 8px 6px; background: #f6f7ed; border-radius: 10px; padding: 14px;
+    font-size: 13px; color: #6b6b64; line-height: 1.45;
+  }
+  .fs-pm-empty a { font-weight: 600; color: #1f1f1f; text-decoration: underline; text-underline-offset: 3px; }
+
+  /* Popover entrance: fade + 4px translate-down, 140ms. Exit is instant. */
+  @keyframes fsPopIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  #t-profile-menu:not(.hidden), #s-profile-menu:not(.hidden) { animation: fsPopIn 140ms ease-out; }
+
+  @media (prefers-reduced-motion: reduce) {
+    #t-profile-menu:not(.hidden), #s-profile-menu:not(.hidden) { animation: none; }
+  }
+</style>

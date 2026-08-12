@@ -1,9 +1,11 @@
 ---
 import TapFeedback from './TapFeedback.astro';
+import ProfileMenu from './ProfileMenu.astro';
 interface Props {
   variant?: 'solid' | 'transparent';
 }
 const { variant = 'solid' } = Astro.props;
+const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
 ---
 
 <style is:global>
@@ -189,19 +191,7 @@ const { variant = 'solid' } = Astro.props;
 
       <div id="nav-right" class="shrink-0 md:flex-1 ml-auto md:ml-0 flex items-center justify-end gap-3 md:gap-5">
         <a id="t-signin-link" href="/sign-in/" class="hidden md:inline-block text-white/90 hover:text-white transition-colors text-[15px] font-medium">Sign in</a>
-        <div id="t-profile-wrap" class="hidden relative">
-          <button id="t-profile-btn" class="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden hover:opacity-90 transition-opacity" style="background:#1f1f1f;" aria-label="Account menu" aria-expanded="false">
-            <img id="t-profile-avatar" alt="" class="w-full h-full object-cover hidden" />
-            <span id="t-profile-initial" class="text-sm font-bold text-white">U</span>
-          </button>
-          <div id="t-profile-menu" class="hidden absolute right-0 top-12 w-56 bg-white rounded-xl shadow-lg border border-[#e6e6e2] overflow-hidden" style="z-index:100;">
-            <div class="px-4 py-3 border-b border-[#e6e6e2]">
-              <p class="text-xs text-[#1f1f1f]">Signed in as</p>
-              <p id="t-profile-email" class="text-sm font-semibold text-[#1f1f1f] truncate"></p>
-            </div>
-            <button id="t-signout-btn" class="w-full text-left px-4 py-3 text-sm font-medium text-[#1f1f1f] hover:bg-[#f6f7ed] transition-colors">Sign out</button>
-          </div>
-        </div>
+        <ProfileMenu prefix="t" />
         <button id="menu-toggle" class="md:hidden p-2 text-white transition-colors" aria-label="Toggle menu">
           <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           <svg id="icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -240,6 +230,10 @@ const { variant = 'solid' } = Astro.props;
         </details>
         <a href="/reviews/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Reviews</a>
         <a id="t-mobile-signin-link" href="/sign-in/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Sign in</a>
+        <div id="t-mobile-account-links" class="hidden">
+          <a href={`${APP_URL}/settings`} class="mobile-nav-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Account</a>
+          <a href="/faq/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Help center</a>
+        </div>
         <button id="t-mobile-signout-btn" class="hidden w-full text-left flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Sign out</button>
       </div>
       <div class="p-6 shrink-0">
@@ -337,19 +331,7 @@ const { variant = 'solid' } = Astro.props;
 
       <div id="solid-nav-right" class="shrink-0 md:flex-1 ml-auto md:ml-0 flex items-center justify-end gap-3 md:gap-5">
         <a id="s-signin-link" href="/sign-in/" class="hidden md:inline-block text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors text-[15px] font-medium">Sign in</a>
-        <div id="s-profile-wrap" class="hidden relative">
-          <button id="s-profile-btn" class="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden hover:opacity-90 transition-opacity" style="background:#1f1f1f;" aria-label="Account menu" aria-expanded="false">
-            <img id="s-profile-avatar" alt="" class="w-full h-full object-cover hidden" />
-            <span id="s-profile-initial" class="text-sm font-bold text-white">U</span>
-          </button>
-          <div id="s-profile-menu" class="hidden absolute right-0 top-12 w-56 bg-white rounded-xl shadow-lg border border-[#e6e6e2] overflow-hidden" style="z-index:100;">
-            <div class="px-4 py-3 border-b border-[#e6e6e2]">
-              <p class="text-xs text-[#1f1f1f]">Signed in as</p>
-              <p id="s-profile-email" class="text-sm font-semibold text-[#1f1f1f] truncate"></p>
-            </div>
-            <button id="s-signout-btn" class="w-full text-left px-4 py-3 text-sm font-medium text-[#1f1f1f] hover:bg-[#f6f7ed] transition-colors">Sign out</button>
-          </div>
-        </div>
+        <ProfileMenu prefix="s" />
         <button id="solid-menu-toggle" class="md:hidden p-2 text-[#1f1f1f]" aria-label="Toggle menu">
           <svg id="solid-icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           <svg id="solid-icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -388,6 +370,10 @@ const { variant = 'solid' } = Astro.props;
         </details>
         <a href="/reviews/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Reviews</a>
         <a id="s-mobile-signin-link" href="/sign-in/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Sign in</a>
+        <div id="s-mobile-account-links" class="hidden">
+          <a href={`${APP_URL}/settings`} class="mobile-nav-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Account</a>
+          <a href="/faq/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Help center</a>
+        </div>
         <button id="s-mobile-signout-btn" class="hidden w-full text-left flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Sign out</button>
       </div>
       <div class="p-6 shrink-0">
@@ -495,22 +481,103 @@ const { variant = 'solid' } = Astro.props;
     //    close, and sign-out are delegated so they survive ClientRouter swaps.
     //    Handles both nav variants by id prefix: 't' (transparent), 's' (solid).
     const fsSupabase = getSupabase();
+    const fsAppUrl = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
     let fsUser: any = null;
+    // Cached offer requests for the signed-in user. null = not fetched yet.
+    let fsRequests: Array<{ id: string; address: string; status: string }> | null = null;
+
+    // Initials: first letter of first + last name, uppercase. Falls back to the
+    // first letter of the email so the avatar is never blank.
+    const fsInitials = (u: any) => {
+      const meta = u?.user_metadata ?? {};
+      const name = (meta.full_name || [meta.first_name, meta.last_name].filter(Boolean).join(' ') || '').trim();
+      const parts = name ? name.split(/\s+/).filter(Boolean) : [];
+      if (parts.length) {
+        return ((parts[0][0] || '') + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase();
+      }
+      return (u?.email?.[0] || 'U').toUpperCase();
+    };
+
+    // Status line under each address — mirrors the portal's own gates.
+    const fsStatus = (row: any) => {
+      if (row.offer_accepted_at) return 'Offer accepted';
+      if (row.offer_amount_cents != null) return 'Offer ready';
+      if (row.photos_submitted_at) return 'In review';
+      return 'In progress';
+    };
+
+    const fsEsc = (v: string) =>
+      String(v ?? '').replace(/[&<>"']/g, (c) => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' } as Record<string, string>
+      )[c]);
+
+    // Street line only, matching the portal's address treatment.
+    const fsStreet = (row: any) => {
+      if (row.street) return row.street;
+      const first = String(row.address || '').split(',')[0];
+      return first.trim();
+    };
+
+    const fsHouseSvg =
+      '<span class="fs-pm-prop__icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1f1f1f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"></path><path d="M5 9.5V21h14V9.5"></path></svg></span>';
+
+    const fsRenderRequests = (p: string) => {
+      const host = document.getElementById(`${p}-offer-list`);
+      if (!host) return;
+      if (fsRequests === null) {
+        host.innerHTML = '<div class="px-3 py-3" style="font-size:13px;color:#8a8a83;">Loading…</div>';
+        return;
+      }
+      if (!fsRequests.length) {
+        host.innerHTML =
+          '<div class="fs-pm-empty">No requests yet. <a href="/">Get your offer</a></div>';
+        return;
+      }
+      host.innerHTML = fsRequests.map((r) => (
+        `<a class="fs-pm-prop" role="menuitem" href="${fsEsc(fsAppUrl)}/?session_id=${encodeURIComponent(r.id)}">` +
+        fsHouseSvg +
+        `<span style="flex:1;min-width:0;">` +
+        `<span class="fs-pm-prop__addr">${fsEsc(r.address)}</span>` +
+        `<span class="fs-pm-prop__status">${fsEsc(r.status)}</span>` +
+        `</span></a>`
+      )).join('');
+    };
+
+    // Fetch the user's submitted offer requests once per sign-in. Deduped by
+    // normalized address the same way the portal does, so repeated funnel runs
+    // on one property don't show up as duplicates.
+    const fsLoadRequests = async () => {
+      if (!fsUser || fsUser.is_anonymous) { fsRequests = null; return; }
+      const { data, error } = await fsSupabase
+        .from('qualification_sessions')
+        .select('id, address, street, offer_amount_cents, offer_accepted_at, photos_submitted_at, created_at')
+        .eq('user_id', fsUser.id)
+        .order('created_at', { ascending: false });
+      if (error) { fsRequests = []; fsApplyAuth(); return; }
+      const norm = (a: string) => (a || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+      const seen = new Set<string>();
+      fsRequests = [];
+      for (const row of (data || [])) {
+        const key = norm(row.address) || row.id;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        fsRequests.push({ id: row.id, address: fsStreet(row) || 'Your property', status: fsStatus(row) });
+      }
+      fsApplyAuth();
+    };
 
     const fsApplyAuthFor = (p: string) => {
       const wrap = document.getElementById(`${p}-profile-wrap`);
       if (!wrap) return; // this variant isn't the one rendered on this page
       const signin   = document.getElementById(`${p}-signin-link`);
-      const img      = document.getElementById(`${p}-profile-avatar`) as HTMLImageElement | null;
       const initEl   = document.getElementById(`${p}-profile-initial`);
       const menu     = document.getElementById(`${p}-profile-menu`);
-      const emailEl  = document.getElementById(`${p}-profile-email`);
       const mSignin  = document.getElementById(`${p}-mobile-signin-link`);
       const mSignout = document.getElementById(`${p}-mobile-signout-btn`);
       const mProfile = document.getElementById(`${p}-mobile-profile`);
-      const mImg     = document.getElementById(`${p}-mobile-profile-avatar`) as HTMLImageElement | null;
       const mInit    = document.getElementById(`${p}-mobile-profile-initial`);
       const mEmail   = document.getElementById(`${p}-mobile-profile-email`);
+      const mExtras  = document.getElementById(`${p}-mobile-account-links`);
 
       const signedIn = !!fsUser && !fsUser.is_anonymous;
       if (signedIn) {
@@ -526,24 +593,13 @@ const { variant = 'solid' } = Astro.props;
         mSignout?.classList.remove('hidden');
         mProfile?.classList.remove('hidden');
         if (mProfile) mProfile.style.display = 'flex';
+        mExtras?.classList.remove('hidden');
         const email = fsUser.email || '';
-        if (emailEl) emailEl.textContent = email;
         if (mEmail) mEmail.textContent = email;
-        const avatarUrl = fsUser.user_metadata?.avatar_url || fsUser.user_metadata?.picture;
-        if (avatarUrl) {
-          if (img) { img.src = avatarUrl; img.classList.remove('hidden'); }
-          if (mImg) { mImg.src = avatarUrl; mImg.classList.remove('hidden'); }
-          initEl?.classList.add('hidden');
-          mInit?.classList.add('hidden');
-        } else {
-          img?.classList.add('hidden');
-          mImg?.classList.add('hidden');
-          initEl?.classList.remove('hidden');
-          mInit?.classList.remove('hidden');
-          const initial = (email[0] || 'U').toUpperCase();
-          if (initEl) initEl.textContent = initial;
-          if (mInit) mInit.textContent = initial;
-        }
+        const initial = fsInitials(fsUser);
+        if (initEl) initEl.textContent = initial;
+        if (mInit) mInit.textContent = initial;
+        fsRenderRequests(p);
       } else {
         if (signin) signin.style.removeProperty('display');
         wrap.classList.add('hidden');
@@ -552,6 +608,7 @@ const { variant = 'solid' } = Astro.props;
         mSignout?.classList.add('hidden');
         mProfile?.classList.add('hidden');
         if (mProfile) mProfile.style.display = '';
+        mExtras?.classList.add('hidden');
         menu?.classList.add('hidden');
       }
     };
@@ -586,6 +643,20 @@ const { variant = 'solid' } = Astro.props;
       }
     });
 
+    // Escape closes an open popover and returns focus to its trigger.
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      for (const p of ['t', 's']) {
+        const menu = document.getElementById(`${p}-profile-menu`);
+        if (menu && !menu.classList.contains('hidden')) {
+          menu.classList.add('hidden');
+          const btn = document.getElementById(`${p}-profile-btn`);
+          btn?.setAttribute('aria-expanded', 'false');
+          (btn as HTMLElement | null)?.focus();
+        }
+      }
+    });
+
     // Keep the desktop profile button from showing at mobile widths.
     window.addEventListener('resize', () => {
       for (const p of ['t', 's']) {
@@ -596,8 +667,16 @@ const { variant = 'solid' } = Astro.props;
       }
     });
 
-    fsSupabase.auth.getUser().then(({ data }) => { fsUser = data.user; fsApplyAuth(); });
-    fsSupabase.auth.onAuthStateChange((_e, session) => { fsUser = session?.user || null; fsApplyAuth(); });
+    const fsOnUser = (u: any) => {
+      const changed = (fsUser?.id || null) !== (u?.id || null);
+      fsUser = u;
+      if (changed) fsRequests = null;
+      fsApplyAuth();
+      if (changed && u && !u.is_anonymous) fsLoadRequests();
+    };
+
+    fsSupabase.auth.getUser().then(({ data }) => fsOnUser(data.user));
+    fsSupabase.auth.onAuthStateChange((_e, session) => fsOnUser(session?.user || null));
     document.addEventListener('astro:page-load', fsApplyAuth);
   }
 </script>
