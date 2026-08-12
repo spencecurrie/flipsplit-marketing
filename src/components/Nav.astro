@@ -533,8 +533,11 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
           '<div class="fs-pm-empty">No requests yet. <a href="/">Get your offer</a></div>';
         return;
       }
+      // The href deliberately carries no session tokens — a copied or
+      // middle-clicked link must never contain credentials. Tokens are
+      // appended to the hash only on a genuine left-click, below.
       host.innerHTML = fsRequests.map((r) => (
-        `<a class="fs-pm-prop" role="menuitem" href="${fsEsc(fsAppUrl)}/?session_id=${encodeURIComponent(r.id)}">` +
+        `<a class="fs-pm-prop" role="menuitem" data-fs-handoff="1" href="${fsEsc(fsAppUrl)}/?session_id=${encodeURIComponent(r.id)}">` +
         fsHouseSvg +
         `<span style="flex:1;min-width:0;">` +
         `<span class="fs-pm-prop__addr">${fsEsc(r.address)}</span>` +
@@ -618,6 +621,35 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
     document.addEventListener('click', (e) => {
       const el = e.target instanceof Element ? e.target : null;
       if (!el) return;
+
+      // ── Cross-origin sign-in handoff ──────────────────────────────────
+      // The portal is a separate origin, so it has its own localStorage and
+      // its own Supabase session. Without this, a user signed in here lands
+      // there as whoever the portal last saw — or as nobody.
+      //
+      // Tokens ride in the URL *hash*: fragments are never sent to a server
+      // and never appear in a Referer header. The portal strips them before
+      // it does anything else. Same shape as Supabase's own OAuth redirect.
+      //
+      // Only plain left-clicks are intercepted. Cmd/ctrl/middle-click falls
+      // through to the token-free href, so a link opened in a new tab or
+      // copied to the clipboard never carries credentials.
+      const handoff = el.closest('a[data-fs-handoff]') as HTMLAnchorElement | null;
+      if (handoff) {
+        const me = e as MouseEvent;
+        if (me.metaKey || me.ctrlKey || me.shiftKey || me.altKey || me.button !== 0) return;
+        e.preventDefault();
+        const href = handoff.getAttribute('href') || '';
+        fsSupabase.auth.getSession().then(({ data }) => {
+          const s = data.session;
+          const url = (s?.access_token && s?.refresh_token)
+            ? `${href}#fs_at=${encodeURIComponent(s.access_token)}&fs_rt=${encodeURIComponent(s.refresh_token)}`
+            : href;
+          window.location.assign(url);
+        }, () => window.location.assign(href));
+        return;
+      }
+
       // Profile button → toggle that variant's dropdown.
       const btn = el.closest('#t-profile-btn, #s-profile-btn') as HTMLElement | null;
       if (btn) {
