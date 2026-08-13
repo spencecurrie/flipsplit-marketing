@@ -12,6 +12,18 @@ interface Props {
 }
 const { id = 'address-form', class: className = '', align = 'left', showTrust = true, theme = 'light', responsive = false } = Astro.props;
 const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
+
+// No default for the Maps key, and a hard failure if it's missing: this form
+// refuses to submit unless the user picks a Google suggestion (see the submit
+// handler below), so without Places the entire lead funnel is dead. A failed
+// build is a much better outcome than a deploy where the homepage form silently
+// stops accepting addresses.
+if (!import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY) {
+  throw new Error(
+    'PUBLIC_GOOGLE_MAPS_API_KEY is not set. The address form needs it to load ' +
+    'Google Places. Set it in .env locally and in the Vercel project settings.',
+  );
+}
 const trustStrong = theme === 'dark' ? 'text-white' : 'text-[#1f1f1f]';
 const trustSoft   = theme === 'dark' ? 'text-white/80' : 'text-[#1f1f1f]';
 const trustHint   = theme === 'dark' ? 'text-white/70' : 'text-[#1f1f1f]';
@@ -210,6 +222,13 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 <script>
   import { getSupabase } from '../lib/supabase';
   import { navigate } from 'astro:transitions/client';
+
+  // Frontmatter runs at build time on the server — its consts do NOT exist in
+  // this bundle. Two lines below referenced the frontmatter's APP_URL and threw
+  // ReferenceError at runtime: the "already on FlipSplit" sign-in link and the
+  // returning-owner deep link into the app. Read it from the environment here,
+  // the same way Nav.astro does; finish.astro solves it with a <meta> tag.
+  const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
 
   declare global {
     interface Window {
@@ -631,7 +650,13 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
       };
       const s = document.createElement('script');
       s.id = 'gplaces-script';
-      s.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyArzPR5lnfheBpgpS98ZrQWO949cB1ty30&libraries=places&callback=__onPlacesReady';
+      // PUBLIC_ vars are inlined into client scripts by Vite at build time.
+      // Shared with flipsplit-app, which reads the same key from
+      // VITE_GOOGLE_MAPS_API_KEY. It's referrer-restricted to both Vercel
+      // domains plus localhost, so it's public by design — the reason to keep
+      // it in config is that rotating it shouldn't be a code change.
+      const key = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
+      s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&callback=__onPlacesReady`;
       s.async = true;
       s.defer = true;
       document.head.appendChild(s);
