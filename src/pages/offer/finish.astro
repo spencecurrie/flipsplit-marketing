@@ -110,6 +110,14 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
           return;
         }
 
+        // Push the completed lead to Attio. Fire-and-forget: the CRM must
+        // never delay or block the handoff to the app. The anonymous branch
+        // syncs here too — the session already carries every funnel answer,
+        // and the claim only changes which account owns it.
+        supabase.functions
+          .invoke('sync-attio', { body: { session_id: session.id } })
+          .then(() => {}, () => {});
+
         if (isAnonymous) {
           // ── Anonymous user path: generate claim token, redirect to /signup ──
           const claimToken = genUUID();
