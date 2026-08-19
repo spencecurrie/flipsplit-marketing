@@ -1,0 +1,215 @@
+---
+// Public, unauthenticated SMS opt-in page.
+//
+// This exists so carrier reviewers can reach a working opt-in form during
+// 10DLC campaign vetting: the app's /signup/phone sits behind ProtectedRoute
+// and bounces a logged-out visitor to /signup, which a reviewer reads as
+// "opt-in not verifiable". The disclosure copy here is character-for-character
+// the same as the app's, and both are the wording registered with the carrier.
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css'
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Text Message Opt-In | FlipSplit</title>
+  <meta name="description" content="Sign up to receive SMS customer care and offer status notifications from FlipSplit LLC. Message frequency may vary. Reply STOP to opt out." />
+  <link rel="canonical" href="https://www.flipsplit.com/sms-opt-in" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    :root { --brand-dark: #1f1f1f; --brand-body: #2a2a27; }
+    body { font-family: 'General Sans', sans-serif; color: var(--brand-body); }
+    h1, h2 { font-family: 'General Sans', sans-serif; color: var(--brand-dark); }
+    a { cursor: pointer; }
+    .consent { font-size: 0.8125rem; color: #5a5a54; line-height: 1.7; }
+    .consent a { color: #1f1f1f; text-decoration: underline; }
+    .field {
+      width: 100%; border: 1px solid #e6e6e2; border-radius: 12px;
+      padding: 0.875rem 1rem; font-size: 1rem; color: #1f1f1f;
+      background: #ffffff; outline: none; transition: border-color 0.18s ease;
+    }
+    .field:focus { border-color: #1f1f1f; }
+    .field:disabled { background: #f6f6f3; }
+    .submit {
+      width: 100%; height: 3rem; border-radius: 12px; background: #1f1f1f;
+      color: #ffffff; font-weight: 600; font-size: 1rem;
+      transition: opacity 0.18s ease;
+    }
+    .submit:disabled { opacity: 0.55; cursor: not-allowed; }
+  </style>
+  <ClientRouter />
+</head>
+<body class="bg-white antialiased">
+
+  <Nav />
+
+  <!-- HEADER -->
+  <section class="py-16 px-6 border-b border-[#e6e6e2]">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-4xl font-semibold mb-3" style="color:#1f1f1f;">Text message opt-in</h1>
+      <p class="text-[#5a5a54] text-base leading-relaxed max-w-2xl">
+        Sign up to get text updates from FlipSplit about your cash offer — when your
+        offer is ready, when documents need your signature, and when your closing
+        date is set.
+      </p>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <section class="py-16 px-6">
+    <div class="max-w-xl mx-auto">
+
+      <h2 class="text-xl font-bold mb-2">What you'll receive</h2>
+      <ul class="list-disc pl-6 mb-10 text-[#5a5a54] text-[0.9375rem] leading-relaxed space-y-1">
+        <li>SMS customer care — replies from our team about your offer</li>
+        <li>Product or service delivery notifications — offer ready, document requests, closing updates</li>
+      </ul>
+
+      <form id="sms-form" class="border border-[#e6e6e2] rounded-2xl p-7">
+        <label for="phone" class="block text-sm font-semibold mb-2" style="color:#1f1f1f;">Mobile phone</label>
+        <input
+          id="phone"
+          name="phone"
+          type="tel"
+          inputmode="numeric"
+          autocomplete="tel"
+          placeholder="(555) 000-0000"
+          class="field mb-5"
+        />
+
+        <p class="consent mb-5">
+          By providing your phone number and clicking Submit, you agree to receive
+          SMS Customer Care, Product or Service Delivery Notification from FlipSplit
+          LLC. Message frequency may vary. Standard Message and Data Rates may apply.
+          Reply STOP to opt out. Reply HELP for help. Consent is not a condition of
+          purchase. See our <a href="/privacy-policy/">Privacy Policy</a>. Your mobile
+          information will not be sold or shared with third parties for promotional or
+          marketing purposes.
+        </p>
+
+        <button type="submit" id="sms-submit" class="submit" disabled>Submit</button>
+
+        <p id="sms-error" class="text-sm mt-4 hidden" style="color:#c0392b;"></p>
+      </form>
+
+      <div id="sms-success" class="hidden border border-[#e6e6e2] rounded-2xl p-7 text-center">
+        <h2 class="text-xl font-bold mb-2">You're signed up</h2>
+        <p class="text-[#5a5a54] text-[0.9375rem] leading-relaxed">
+          Thanks — we've recorded your consent and we'll text you at the number you
+          provided. Reply STOP to any message to opt out, or HELP for help.
+        </p>
+      </div>
+
+      <p class="text-sm text-[#8a8a83] mt-8 leading-relaxed">
+        Questions about our text messages? Email
+        <a href="mailto:info@flipsplit.com" style="color:#1f1f1f;text-decoration:underline;">info@flipsplit.com</a>
+        or call <a href="tel:18006617489" style="color:#1f1f1f;text-decoration:underline;">1-800-661-7489</a>.
+        See also our <a href="/terms-and-conditions/" style="color:#1f1f1f;text-decoration:underline;">Terms &amp; Conditions</a>.
+      </p>
+
+    </div>
+  </section>
+
+  <Footer />
+
+  <script>
+    import { getSupabase } from '../lib/supabase';
+
+    // Stored verbatim alongside the timestamp and IP as the consent record.
+    // Keep in sync with the app's SignupPhone.jsx and the carrier registration.
+    const TCPA_CONSENT_TEXT =
+      'By providing your phone number and clicking Submit, you agree to receive ' +
+      'SMS Customer Care, Product or Service Delivery Notification from ' +
+      'FlipSplit LLC. Message frequency may vary. Standard Message and Data ' +
+      'Rates may apply. Reply STOP to opt out. Reply HELP for help. Consent is ' +
+      'not a condition of purchase. See our Privacy Policy at ' +
+      'https://www.flipsplit.com/privacy-policy/. Your mobile information will ' +
+      'not be sold or shared with third parties for promotional or marketing ' +
+      'purposes.';
+
+    const form    = document.getElementById('sms-form') as HTMLFormElement;
+    const input   = document.getElementById('phone') as HTMLInputElement;
+    const button  = document.getElementById('sms-submit') as HTMLButtonElement;
+    const errorEl = document.getElementById('sms-error') as HTMLElement;
+    const success = document.getElementById('sms-success') as HTMLElement;
+
+    const digitsOnly = (v: string) => v.replace(/\D/g, '');
+
+    function formatPhone(raw: string): string {
+      const d = digitsOnly(raw).slice(0, 10);
+      if (d.length < 4) return d;
+      if (d.length < 7) return `(${d.slice(0, 3)}) ${d.slice(3)}`;
+      return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
+    }
+
+    input.addEventListener('input', () => {
+      input.value = formatPhone(input.value);
+      button.disabled = digitsOnly(input.value).length !== 10;
+    });
+
+    // Best-effort public IP for the consent record, same as the app does.
+    let ip: string | null = null;
+    fetch('https://api.ipify.org?format=json')
+      .then((r) => r.json())
+      .then((d) => { ip = d.ip || null; })
+      .catch(() => { ip = null; });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const digits = digitsOnly(input.value);
+      if (digits.length !== 10) return;
+
+      button.disabled = true;
+      button.textContent = 'Submitting…';
+      errorEl.classList.add('hidden');
+
+      try {
+        const supabase = getSupabase();
+
+        // Anonymous auth, self-healing against a stored JWT for a deleted user
+        // — the same bootstrap the homepage address form uses.
+        let userId: string | undefined;
+        const { data: existing, error: getUserErr } = await supabase.auth.getUser();
+        if (existing?.user?.id && !getUserErr) {
+          userId = existing.user.id;
+        } else {
+          try { await supabase.auth.signOut(); } catch { /* ignore */ }
+          const { data: signin, error: authErr } = await supabase.auth.signInAnonymously();
+          if (authErr) throw authErr;
+          userId = signin?.user?.id;
+        }
+        if (!userId) throw new Error('Could not establish a session. Please refresh and try again.');
+
+        const acceptedAt = new Date().toISOString();
+        const { error: insertErr } = await supabase
+          .from('qualification_sessions')
+          .insert({
+            user_id: userId,
+            address: 'SMS opt-in page (no property address)',
+            phone: `+1${digits}`,
+            tcpa_consent_accepted_at: acceptedAt,
+            tcpa_consent_text: TCPA_CONSENT_TEXT,
+            tcpa_consent_ip: ip,
+            current_step: 0,
+          });
+        if (insertErr) throw insertErr;
+
+        form.classList.add('hidden');
+        success.classList.remove('hidden');
+      } catch (err: any) {
+        console.error(err);
+        errorEl.textContent = err?.message || 'Could not save your number. Please try again.';
+        errorEl.classList.remove('hidden');
+        button.disabled = false;
+        button.textContent = 'Submit';
+      }
+    });
+  </script>
+
+</body>
+</html>
