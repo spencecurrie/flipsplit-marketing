@@ -1,0 +1,136 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css'
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terms & Conditions | FlipSplit</title>
+  <meta name="description" content="FlipSplit Terms & Conditions — the terms that govern your use of our website and services." />
+  <link rel="canonical" href="https://www.flipsplit.com/terms-and-conditions" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    :root { --brand-blue: #1f1f1f; --brand-dark: #1f1f1f; --brand-body: #2a2a27; }
+    body { font-family: 'General Sans', sans-serif; color: var(--brand-body); }
+    h1, h2, h3 { font-family: 'General Sans', 'General Sans', sans-serif; color: var(--brand-dark); }
+    .btn-primary { background: #1f1f1f; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
+    .btn-primary:hover { filter: brightness(1.08); }
+    .prose h2 { font-size: 1.25rem; font-weight: 900; color: #1f1f1f; margin: 2rem 0 0.75rem; }
+    .prose p, .prose li { font-size: 0.9375rem; color: #5a5a54; line-height: 1.75; }
+    .prose ul { list-style: disc; padding-left: 1.5rem; margin: 0.75rem 0; }
+    .prose li { margin-bottom: 0.25rem; }
+    a { cursor: pointer; }
+  </style>
+  <ClientRouter />
+</head>
+<body class="bg-white antialiased">
+
+  <!-- NAV -->
+  <Nav />
+
+  <!-- HEADER -->
+  <section class="py-16 px-6 border-b border-[#e6e6e2]">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-4xl font-semibold mb-3" style="color:#1f1f1f;">Terms &amp; Conditions</h1>
+      <p class="text-[#1f1f1f] text-sm">Last updated: August 19, 2026</p>
+    </div>
+  </section>
+
+  <!-- CONTENT -->
+  <section class="py-16 px-6">
+    <div class="max-w-3xl mx-auto prose">
+
+      <p>These Terms &amp; Conditions ("Terms") govern your access to and use of the website, offer request tools, seller dashboard, and related services (collectively, the "Services") provided by FlipSplit LLC ("FlipSplit," "we," "us," or "our"). By accessing or using the Services, you agree to be bound by these Terms. If you do not agree, please do not use the Services.</p>
+
+      <h2>1. Eligibility</h2>
+      <p>You must be at least 18 years old and legally able to enter into a binding contract to use the Services. By using the Services, you represent that you meet these requirements and that any information you provide is accurate and complete.</p>
+
+      <h2>2. What FlipSplit Does</h2>
+      <p>FlipSplit buys residential property directly from homeowners in Southern California, including Los Angeles County, Orange County, San Diego County, Riverside County, and San Bernardino County. Our model combines an as-is cash offer with a share of the upside if the home later resells for more.</p>
+      <p>FlipSplit is a real estate buyer. We are not acting as your real estate broker, agent, attorney, accountant, appraiser, or financial advisor, and nothing on this site constitutes legal, tax, or financial advice. You are encouraged to consult your own professionals before selling your home.</p>
+
+      <h2>3. Offers Are Not Binding Until Signed</h2>
+      <p>Any preliminary offer, estimate, valuation, or range presented through the Services is provided for informational purposes only. It is not a formal offer to purchase and does not create a contract.</p>
+      <ul>
+        <li>Preliminary numbers are based on the information you provide and on automated data sources, and are subject to change.</li>
+        <li>Final offers are subject to property inspection, title review, and our internal underwriting.</li>
+        <li>No purchase obligation exists for either party until a written purchase agreement is signed by both you and FlipSplit.</li>
+        <li>Any upside-sharing arrangement is governed solely by the terms of that signed purchase agreement, not by this website.</li>
+      </ul>
+
+      <h2>4. Property Valuations and Estimates</h2>
+      <p>Valuations shown through the Services may be generated in whole or in part by automated valuation models and third-party data providers. These estimates are not appraisals, broker price opinions, or guarantees of value, and they may be inaccurate or out of date. You should not rely on them as the sole basis for any decision.</p>
+
+      <h2>5. Accounts</h2>
+      <p>Some features require you to create an account. You are responsible for maintaining the confidentiality of your credentials and for all activity that occurs under your account. Notify us promptly at <a href="mailto:info@flipsplit.com" style="color:#1f1f1f;">info@flipsplit.com</a> if you suspect unauthorized access. We may suspend or terminate accounts that violate these Terms or that we reasonably believe are being used fraudulently.</p>
+
+      <h2>6. Information You Provide</h2>
+      <p>You agree that the property, ownership, and contact information you submit is accurate to the best of your knowledge, and that you are the owner of the property or are authorized to act on the owner's behalf. Submitting false or misleading information may result in withdrawal of any offer and termination of your access to the Services.</p>
+      <p>By submitting property details, photos, or other materials, you grant FlipSplit a non-exclusive, royalty-free license to use those materials for the purpose of evaluating, marketing, and completing a potential transaction.</p>
+
+      <h2>7. Communications Consent</h2>
+      <p>By providing your phone number or email address, you consent to receive communications from FlipSplit related to your offer request, including calls, text messages, and emails. Messages may be sent using automated technology. Consent to receive marketing messages is not a condition of any purchase.</p>
+      <ul>
+        <li>Message and data rates may apply. Message frequency varies.</li>
+        <li>Reply STOP to any text message to opt out, or HELP for assistance.</li>
+        <li>You may unsubscribe from marketing emails using the link in any email.</li>
+        <li>We may still send you transactional messages about an active transaction.</li>
+      </ul>
+      <p>How we handle your information is described in our <a href="/privacy-policy/" style="color:#1f1f1f;">Privacy Policy</a>, which is incorporated into these Terms by reference.</p>
+
+      <h2>8. Acceptable Use</h2>
+      <p>You agree not to:</p>
+      <ul>
+        <li>Use the Services for any unlawful purpose or in violation of these Terms</li>
+        <li>Submit property information you are not authorized to submit</li>
+        <li>Scrape, harvest, or copy content or data from the Services by automated means</li>
+        <li>Attempt to gain unauthorized access to our systems, accounts, or networks</li>
+        <li>Interfere with or disrupt the operation of the Services</li>
+        <li>Upload malicious code or otherwise attempt to harm the Services or other users</li>
+      </ul>
+
+      <h2>9. Intellectual Property</h2>
+      <p>The Services, including all text, graphics, logos, the FlipSplit name and wordmark, software, and design elements, are owned by FlipSplit LLC or its licensors and are protected by intellectual property laws. You may not reproduce, distribute, modify, or create derivative works from our content without our prior written permission.</p>
+
+      <h2>10. Third-Party Services and Links</h2>
+      <p>The Services may link to or incorporate third-party tools and websites, including mapping, valuation, analytics, and communications providers. We do not control and are not responsible for the content, accuracy, or practices of third parties. Your use of a third-party service is governed by that party's own terms.</p>
+
+      <h2>11. Disclaimers</h2>
+      <p>The Services are provided "as is" and "as available," without warranties of any kind, whether express or implied, including implied warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not warrant that the Services will be uninterrupted, error-free, or that any information presented will be accurate or complete.</p>
+
+      <h2>12. Limitation of Liability</h2>
+      <p>To the fullest extent permitted by law, FlipSplit LLC and its members, officers, employees, and agents will not be liable for any indirect, incidental, special, consequential, or punitive damages, or for lost profits or lost opportunity, arising out of or relating to your use of the Services. Our total aggregate liability arising out of or relating to the Services will not exceed one hundred dollars ($100), except where a signed purchase agreement between you and FlipSplit provides otherwise.</p>
+
+      <h2>13. Indemnification</h2>
+      <p>You agree to indemnify and hold harmless FlipSplit LLC from any claims, damages, losses, liabilities, and expenses (including reasonable attorneys' fees) arising out of your use of the Services, your violation of these Terms, or your violation of any law or the rights of a third party.</p>
+
+      <h2>14. Governing Law and Disputes</h2>
+      <p>These Terms are governed by the laws of the State of California, without regard to its conflict-of-law rules. Any dispute arising out of or relating to these Terms or the Services will be brought exclusively in the state or federal courts located in Orange County, California, and you consent to the jurisdiction of those courts. Nothing in this section limits either party's right to seek relief in small claims court.</p>
+
+      <h2>15. Changes to These Terms</h2>
+      <p>We may update these Terms from time to time. Material changes will be reflected by updating the date at the top of this page. Your continued use of the Services after changes take effect constitutes acceptance of the revised Terms.</p>
+
+      <h2>16. Severability</h2>
+      <p>If any provision of these Terms is found to be unenforceable, that provision will be limited or removed to the minimum extent necessary, and the remaining provisions will remain in full force and effect.</p>
+
+      <h2>17. Contact Us</h2>
+      <p>Questions about these Terms? Reach us at:</p>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:info@flipsplit.com" style="color:#1f1f1f;">info@flipsplit.com</a></li>
+        <li><strong>Phone:</strong> <a href="tel:18006617489" style="color:#1f1f1f;">1-800-661-7489</a></li>
+        <li><strong>Mail:</strong> FlipSplit LLC, 1590 S Coast Hwy #16, Laguna Beach, CA 92651</li>
+      </ul>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <Footer />
+
+</body>
+</html>
