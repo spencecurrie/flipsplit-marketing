@@ -176,8 +176,8 @@ const progressPct = Math.round((step / totalSteps) * 100);
     <!-- Question content -->
     <main class="flex-1 px-6 pt-8 pb-8 lg:pt-20 max-w-6xl mx-auto w-full">
       <div class="text-center mb-14">
-        <h1 class="text-4xl md:text-5xl font-semibold mb-4" style="color: var(--brand-dark);">{title}</h1>
-        {subtitle && <p class="text-base md:text-lg text-[#1f1f1f] max-w-2xl mx-auto leading-relaxed">{subtitle}</p>}
+        <h1 id="offer-title" class="text-4xl md:text-5xl font-semibold mb-4" style="color: var(--brand-dark);">{title}</h1>
+        {subtitle && <p id="offer-subtitle" class="text-base md:text-lg text-[#1f1f1f] max-w-2xl mx-auto leading-relaxed">{subtitle}</p>}
       </div>
 
       <slot />

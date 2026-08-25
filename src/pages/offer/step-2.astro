@@ -185,7 +185,29 @@ const sqftOptions = [
       const setLoading = (on: boolean) => {
         els().forEach((el) => { el.disabled = on; });
       };
-      const finish = (data?: any) => { setLoading(false); if (data) applyValues(data); update(); };
+      // RentCast's coverage is per-address, not per-market: neighbouring houses
+      // on the same street can differ. When it has nothing, every dropdown is
+      // still blank here, and the default "we've filled in what we could find"
+      // copy reads as though the page is broken. Say what actually happened.
+      const NO_RECORDS_TITLE = "Tell us about your home";
+      const NO_RECORDS_SUBTITLE =
+        "We couldn't find public records for this address, so there's nothing to " +
+        "pre-fill. Enter your home's details below and we'll take it from there.";
+
+      const tellThemNothingWasFound = () => {
+        if (!allBlank()) return;
+        const titleEl = document.getElementById('offer-title');
+        const subEl = document.getElementById('offer-subtitle');
+        if (titleEl) titleEl.textContent = NO_RECORDS_TITLE;
+        if (subEl) subEl.textContent = NO_RECORDS_SUBTITLE;
+      };
+
+      const finish = (data?: any) => {
+        setLoading(false);
+        if (data) applyValues(data);
+        update();
+        tellThemNothingWasFound();
+      };
       setLoading(true);
 
       let tries = 0;
