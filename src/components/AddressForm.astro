@@ -224,7 +224,7 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
   // ── Helper: parse address components from a Google Places result ────────
   function parseAddressParts(place: google.maps.places.PlaceResult) {
-    const parts: { street?: string; city?: string; state?: string; zip?: string } = {};
+    const parts: { street?: string; city?: string; state?: string; zip?: string; county?: string } = {};
     const components = place.address_components || [];
     let streetNumber = '';
     let route = '';
@@ -235,6 +235,11 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
       else if (c.types.includes('locality')) parts.city = c.long_name;
       else if (c.types.includes('administrative_area_level_1')) parts.state = c.short_name;
       else if (c.types.includes('postal_code')) parts.zip = c.long_name;
+      // County — what decides which rep owns the lead. Stored verbatim as
+      // Google gives it ("Orange County"); the stripping rules live server-side
+      // in _shared/territories.ts, because RentCast reports the same county as
+      // "Orange" and the two have to be reconciled somewhere central.
+      else if (c.types.includes('administrative_area_level_2')) parts.county = c.long_name;
     }
     if (streetNumber || route) parts.street = `${streetNumber} ${route}`.trim();
     return parts;
@@ -290,6 +295,7 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
             city: parts.city,
             state: parts.state,
             zip: parts.zip,
+            county: parts.county,
             current_step: 0,
           })
           .select('id')
