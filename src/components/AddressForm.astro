@@ -35,22 +35,6 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 ---
 
 <div class={className}>
-  <!-- Shown only when a real (non-anonymous) account is already signed in.
-       Makes it obvious why the funnel will attach to that account and gives
-       a one-click escape hatch for users testing/retrying the flow. -->
-  <div class:list={["address-signed-in hidden flex items-center justify-between gap-3 max-w-lg p-3 mb-3 rounded-xl border bg-[#f6f7ed] border-[#e6e6e2] text-sm", formCenter]}>
-    <span class="text-[#1f1f1f] leading-snug">
-      Signed in as <strong class="address-signed-in-email">your account</strong> — this property will be added to your dashboard.
-    </span>
-    <button
-      type="button"
-      class="address-signed-in-out shrink-0 font-semibold text-[#1f1f1f] hover:text-[#1f1f1f] disabled:opacity-60"
-      style="color: #1f1f1f;"
-    >
-      Not you? Sign out
-    </button>
-  </div>
-
   <form
     id={id}
     class:list={["address-form flex items-center bg-white rounded-2xl border border-[#e6e6e2] shadow-sm p-2 gap-2 w-full max-w-lg mb-3", formCenter]}
@@ -254,49 +238,6 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
     }
     if (streetNumber || route) parts.street = `${streetNumber} ${route}`.trim();
     return parts;
-  }
-
-  // Show/hide a "Signed in as <email>" banner above each AddressForm. Helps
-  // testers (and any real returning user) see *why* the funnel will skip the
-  // signup detour, and gives a one-click sign-out to start fresh. Runs once
-  // per page-load; the auth state can also change mid-page via the sign-out
-  // button, which re-hides the banner inline.
-  async function refreshSignedInBanners() {
-    const supabase = getSupabase();
-    let email: string | null = null;
-    try {
-      const { data } = await supabase.auth.getUser();
-      const u = data?.user;
-      if (u && !u.is_anonymous) {
-        email = (u.email as string) || (u.user_metadata?.email as string) || 'your account';
-      }
-    } catch { /* unauthenticated or network blip — leave banners hidden */ }
-
-    document.querySelectorAll<HTMLElement>('.address-signed-in').forEach((banner) => {
-      if (banner.dataset.bannerInit === '1' && !email) {
-        banner.classList.add('hidden');
-        return;
-      }
-      banner.dataset.bannerInit = '1';
-      if (!email) { banner.classList.add('hidden'); return; }
-      const emailEl = banner.querySelector<HTMLElement>('.address-signed-in-email');
-      if (emailEl) emailEl.textContent = email;
-      banner.classList.remove('hidden');
-    });
-  }
-
-  function attachSignOutHandlers() {
-    document.querySelectorAll<HTMLButtonElement>('.address-signed-in-out').forEach((btn) => {
-      if (btn.dataset.signoutInit === '1') return;
-      btn.dataset.signoutInit = '1';
-      btn.addEventListener('click', async () => {
-        btn.disabled = true;
-        try { await getSupabase().auth.signOut(); } catch { /* ignore */ }
-        // Hide *all* banner instances on the page, not just the clicked one.
-        document.querySelectorAll<HTMLElement>('.address-signed-in').forEach((b) => b.classList.add('hidden'));
-        btn.disabled = false;
-      });
-    });
   }
 
   // ── Form lifecycle ──────────────────────────────────────────────────────
@@ -663,9 +604,6 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
     }
   }
 
-  // Banner init doesn't depend on Google Places, so kick it off immediately.
-  attachSignOutHandlers();
-  refreshSignedInBanners();
   bootPlaces();
   // Re-run after Astro view transitions (e.g. user navigates from /about back
   // to / where another AddressForm renders). With <ClientRouter /> the page's
@@ -675,8 +613,6 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
   // (including the initial load), so re-wiring autocomplete here is what makes
   // the Google dropdown work without a hard refresh.
   document.addEventListener('astro:page-load', () => {
-    attachSignOutHandlers();
-    refreshSignedInBanners();
     bootPlaces();
   });
 </script>
