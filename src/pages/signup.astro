@@ -136,7 +136,7 @@ import { ClientRouter } from 'astro:transitions';
 
       <p class="text-body text-muted text-center mt-6">
         Already have an account?
-        <a href="/sign-in/" class="font-semibold text-ink underline underline-offset-[3px] decoration-line-strong hover:decoration-ink">Sign in</a>
+        <a id="su-signin-link" href="/sign-in/" class="font-semibold text-ink underline underline-offset-[3px] decoration-line-strong hover:decoration-ink">Sign in</a>
       </p>
 
     </div>
@@ -166,6 +166,16 @@ import { ClientRouter } from 'astro:transitions';
 
       const claim = new URL(window.location.href).searchParams.get('claim');
       let submitting = false;
+
+      // Someone mid-funnel who turns out to already have an account: send them
+      // back HERE afterwards, claim token intact, so resumeIfSignedIn() below
+      // attaches their funnel answers and moves them on. Without the next
+      // param the token is stranded and the funnel run is lost.
+      const signinLink = document.getElementById('su-signin-link') as HTMLAnchorElement | null;
+      if (signinLink) {
+        const back = window.location.pathname + window.location.search;
+        signinLink.href = `/sign-in/?next=${encodeURIComponent(back)}`;
+      }
 
       function showError(msg: string) {
         errorEl.textContent = msg;

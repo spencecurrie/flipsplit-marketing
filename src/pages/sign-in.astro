@@ -118,9 +118,26 @@ import Nav from '../components/Nav.astro';
 
   <script>
     import { getSupabase } from '../lib/supabase';
-    import { handoffToApp } from '../lib/handoff';
 
     const supabase = getSupabase();
+
+    // Where to land after a successful sign-in. Signing in is not a request to
+    // go to the dashboard — it is something you do so you can carry on reading
+    // the page you were already on, so we come back here. The nav's Sign in
+    // links pass ?next=<path>; document.referrer covers links that don't.
+    // Only same-origin paths are honoured, so ?next= can never bounce someone
+    // to another site ("//evil.com" is a valid URL, hence the second check).
+    function resolveNext(): string {
+      const raw = new URL(window.location.href).searchParams.get('next');
+      if (raw && raw.startsWith('/') && !raw.startsWith('//')) return raw;
+      try {
+        const ref = new URL(document.referrer);
+        if (ref.origin === window.location.origin && !ref.pathname.startsWith('/sign-in')) {
+          return ref.pathname + ref.search;
+        }
+      } catch { /* no or unparseable referrer */ }
+      return '/';
+    }
 
     // Wrapped in initAuthPage() and re-run on astro:page-load so the form is
     // wired up after a ClientRouter swap — e.g. revisiting /sign-in via the
@@ -161,13 +178,13 @@ import Nav from '../components/Nav.astro';
       submitLabelEl.textContent = busy ? 'Signing in…' : 'Sign in';
     }
 
-    // ─ Send an authenticated user on to their dashboard ─
-    // Also the Google OAuth landing: Google returns here with the session in
-    // the URL fragment, and getUser() resolves behind the client's URL-detection
-    // step, so by the time this runs the new session is in place.
+    // ─ Already signed in? Nothing to do here — go back where they came from ─
+    // This is also the Google OAuth landing: Google returns to this page with
+    // the session in the URL fragment, and getUser() resolves behind the
+    // client's URL-detection step, so the new session is in place by now.
     supabase.auth.getUser().then(({ data }) => {
       if (data?.user && !data.user.is_anonymous) {
-        handoffToApp(supabase, '/');
+        window.location.replace(resolveNext());
       }
     });
 
@@ -185,10 +202,10 @@ import Nav from '../components/Nav.astro';
       try {
         const { error } = await supabase.auth.signInWithOAuth({
           provider: 'google',
-          // Back to this page, not the homepage: the handler above picks the
-          // new session up and hands it across to the dashboard.
+          // Back to this page, carrying the destination through Google so the
+          // handler above can return them to whatever they were reading.
           options: {
-            redirectTo: `${window.location.origin}/sign-in/`,
+            redirectTo: `${window.location.origin}/sign-in/?next=${encodeURIComponent(resolveNext())}`,
             // Always show the account chooser. Without it Google reuses
             // whichever account the device is already signed into, so someone
             // with two Gmail accounts cannot reach the other one.
@@ -219,7 +236,7 @@ import Nav from '../components/Nav.astro';
       try {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        await handoffToApp(supabase, '/');
+        window.location.assign(resolveNext());
       } catch (err: any) {
         console.error('Auth failed:', err);
         showError(err?.message || 'Could not sign you in. Check your email and password.');

@@ -613,6 +613,13 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
         if (mProfile) mProfile.style.display = '';
         mExtras?.classList.add('hidden');
         menu?.classList.add('hidden');
+        // Tell /sign-in/ where to put them back. Signing in is not a request to
+        // leave the page they're reading — it just makes them signed in on it.
+        // Re-read per navigation because ClientRouter swaps the page under us.
+        const back = window.location.pathname + window.location.search;
+        const href = `/sign-in/?next=${encodeURIComponent(back)}`;
+        signin?.setAttribute('href', href);
+        mSignin?.setAttribute('href', href);
       }
     };
 
