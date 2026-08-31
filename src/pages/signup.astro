@@ -313,7 +313,18 @@ import { ClientRouter } from 'astro:transitions';
         try {
           // Carry the claim token through Google by encoding it in the return URL.
           const redirectTo = `${window.location.origin}/signup/${claim ? `?claim=${encodeURIComponent(claim)}` : ''}`;
-          const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo } });
+          const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+              redirectTo,
+              // Without this Google silently reuses the one account already
+              // signed in on the device and bounces straight back, which reads
+              // as the button doing nothing. Always show the account chooser:
+              // people sign up for this under a different address than the one
+              // their browser happens to be logged into.
+              queryParams: { prompt: 'select_account' },
+            },
+          });
           if (error) throw error;
           // Browser is redirecting to Google now…
         } catch (err: any) {

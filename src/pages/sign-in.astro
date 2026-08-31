@@ -187,7 +187,13 @@ import Nav from '../components/Nav.astro';
           provider: 'google',
           // Back to this page, not the homepage: the handler above picks the
           // new session up and hands it across to the dashboard.
-          options: { redirectTo: `${window.location.origin}/sign-in/` },
+          options: {
+            redirectTo: `${window.location.origin}/sign-in/`,
+            // Always show the account chooser. Without it Google reuses
+            // whichever account the device is already signed into, so someone
+            // with two Gmail accounts cannot reach the other one.
+            queryParams: { prompt: 'select_account' },
+          },
         });
         if (error) throw error;
         // Browser is redirecting to Google now…
