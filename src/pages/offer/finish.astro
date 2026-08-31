@@ -1,8 +1,6 @@
 ---
 import '../../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
-
-const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
 ---
 
 <!DOCTYPE html>
@@ -31,13 +29,14 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
   <main class="flex-1 flex flex-col items-center justify-center px-6 text-center">
     <div class="spinner mb-8" aria-hidden="true"></div>
     <h1 class="text-3xl md:text-4xl font-semibold mb-3">Preparing your offer…</h1>
-    <p class="text-base md:text-lg text-[#1f1f1f] max-w-md">We're saving your details and sending you to create an account so we can text you when your offer is ready.</p>
+    <p class="text-base md:text-lg text-[#1f1f1f] max-w-md">We're saving your details and taking you to create an account so we can text you when your offer is ready.</p>
     <p id="finish-error" class="hidden text-sm text-red-500 font-medium mt-6"></p>
     <div id="preview-note" class="preview-note hidden"></div>
   </main>
 
   <script>
     import { getSupabase } from '../../lib/supabase';
+    import { handoffToApp } from '../../lib/handoff';
 
     // crypto.randomUUID() only exists in "secure contexts" — HTTPS or
     // localhost — so it's missing when the site is opened over a plain-HTTP LAN
@@ -67,15 +66,12 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
         errorEl.classList.remove('hidden');
       };
 
-      const APP_URL = (document.querySelector('meta[name="x-app-url"]') as HTMLMetaElement)?.content
-        || 'https://app.flipsplit.com';
-
       // Preview mode: just display a banner instead of redirecting
       const isPreview = new URL(window.location.href).searchParams.get('preview') === '1';
       if (isPreview) {
         if (previewEl) {
           previewEl.classList.remove('hidden');
-          previewEl.innerHTML = `Preview mode — would generate a claim token and redirect to <code style="background:#fff;padding:2px 6px;border-radius:4px;">${APP_URL}/signup?claim=&lt;token&gt;</code>`;
+          previewEl.innerHTML = `Preview mode — would generate a claim token and redirect to <code style="background:#fff;padding:2px 6px;border-radius:4px;">/signup/?claim=&lt;token&gt;</code>`;
         }
         return;
       }
@@ -140,10 +136,11 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
             payload: { auth_state: 'anonymous' },
           });
 
-          // Sign out the anonymous session before crossing domains so the app
-          // starts fresh — the claim token carries identity over to signup.
+          // Sign out the anonymous session so signup creates a genuinely new
+          // account rather than converting this throwaway one — the claim token
+          // is what carries the funnel answers over to it.
           await supabase.auth.signOut();
-          window.location.assign(`${APP_URL}/signup?claim=${claimToken}`);
+          window.location.assign(`/signup/?claim=${claimToken}`);
         } else {
           // ── Existing FlipSplit user: session is already tied to their
           //    account. Skip the claim/signup flow. Mark the funnel complete
@@ -162,11 +159,12 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
             payload: { auth_state: 'existing_account' },
           });
 
-          // Keep the user signed in — their browser session is theirs.
-          // The dashboard's Supabase client (same project) sees the same JWT.
+          // Carry their session across to the app. Same Supabase project, but a
+          // different origin — and localStorage doesn't cross origins, so the
+          // dashboard cannot see this sign-in unless we hand the tokens over.
           // Land on the Overview (/) so they see the preliminary offer range
           // for this new property, not the final-offer page.
-          window.location.assign(`${APP_URL}/?session_id=${session.id}`);
+          await handoffToApp(supabase, `/?session_id=${session.id}`);
         }
       } catch (err: any) {
         console.error('Finish step failed:', err);
@@ -175,6 +173,5 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
     })();
   </script>
 
-  <meta name="x-app-url" content={APP_URL} />
 </body>
 </html>

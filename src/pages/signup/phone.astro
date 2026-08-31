@@ -1,0 +1,334 @@
+---
+import '../../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+
+// TCPA-compliant phone capture, fired after account creation. Moved here from
+// the dashboard app so the whole funnel runs on one origin; on success it hands
+// the session across to the app and lands the user on their dashboard.
+//
+// The exact disclosure text shown to the user is also stored on the
+// qualification session as `tcpa_consent_text` for legal record. Together with
+// the timestamp and IP, this is the consent log we'd produce in a TCPA dispute.
+//
+// The checkbox is deliberately unchecked on load and does NOT gate the button:
+// the first 10DLC submission was rejected for taking consent from the act of
+// submitting, which leaves nothing separately auditable. A phone number is
+// still required — that is the account's contact detail — but texting it
+// requires the box. Consent columns are written only when it is ticked, and
+// attio-lead-webhook refuses to enqueue an SMS for a session with no
+// tcpa_consent_accepted_at, so an unticked box means no messages.
+//
+// This page is deliberately reachable signed out: carrier reviewers vetting our
+// 10DLC campaign have to be able to open the URL cold and read the opt-in
+// disclosure. Signed out it renders read-only and routes into signup on submit;
+// the consent record is still only ever written for a real account.
+//
+// The wording is the carrier-registered 10DLC copy — it must name marketing
+// messages, since the campaign sends them. Do not reword without re-checking
+// the campaign registration.
+
+const PRIVACY_POLICY_URL = 'https://www.flipsplit.com/privacy-policy/';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>We'll text you when your offer is ready | FlipSplit</title>
+  <meta name="description" content="Add your mobile number so FlipSplit can reach you the moment your cash offer is ready." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <ClientRouter />
+</head>
+<body class="bg-mute">
+
+  <header class="px-6 py-5 max-w-6xl mx-auto w-full">
+    <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
+  </header>
+
+  <main class="min-h-[calc(100vh-5.5rem)] flex items-start justify-center px-6 pb-12">
+    <div class="w-full max-w-[420px]">
+
+      <div class="bg-surface rounded-card border border-line px-8 py-[34px]">
+
+        <h1 class="text-h2 text-ink text-center">
+          We'll text you when your offer is ready
+        </h1>
+        <p class="text-body text-muted mb-7 text-center mt-1.5">
+          One last step. Drop your phone number so we can reach out within 24–48 hours.
+        </p>
+
+        <form id="phone-form" novalidate>
+          <label for="ph-phone" class="block text-small font-semibold text-ink mb-2">Mobile phone</label>
+          <input
+            id="ph-phone"
+            type="tel"
+            inputmode="numeric"
+            autocomplete="tel"
+            placeholder="(555) 000-0000"
+            class="w-full border border-line rounded-control px-4 py-3.5 text-body text-ink bg-surface outline-none focus:border-ink transition-colors duration-[180ms] disabled:bg-mute mb-5"
+          />
+
+          <!-- TCPA opt-in. Unchecked on load, optional, and next to the
+               disclosure it applies to — all three are 10DLC requirements. -->
+          <label class="flex items-start gap-3 cursor-pointer mb-2">
+            <input
+              id="ph-consent"
+              type="checkbox"
+              class="mt-0.5 w-5 h-5 accent-[#1f1f1f] cursor-pointer flex-shrink-0"
+            />
+            <span class="text-small text-muted leading-relaxed">
+              By checking this box, you agree to receive SMS customer care,
+              product or service delivery notifications, and marketing or
+              promotional messages from FlipSplit LLC at the phone number
+              provided. Message frequency may vary. Standard message and data
+              rates may apply. Reply STOP to opt out. Reply HELP for help.
+              Consent is not a condition of purchase. See our
+              <a
+                href={PRIVACY_POLICY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="underline hover:text-ink transition-colors duration-[180ms]"
+              >Privacy Policy</a>. Your mobile information will not be sold or
+              shared with third parties for promotional or marketing purposes.
+            </span>
+          </label>
+
+          <p class="text-small text-faint leading-relaxed">
+            Optional — you can leave this unchecked and still continue. We'll
+            call or email you about your offer either way.
+          </p>
+
+          <p id="ph-error" class="hidden text-small mt-4" style="color: var(--color-danger);"></p>
+
+          <button
+            id="ph-submit"
+            type="submit"
+            disabled
+            class="w-full bg-ink hover:bg-ink-soft disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold h-12 rounded-control text-body transition-colors duration-[180ms] mt-6"
+          >Confirm and finish</button>
+        </form>
+
+      </div>
+
+      <p class="text-small text-faint text-center mt-5 leading-relaxed">
+        You can update or remove your number anytime from Settings.
+      </p>
+
+    </div>
+  </main>
+
+  <script>
+    import { getSupabase } from '../../lib/supabase';
+    import { handoffToApp } from '../../lib/handoff';
+
+    const supabase = getSupabase();
+
+    // Survives the round trip through signup (including Google OAuth).
+    const PENDING_PHONE_KEY = 'flipsplit_pending_phone';
+
+    const PRIVACY_POLICY_URL = 'https://www.flipsplit.com/privacy-policy/';
+
+    // Byte-identical to the carrier-registered 10DLC copy and to the visible
+    // disclosure above. Stored on the session as the consent record.
+    const TCPA_CONSENT_TEXT =
+      "By checking this box, you agree to receive SMS customer care, product or " +
+      "service delivery notifications, and marketing or promotional messages " +
+      "from FlipSplit LLC at the phone number provided. Message frequency may " +
+      "vary. Standard message and data rates may apply. Reply STOP to opt out. " +
+      "Reply HELP for help. Consent is not a condition of purchase. See our " +
+      "Privacy Policy at " + PRIVACY_POLICY_URL + ". Your mobile information " +
+      "will not be sold or shared with third parties for promotional or " +
+      "marketing purposes.";
+
+    function formatPhoneInput(raw: string): string {
+      const digits = raw.replace(/\D/g, '').slice(0, 10);
+      if (digits.length < 4) return digits;
+      if (digits.length < 7) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+      return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+    }
+
+    function digitsOnly(formatted: string): string {
+      return formatted.replace(/\D/g, '');
+    }
+
+    function initPhonePage() {
+      const form = document.getElementById('phone-form') as HTMLFormElement | null;
+      if (!form || form.dataset.phoneInit === '1') return;
+      form.dataset.phoneInit = '1';
+
+      const phoneEl   = document.getElementById('ph-phone')   as HTMLInputElement;
+      const consentEl = document.getElementById('ph-consent') as HTMLInputElement;
+      const errorEl   = document.getElementById('ph-error')   as HTMLElement;
+      const submitBtn = document.getElementById('ph-submit')  as HTMLButtonElement;
+
+      let submitting = false;
+      let ip: string | null = null;
+
+      function showError(msg: string) {
+        errorEl.textContent = msg;
+        errorEl.classList.remove('hidden');
+      }
+      function clearError() {
+        errorEl.classList.add('hidden');
+      }
+      // Consent is intentionally absent here: ticking the box is optional.
+      function syncSubmitState() {
+        submitBtn.disabled = digitsOnly(phoneEl.value).length !== 10 || submitting;
+      }
+      function setBusy(busy: boolean) {
+        submitting = busy;
+        phoneEl.disabled = busy;
+        consentEl.disabled = busy;
+        submitBtn.textContent = busy ? 'Saving…' : 'Confirm and finish';
+        syncSubmitState();
+      }
+
+      phoneEl.addEventListener('input', () => {
+        phoneEl.value = formatPhoneInput(phoneEl.value);
+        syncSubmitState();
+      });
+
+      // Best-effort public IP lookup for the consent record.
+      fetch('https://api.ipify.org?format=json')
+        .then((r) => r.json())
+        .then((d) => { ip = d.ip || null; })
+        .catch(() => { ip = null; });
+
+      // Prefill: the number they typed before being sent through signup wins
+      // over whatever is already on the session.
+      (async () => {
+        const stashed = sessionStorage.getItem(PENDING_PHONE_KEY);
+        if (stashed) {
+          phoneEl.value = formatPhoneInput(stashed);
+          syncSubmitState();
+        }
+
+        const { data: { session } } = await supabase.auth.getSession();
+        const user = session?.user;
+        if (!user || user.is_anonymous) return;
+
+        if (stashed) {
+          sessionStorage.removeItem(PENDING_PHONE_KEY);
+          return;
+        }
+
+        const { data } = await supabase
+          .from('qualification_sessions')
+          .select('phone')
+          .eq('user_id', user.id)
+          .eq('status', 'in_progress')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (data?.phone) {
+          phoneEl.value = formatPhoneInput(data.phone);
+          syncSubmitState();
+        }
+      })();
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (submitting) return;
+
+        const phoneDigits = digitsOnly(phoneEl.value);
+        if (phoneDigits.length !== 10) return;
+
+        const { data: { session } } = await supabase.auth.getSession();
+        const user = session?.user;
+        const isFullAccount = Boolean(user) && !user!.is_anonymous;
+
+        // No account yet: hold the number, send them through signup, and land
+        // them back here to finish. Consent is recorded on the real submit.
+        if (!isFullAccount) {
+          sessionStorage.setItem(PENDING_PHONE_KEY, phoneDigits);
+          window.location.assign('/signup/');
+          return;
+        }
+
+        clearError();
+        setBusy(true);
+
+        try {
+          const consent = consentEl.checked;
+          const acceptedAt = new Date().toISOString();
+          const e164 = `+1${phoneDigits}`;
+
+          const { data: rows, error: selErr } = await supabase
+            .from('qualification_sessions')
+            .select('id')
+            .eq('user_id', user!.id)
+            .eq('status', 'in_progress')
+            .order('created_at', { ascending: false })
+            .limit(1);
+          if (selErr) throw selErr;
+
+          const patch = {
+            phone: e164,
+            // Left null when the box is unticked — that null is what stops the
+            // SMS pipeline from ever texting this number.
+            tcpa_consent_accepted_at: consent ? acceptedAt : null,
+            tcpa_consent_text: consent ? TCPA_CONSENT_TEXT : null,
+            tcpa_consent_ip: consent ? ip : null,
+            status: 'completed',
+            completed_at: acceptedAt,
+            current_step: 6,
+          };
+
+          let sessionId: string;
+          if (rows && rows.length > 0) {
+            sessionId = rows[0].id;
+            const { error: updErr } = await supabase
+              .from('qualification_sessions')
+              .update(patch)
+              .eq('id', sessionId);
+            if (updErr) throw updErr;
+          } else {
+            // Edge case: user signed up without going through the funnel.
+            // Insert a minimal row so the consent record still exists.
+            const { data: inserted, error: insErr } = await supabase
+              .from('qualification_sessions')
+              .insert({ user_id: user!.id, address: '(no funnel address)', ...patch })
+              .select('id')
+              .single();
+            if (insErr) throw insErr;
+            sessionId = inserted.id;
+          }
+
+          await supabase.from('events').insert({
+            session_id: sessionId,
+            user_id: user!.id,
+            event_name: 'phone_captured',
+            payload: {
+              consent_given: consent,
+              consent_accepted_at: consent ? acceptedAt : null,
+              consent_ip: consent ? ip : null,
+            },
+          });
+
+          // Also fire funnel_completed — this is the last onboarding step.
+          await supabase.from('events').insert({
+            session_id: sessionId,
+            user_id: user!.id,
+            event_name: 'funnel_completed',
+            payload: {},
+          });
+
+          await handoffToApp(supabase, '/');
+        } catch (err: any) {
+          console.error(err);
+          showError(err?.message || 'Could not save your phone number. Please try again.');
+          setBusy(false);
+        }
+      });
+
+      syncSubmitState();
+    }
+
+    initPhonePage();
+    document.addEventListener('astro:page-load', initPhonePage);
+  </script>
+
+</body>
+</html>

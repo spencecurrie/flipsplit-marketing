@@ -110,14 +110,15 @@ import Nav from '../components/Nav.astro';
       </div>
 
       <p class="text-sm text-[#1f1f1f] text-center mt-6">
-        <span id="toggle-prompt">New to FlipSplit?</span>
-        <a id="toggle-link" href="#" class="font-semibold ml-1 hover:opacity-80 transition-opacity" style="color:#1f1f1f;">Create an account</a>
+        New to FlipSplit?
+        <a href="/signup/" class="font-semibold ml-1 hover:opacity-80 transition-opacity" style="color:#1f1f1f;">Create an account</a>
       </p>
     </div>
   </main>
 
   <script>
     import { getSupabase } from '../lib/supabase';
+    import { handoffToApp } from '../lib/handoff';
 
     const supabase = getSupabase();
 
@@ -126,19 +127,17 @@ import Nav from '../components/Nav.astro';
     // nav link rather than a full reload, which would otherwise leave the
     // form and buttons without their handlers. A dataset guard on the form
     // keeps a re-run from binding the same instance twice.
-    type Mode = 'signin' | 'signup';
+    //
+    // This page signs people IN only. Account creation lives at /signup, which
+    // also carries the funnel's claim token and collects a name — a second
+    // signup path here would quietly create accounts missing both.
 
     function initAuthPage() {
     const form          = document.getElementById('auth-form')       as HTMLFormElement | null;
     if (!form || form.dataset.authInit === '1') return;
     form.dataset.authInit = '1';
 
-    const titleEl       = document.getElementById('auth-title')      as HTMLElement;
-    const subEl         = document.getElementById('auth-sub')        as HTMLElement;
-    const googleLabelEl = document.getElementById('google-label')    as HTMLElement;
     const submitLabelEl = document.getElementById('submit-label')    as HTMLElement;
-    const togglePrompt  = document.getElementById('toggle-prompt')   as HTMLElement;
-    const toggleLink    = document.getElementById('toggle-link')     as HTMLAnchorElement;
     const passwordEl    = document.getElementById('auth-password')   as HTMLInputElement;
     const passwordToggle= document.getElementById('toggle-password') as HTMLButtonElement;
     const emailEl       = document.getElementById('auth-email')      as HTMLInputElement;
@@ -147,30 +146,10 @@ import Nav from '../components/Nav.astro';
     const errorEl       = document.getElementById('auth-error')      as HTMLElement;
     const successEl     = document.getElementById('auth-success')    as HTMLElement;
 
-    let mode: Mode = window.location.hash === '#signup' ? 'signup' : 'signin';
-
-    function applyMode() {
-      const isSignup = mode === 'signup';
-      titleEl.textContent       = isSignup ? 'Create your account' : 'Sign in';
-      subEl.textContent         = isSignup ? 'Get started with FlipSplit in seconds.' : 'Welcome back to FlipSplit.';
-      googleLabelEl.textContent = isSignup ? 'Sign up with Google'  : 'Continue with Google';
-      submitLabelEl.textContent = isSignup ? 'Create account'       : 'Sign in';
-      togglePrompt.textContent  = isSignup ? 'Already have an account?' : 'New to FlipSplit?';
-      toggleLink.textContent    = isSignup ? 'Sign in'             : 'Create an account';
-      passwordEl.autocomplete   = isSignup ? 'new-password'         : 'current-password';
-      passwordEl.placeholder    = isSignup ? 'At least 6 characters' : 'Your password';
-      clearMessages();
-    }
-
     function showError(msg: string) {
       errorEl.textContent = msg;
       errorEl.classList.remove('hidden');
       successEl.classList.add('hidden');
-    }
-    function showSuccess(msg: string) {
-      successEl.textContent = msg;
-      successEl.classList.remove('hidden');
-      errorEl.classList.add('hidden');
     }
     function clearMessages() {
       errorEl.classList.add('hidden');
@@ -179,28 +158,17 @@ import Nav from '../components/Nav.astro';
     function setBusy(busy: boolean) {
       submitBtn.disabled = busy;
       googleBtn.disabled = busy;
-      submitLabelEl.textContent = busy
-        ? (mode === 'signup' ? 'Creating account…' : 'Signing in…')
-        : (mode === 'signup' ? 'Create account'    : 'Sign in');
+      submitLabelEl.textContent = busy ? 'Signing in…' : 'Sign in';
     }
 
-    // ─ Redirect already-authenticated users straight home ─
+    // ─ Send an authenticated user on to their dashboard ─
+    // Also the Google OAuth landing: Google returns here with the session in
+    // the URL fragment, and getUser() resolves behind the client's URL-detection
+    // step, so by the time this runs the new session is in place.
     supabase.auth.getUser().then(({ data }) => {
       if (data?.user && !data.user.is_anonymous) {
-        window.location.assign('/');
+        handoffToApp(supabase, '/');
       }
-    });
-
-    // ─ Mode toggle ─
-    toggleLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      mode = mode === 'signup' ? 'signin' : 'signup';
-      window.location.hash = mode === 'signup' ? 'signup' : '';
-      applyMode();
-    });
-    window.addEventListener('hashchange', () => {
-      const next: Mode = window.location.hash === '#signup' ? 'signup' : 'signin';
-      if (next !== mode) { mode = next; applyMode(); }
     });
 
     // ─ Password show/hide ─
@@ -217,7 +185,9 @@ import Nav from '../components/Nav.astro';
       try {
         const { error } = await supabase.auth.signInWithOAuth({
           provider: 'google',
-          options: { redirectTo: `${window.location.origin}/` },
+          // Back to this page, not the homepage: the handler above picks the
+          // new session up and hands it across to the dashboard.
+          options: { redirectTo: `${window.location.origin}/sign-in/` },
         });
         if (error) throw error;
         // Browser is redirecting to Google now…
@@ -236,41 +206,20 @@ import Nav from '../components/Nav.astro';
       const email = emailEl.value.trim();
       const password = passwordEl.value;
 
-      if (!email)                  return showError('Please enter your email address.');
-      if (!password)               return showError('Please enter your password.');
-      if (mode === 'signup' && password.length < 6) return showError('Password must be at least 6 characters.');
+      if (!email)    return showError('Please enter your email address.');
+      if (!password) return showError('Please enter your password.');
 
       setBusy(true);
       try {
-        if (mode === 'signup') {
-          const { data, error } = await supabase.auth.signUp({ email, password });
-          if (error) throw error;
-          // Some Supabase projects require email confirmation; in that case
-          // signUp returns a user but no session. Otherwise we get a session
-          // back immediately and can ship them home.
-          if (data?.session) {
-            window.location.assign('/');
-          } else {
-            showSuccess('Check your email for a confirmation link to finish creating your account.');
-            setBusy(false);
-          }
-        } else {
-          const { error } = await supabase.auth.signInWithPassword({ email, password });
-          if (error) throw error;
-          window.location.assign('/');
-        }
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        await handoffToApp(supabase, '/');
       } catch (err: any) {
         console.error('Auth failed:', err);
-        const msg = err?.message || (mode === 'signup'
-          ? 'Could not create your account. Please try again.'
-          : 'Could not sign you in. Check your email and password.');
-        showError(msg);
+        showError(err?.message || 'Could not sign you in. Check your email and password.');
         setBusy(false);
       }
     });
-
-    // ─ Init ─
-    applyMode();
     }
 
     initAuthPage();

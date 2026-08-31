@@ -1,0 +1,374 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+
+// Account creation, moved here from the dashboard app so the whole funnel —
+// steps 1-7, finish, signup, phone — runs on one origin. The app is now only
+// the signed-in dashboard.
+//
+// Accepts ?claim=<token> from /offer/finish/. Two paths converge:
+//   1. Email/password — handled inline in the submit handler
+//   2. Google OAuth — Supabase redirects out to Google, then back to this same
+//      URL with the session in the fragment. resumeIfSignedIn() picks up the
+//      new authenticated state on load and runs the claim automatically.
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create your account | FlipSplit</title>
+  <meta name="description" content="Create your FlipSplit account to track your cash offer and manage your home sale." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <ClientRouter />
+</head>
+<body class="bg-mute">
+
+  <header class="px-6 py-5 max-w-6xl mx-auto w-full">
+    <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
+  </header>
+
+  <main class="min-h-[calc(100vh-5.5rem)] flex items-start justify-center px-6 pb-12">
+    <div class="w-full max-w-[420px]">
+
+      <div class="bg-surface rounded-card border border-line px-8 py-[34px]">
+        <h1 class="text-h2 text-ink text-center">Create your account</h1>
+        <p class="text-body text-muted mb-7 text-center mt-1.5">
+          We'll text you the moment your offer is ready.
+        </p>
+
+        <!-- Google -->
+        <button
+          id="google-btn"
+          type="button"
+          class="w-full flex items-center justify-center gap-3 border border-line rounded-control h-12 text-body font-semibold text-ink hover:bg-mute transition-colors duration-[180ms] disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+            <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
+            <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
+            <path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/>
+            <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+          </svg>
+          Continue with Google
+        </button>
+
+        <div class="flex items-center gap-3 my-6">
+          <div class="flex-1 h-px bg-line"></div>
+          <span class="text-micro uppercase tracking-[0.09em] text-faint font-semibold">or</span>
+          <div class="flex-1 h-px bg-line"></div>
+        </div>
+
+        <!-- Email/password -->
+        <form id="signup-form" class="space-y-4" novalidate>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label for="su-first" class="block text-small font-semibold text-ink mb-2">First name</label>
+              <input
+                id="su-first"
+                type="text"
+                required
+                autocomplete="given-name"
+                placeholder="Jane"
+                class="w-full border border-line rounded-control px-4 py-3.5 text-body text-ink bg-surface outline-none focus:border-ink transition-colors duration-[180ms] disabled:bg-mute"
+              />
+            </div>
+            <div>
+              <label for="su-last" class="block text-small font-semibold text-ink mb-2">Last name</label>
+              <input
+                id="su-last"
+                type="text"
+                required
+                autocomplete="family-name"
+                placeholder="Smith"
+                class="w-full border border-line rounded-control px-4 py-3.5 text-body text-ink bg-surface outline-none focus:border-ink transition-colors duration-[180ms] disabled:bg-mute"
+              />
+            </div>
+          </div>
+          <div>
+            <label for="su-email" class="block text-small font-semibold text-ink mb-2">Email address</label>
+            <input
+              id="su-email"
+              type="email"
+              required
+              autocomplete="email"
+              placeholder="you@example.com"
+              class="w-full border border-line rounded-control px-4 py-3.5 text-body text-ink bg-surface outline-none focus:border-ink transition-colors duration-[180ms] disabled:bg-mute"
+            />
+          </div>
+          <div>
+            <label for="su-password" class="block text-small font-semibold text-ink mb-2">Password</label>
+            <div class="relative">
+              <input
+                id="su-password"
+                type="password"
+                required
+                minlength="8"
+                autocomplete="new-password"
+                placeholder="At least 8 characters"
+                class="w-full border border-line rounded-control px-4 py-3.5 pr-20 text-body text-ink bg-surface outline-none focus:border-ink transition-colors duration-[180ms] disabled:bg-mute"
+              />
+              <button
+                id="su-toggle-password"
+                type="button"
+                tabindex="-1"
+                class="absolute right-4 top-1/2 -translate-y-1/2 text-small font-semibold text-muted hover:text-ink"
+              >Show</button>
+            </div>
+          </div>
+
+          <p id="su-error" class="hidden text-small" style="color: var(--color-danger);"></p>
+
+          <button
+            id="su-submit"
+            type="submit"
+            class="w-full bg-ink hover:bg-ink-soft disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold h-12 rounded-control text-body transition-colors duration-[180ms]"
+          >Create account</button>
+        </form>
+
+        <p class="text-small text-faint mt-5 leading-relaxed text-center">
+          By creating an account you agree to FlipSplit's
+          <a href="/terms-and-conditions/" class="underline hover:text-ink">Terms of Service</a> and
+          <a href="/privacy-policy/" class="underline hover:text-ink">Privacy Policy</a>.
+        </p>
+      </div>
+
+      <p class="text-body text-muted text-center mt-6">
+        Already have an account?
+        <a href="/sign-in/" class="font-semibold text-ink underline underline-offset-[3px] decoration-line-strong hover:decoration-ink">Sign in</a>
+      </p>
+
+    </div>
+  </main>
+
+  <script>
+    import { getSupabase } from '../lib/supabase';
+    import { handoffToApp } from '../lib/handoff';
+
+    const supabase = getSupabase();
+
+    // Wrapped and re-run on astro:page-load so the handlers survive a
+    // ClientRouter swap; the dataset guard stops a re-run binding twice.
+    function initSignup() {
+      const form = document.getElementById('signup-form') as HTMLFormElement | null;
+      if (!form || form.dataset.signupInit === '1') return;
+      form.dataset.signupInit = '1';
+
+      const firstEl    = document.getElementById('su-first')           as HTMLInputElement;
+      const lastEl     = document.getElementById('su-last')            as HTMLInputElement;
+      const emailEl    = document.getElementById('su-email')           as HTMLInputElement;
+      const passwordEl = document.getElementById('su-password')        as HTMLInputElement;
+      const pwToggle   = document.getElementById('su-toggle-password') as HTMLButtonElement;
+      const errorEl    = document.getElementById('su-error')           as HTMLElement;
+      const submitBtn  = document.getElementById('su-submit')          as HTMLButtonElement;
+      const googleBtn  = document.getElementById('google-btn')         as HTMLButtonElement;
+
+      const claim = new URL(window.location.href).searchParams.get('claim');
+      let submitting = false;
+
+      function showError(msg: string) {
+        errorEl.textContent = msg;
+        errorEl.classList.remove('hidden');
+      }
+      function clearError() {
+        errorEl.classList.add('hidden');
+      }
+      function setBusy(busy: boolean) {
+        submitting = busy;
+        submitBtn.disabled = busy;
+        googleBtn.disabled = busy;
+        [firstEl, lastEl, emailEl, passwordEl].forEach((el) => { el.disabled = busy; });
+        submitBtn.textContent = busy ? 'Creating your account…' : 'Create account';
+      }
+
+      // ── Password show/hide ──
+      pwToggle.addEventListener('click', () => {
+        const showing = passwordEl.type === 'text';
+        passwordEl.type = showing ? 'password' : 'text';
+        pwToggle.textContent = showing ? 'Show' : 'Hide';
+      });
+
+      // For OAuth signups, the user arrives with name fields under OIDC-standard
+      // keys: given_name / family_name / full_name. Copy those into
+      // first_name / last_name / full_name so the rest of the product reads one
+      // consistent shape regardless of signup method. No-op if already done.
+      async function normalizeNameFromOAuth(u: any) {
+        if (!u) return;
+        const m = u.user_metadata || {};
+        if (m.first_name && m.last_name) return;
+
+        const first = m.given_name  || (m.full_name ? m.full_name.split(' ').slice(0, -1).join(' ') : '') || '';
+        const last  = m.family_name || (m.full_name ? m.full_name.split(' ').slice(-1)[0] : '') || '';
+        if (!first && !last) return;
+
+        try {
+          await supabase.auth.updateUser({
+            data: { first_name: first, last_name: last, full_name: m.full_name || `${first} ${last}`.trim() },
+          });
+        } catch (e) {
+          // Non-fatal — the OAuth fields are still readable as a fallback.
+          console.warn('Could not normalize OAuth name into user_metadata:', e);
+        }
+      }
+
+      async function runClaim(token: string, authMethod: string) {
+        const { data: claimed, error: rpcError } = await supabase.rpc('claim_qualification_session', {
+          p_token: token,
+        });
+        if (rpcError) throw rpcError;
+
+        // claim_qualification_session returns the session row (composite type);
+        // be defensive in case PostgREST hands it back as a single-element array.
+        const session = Array.isArray(claimed) ? claimed[0] : claimed;
+
+        // Kick off the AVM → preliminary offer range computation. Fire and
+        // forget: the user moves on to phone capture while this runs, and the
+        // dashboard shows a "preparing your estimate" state until it lands.
+        if (session?.id) {
+          supabase.functions
+            .invoke('compute-offer-range', { body: { session_id: session.id } })
+            .catch((e: any) => console.warn('compute-offer-range invoke failed:', e));
+        }
+
+        try {
+          const { data: { user: authedUser } } = await supabase.auth.getUser();
+          await supabase.from('events').insert({
+            user_id: authedUser?.id,
+            event_name: 'account_created',
+            payload: { auth_method: authMethod },
+          });
+        } catch (e) {
+          console.warn('Could not record account_created event:', e);
+        }
+      }
+
+      // Where an authenticated user *should* be, based on whether they have
+      // already completed phone capture.
+      async function routeOnboardedUser(userId: string) {
+        const { data: sessions } = await supabase
+          .from('qualification_sessions')
+          .select('id, phone')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (sessions?.[0]?.phone) {
+          await handoffToApp(supabase, '/');
+        } else {
+          window.location.assign('/signup/phone/');
+        }
+      }
+
+      // ── Google OAuth return, and the "already signed in" case ──
+      async function resumeIfSignedIn() {
+        const { data: { session } } = await supabase.auth.getSession();
+        const user = session?.user;
+        if (!user || user.is_anonymous || submitting) return;
+
+        setBusy(true);
+        try {
+          // Verify the JWT still maps to a real user on the server. If the
+          // account was deleted, the cached session is stale — sign out so they
+          // can start fresh instead of hitting an opaque FK error on claim.
+          const { data, error } = await supabase.auth.getUser();
+          if (error || !data?.user) throw new Error('STALE_SESSION');
+
+          await normalizeNameFromOAuth(data.user);
+
+          // No claim token → already signed up; just route them onward.
+          if (!claim) {
+            await routeOnboardedUser(data.user.id);
+            return;
+          }
+
+          try {
+            await runClaim(claim, 'google');
+            window.location.assign('/signup/phone/');
+          } catch (claimErr: any) {
+            // Token already consumed (e.g. they came back here after a
+            // successful first signup). Treat as "already done" and route
+            // forward rather than showing a scary error.
+            if (String(claimErr?.message || '').includes('Invalid or expired claim token')) {
+              await routeOnboardedUser(data.user.id);
+              return;
+            }
+            throw claimErr;
+          }
+        } catch (err: any) {
+          console.error('Auto-claim failed:', err);
+          if (err?.message === 'STALE_SESSION') {
+            try { await supabase.auth.signOut(); } catch { /* ignore */ }
+            setBusy(false);
+            return;
+          }
+          showError(err?.message || 'Could not link your funnel data. Please contact support.');
+          setBusy(false);
+        }
+      }
+
+      // ── Google ──
+      googleBtn.addEventListener('click', async () => {
+        clearError();
+        try {
+          // Carry the claim token through Google by encoding it in the return URL.
+          const redirectTo = `${window.location.origin}/signup/${claim ? `?claim=${encodeURIComponent(claim)}` : ''}`;
+          const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo } });
+          if (error) throw error;
+          // Browser is redirecting to Google now…
+        } catch (err: any) {
+          console.error(err);
+          showError(err?.message || 'Could not start Google sign-in.');
+        }
+      });
+
+      // ── Email + password ──
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (submitting) return;
+        clearError();
+
+        const first = firstEl.value.trim();
+        const last  = lastEl.value.trim();
+        const email = emailEl.value.trim();
+        const password = passwordEl.value;
+
+        if (!first || !last)      return showError('Please enter your first and last name.');
+        if (!email)               return showError('Please enter your email address.');
+        if (password.length < 8)  return showError('Password must be at least 8 characters.');
+
+        setBusy(true);
+        try {
+          const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: { data: { first_name: first, last_name: last, full_name: `${first} ${last}`.trim() } },
+          });
+          if (error) throw error;
+
+          // If the project ever requires email confirmation, signUp returns a
+          // user but no session — and we cannot claim without one.
+          if (!data.session) {
+            showError('Check your email to confirm your account. Once confirmed you can sign in to continue.');
+            setBusy(false);
+            return;
+          }
+
+          if (claim) await runClaim(claim, 'email_password');
+          window.location.assign('/signup/phone/');
+        } catch (err: any) {
+          console.error(err);
+          showError(err?.message || 'Something went wrong. Please try again.');
+          setBusy(false);
+        }
+      });
+
+      resumeIfSignedIn();
+    }
+
+    initSignup();
+    document.addEventListener('astro:page-load', initSignup);
+  </script>
+
+</body>
+</html>
