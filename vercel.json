@@ -1,13 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "comment": [
-    "Redirects for URLs that exist on the old WordPress site but not on this one.",
-    "Derived by diffing the old Yoast sitemaps (284 URLs) against this build (240).",
-    "Blog posts are NOT listed here: /blog/<slug>/ paths carried over unchanged.",
-    "Anything absent from this file 404s deliberately - old test and template",
-    "pages (/sample-page/, /loi/test/, /results-blocks/, /single-blog/,",
-    "/location-tampleate-sample-2025/) that should never have been indexed."
-  ],
   "redirects": [
     { "source": "/blog/fs-reviews", "destination": "/reviews/", "permanent": true },
     { "source": "/blog/fs-reviews/:path*", "destination": "/reviews/", "permanent": true },
