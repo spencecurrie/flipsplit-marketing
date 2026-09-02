@@ -239,17 +239,24 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         </div>
 
         <div class="border-t border-[#e6e6e2] pt-4">
-          <div class="flex justify-between items-center mb-3">
-            <span class="text-sm font-black text-brand-dark">Your Potential Earnings</span>
-            <span id="split-badge" class="text-xs font-semibold" style="color:var(--brand-cyan);">0% split</span>
-          </div>
-          <div class="grid grid-cols-3 gap-x-2 text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-2 px-1">
-            <span>Resale</span>
-            <span class="text-center">Backend</span>
-            <span class="text-right">Total</span>
-          </div>
-          <div id="earnings-table" class="space-y-1"></div>
-          <p class="text-xs text-[#1f1f1f] mt-3">* Resale price not guaranteed.</p>
+          <!-- Collapsed by default: the resale breakdown is detail, the Est. Net
+               Proceeds callout below carries the headline number on its own. -->
+          <details class="group">
+            <summary class="flex justify-between items-center cursor-pointer select-none py-1 mb-2 hover:text-brand-cyan transition-colors">
+              <span class="flex items-center gap-2">
+                <span class="text-sm font-black text-brand-dark">Your Potential Earnings</span>
+                <span class="faq-icon text-[#1f1f1f] text-xl leading-none">+</span>
+              </span>
+              <span id="split-badge" class="text-xs font-semibold" style="color:var(--brand-cyan);">0% split</span>
+            </summary>
+            <div class="grid grid-cols-3 gap-x-2 text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-2 px-1">
+              <span>Resale</span>
+              <span class="text-center">Backend</span>
+              <span class="text-right">Total</span>
+            </div>
+            <div id="earnings-table" class="space-y-1"></div>
+            <p class="text-xs text-[#1f1f1f] mt-3">* Resale price not guaranteed.</p>
+          </details>
 
           <!-- Est. Net Proceeds callout — base-case total (cash + bonus at projected resale) -->
           <div class="mt-5 rounded-2xl px-5 py-4 flex items-center justify-between" style="background: linear-gradient(135deg, #1f1f1f 0%, #1f1f1f 100%); box-shadow: 0 8px 22px rgba(31,31,31,0.25);">
