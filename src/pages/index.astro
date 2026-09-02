@@ -36,6 +36,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
     .faq-icon { transition: transform 0.2s ease; display: inline-block; }
     details[open] .faq-icon { transform: rotate(45deg); }
     .hiw-item[open] .hiw-chevron { transform: rotate(180deg); }
+    /* Earnings disclosure — mirrors the app's Offer-page CostRow control. */
+    .earnings-chevron { transition: transform 180ms cubic-bezier(.2,0,0,1); }
+    details[open] .earnings-chevron { transform: rotate(180deg); }
     @keyframes hiw-fill { from { width: 0%; } to { width: 100%; } }
     .hiw-step { transition: border-color 0.2s, box-shadow 0.2s; }
     .hiw-step.hiw-active { border-left-color: var(--brand-cyan) !important; box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
@@ -242,20 +245,24 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
           <!-- Collapsed by default: the resale breakdown is detail, the Est. Net
                Proceeds callout below carries the headline number on its own. -->
           <details class="group">
-            <summary class="flex justify-between items-center cursor-pointer select-none py-1 mb-2 hover:text-brand-cyan transition-colors">
-              <span class="flex items-center gap-2">
-                <span class="text-sm font-black text-brand-dark">Your Potential Earnings</span>
-                <span class="faq-icon text-[#1f1f1f] text-xl leading-none">+</span>
+            <summary class="flex items-center gap-3 cursor-pointer select-none rounded-xl border border-[#e6e6e2] bg-white px-5 py-[17px] hover:border-[#dcdcd4] transition-colors duration-[180ms]">
+              <span class="text-sm font-medium text-brand-dark">Your Potential Earnings</span>
+              <span class="ml-auto flex items-center gap-3 shrink-0">
+                <span id="split-badge" class="text-sm font-semibold" style="color:var(--brand-cyan);">0% split</span>
+                <svg class="earnings-chevron w-3.5 h-3.5 text-[#8a8a83] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
               </span>
-              <span id="split-badge" class="text-xs font-semibold" style="color:var(--brand-cyan);">0% split</span>
             </summary>
-            <div class="grid grid-cols-3 gap-x-2 text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-2 px-1">
-              <span>Resale</span>
-              <span class="text-center">Backend</span>
-              <span class="text-right">Total</span>
+            <div class="bg-[#f4f4f0] rounded-[14px] mt-2.5 px-5 py-4">
+              <div class="grid grid-cols-3 gap-x-2 text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-2 px-1">
+                <span>Resale</span>
+                <span class="text-center">Backend</span>
+                <span class="text-right">Total</span>
+              </div>
+              <div id="earnings-table" class="space-y-1"></div>
+              <p class="text-xs text-[#1f1f1f] mt-3">* Resale price not guaranteed.</p>
             </div>
-            <div id="earnings-table" class="space-y-1"></div>
-            <p class="text-xs text-[#1f1f1f] mt-3">* Resale price not guaranteed.</p>
           </details>
 
           <!-- Est. Net Proceeds callout — base-case total (cash + bonus at projected resale) -->
@@ -616,7 +623,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
           const total   = currentOffer + backend;
           const isBase  = i === 0;
           return `
-            <div class="grid grid-cols-3 gap-x-2 px-1 py-1.5 rounded-lg ${isBase ? 'bg-[#f6f7ed]' : ''}">
+            <div class="grid grid-cols-3 gap-x-2 px-1 py-1.5 rounded-lg ${isBase ? 'bg-white' : ''}">
               <span class="text-brand-dark font-semibold text-xs">
                 ${fmt(resale)}${isBase ? '<span class="ml-1 text-[#1f1f1f] font-normal">proj.</span>' : ''}
               </span>
