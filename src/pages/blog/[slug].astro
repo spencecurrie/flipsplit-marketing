@@ -15,6 +15,13 @@ const { Content, headings } = await render(post);
 
 const { title, description, pubDate, updatedDate, category, reviewer, heroImage, readingTime } = post.data;
 
+// `post.id` — NOT `post.slug`, which does not exist on Astro 6 content-collection
+// entries and silently stringifies to "undefined". getStaticPaths above already
+// builds the route from post.id, so this is the URL by definition. The trailing
+// slash matches `trailingSlash: 'always'`; the host comes from `site` in
+// astro.config.mjs so it can never drift from the canonical hostname again.
+const canonicalURL = new URL(`/blog/${post.id}/`, Astro.site).href;
+
 // Top-level headings only for TOC (h2 and h3)
 const tocHeadings = headings.filter(h => h.depth <= 3);
 
@@ -37,14 +44,14 @@ function formatDate(d: Date) {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title} — FlipSplit</title>
   {description && <meta name="description" content={description} />}
-  <link rel="canonical" href={`https://www.flipsplit.com/blog/${post.slug}`} />
+  <link rel="canonical" href={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
   <!-- Open Graph -->
   <meta property="og:title" content={title} />
   {description && <meta property="og:description" content={description} />}
   <meta property="og:type" content="article" />
-  <meta property="og:url" content={`https://www.flipsplit.com/blog/${post.slug}`} />
+  <meta property="og:url" content={canonicalURL} />
   {heroImage && <meta property="og:image" content={heroImage} />}
 
   <style>

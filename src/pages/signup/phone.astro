@@ -28,6 +28,10 @@ import { ClientRouter } from 'astro:transitions';
 // the campaign registration.
 
 const PRIVACY_POLICY_URL = 'https://www.flipsplit.com/privacy-policy/';
+
+// Canonical URL. Derived from the route and `site` in astro.config.mjs so the
+// host and the trailing slash (trailingSlash: 'always') can never drift.
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!DOCTYPE html>
@@ -37,6 +41,9 @@ const PRIVACY_POLICY_URL = 'https://www.flipsplit.com/privacy-policy/';
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>We'll text you when your offer is ready | FlipSplit</title>
   <meta name="description" content="Add your mobile number so FlipSplit can reach you the moment your cash offer is ready." />
+  <link rel="canonical" href={canonicalURL} />
+  {/* 10DLC disclosure URL - noindex ONLY, never robots.txt Disallow, so carrier fetchers can still read it */}
+  <meta name="robots" content="noindex, follow" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <ClientRouter />
 </head>

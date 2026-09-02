@@ -4,6 +4,10 @@ import '../styles/global.css';
 import AddressForm from '../components/AddressForm.astro'
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+
+// Canonical URL. Derived from the route and `site` in astro.config.mjs so the
+// host and the trailing slash (trailingSlash: 'always') can never drift.
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!DOCTYPE html>
@@ -13,7 +17,7 @@ import Footer from '../components/Footer.astro';
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Customer Reviews | FlipSplit</title>
   <meta name="description" content="Real reviews from homeowners who sold with FlipSplit. See what our customers say about our transparent process, fair offers, and profit-sharing model." />
-  <link rel="canonical" href="https://www.flipsplit.com/reviews" />
+  <link rel="canonical" href={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style>
     :root { --brand-blue: #1f1f1f; --brand-dark: #1f1f1f; --brand-body: #2a2a27; }

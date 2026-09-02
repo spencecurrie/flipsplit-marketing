@@ -17,6 +17,10 @@ interface Props {
 const { step, title, subtitle, backHref, nextHref, autoAdvance = false } = Astro.props;
 const totalSteps = 7;
 const progressPct = Math.round((step / totalSteps) * 100);
+
+// Canonical URL. Derived from the route and `site` in astro.config.mjs so the
+// host and the trailing slash (trailingSlash: 'always') can never drift.
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!DOCTYPE html>
@@ -24,7 +28,12 @@ const progressPct = Math.round((step / totalSteps) * 100);
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FlipSplit — Get Your Offer</title>
+  <title>Step {step} of {totalSteps} — Get Your Offer | FlipSplit</title>
+  <meta name="description" content={`Step ${step} of ${totalSteps} of the FlipSplit offer request.`} />
+  <link rel="canonical" href={canonicalURL} />
+  {/* Funnel steps are not landing pages: 7 near-identical screens that only
+      work mid-session. `follow` keeps the outbound links crawlable. */}
+  <meta name="robots" content="noindex, follow" />
   <ClientRouter />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style is:global>

@@ -15,6 +15,10 @@ const other = allPosts.filter(p => p.data.category !== 'Home Selling' && p.data.
 function formatDate(d: Date) {
   return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
+
+// Canonical URL. Derived from the route and `site` in astro.config.mjs so the
+// host and the trailing slash (trailingSlash: 'always') can never drift.
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!DOCTYPE html>
@@ -24,6 +28,7 @@ function formatDate(d: Date) {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Blog — FlipSplit</title>
   <meta name="description" content="Home selling guides, market trends, and expert advice from the FlipSplit team." />
+  <link rel="canonical" href={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style>
     :root {

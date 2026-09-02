@@ -11,6 +11,10 @@ import { ClientRouter } from 'astro:transitions';
 //   2. Google OAuth — Supabase redirects out to Google, then back to this same
 //      URL with the session in the fragment. resumeIfSignedIn() picks up the
 //      new authenticated state on load and runs the claim automatically.
+
+// Canonical URL. Derived from the route and `site` in astro.config.mjs so the
+// host and the trailing slash (trailingSlash: 'always') can never drift.
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!DOCTYPE html>
@@ -20,7 +24,8 @@ import { ClientRouter } from 'astro:transitions';
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Create your account | FlipSplit</title>
   <meta name="description" content="Create your FlipSplit account to track your cash offer and manage your home sale." />
-  <meta name="robots" content="noindex" />
+  <link rel="canonical" href={canonicalURL} />
+  <meta name="robots" content="noindex, follow" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <ClientRouter />
 </head>

@@ -3,6 +3,10 @@ import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css'
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+
+// Canonical URL. Derived from the route and `site` in astro.config.mjs so the
+// host and the trailing slash (trailingSlash: 'always') can never drift.
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!DOCTYPE html>
@@ -12,7 +16,7 @@ import Footer from '../components/Footer.astro';
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Terms & Conditions | FlipSplit</title>
   <meta name="description" content="FlipSplit Terms & Conditions — the terms that govern your use of our website and services." />
-  <link rel="canonical" href="https://www.flipsplit.com/terms-and-conditions" />
+  <link rel="canonical" href={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style>
     :root { --brand-blue: #1f1f1f; --brand-dark: #1f1f1f; --brand-body: #2a2a27; }

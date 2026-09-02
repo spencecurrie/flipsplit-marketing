@@ -22,7 +22,13 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 // app use. That is the cost of two domains, and it disappears at the
 // flipsplit.com cutover, when both can share a cookie and this file can go.
 
-const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://flipsplit-app.vercel.app';
+// Must match the fallback in Nav.astro, ProfileMenu.astro and AddressForm.astro.
+// It used to be flipsplit-app.vercel.app while those four said app.flipsplit.com,
+// which meant that whenever PUBLIC_APP_URL was unset — it is configured for the
+// Production environment only, so on every preview deploy — the session was
+// handed to a different origin than the one the nav links to, and the user
+// arrived looking signed out.
+const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
 
 export async function handoffToApp(supabase: SupabaseClient, next = '/'): Promise<void> {
   // Path-relative destinations only, so a caller can never bounce someone to

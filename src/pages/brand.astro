@@ -2,6 +2,10 @@
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import TapFeedback from '../components/TapFeedback.astro';
+
+// Canonical URL. Derived from the route and `site` in astro.config.mjs so the
+// host and the trailing slash (trailingSlash: 'always') can never drift.
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +13,9 @@ import TapFeedback from '../components/TapFeedback.astro';
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Brand Guidelines — FlipSplit</title>
+  <link rel="canonical" href={canonicalURL} />
+  {/* internal brand reference */}
+  <meta name="robots" content="noindex, follow" />
   <style>
     :root {
       --brand-blue: #1f1f1f;

@@ -1,6 +1,10 @@
 ---
 import '../../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
+
+// Canonical URL. Derived from the route and `site` in astro.config.mjs so the
+// host and the trailing slash (trailingSlash: 'always') can never drift.
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!DOCTYPE html>
@@ -9,6 +13,9 @@ import { ClientRouter } from 'astro:transitions';
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FlipSplit — Preparing your offer</title>
+  <link rel="canonical" href={canonicalURL} />
+  {/* transient post-submit screen */}
+  <meta name="robots" content="noindex, follow" />
   <ClientRouter />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style>

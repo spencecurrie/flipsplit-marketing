@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Pages kept out of the index carry <meta name="robots" content="noindex">
+# rather than a Disallow here. Disallow blocks the fetch, so a crawler can
+# never read the noindex — and /signup/phone/ is the 10DLC opt-in disclosure
+# URL that carrier vetting fetches directly. It has to stay retrievable.
+
+Sitemap: https://flipsplit.com/sitemap-index.xml

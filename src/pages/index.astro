@@ -4,6 +4,10 @@ import AddressForm from '../components/AddressForm.astro'
 import Nav from '../components/Nav.astro'
 import Footer from '../components/Footer.astro';
 import { ClientRouter } from 'astro:transitions';
+
+// Canonical URL. Derived from the route and `site` in astro.config.mjs so the
+// host and the trailing slash (trailingSlash: 'always') can never drift.
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!DOCTYPE html>
@@ -14,6 +18,7 @@ import { ClientRouter } from 'astro:transitions';
   <meta name="generator" content={Astro.generator} />
   <title>FlipSplit — Sell Your Home For More, Without the Hassle</title>
   <meta name="description" content="FlipSplit renovates your home before it hits the market. Get a guaranteed cash offer today plus a share of the upside when it sells for more. No repairs, no stress." />
+  <link rel="canonical" href={canonicalURL} />
   <ClientRouter />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <style>
