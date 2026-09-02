@@ -216,7 +216,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         </div>
         <input type="range" id="deal-slider" min="0" max="100" value="0" class="deal-slider mb-5" />
 
-        <div class="grid grid-cols-2 gap-3 mb-5">
+        <div class="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3 mb-5">
           <div class="bg-[#f6f7ed] border border-[#e6e6e2] rounded-xl p-4">
             <div class="text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-2">Upfront Offer</div>
             <div class="flex items-center gap-0.5 border border-[#e6e6e2] hover:border-[#1f1f1f] focus-within:border-[#1f1f1f] rounded-lg px-2 py-1 bg-white transition-colors">
