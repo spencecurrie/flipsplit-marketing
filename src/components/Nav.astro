@@ -498,12 +498,45 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
       return (u?.email?.[0] || 'U').toUpperCase();
     };
 
-    // Status line under each address — mirrors the portal's own gates.
+    // Status line under each address.
+    //
+    // ⚠ FIFTH COPY, and unavoidably so — this is inline browser script in a
+    // different repo, which cannot import flipsplit-app's src/lib/leadStage.js.
+    // Keep the wording identical to CUSTOMER_STATUS there; a seller sees both
+    // this menu and the portal's, often within one minute of each other.
+    //
+    // Nurture and Lost are sales vocabulary and are never shown to a seller, so
+    // they fall through to what the row's own data says — same rule as
+    // visibleStage().
+    const FS_CUSTOMER_STATUS: Record<string, string> = {
+      'Incomplete': 'In progress',
+      'New lead': 'In progress',
+      'Contacted': 'In progress',
+      'Visit scheduled': 'Visit scheduled',
+      'Ready to underwrite': 'In review',
+      'Offer sent': 'Offer ready',
+      'Under contract': 'Offer accepted',
+      'Renovation': 'Renovation underway',
+      'Sold': 'Sold',
+    };
+
+    const fsForwardStage = (row: any) => {
+      if (row.sold_at) return 'Sold';
+      if (row.renovation_started_at) return 'Renovation';
+      if (row.offer_accepted_at) return 'Under contract';
+      if (row.offer_amount_cents != null) return 'Offer sent';
+      if (row.photos_submitted_at || row.walkthrough_completed_at) return 'Ready to underwrite';
+      if (row.walkthrough_scheduled_at) return 'Visit scheduled';
+      if (row.first_contact_at) return 'Contacted';
+      if (row.status === 'completed') return 'New lead';
+      return 'Incomplete';
+    };
+
     const fsStatus = (row: any) => {
-      if (row.offer_accepted_at) return 'Offer accepted';
-      if (row.offer_amount_cents != null) return 'Offer ready';
-      if (row.photos_submitted_at) return 'In review';
-      return 'In progress';
+      const stage = row.lead_stage && FS_CUSTOMER_STATUS[row.lead_stage]
+        ? row.lead_stage
+        : fsForwardStage(row);
+      return FS_CUSTOMER_STATUS[stage] ?? 'In progress';
     };
 
     const fsEsc = (v: string) =>
@@ -553,7 +586,7 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
       if (!fsUser || fsUser.is_anonymous) { fsRequests = null; return; }
       const { data, error } = await fsSupabase
         .from('qualification_sessions')
-        .select('id, address, street, offer_amount_cents, offer_accepted_at, photos_submitted_at, created_at')
+        .select('id, address, street, lead_stage, status, offer_amount_cents, offer_accepted_at, photos_submitted_at, walkthrough_scheduled_at, walkthrough_completed_at, renovation_started_at, sold_at, first_contact_at, created_at')
         .eq('user_id', fsUser.id)
         .order('created_at', { ascending: false });
       if (error) { fsRequests = []; fsApplyAuth(); return; }
