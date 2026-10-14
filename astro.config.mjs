@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
+import sentry from '@sentry/astro';
 
 // Matched on pathname rather than a substring test — a blog post slugged
 // "...offer..." must not be excluded by accident.
@@ -23,6 +24,13 @@ export default defineConfig({
   // Search Console as "Submitted URL marked noindex" — the two must agree.
   integrations: [
     sitemap({ filter: (page) => !NOINDEX_PATHS.has(new URL(page).pathname) }),
+    // Static output — there is no server at runtime, so only the browser SDK
+    // runs (init lives in sentry.client.config.js). Source maps upload only
+    // when SENTRY_AUTH_TOKEN is set in the build env.
+    sentry({
+      enabled: { client: true, server: false },
+      sourcemaps: { disable: !process.env.SENTRY_AUTH_TOKEN },
+    }),
   ],
   server: {
     allowedHosts: true,
