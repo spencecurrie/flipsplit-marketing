@@ -1,5 +1,5 @@
 ---
-title: "What Is an iBuyer &#038; Do I Need One?"
+title: "What Is an iBuyer & Do I Need One?"
 description: "Wondering, what is an iBuyer? If you are a private seller interested in selling your home fast, read on to learn how iBuyers can help you navigate the process."
 pubDate: 2022-06-21
 updatedDate: 2024-01-25

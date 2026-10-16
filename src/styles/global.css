@@ -1,8 +1,12 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* Self-hosted General Sans (Fontshare) — headings + body across the whole site.
-   Replaces Typekit 'sahar' + Google 'Open Sans'. */
+/* Self-hosted fonts. Geist (body + headings) and Geist Mono (step numbers,
+   chips) are the 2026-10 reskin faces; both are variable, one file each.
+   General Sans stays loaded for the pages not yet reskinned (sign-in, signup,
+   offer funnel) — drop it once those move over. */
+@font-face { font-family: 'Geist'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('/fonts/geist-latin-wght.woff2') format('woff2-variations'); }
+@font-face { font-family: 'Geist Mono'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('/fonts/geist-mono-latin-wght.woff2') format('woff2-variations'); }
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/general-sans-400.woff2') format('woff2'); }
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/general-sans-500.woff2') format('woff2'); }
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/general-sans-600.woff2') format('woff2'); }
@@ -19,23 +23,29 @@
    here, change it there in the same commit. The two files drifted once
    already (--color-muted was #6b6b66 here and #6b6b64 there) — that is the
    failure this header exists to prevent.
+
+   ⚠ KNOWN DRIFT (2026-10-16): the 2026-10 reskin (Geist, #121212 ink, new
+   greys) landed here first, marketing pages only. The app's copy still holds
+   the old values until the app pages are reskinned — sync it then.
    ══════════════════════════════════════════════════════════════════════════ */
 @theme static {
-  --font-sans: 'General Sans', system-ui, sans-serif;
+  --font-sans: 'Geist', 'Helvetica Neue', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
 
   /* surfaces */
   --color-surface:     #ffffff;
-  --color-cream:       #f6f7ed;
-  --color-mute:        #f4f4f0;
-  --color-line:        #e6e6e2;
-  --color-line-strong: #dcdcd4;
-  --color-hairline:    #f0f0ec;
+  --color-cream:       #f1f2e8;
+  --color-mute:        #f4f4f1;
+  --color-wash:        #fafaf8;
+  --color-line:        #e6e6e1;
+  --color-line-strong: #d9d9d3;
+  --color-hairline:    #efefea;
 
   /* ink */
-  --color-ink:         #1f1f1f;
-  --color-ink-soft:    #3a3a37;
-  --color-muted:       #6b6b64;
-  --color-faint:       #8a8a83;
+  --color-ink:         #121212;
+  --color-ink-soft:    #2a2a27;
+  --color-muted:       #5e5e58;
+  --color-faint:       #8a8a84;
   --color-ghost:       #a8a8a2;
 
   /* status — muted, low chroma, used sparingly */
@@ -83,8 +93,8 @@
    The app has its own equivalent (--color-brand-50…900) for the same reason.
    Neither ramp is part of the shared kit. */
 @theme {
-  --color-brand-dark: #1f1f1f;
-  --color-brand-cyan: #1f1f1f;
+  --color-brand-dark: #121212;
+  --color-brand-cyan: #121212;
   --color-brand-body: #2a2a27;
 }
 
@@ -95,9 +105,12 @@
   --dur-disclose: 250ms;
 }
 
-/* Base type — General Sans everywhere. */
-body { font-family: 'General Sans', system-ui, sans-serif; color: #2a2a27; }
-h1, h2, h3, h4 { font-family: 'General Sans', system-ui, sans-serif; color: #1f1f1f; }
+/* Base type — Geist everywhere. In the base layer so a utility like
+   text-white on a heading wins. */
+@layer base {
+  body { font-family: var(--font-sans); color: #121212; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, h4 { font-family: var(--font-sans); color: #121212; }
+}
 
 /* Every dollar figure, percentage, and date range. Shared. */
 .tnum { font-variant-numeric: tabular-nums; }
@@ -143,3 +156,68 @@ h1, h2, h3, h4 { font-family: 'General Sans', system-ui, sans-serif; color: #1f1
   text-decoration-thickness: 2px;
 }
 .prose a:hover { color: #000000; }
+
+/* ══════════════════════ 2026-10 RESKIN — shared page parts ══════════════════
+   Lifted from the "FlipSplit Reskin" design canvas. Breakpoints match the
+   design's: 1000px (nav links hide, grids collapse) and 700px (phone). In
+   markup use Tailwind's max-[1000px]: / max-[700px]: variants for the same
+   two steps so a page never mixes md/lg with these. */
+
+/* In the components layer so a Tailwind utility on the same element wins
+   (e.g. `wrap max-w-[960px]`, `fs-h1 max-[700px]:text-[38px]`). */
+@layer components {
+/* Page container. .wrap = 1240px reading width, .wrap-wide = 1500px. */
+.wrap, .wrap-wide { margin: 0 auto; padding: 0 40px; box-sizing: border-box; width: 100%; }
+.wrap { max-width: 1240px; }
+.wrap-wide { max-width: 1500px; }
+
+/* Display type. Tight tracking is part of the look — keep it with the size. */
+.fs-h1 { font-size: 64px; line-height: 1.04; letter-spacing: -0.045em; font-weight: 600; }
+.fs-h2 { font-size: 44px; line-height: 1.08; letter-spacing: -0.035em; font-weight: 600; }
+.fs-lede { font-size: 18px; line-height: 1.55; color: var(--color-muted); }
+.eyebrow { font-size: 13px; color: var(--color-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* Small mono number chip ("01", "5.0"). */
+.chip {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+  border: 1px solid var(--color-line-strong); border-radius: 6px; padding: 3px 7px;
+}
+/* Rounded badge above a hero headline. */
+.pill {
+  display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px;
+  border: 1px solid var(--color-line-strong); border-radius: 999px; font-size: 13px;
+}
+.pill-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* Hairline card. */
+.fs-card { border: 1px solid var(--color-line); border-radius: 14px; background: #fff; }
+
+/* Primary button (black) and its compact nav size. */
+.btn-ink {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 48px; padding: 0 24px; border-radius: 10px;
+  background: var(--color-ink); color: #fff; font-size: 15px; font-weight: 500;
+  text-decoration: none; transition: background var(--dur-state) var(--ease-fs);
+}
+.btn-ink:hover { background: #000; color: #fff; }
+
+/* Diagonal hatch — the "potential bonus" fill in bars and progress tracks. */
+.hatch   { background: repeating-linear-gradient(135deg, var(--color-ink) 0 1.5px, transparent 1.5px 5px); }
+.hatch-w { background: repeating-linear-gradient(135deg, #fff 0 1.5px, transparent 1.5px 5px); }
+
+/* <details> disclosure: no native marker; plus rotates to ×, chevron flips. */
+details > summary { list-style: none; cursor: pointer; }
+details > summary::-webkit-details-marker { display: none; }
+.faq-plus, .chev { transition: transform var(--dur-state) var(--ease-fs); }
+details[open] .faq-plus { transform: rotate(45deg); }
+details[open] .chev { transform: rotate(180deg); }
+
+@media (max-width: 1000px) {
+  .fs-h1 { font-size: 52px; }
+}
+@media (max-width: 700px) {
+  .wrap, .wrap-wide { padding: 0 16px; }
+  .fs-h1 { font-size: 40px; }
+  .fs-h2 { font-size: 32px; }
+}
+}

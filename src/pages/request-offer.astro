@@ -19,48 +19,33 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   <meta name="description" content="Request your free cash offer from FlipSplit. Enter your address and get a no-obligation offer within 24–48 hours. No repairs, no fees, no pressure." />
   <link rel="canonical" href={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <style>
-    :root { --brand-blue: #1f1f1f; --brand-dark: #1f1f1f; --brand-body: #2a2a27; }
-    body { font-family: 'General Sans', sans-serif; color: var(--brand-body); }
-    h1, h2 { font-family: 'General Sans', 'General Sans', sans-serif; color: var(--brand-dark); }
-    a { cursor: pointer; }
-  </style>
   <ClientRouter />
 </head>
-<body class="antialiased bg-white">
+<body class="bg-white text-ink font-sans antialiased">
 
   <Nav />
 
-  <!-- HEADLINE + INPUT -->
-  <section class="px-6 pt-12 pb-6 text-center">
-    <div class="max-w-2xl mx-auto">
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight mb-4" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">
-        Let's start your offer
-      </h1>
-      <p class="text-[#1f1f1f] text-base sm:text-lg leading-relaxed mb-8 max-w-xl mx-auto">
-        Enter your address to get started. This helps us find sales data for your home and other homes nearby.
-      </p>
-      <AddressForm id="request-form" class="flex flex-col items-center" align="center" showTrust={false} />
-    </div>
-  </section>
+  <main>
+    <!-- Headline + input -->
+    <section id="top" class="pt-14 pb-8 text-center">
+      <div class="wrap"><div class="max-w-[680px] mx-auto">
+        <h1 class="fs-h1 max-[700px]:text-[38px]!">Let's start your offer</h1>
+        <p class="mt-4 mx-auto max-w-[560px] text-[18px] leading-[1.55] text-muted">Enter your address to get started. This helps us find sales data for your home and other homes nearby.</p>
+        <div class="mt-8">
+          <AddressForm id="request-form" theme="light" align="center" showTrust={false} />
+        </div>
+      </div></div>
+    </section>
 
-  <!-- ARCH-FRAMED HERO IMAGE — sized to fit remaining viewport before scroll -->
-  <div class="px-6 flex justify-center">
-    <div
-      class="aspect-[5/4] overflow-hidden shadow-lg"
-      style="border-radius: 9999px 9999px 0 0; height: min(calc(100vh - 24rem), 65vh); min-height: 240px;"
-    >
-      <img
-        src="/casestudies/arch-hero.jpg"
-        alt="A FlipSplit renovated home"
-        class="w-full h-full object-cover select-none"
-        draggable="false"
-      />
+    <!-- Arch-framed hero image -->
+    <div class="px-6 pb-[72px] flex justify-center">
+      <div class="h-[520px] max-[1000px]:h-[420px] max-[700px]:h-[300px] aspect-[5/4] max-w-full overflow-hidden rounded-t-full border border-line bg-mute">
+        <img src="/reskin/request-offer-home.jpg" alt="A FlipSplit renovated home" class="block w-full h-full object-cover select-none" draggable="false" />
+      </div>
     </div>
-  </div>
+  </main>
 
-  <!-- FOOTER (minimal) -->
-  <Footer />
+  <Footer current="/request-offer/" />
 
 </body>
 </html>

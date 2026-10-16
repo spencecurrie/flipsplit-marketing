@@ -1,5 +1,5 @@
 ---
-title: "iBuyers, Wholesalers &#038; Flippers"
+title: "iBuyers, Wholesalers & Flippers"
 description: "Read about iBuyers, Wholesalers & Flippers. With FlipSplit, let us fix & flip your home today!"
 pubDate: 2021-02-24
 updatedDate: 2022-12-28

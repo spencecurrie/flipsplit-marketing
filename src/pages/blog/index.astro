@@ -10,15 +10,28 @@ allPosts.sort((a, b) => +new Date(b.data.pubDate) - +new Date(a.data.pubDate));
 
 const homeSelling = allPosts.filter(p => p.data.category === 'Home Selling');
 const localTrends = allPosts.filter(p => p.data.category === 'Local Trends');
-const other = allPosts.filter(p => p.data.category !== 'Home Selling' && p.data.category !== 'Local Trends');
+
+const hsHero = homeSelling[0];
+const hsSecondary = homeSelling.slice(1, 3);
+const hsGrid = homeSelling.slice(3, 9);
+const ltHero = localTrends[0];
+const ltList = localTrends.slice(1, 6);
+
+const BATCH = 12;
 
 function formatDate(d: Date) {
-  return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 }
+const href = (id: string) => `/blog/${id}/`;
+const catSlug = (c: string) => c.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+
+// Card shell shared by every post link: hairline border that goes ink on hover.
+const card = 'text-ink no-underline border border-line hover:border-ink hover:text-ink transition-colors duration-[180ms] ease-[cubic-bezier(.2,0,0,1)]';
+const arrow = '<path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path>';
 ---
 
 <!DOCTYPE html>
@@ -31,251 +44,238 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   <link rel="canonical" href={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style>
-    :root {
-      --brand-cyan: #1f1f1f;
-      --brand-dark: #1f1f1f;
-      --brand-body: #2a2a27;
-    }
-    body { font-family: 'General Sans', sans-serif; color: var(--brand-body); }
-    h1, h2, h3 { font-family: 'General Sans', 'General Sans', sans-serif; }
-    .btn-primary { background: var(--brand-cyan); color: #ffffff; font-weight: 700; transition: filter 0.15s; }
-    .btn-primary:hover { filter: brightness(1.08); }
-    .card-img { transition: transform 0.4s ease; }
-    .card-img:hover { transform: scale(1.03); }
-    .post-card:hover h3 { color: var(--brand-cyan); }
+    /* Hatched placeholder behind every cover image (shows while it loads, or
+       if a post has no heroImage). */
+    .ph { background: repeating-linear-gradient(135deg, #E9E9E4 0 1px, #F4F4F1 1px 7px); }
   </style>
   <ClientRouter />
 </head>
-<body class="bg-white antialiased">
+<body class="bg-white text-ink antialiased">
 
-  <!-- ─── NAV ─── -->
   <Nav />
 
-  <!-- ─── PAGE HEADER ─── -->
-  <div class="border-b border-[#e6e6e2] py-10 px-6">
-    <div class="max-w-[1500px] mx-auto">
-      <p class="text-xs font-semibold tracking-widest uppercase mb-2 text-[#1f1f1f]">FlipSplit Resources</p>
-      <h1 class="text-4xl font-semibold text-[#1f1f1f]">Real Estate Articles &amp; Resources</h1>
+  <!-- Page header -->
+  <div id="top" class="border-b border-line pt-12 pb-10">
+    <div class="wrap-wide">
+      <div class="eyebrow">FlipSplit Resources</div>
+      <h1 class="mt-2.5 text-[44px] max-[700px]:text-[32px] leading-[1.08] tracking-[-0.035em] font-semibold">Real Estate Articles &amp; Resources</h1>
     </div>
   </div>
 
-  <div class="max-w-[1500px] mx-auto px-6 py-12 space-y-20">
+  <div class="wrap-wide pt-14 pb-8 flex flex-col gap-20">
 
-    <!-- ─── HOME SELLING ─── -->
-    {homeSelling.length > 0 && (() => {
-      const [hero, ...rest] = homeSelling;
-      const secondary = rest.slice(0, 2);
-      const grid = rest.slice(2, 8);
-      return (
-        <section>
-          <div class="flex items-center justify-between mb-7">
-            <h2 class="text-xl font-semibold text-[#1f1f1f]">Home Selling</h2>
-            <a href="/blog/" class="text-xs font-semibold text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors">View all →</a>
+    <!-- Home Selling -->
+    {hsHero && (
+      <section aria-labelledby="hs">
+        <div class="flex justify-between items-center mb-6">
+          <div class="flex items-center gap-2.5">
+            <h2 id="hs" class="m-0 text-[22px] tracking-[-0.02em] font-semibold">Home Selling</h2>
+            <span class="chip tnum">{homeSelling.length}</span>
           </div>
-
-          {/* Hero row: large card left + 2 stacked right */}
-          <div class="grid md:grid-cols-[3fr_2fr] gap-5 mb-5">
-
-            {/* Large featured card */}
-            <a href={`/blog/${hero.id}`} class="post-card group block rounded-2xl overflow-hidden border border-[#e6e6e2] relative">
-              <div class="aspect-[16/9] overflow-hidden bg-[#f4f4f0]">
-                {hero.data.heroImage
-                  ? <img src={hero.data.heroImage} alt={hero.data.title} class="card-img w-full h-full object-cover" />
-                  : <div class="w-full h-full" style="background: linear-gradient(135deg,#1f1f1f,#1f1f1f);" />
-                }
-              </div>
-              <div class="p-6">
-                <span class="text-xs font-semibold px-2.5 py-1 rounded-full mb-3 inline-block" style="background:rgba(31,31,31,0.1);color:#1f1f1f;">{hero.data.category}</span>
-                <h3 class="text-xl font-semibold text-[#1f1f1f] leading-snug mb-2 transition-colors">{hero.data.title}</h3>
-                {hero.data.description && <p class="text-sm text-[#1f1f1f] line-clamp-2 leading-relaxed mb-3">{hero.data.description}</p>}
-                <span class="text-xs text-[#1f1f1f]">{formatDate(hero.data.pubDate)}</span>
-              </div>
-            </a>
-
-            {/* 2 stacked secondary cards */}
-            <div class="flex flex-col gap-5">
-              {secondary.map(post => (
-                <a href={`/blog/${post.id}`} class="post-card group flex gap-4 rounded-2xl border border-[#e6e6e2] overflow-hidden p-4 hover:shadow-sm transition-shadow flex-1">
-                  <div class="w-24 shrink-0 rounded-xl overflow-hidden bg-[#f4f4f0] self-stretch">
-                    {post.data.heroImage
-                      ? <img src={post.data.heroImage} alt={post.data.title} class="card-img w-full h-full object-cover" />
-                      : <div class="w-full h-full" style="background: linear-gradient(135deg,#1f1f1f,#1f1f1f);" />
-                    }
-                  </div>
-                  <div class="flex flex-col justify-center min-w-0">
-                    <span class="text-xs font-semibold mb-1.5 text-[#1f1f1f]">{post.data.category}</span>
-                    <h3 class="text-sm font-semibold text-[#1f1f1f] leading-snug line-clamp-3 transition-colors">{post.data.title}</h3>
-                    <span class="text-xs text-[#1f1f1f] mt-2">{formatDate(post.data.pubDate)}</span>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* 3-col grid */}
-          {grid.length > 0 && (
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {grid.map(post => (
-                <a href={`/blog/${post.id}`} class="post-card group block rounded-2xl border border-[#e6e6e2] overflow-hidden hover:shadow-sm transition-shadow">
-                  <div class="aspect-[16/9] overflow-hidden bg-[#f4f4f0]">
-                    {post.data.heroImage
-                      ? <img src={post.data.heroImage} alt={post.data.title} class="card-img w-full h-full object-cover" loading="lazy" />
-                      : <div class="w-full h-full" style="background: linear-gradient(135deg,#1f1f1f,#1f1f1f);" />
-                    }
-                  </div>
-                  <div class="p-5">
-                    <h3 class="text-sm font-semibold text-[#1f1f1f] leading-snug line-clamp-2 mb-2 transition-colors">{post.data.title}</h3>
-                    <span class="text-xs text-[#1f1f1f]">{formatDate(post.data.pubDate)}</span>
-                  </div>
-                </a>
-              ))}
-            </div>
-          )}
-        </section>
-      );
-    })()}
-
-    <!-- ─── INLINE CTA BANNER ─── -->
-    <div class="rounded-2xl px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-6" style="background:var(--brand-dark);">
-      <div>
-        <p class="text-xs font-semibold uppercase tracking-widest mb-2" style="color:var(--brand-cyan);">Free. No obligation.</p>
-        <p class="text-2xl font-black text-white leading-tight">Wondering what your home is worth?</p>
-        <p class="text-[#1f1f1f] text-sm mt-1">Get a free cash offer and renovation projection in 24–48 hours.</p>
-      </div>
-      <a href="/#get-offer" class="btn-primary shrink-0 px-7 py-3.5 rounded-xl text-sm whitespace-nowrap">Get My Free Offer →</a>
-    </div>
-
-    <!-- ─── LOCAL TRENDS ─── -->
-    {localTrends.length > 0 && (() => {
-      const [hero, ...rest] = localTrends;
-      const grid = rest.slice(0, 5);
-      return (
-        <section>
-          <div class="flex items-center justify-between mb-7">
-            <h2 class="text-xl font-semibold text-[#1f1f1f]">Local Trends</h2>
-            <a href="/blog/" class="text-xs font-semibold text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors">View all →</a>
-          </div>
-
-          <div class="grid md:grid-cols-[2fr_3fr] gap-5">
-            {/* Tall featured card */}
-            <a href={`/blog/${hero.id}`} class="post-card group block rounded-2xl overflow-hidden border border-[#e6e6e2]">
-              <div class="h-56 overflow-hidden bg-[#f4f4f0]">
-                {hero.data.heroImage
-                  ? <img src={hero.data.heroImage} alt={hero.data.title} class="card-img w-full h-full object-cover" />
-                  : <div class="w-full h-full" style="background: linear-gradient(135deg,#1f1f1f,#1f1f1f);" />
-                }
-              </div>
-              <div class="p-6">
-                <span class="text-xs font-semibold mb-2 inline-block text-[#1f1f1f]">{hero.data.category}</span>
-                <h3 class="text-lg font-semibold text-[#1f1f1f] leading-snug mb-2 transition-colors">{hero.data.title}</h3>
-                {hero.data.description && <p class="text-sm text-[#1f1f1f] line-clamp-2">{hero.data.description}</p>}
-              </div>
-            </a>
-
-            {/* Right: compact list */}
-            <div class="flex flex-col gap-0 divide-y divide-slate-100">
-              {grid.map(post => (
-                <a href={`/blog/${post.id}`} class="post-card group flex items-start gap-4 py-4 first:pt-0 last:pb-0">
-                  <div class="w-20 h-14 shrink-0 rounded-xl overflow-hidden bg-[#f4f4f0]">
-                    {post.data.heroImage
-                      ? <img src={post.data.heroImage} alt={post.data.title} class="card-img w-full h-full object-cover" loading="lazy" />
-                      : <div class="w-full h-full" style="background: linear-gradient(135deg,#1f1f1f,#1f1f1f);" />
-                    }
-                  </div>
-                  <div class="min-w-0">
-                    <h3 class="text-sm font-semibold text-[#1f1f1f] leading-snug line-clamp-2 mb-1 transition-colors">{post.data.title}</h3>
-                    <span class="text-xs text-[#1f1f1f]">{formatDate(post.data.pubDate)}</span>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-        </section>
-      );
-    })()}
-
-    <!-- ─── RECENT (all posts, load more) ─── -->
-    {allPosts.length > 10 && (
-      <section>
-        <div class="flex items-center justify-between mb-7">
-          <h2 class="text-xl font-semibold text-[#1f1f1f]">Recent Articles</h2>
-          <span class="text-xs text-[#1f1f1f]">{allPosts.length} articles</span>
+          <a href="/blog/?category=home-selling#recent" data-blog-filter="home-selling" class="text-[14px] font-medium no-underline inline-flex items-center gap-1.5 h-11 hover:text-muted">View all<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" set:html={arrow} /></a>
         </div>
-        <div id="recent-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {allPosts.map((post, i) => (
-            <a
-              href={`/blog/${post.id}`}
-              class={`post-card group block rounded-2xl border border-[#e6e6e2] overflow-hidden hover:shadow-sm transition-shadow${i >= 12 ? ' hidden' : ''}`}
-              data-index={i}
-            >
-              <div class="aspect-[16/9] overflow-hidden bg-[#f4f4f0]">
-                {post.data.heroImage
-                  ? <img src={post.data.heroImage} alt={post.data.title} class="card-img w-full h-full object-cover" loading="lazy" />
-                  : <div class="w-full h-full" style="background: linear-gradient(135deg,#1f1f1f,#1f1f1f);" />
-                }
+
+        <div class="grid grid-cols-[minmax(0,3fr)_minmax(0,2fr)] max-[1000px]:grid-cols-1 gap-4">
+          <a href={href(hsHero.id)} class={`block rounded-2xl overflow-hidden ${card}`}>
+            <div class="ph aspect-[16/9] overflow-hidden">
+              {hsHero.data.heroImage && <img src={hsHero.data.heroImage} alt="" class="w-full h-full object-cover block" />}
+            </div>
+            <div class="p-6">
+              <span class="inline-flex text-[12px] font-medium px-[9px] py-1 rounded-md border border-line">{hsHero.data.category}</span>
+              <h3 class="mt-3.5 text-[24px] leading-[1.25] tracking-[-0.02em] font-semibold">{hsHero.data.title}</h3>
+              {hsHero.data.description && <p class="line-clamp-2 mt-2.5 text-[15px] leading-[1.6] text-muted">{hsHero.data.description}</p>}
+              <div class="mt-3.5 flex gap-3 text-[13px] text-muted">
+                <span>{formatDate(hsHero.data.pubDate)}</span>
+                {hsHero.data.readingTime && <><span aria-hidden="true">·</span><span>{hsHero.data.readingTime} min read</span></>}
               </div>
-              <div class="p-4">
-                <h3 class="text-sm font-semibold text-[#1f1f1f] leading-snug line-clamp-2 mb-1.5 transition-colors">{post.data.title}</h3>
-                <span class="text-xs text-[#1f1f1f]">{formatDate(post.data.pubDate)}</span>
+            </div>
+          </a>
+          <div class="flex flex-col gap-4">
+            {hsSecondary.map(p => (
+              <a href={href(p.id)} class={`flex-1 flex gap-4 rounded-2xl p-4 ${card}`}>
+                <div class="ph w-[120px] shrink-0 rounded-[10px] min-h-[120px] overflow-hidden">
+                  {p.data.heroImage && <img src={p.data.heroImage} alt="" class="w-full h-full object-cover block" loading="lazy" />}
+                </div>
+                <div class="flex flex-col justify-center min-w-0">
+                  <span class="text-[12px] font-medium text-muted">{p.data.category}</span>
+                  <h3 class="line-clamp-3 mt-1.5 text-[17px] leading-[1.35] font-semibold">{p.data.title}</h3>
+                  <span class="mt-2.5 text-[13px] text-muted">{formatDate(p.data.pubDate)}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 max-[1000px]:grid-cols-2 max-[700px]:grid-cols-1 gap-4 mt-4">
+          {hsGrid.map(p => (
+            <a href={href(p.id)} class={`block rounded-2xl overflow-hidden ${card}`}>
+              <div class="ph aspect-[16/9] overflow-hidden">
+                {p.data.heroImage && <img src={p.data.heroImage} alt="" class="w-full h-full object-cover block" loading="lazy" />}
+              </div>
+              <div class="px-5 py-[18px]">
+                <h3 class="line-clamp-2 m-0 text-[16px] leading-[1.4] font-semibold">{p.data.title}</h3>
+                <span class="block mt-2 text-[13px] text-muted">{formatDate(p.data.pubDate)}</span>
               </div>
             </a>
           ))}
         </div>
+      </section>
+    )}
 
-        <!-- Load more button -->
-        <div id="load-more-wrap" class="mt-10 text-center">
-          <button
-            id="load-more-btn"
-            class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl border-2 border-[#1f1f1f] text-[#1f1f1f] font-bold text-sm hover:bg-[#1f1f1f] hover:text-white transition-colors"
-          >
-            Load more articles
-          </button>
-          <p id="load-more-count" class="text-xs text-[#1f1f1f] mt-3">Showing 12 of {allPosts.length}</p>
+    <!-- Inline CTA -->
+    <div class="bg-ink text-white rounded-2xl px-10 py-9 max-[700px]:px-6 flex max-[700px]:flex-col justify-between items-center max-[700px]:items-start gap-6">
+      <div>
+        <div class="text-[12px] font-semibold uppercase tracking-[0.1em] text-[#BDBDB6]">Free. No obligation.</div>
+        <div class="mt-2 text-[28px] leading-[1.15] tracking-[-0.03em] font-semibold">Wondering what your home is worth?</div>
+        <div class="mt-1.5 text-[15px] text-[#BDBDB6]">Get a free cash offer and renovation projection in 24–48 hours.</div>
+      </div>
+      <a href="/request-offer/" class="shrink-0 no-underline text-ink bg-white hover:bg-mute hover:text-ink text-[15px] font-medium px-[22px] h-[52px] rounded-xl inline-flex items-center gap-2 transition-colors">Get My Free Offer<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" set:html={arrow} /></a>
+    </div>
+
+    <!-- Local Trends -->
+    {ltHero && (
+      <section aria-labelledby="lt">
+        <div class="flex justify-between items-center mb-6">
+          <div class="flex items-center gap-2.5">
+            <h2 id="lt" class="m-0 text-[22px] tracking-[-0.02em] font-semibold">Local Trends</h2>
+            <span class="chip tnum">{localTrends.length}</span>
+          </div>
+          <a href="/blog/?category=local-trends#recent" data-blog-filter="local-trends" class="text-[14px] font-medium no-underline inline-flex items-center gap-1.5 h-11 hover:text-muted">View all<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" set:html={arrow} /></a>
+        </div>
+        <div class="grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] max-[1000px]:grid-cols-1 gap-4">
+          <a href={href(ltHero.id)} class={`block rounded-2xl overflow-hidden ${card}`}>
+            <div class="ph h-56 overflow-hidden">
+              {ltHero.data.heroImage && <img src={ltHero.data.heroImage} alt="" class="w-full h-full object-cover block" loading="lazy" />}
+            </div>
+            <div class="p-6">
+              <span class="text-[12px] font-medium text-muted">{ltHero.data.category}</span>
+              <h3 class="mt-2 text-[20px] leading-[1.3] tracking-[-0.015em] font-semibold">{ltHero.data.title}</h3>
+              {ltHero.data.description && <p class="line-clamp-2 mt-2 text-[15px] leading-[1.6] text-muted">{ltHero.data.description}</p>}
+            </div>
+          </a>
+          <div class="border border-line rounded-2xl px-5 py-2">
+            {ltList.map((p, i) => (
+              <a href={href(p.id)} class={`flex items-center gap-4 py-3.5 text-ink no-underline hover:text-muted transition-colors ${i === ltList.length - 1 ? '' : 'border-b border-hairline'}`}>
+                <div class="ph w-[84px] h-[58px] shrink-0 rounded-[9px] overflow-hidden">
+                  {p.data.heroImage && <img src={p.data.heroImage} alt="" class="w-full h-full object-cover block" loading="lazy" />}
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h3 class="line-clamp-2 m-0 text-[15px] leading-[1.4] font-semibold">{p.data.title}</h3>
+                  <span class="block mt-1 text-[13px] text-muted">{formatDate(p.data.pubDate)}</span>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5E5E58" stroke-width="2" stroke-linecap="round" aria-hidden="true" class="shrink-0"><path d="M9 6l6 6-6 6"></path></svg>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
     )}
 
+    <!-- Recent (all posts; "View all" above filters this list by category) -->
+    <section id="recent" aria-labelledby="ra" class="scroll-mt-6" data-blog-recent data-batch={BATCH}>
+      <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+        <h2 id="ra" class="m-0 text-[22px] tracking-[-0.02em] font-semibold" data-blog-heading>Recent Articles</h2>
+        <div class="flex items-center gap-3">
+          <button type="button" data-blog-clear hidden class="text-[14px] font-medium inline-flex items-center gap-1.5 h-11 px-1 bg-transparent border-0 cursor-pointer text-ink hover:text-muted">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>Show all
+          </button>
+          <span class="chip tnum" data-blog-total>{allPosts.length} articles</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-4 max-[1000px]:grid-cols-2 max-[700px]:grid-cols-1 gap-4">
+        {allPosts.map((p, i) => (
+          <a
+            href={href(p.id)}
+            data-cat={catSlug(p.data.category)}
+            class={`block rounded-[14px] overflow-hidden ${card}`}
+            hidden={i >= BATCH}
+          >
+            <div class="ph aspect-[16/9] overflow-hidden">
+              {p.data.heroImage && <img src={p.data.heroImage} alt="" class="w-full h-full object-cover block" loading="lazy" />}
+            </div>
+            <div class="p-4">
+              <h3 class="line-clamp-2 m-0 text-[15px] leading-[1.4] font-semibold">{p.data.title}</h3>
+              <span class="block mt-1.5 text-[13px] text-muted">{formatDate(p.data.pubDate)}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="mt-10 text-center">
+        <button type="button" data-blog-more class="h-[52px] px-7 border border-ink rounded-xl bg-white text-ink text-[15px] font-medium cursor-pointer hover:bg-ink hover:text-white transition-colors">Load more articles</button>
+        <p class="tnum mt-3 text-[13px] text-muted" data-blog-count>Showing {Math.min(BATCH, allPosts.length)} of {allPosts.length}</p>
+      </div>
+    </section>
   </div>
 
-  <!-- ─── FOOTER CTA ─── -->
-  <section style="background:var(--brand-dark);" class="mt-20 py-20 px-6 text-center">
-    <p class="text-sm font-semibold tracking-widest uppercase mb-4" style="color:var(--brand-cyan);">Ready to sell?</p>
-    <h2 class="text-4xl font-semibold text-white mb-5">Get your free offer today.</h2>
-    <p class="text-[#6b6b66] mb-8 max-w-md mx-auto">No repairs needed. No obligation. Results in 24–48 hours.</p>
-    <a href="/#get-offer" class="btn-primary inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base">Get My Free Offer →</a>
+  <!-- Footer CTA -->
+  <section id="get-offer" class="mt-[72px] py-[88px] bg-cream text-center">
+    <div class="wrap max-w-[640px]">
+      <span class="inline-flex items-center h-[30px] px-3 border border-[#D2D2CB] rounded-full text-[13px] bg-white">Ready to sell?</span>
+      <h2 class="mt-4 fs-h2">Get your free offer today.</h2>
+      <p class="mt-3.5 fs-lede">No repairs needed. No obligation. Results in 24–48 hours.</p>
+      <a href="/request-offer/" class="mt-7 no-underline text-white bg-ink hover:bg-black hover:text-white text-[16px] font-medium px-[26px] h-[54px] rounded-xl inline-flex items-center gap-2.5 transition-colors">Get My Free Offer<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" set:html={arrow} /></a>
+    </div>
   </section>
 
-  <Footer />
+  <Footer current="/blog/" />
 
   <script>
-    // Re-initialized on astro:page-load so the "Load more" button works after
-    // a ClientRouter swap (landing on /blog via an in-app link, not a reload).
-    // Elements are re-queried each run and a dataset guard keeps a re-run from
-    // binding the same button twice.
-    function initLoadMore() {
-      const BATCH = 12;
-      const btn = document.getElementById('load-more-btn');
-      if (!btn || btn.dataset.loadMoreInit === '1') return;
-      btn.dataset.loadMoreInit = '1';
+    // Recent Articles: "Load more" (12 at a time) + category filter driven by
+    // the sections' "View all" links (?category=home-selling|local-trends).
+    // Bound on astro:page-load so it re-wires after ClientRouter swaps; the
+    // dataset guard stops a re-run from double-binding the same section.
+    const LABELS: Record<string, string> = { 'home-selling': 'Home Selling', 'local-trends': 'Local Trends' };
 
-      const cards = Array.from(document.querySelectorAll<HTMLElement>('#recent-grid [data-index]'));
-      const wrap = document.getElementById('load-more-wrap');
-      const countEl = document.getElementById('load-more-count');
-      let shown = BATCH;
+    function initBlogIndex() {
+      const root = document.querySelector<HTMLElement>('[data-blog-recent]');
+      if (!root || root.dataset.init === '1') return;
+      root.dataset.init = '1';
 
-      btn.addEventListener('click', () => {
-        const next = Math.min(shown + BATCH, cards.length);
-        for (let i = shown; i < next; i++) {
-          cards[i].classList.remove('hidden');
-        }
-        shown = next;
-        countEl!.textContent = `Showing ${shown} of ${cards.length}`;
-        if (shown >= cards.length) wrap!.remove();
+      const batch = Number(root.dataset.batch) || 12;
+      const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-cat]'));
+      const more = root.querySelector<HTMLButtonElement>('[data-blog-more]')!;
+      const count = root.querySelector<HTMLElement>('[data-blog-count]')!;
+      const total = root.querySelector<HTMLElement>('[data-blog-total]')!;
+      const heading = root.querySelector<HTMLElement>('[data-blog-heading]')!;
+      const clear = root.querySelector<HTMLButtonElement>('[data-blog-clear]')!;
+      let cat = '';
+      let shown = batch;
+
+      function render() {
+        const pool = cat ? cards.filter(c => c.dataset.cat === cat) : cards;
+        cards.forEach(c => { c.hidden = true; });
+        pool.slice(0, shown).forEach(c => { c.hidden = false; });
+        const n = Math.min(shown, pool.length);
+        count.textContent = `Showing ${n} of ${pool.length}`;
+        total.textContent = `${pool.length} articles`;
+        heading.textContent = cat ? `${LABELS[cat] ?? 'Recent'} Articles` : 'Recent Articles';
+        clear.hidden = !cat;
+        more.hidden = n >= pool.length;
+      }
+
+      function setCat(next: string, scroll: boolean) {
+        cat = LABELS[next] ? next : '';
+        shown = batch;
+        const url = new URL(location.href);
+        if (cat) url.searchParams.set('category', cat); else url.searchParams.delete('category');
+        history.replaceState(history.state, '', url.pathname + url.search + (scroll ? '#recent' : url.hash));
+        render();
+        if (scroll) root!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      more.addEventListener('click', () => { shown += batch; render(); });
+      clear.addEventListener('click', () => setCat('', false));
+      document.querySelectorAll<HTMLAnchorElement>('[data-blog-filter]').forEach(a => {
+        a.addEventListener('click', e => { e.preventDefault(); setCat(a.dataset.blogFilter!, true); });
       });
+
+      const initial = new URLSearchParams(location.search).get('category') ?? '';
+      cat = LABELS[initial] ? initial : '';
+      render();
     }
 
-    initLoadMore();
-    document.addEventListener('astro:page-load', initLoadMore);
+    initBlogIndex();
+    document.addEventListener('astro:page-load', initBlogIndex);
   </script>
 
 </body>

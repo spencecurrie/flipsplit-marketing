@@ -1,72 +1,69 @@
 ---
 // Shared site-wide footer. Drop in via <Footer /> on any page.
 // Funnel pages (under /offer/*) keep their own minimal footer.
+// Pass `current` (the page's path) to bold its own link, as the design does.
+interface Props { current?: string }
+const { current = '' } = Astro.props;
+
+const columns = [
+  { title: 'Sell', links: [
+    { href: '/how-it-works/', label: 'How FlipSplit Works' },
+    { href: '/request-offer/', label: 'Request an Offer' },
+    { href: '/sell-my-home-fast/', label: 'Sell My Home Fast' },
+  ] },
+  { title: 'Where we buy', links: [
+    { href: '/location-la-county/', label: 'Los Angeles County' },
+    { href: '/location-orange-county/', label: 'Orange County' },
+    { href: '/location-san-diego-county/', label: 'San Diego County' },
+    { href: '/location-riverside-county/', label: 'Riverside County' },
+    { href: '/location-san-bernardino-county/', label: 'San Bernardino County' },
+    { href: '/location-long-beach/', label: 'Long Beach' },
+    { href: '/location-anaheim/', label: 'Anaheim' },
+  ] },
+  { title: 'Company', links: [
+    { href: '/about/', label: 'About' },
+    { href: '/reviews/', label: 'Reviews' },
+    { href: '/faq/', label: 'FAQ' },
+    { href: '/blog/', label: 'Blog' },
+    { href: '/sign-in/', label: 'Sign in' },
+  ] },
+  { title: 'Legal', links: [
+    { href: '/privacy-policy/', label: 'Privacy Policy' },
+    { href: '/terms-and-conditions/', label: 'Terms & Conditions' },
+    { href: 'mailto:hello@flipsplit.com', label: 'Contact' },
+  ] },
+];
 ---
 
-<footer class="bg-[#1f1f1f] text-[#a8a8a2] px-6 py-16">
-  <div class="max-w-[1500px] mx-auto">
-
-    <!-- Top row: logo + tagline -->
-    <div class="grid md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr] gap-10 lg:gap-16 mb-12 pb-12 border-b border-white/10">
-      <div>
-        <a href="/" class="inline-block mb-5">
-          <img src="/wordmark.png" alt="FlipSplit" class="h-10" />
+<footer class="border-t border-line bg-white pt-14 pb-9 text-ink">
+  <div class="wrap-wide">
+    <div class="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-8 max-[1000px]:grid-cols-3 max-[700px]:grid-cols-2">
+      <div class="max-[1000px]:col-span-3 max-[700px]:col-span-2">
+        <a href="/" class="inline-flex items-center gap-2.5 text-ink no-underline">
+          <img src="/logo-mark.png" alt="" width="30" height="30" class="block w-[30px] h-[30px] object-contain" />
+          <span class="text-[17px] font-semibold tracking-[-0.02em]">FlipSplit</span>
         </a>
-        <p class="text-sm leading-relaxed max-w-xs">
+        <p class="mt-3.5 text-[14px] leading-[1.6] text-muted max-w-[300px]">
           The first cash offer that doesn't make you choose. Sell as-is for cash today and share the upside when your home sells for more.
         </p>
       </div>
 
-      <!-- Sell -->
-      <div>
-        <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-5">Sell</h3>
-        <ul class="space-y-3 text-sm">
-          <li><a href="/how-it-works/" class="hover:text-white transition-colors">How FlipSplit Works</a></li>
-          <li><a href="/request-offer/" class="hover:text-white transition-colors">Request an Offer</a></li>
-          <li><a href="/sell-my-home-fast/" class="hover:text-white transition-colors">Sell My Home Fast</a></li>
-        </ul>
-      </div>
-
-      <!-- Where we buy -->
-      <div>
-        <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-5">Where we buy</h3>
-        <ul class="space-y-3 text-sm">
-          <li><a href="/location-la-county/"             class="hover:text-white transition-colors">Los Angeles County</a></li>
-          <li><a href="/location-orange-county/"         class="hover:text-white transition-colors">Orange County</a></li>
-          <li><a href="/location-san-diego-county/"      class="hover:text-white transition-colors">San Diego County</a></li>
-          <li><a href="/location-riverside-county/"      class="hover:text-white transition-colors">Riverside County</a></li>
-          <li><a href="/location-san-bernardino-county/" class="hover:text-white transition-colors">San Bernardino County</a></li>
-          <li><a href="/location-long-beach/"            class="hover:text-white transition-colors">Long Beach</a></li>
-          <li><a href="/location-anaheim/"               class="hover:text-white transition-colors">Anaheim</a></li>
-        </ul>
-      </div>
-
-      <!-- Company -->
-      <div>
-        <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-5">Company</h3>
-        <ul class="space-y-3 text-sm">
-          <li><a href="/about/"    class="hover:text-white transition-colors">About</a></li>
-          <li><a href="/reviews/"  class="hover:text-white transition-colors">Reviews</a></li>
-          <li><a href="/faq/"      class="hover:text-white transition-colors">FAQ</a></li>
-          <li><a href="/blog/"     class="hover:text-white transition-colors">Blog</a></li>
-          <li><a href="/sign-in/"  class="hover:text-white transition-colors">Sign in</a></li>
-        </ul>
-      </div>
-
-      <!-- Legal -->
-      <div>
-        <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-5">Legal</h3>
-        <ul class="space-y-3 text-sm">
-          <li><a href="/privacy-policy/" class="hover:text-white transition-colors">Privacy Policy</a></li>
-          <li><a href="/terms-and-conditions/" class="hover:text-white transition-colors">Terms &amp; Conditions</a></li>
-          <li><a href="mailto:hello@flipsplit.com" class="hover:text-white transition-colors">Contact</a></li>
-        </ul>
-      </div>
+      {columns.map((col) => (
+        <div class="flex flex-col gap-2.5 text-[14px]">
+          <span class="text-muted">{col.title}</span>
+          {col.links.map((l) => (
+            <a
+              href={l.href}
+              aria-current={current === l.href ? 'page' : undefined}
+              class:list={['text-ink no-underline hover:text-muted transition-colors', current === l.href && 'font-semibold']}
+            >{l.label}</a>
+          ))}
+        </div>
+      ))}
     </div>
 
-    <!-- Bottom row: copyright -->
-    <div class="text-xs text-[#8a8a83]">
-      <p>© 2026 FlipSplit LLC. All rights reserved.</p>
+    <div class="mt-11 pt-5 border-t border-hairline text-[13px] text-muted">
+      © 2026 FlipSplit LLC. All rights reserved.
     </div>
   </div>
 </footer>

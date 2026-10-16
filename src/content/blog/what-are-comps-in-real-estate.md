@@ -1,5 +1,5 @@
 ---
-title: "What Are Comps in Real Estate &#038; What Do They Mean For Home Sellers?"
+title: "What Are Comps in Real Estate & What Do They Mean For Home Sellers?"
 description: "Curious about the role of comps in real estate and how they impact your home sale? Explore our blog to gain insights and discover how partnering with iBuyers could simplify your selling journey."
 pubDate: 2024-04-02
 updatedDate: 2024-06-24

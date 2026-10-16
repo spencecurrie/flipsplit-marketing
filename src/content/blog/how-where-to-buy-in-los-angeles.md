@@ -1,5 +1,5 @@
 ---
-title: "How &#038; Where To Buy In Los Angeles"
+title: "How & Where To Buy In Los Angeles"
 description: "Learning how to buy a house in LA can take a significant amount of time, effort, and research to find the perfect spot. Learn more about where to buy in LA!"
 pubDate: 2021-12-22
 updatedDate: 2025-02-26

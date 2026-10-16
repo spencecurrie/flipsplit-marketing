@@ -1,5 +1,5 @@
 ---
-title: "Three U.S. Housing Market Trends &#038; Predictions for 2023"
+title: "Three U.S. Housing Market Trends & Predictions for 2023"
 description: "Changes are on the horizon for the real estate market at a national level. Check out our US Housing Market Forecast to discover the top trends and predictions."
 pubDate: 2022-08-21
 updatedDate: 2024-01-25

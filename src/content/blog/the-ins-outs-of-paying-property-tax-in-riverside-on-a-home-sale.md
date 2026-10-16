@@ -1,5 +1,5 @@
 ---
-title: "The Ins &#038; Outs of Paying Property Tax in Riverside on a Home Sale"
+title: "The Ins & Outs of Paying Property Tax in Riverside on a Home Sale"
 description: "Buyers and sellers are responsible for paying property tax, but what does this look like for a Riverside resident? Learn more about property tax in Riverside."
 pubDate: 2022-03-21
 updatedDate: 2024-01-25

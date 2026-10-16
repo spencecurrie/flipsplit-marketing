@@ -8,6 +8,69 @@ import { ClientRouter } from 'astro:transitions';
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+
+const reviews = [
+  {
+    quote: "Amazing from start to finish. The team handled everything and made a stressful experience extremely smooth — without leaving money on the table thanks to their resale bonus. Highly recommended!",
+    name: "Val Briot",
+    location: "Los Angeles, CA",
+    photo: "/val-briot.png",
+  },
+  {
+    quote: "Best decision when we needed to sell our investment property fast. They were fair, transparent throughout the entire process, and delivered on everything they said they would.",
+    name: "Nick Boyd",
+    location: "San Diego, CA",
+    photo: "/nick-boyd.png",
+  },
+  {
+    quote: "Working with FlipSplit was the best decision I’ve made so far. Easy, no hassle, and an extra bonus check at the end — more than I expected!",
+    name: "Grace G.",
+    location: "San Juan, CA",
+    photo: "/grace-g.png",
+  },
+];
+
+type Tone = { bg: string; fg: string; sub: string; line: string; line2: string };
+const light: Tone = { bg: 'bg-white', fg: 'text-ink', sub: 'text-muted', line: 'border-line', line2: 'border-line' };
+const dark: Tone  = { bg: 'bg-ink', fg: 'text-white', sub: 'text-[#BDBDB6]', line: 'border-ink', line2: 'border-[#3A3A36]' };
+const card = (title: string, body: string, meta: string, tone: Tone = light) => ({ title, body, meta, ...tone });
+
+// "Close on your timeline" meta: the design had a "[X] days" placeholder; the
+// live site's stated close window (faq.astro) is 7 to 30 days.
+const stages = [
+  { title: 'Get your offer', n: '01', cards: [
+    card('Tell us about your home', 'Your address, a few photos and a quick walkthrough.', 'Day 1'),
+    card('Review your offer', 'One clear number, valid for 30 days.', 'Within 48 hrs') ] },
+  { title: 'Close & get paid', n: '02', cards: [
+    card('Pick your plan', 'All cash, or cash plus a potential share of the resale profit.', 'Your choice'),
+    card('Close on your timeline', 'Cash wired at closing. No repairs, no showings.', 'Your timeline') ] },
+  { title: 'We renovate', n: '03', cards: [
+    card('We fund the fix-up', 'Our crew, our budget, our risk. Never yours.', 'After closing'),
+    card('Follow along', 'Photos and updates in your dashboard as work happens.', 'Weekly') ] },
+  { title: 'Potential bonus', n: '04', cards: [
+    card('Potential bonus paid', 'If the home resells above projection, your share of the profit is paid within 10 days after our resale.', 'After resale', dark),
+    card('Never owe anything back', 'If it sells for less, a potential bonus shrinks, down to $0.', 'Guaranteed') ] },
+];
+
+const cases = [
+  { title: 'Kimball Ave · 4 bed · single-family', before: '/reskin/kimball-kitchen-before.jpg', after: '/reskin/kimball-kitchen-after.jpg',
+    beforeAlt: 'Kimball Ave kitchen before renovation', afterAlt: 'Kimball Ave kitchen after renovation',
+    label: 'Kimball Ave kitchen, drag to compare before and after',
+    cash: '$850k', bonus: '+$128k', total: '$978k', cashFlex: 850, bonusFlex: 128 },
+  { title: 'Via Viente · 5 bed · luxury', before: '/reskin/viaviente-kitchen-before.jpg', after: '/reskin/viaviente-kitchen-after.jpg',
+    beforeAlt: 'Via Viente kitchen before renovation', afterAlt: 'Via Viente kitchen after renovation',
+    label: 'Via Viente kitchen, drag to compare before and after',
+    cash: '$1.14M', bonus: '+$162k', total: '$1.30M', cashFlex: 1140, bonusFlex: 162 },
+];
+
+const faqs = [
+  { q: "Do I have to pay anything upfront?", a: "No. FlipSplit covers 100% of renovation costs. You don’t pay anything until the home sells, and even then it comes out of proceeds — never out of your pocket." },
+  { q: "What if the home doesn’t sell for more than expected?", a: "Your guaranteed cash offer is locked in regardless of how the market performs. If the home sells below our projection, you still get your guaranteed amount. FlipSplit absorbs the renovation risk." },
+  { q: "How long does the renovation take?", a: "Most renovations take 4–8 weeks depending on scope. We target a 30–45 day total close timeline — significantly faster than the 60–90 day traditional sale." },
+  { q: "Can I stay in the home during renovation?", a: "In most cases we ask that the home be vacated during active renovation work. We can work around your schedule as part of your offer review." },
+  { q: "Is FlipSplit the same as iBuying?", a: "No. iBuyers give you a discounted cash offer and keep all the upside. FlipSplit renovates your home to maximize its value — and gives you a share of that upside through profit participation." },
+  { q: "What types of homes does FlipSplit work with?", a: "Single-family homes in Southern California. Condition doesn’t matter — that’s the point. Whether it needs cosmetic updates or significant repairs, we’ll make it work." },
+];
 ---
 
 <!DOCTYPE html>
@@ -21,257 +84,137 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   <link rel="canonical" href={canonicalURL} />
   <ClientRouter />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<style>
-    :root {
-      --brand-cyan: #1f1f1f;
-      --brand-dark: #1f1f1f;
-      --brand-body: #2a2a27;
-      --brand-blue: #1f1f1f;
-      --brand-coral: #1f1f1f;
+  <style>
+    /* Offer-calculator range: transparent native track over the painted
+       track/fill divs; the thumb is the design's ringed black dot. */
+    .range { -webkit-appearance: none; appearance: none; width: 100%; height: 28px; background: transparent; margin: 0; cursor: pointer; }
+    .range::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: transparent; }
+    .range::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #121212; border: 4px solid #fff; box-shadow: 0 0 0 1px #121212; margin-top: -9px; }
+    .range::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: #121212; border: 4px solid #fff; box-shadow: 0 0 0 1px #121212; }
+    @media (max-width: 700px) {
+      .range { height: 32px; }
+      .range::-webkit-slider-thumb { width: 24px; height: 24px; margin-top: -10px; }
+      .range::-moz-range-thumb { width: 18px; height: 18px; }
     }
-    body { font-family: 'General Sans', sans-serif; color: var(--brand-body); overflow-x: hidden; }
-    h1, h2, h3, h4 { font-family: 'General Sans', 'General Sans', sans-serif; color: var(--brand-dark); }
-    details > summary { list-style: none; }
-    details > summary::-webkit-details-marker { display: none; }
-    .faq-icon { transition: transform 0.2s ease; display: inline-block; }
-    details[open] .faq-icon { transform: rotate(45deg); }
-    .hiw-item[open] .hiw-chevron { transform: rotate(180deg); }
-    /* Earnings disclosure — mirrors the app's Offer-page CostRow control. */
-    .earnings-chevron { transition: transform 180ms cubic-bezier(.2,0,0,1); }
-    details[open] .earnings-chevron { transform: rotate(180deg); }
-    @keyframes hiw-fill { from { width: 0%; } to { width: 100%; } }
-    .hiw-step { transition: border-color 0.2s, box-shadow 0.2s; }
-    .hiw-step.hiw-active { border-left-color: var(--brand-cyan) !important; box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
-    .hiw-step.hiw-active .hiw-num { color: var(--brand-cyan) !important; }
-    .hiw-step.hiw-active .hiw-title { color: var(--brand-dark) !important; }
-    .hiw-step .hiw-body { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease; margin-top: 0; }
-    .hiw-step.hiw-active .hiw-body { max-height: 100px; opacity: 1; margin-top: 0.375rem; }
-    .hiw-step.hiw-active .hiw-bar { animation: hiw-fill 4s linear forwards; }
-    .btn-primary { background: var(--brand-cyan); color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
-    .btn-primary:hover { filter: brightness(1.08); }
-    .text-brand-dark { color: var(--brand-dark); }
-    .text-brand-cyan { color: var(--brand-cyan); }
-    .bg-brand-dark { background: #1f1f1f; }
-    input::placeholder { color: #8a8a83; }
-    .dark-placeholder::placeholder { color: rgba(255,255,255,0.35); }
-    select option { background: #fff; color: #2a2a27; }
-    .deal-slider {
-      -webkit-appearance: none; appearance: none;
-      width: 100%; height: 6px; border-radius: 3px;
-      background: linear-gradient(to right, #1f1f1f var(--fill, 50%), #e6e6e2 var(--fill, 50%));
-      outline: none; cursor: pointer;
-    }
-    .deal-slider::-webkit-slider-thumb {
-      -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
-      background: #1f1f1f; border: 3px solid white; box-shadow: 0 1px 6px rgba(0,0,0,0.2); cursor: pointer;
-    }
-    .deal-slider::-moz-range-thumb {
-      width: 20px; height: 20px; border-radius: 50%;
-      background: #1f1f1f; border: 3px solid white; box-shadow: 0 1px 6px rgba(0,0,0,0.2); cursor: pointer;
-    }
-
-    /* ── Draggable before/after sliders (case studies section) ─────────── */
-    .ba-slider {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3 / 2;
-      overflow: hidden;
-      background: #f4f4f0;
-      cursor: ew-resize;
-      user-select: none;
-      touch-action: none;
-      --pos: 50%;
-    }
-    .ba-slider img {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      pointer-events: none;
-      -webkit-user-drag: none;
-    }
-    .ba-before { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
-    .ba-handle {
-      position: absolute; top: 0; bottom: 0;
-      left: var(--pos);
-      transform: translateX(-50%);
-      pointer-events: none;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .ba-handle-line {
-      position: absolute; top: 0; bottom: 0;
-      width: 3px;
-      background: #fff;
-      box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
-    }
-    .ba-handle-grip {
-      position: relative;
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .ba-label {
-      position: absolute;
-      top: 12px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      pointer-events: none;
-    }
-    .ba-label-before { left: 12px;  background: rgba(15,23,42,0.7); color: #fff; }
-    .ba-label-after  { right: 12px; background: #1f1f1f;            color: #fff; }
   </style>
 </head>
-<body class="bg-white antialiased">
+<body class="bg-white text-ink font-sans antialiased">
 
-  <Nav variant="solid" />
+  <Nav />
 
   <!-- ─── HERO ─── -->
-  <section class="px-4 sm:px-6 pt-4 lg:pt-12 pb-8">
-    <div class="relative overflow-hidden rounded-3xl shadow-xl mx-auto" style="min-height: 640px; max-width: 1640px;">
-      <!-- Background photo -->
-      <img
-        src="/hero-family.png?v=3"
-        alt="Family in front of their new home"
-        class="absolute inset-0 w-full h-full object-cover object-right lg:object-center"
-      />
-      <!-- Mobile: flat uniform dark overlay (centered text needs even contrast) -->
-      <div class="absolute inset-0 lg:hidden" style="background: rgba(20,20,18,0.6);"></div>
-      <!-- Desktop: gradient overlay dark-on-left so left-aligned text reads, image shows on right -->
-      <div class="absolute inset-0 hidden lg:block" style="background: linear-gradient(to right, rgba(20,20,18,0.78) 0%, rgba(20,20,18,0.55) 50%, rgba(20,20,18,0.15) 100%);"></div>
-
-      <div class="relative px-6 sm:px-12 lg:px-16 py-16 lg:py-20 flex flex-col justify-center" style="min-height: 640px;">
-        <div class="max-w-2xl lg:max-w-4xl text-center lg:text-left mx-auto lg:mx-0">
-          <h1 class="text-[2.5rem] sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.08] mb-10 lg:mb-6 lg:whitespace-nowrap" style="color: #ffffff;">
-            Cash now, plus more <span class="lg:block">when your home resells.</span>
-          </h1>
-          <p class="text-[13px] lg:text-lg mb-3 lg:mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0 text-white lg:text-white/[.78]">
-            FlipSplit unlocks your equity instantly while still allowing you to benefit from a newly renovated home.
-          </p>
-          <AddressForm id="hero-form" theme="dark" align="center" responsive />
+  <section id="top" class="px-6 pt-6 pb-8 max-[700px]:px-3 max-[700px]:pt-2 max-[700px]:pb-6">
+    <div class="relative max-w-[1640px] mx-auto rounded-[20px] max-[700px]:rounded-[18px] overflow-hidden min-h-[640px] max-[700px]:min-h-0 bg-ink-soft">
+      <img src="/reskin/hero-family.jpg" alt="Family in front of their new home" class="absolute inset-0 w-full h-full object-cover object-center max-[700px]:object-right" />
+      <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(18,18,18,0.82)_0%,rgba(18,18,18,0.55)_50%,rgba(18,18,18,0.12)_100%)] max-[700px]:bg-none max-[700px]:bg-[rgba(18,18,18,0.62)]"></div>
+      <div class="relative min-h-[640px] max-[700px]:min-h-0 box-border px-16 py-[72px] max-[700px]:px-[18px] max-[700px]:pt-8 max-[700px]:pb-7 flex flex-col justify-center text-left max-[700px]:text-center">
+        <div class="max-w-[760px]">
+          <span class="inline-flex items-center gap-2 h-[30px] px-3 border border-white/[.28] rounded-full text-[13px] max-[700px]:text-[12px] text-white">
+            <span class="w-1.5 h-1.5 rounded-full bg-white"></span>Cash now · Potential bonus after resale
+          </span>
+          <h1 class="mt-5 max-[700px]:mt-3.5 text-[64px] max-[1000px]:text-[52px] max-[700px]:text-[34px] leading-[1.04] max-[700px]:leading-[1.08] tracking-[-0.045em] font-semibold text-white">Cash now, plus more<br class="max-[700px]:hidden" /> when your home resells.</h1>
+          <p class="mt-5 max-[700px]:mt-3 text-[18px] max-[700px]:text-[15px] leading-[1.55] max-[700px]:leading-[1.5] text-white/[.86] max-[700px]:text-white max-w-[560px]">FlipSplit unlocks your equity instantly while still allowing you to benefit from a newly renovated home.</p>
+          <div class="mt-7 max-[700px]:mt-5 max-w-[460px] max-[700px]:max-w-none max-[700px]:[&_.address-form]:mx-auto max-[700px]:[&_.flex-wrap]:justify-center [&_.address-modal]:text-left">
+            <AddressForm id="hero-form" theme="dark" />
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ─── SOCIAL PROOF ─── -->
-  <section class="py-20 px-6 bg-white">
-    <div class="max-w-[1500px] mx-auto">
-      <div class="mb-12">
-        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4b4b45;">Why sellers choose FlipSplit</p>
-        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] text-brand-dark mb-5">Real stories from real homeowners.</h2>
-        <p class="text-[#1f1f1f] text-lg leading-relaxed">No pressure, no gimmicks. Just homeowners who found a better way to sell.</p>
-      </div>
-
-      <div class="grid md:grid-cols-3 gap-6">
-        {[
-          {
-            quote: "Amazing from start to finish. The team handled everything and made a stressful experience extremely smooth — without leaving money on the table thanks to their resale bonus. Highly recommended!",
-            name: "Val Briot",
-            location: "Los Angeles, CA",
-            photo: "/val-briot.png",
-          },
-          {
-            quote: "Best decision when we needed to sell our investment property fast. They were fair, transparent throughout the entire process, and delivered on everything they said they would.",
-            name: "Nick Boyd",
-            location: "San Diego, CA",
-            photo: "/nick-boyd.png",
-          },
-          {
-            quote: "Working with FlipSplit was the best decision I've made so far. Easy, no hassle, and an extra bonus check at the end — more than I expected!",
-            name: "Grace G.",
-            location: "San Juan, CA",
-            photo: "/grace-g.png",
-          },
-        ].map(({ quote, name, location, photo }) => (
-          <div class="rounded-2xl p-8 flex flex-col items-center text-center" style="background: #f6f7ed;">
-            <img src={photo} alt={name} class="w-16 h-16 rounded-full object-cover mb-6 shrink-0" />
-            <p class="text-[#1f1f1f] leading-relaxed text-[17px] flex-1 mb-6">"{quote}"</p>
-            <div>
-              <div class="font-bold text-brand-dark text-[15px]">{name}</div>
-              <div class="text-[13px] text-[#1f1f1f] mt-1">{location}</div>
+  <section id="reviews" class="py-20 max-[700px]:py-10">
+    <div class="wrap-wide">
+      <div class="eyebrow max-[700px]:text-[12px]">Why sellers choose FlipSplit</div>
+      <h2 class="fs-h2 mt-2.5 max-[700px]:mt-2">Real stories from real homeowners.</h2>
+      <p class="fs-lede mt-3.5 max-[700px]:mt-3 max-[700px]:text-[16px]">No pressure, no gimmicks. Just homeowners who found a better way to sell.</p>
+      <div class="mt-10 max-[700px]:mt-6 grid grid-cols-3 gap-4 max-[700px]:grid-cols-1 max-[700px]:gap-3">
+        {reviews.map((r) => (
+          <figure class="m-0 border border-line rounded-[14px] p-[22px] max-[700px]:p-[18px] flex flex-col gap-4 max-[700px]:gap-3.5 bg-white">
+            <div class="flex items-center gap-3">
+              <img src={r.photo} alt={r.name} class="w-11 h-11 max-[700px]:w-[42px] max-[700px]:h-[42px] rounded-full object-cover" />
+              <figcaption class="flex-1 min-w-0">
+                <span class="block text-[15px] font-semibold">{r.name}</span>
+                <span class="block text-[13px] text-muted">{r.location}</span>
+              </figcaption>
+              <span class="chip">5.0</span>
             </div>
-          </div>
+            <blockquote class="m-0 text-[16px] max-[700px]:text-[15px] leading-[1.6] text-ink-soft flex-1">“{r.quote}”</blockquote>
+            <span class="self-start inline-flex items-center gap-1.5 text-[12px] px-2 py-1 rounded-md bg-cream">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>Verified seller
+            </span>
+          </figure>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- ─── CREATE YOUR OFFER ─── -->
-  <section class="py-20 px-6 bg-white">
-    <div class="max-w-[1500px] mx-auto flex flex-col items-center gap-12">
-      <div class="text-center max-w-2xl">
-        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] text-brand-dark mb-5">Your home offer redefined</h2>
-        <p class="text-[#1f1f1f] text-lg leading-relaxed">Sell for cash upfront, then get paid again once your home resells.</p>
+  <!-- ─── CREATE YOUR OFFER (calculator) ─── -->
+  <section class="py-20 max-[700px]:py-10 bg-wash border-y border-line">
+    <div class="wrap flex flex-col items-center gap-10 max-[700px]:gap-6 max-[700px]:px-3">
+      <div class="text-center max-w-[640px] max-[700px]:px-1">
+        <h2 class="fs-h2">Your home offer redefined</h2>
+        <p class="fs-lede mt-3.5 max-[700px]:mt-3 max-[700px]:text-[16px]">Sell for cash upfront, then potentially get paid again once your home resells.</p>
       </div>
-      <div class="w-full max-w-[520px] bg-white rounded-2xl shadow-md border border-[#e6e6e2] p-7">
-        <h3 class="text-lg font-semibold text-brand-dark mb-1">Choose your offer</h3>
-        <p class="text-[#1f1f1f] text-sm mb-5">Adjust upfront cash vs. backend upside.</p>
+      <div class="w-full max-w-[560px] bg-white border border-line rounded-2xl p-6 max-[700px]:p-[18px] box-border">
+        <h3 class="m-0 text-[18px] font-semibold tracking-[-0.01em]">Choose your offer</h3>
+        <p class="mt-1 text-[14px] text-muted">Adjust upfront cash vs. backend upside.</p>
 
-        <div class="flex justify-between text-xs font-medium text-[#1f1f1f] mb-2">
-          <span>Max Upfront Cash</span>
-          <span>Max Backend Upside</span>
+        <div class="mt-5 max-[700px]:mt-[18px] flex justify-between text-[12px] font-medium text-muted"><span>Max Upfront Cash</span><span>Max Backend Upside</span></div>
+        <div class="relative mt-1.5 max-[700px]:mt-1">
+          <div class="absolute left-0 right-0 top-3 max-[700px]:top-3.5 h-1 rounded-sm bg-line"></div>
+          <div id="deal-fill" class="absolute left-0 top-3 max-[700px]:top-3.5 h-1 rounded-sm bg-ink" style="width: 0%"></div>
+          <label for="deal-slider" class="sr-only">Backend split</label>
+          <input id="deal-slider" class="range relative" type="range" min="0" max="100" step="1" value="0" />
         </div>
-        <input type="range" id="deal-slider" min="0" max="100" value="0" class="deal-slider mb-5" />
 
-        <div class="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3 mb-5">
-          <div class="bg-[#f6f7ed] border border-[#e6e6e2] rounded-xl p-4">
-            <div class="text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-2">Upfront Offer</div>
-            <div class="flex items-center gap-0.5 border border-[#e6e6e2] hover:border-[#1f1f1f] focus-within:border-[#1f1f1f] rounded-lg px-2 py-1 bg-white transition-colors">
-              <span class="text-xl font-black text-brand-dark">$</span>
-              <input
-                id="offer-amount"
-                type="text"
-                inputmode="numeric"
-                value="465,000"
-                class="text-xl font-black text-brand-dark bg-transparent w-full focus:outline-none min-w-0"
-              />
+        <div class="mt-[18px] max-[700px]:mt-3.5 grid grid-cols-2 gap-2.5 max-[700px]:gap-2">
+          <div class="border border-line rounded-xl p-4 max-[700px]:p-3.5">
+            <label for="offer-amount" class="block text-[11px] font-semibold uppercase tracking-[0.08em]">Upfront Offer</label>
+            <div class="tnum mt-2.5 max-[700px]:mt-2 flex items-center h-12 max-[700px]:h-10 text-[26px] max-[700px]:text-[22px] font-semibold tracking-[-0.02em] border-b border-transparent hover:border-line-strong focus-within:border-ink transition-colors">
+              <span>$</span>
+              <input id="offer-amount" type="text" inputmode="numeric" value="465,000" class="tnum w-full min-w-0 bg-transparent border-0 p-0 font-semibold tracking-[-0.02em] text-ink focus:outline-none" style="font-size: inherit" />
             </div>
-            <div class="text-xs text-[#1f1f1f] mt-1.5">Cash at closing</div>
+            <div class="mt-2 max-[700px]:mt-1.5 text-[12px] text-muted">Cash at closing</div>
           </div>
-          <div class="rounded-xl p-4 border" style="background:#1f1f1f08; border-color:#1f1f1f40;">
-            <div class="text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-2">Backend Split</div>
-            <div id="split-pct" class="text-xl font-black" style="color:var(--brand-cyan);">0%</div>
-            <div class="text-xs text-[#1f1f1f] mt-1.5">Of profit above offer</div>
+          <div class="border border-line rounded-xl p-4 max-[700px]:p-3.5 flex flex-col">
+            <div class="text-[11px] font-semibold uppercase tracking-[0.08em]">Backend Split</div>
+            <div class="flex items-end gap-2.5 max-[700px]:gap-2 mt-1.5">
+              <svg viewBox="0 0 160 90" class="w-[86px] h-12 max-[700px]:w-[66px] max-[700px]:h-[37px] shrink-0" aria-hidden="true">
+                <path id="gauge-off" d="" stroke="#D2D2CB" stroke-width="3" stroke-linecap="round" fill="none"></path>
+                <path id="gauge-on" d="" stroke="#121212" stroke-width="3" stroke-linecap="round" fill="none"></path>
+              </svg>
+              <span id="split-pct" class="tnum text-[26px] max-[700px]:text-[20px] font-semibold tracking-[-0.02em]">0%</span>
+            </div>
+            <div class="mt-auto pt-2 max-[700px]:pt-1.5 text-[12px] text-muted">Of profit above offer</div>
           </div>
         </div>
 
-        <div class="border-t border-[#e6e6e2] pt-4">
+        <div class="mt-4 max-[700px]:mt-3.5 pt-4 max-[700px]:pt-3.5 border-t border-hairline">
           <!-- Collapsed by default: the resale breakdown is detail, the Est. Net
                Proceeds callout below carries the headline number on its own. -->
-          <details class="group">
-            <summary class="flex items-center gap-3 cursor-pointer select-none rounded-xl border border-[#e6e6e2] bg-white px-5 py-[17px] hover:border-[#dcdcd4] transition-colors duration-[180ms]">
-              <span class="text-sm font-medium text-brand-dark">Your Potential Earnings</span>
-              <span class="ml-auto flex items-center gap-3 shrink-0">
-                <span id="split-badge" class="text-sm font-semibold" style="color:var(--brand-cyan);">0% split</span>
-                <svg class="earnings-chevron w-3.5 h-3.5 text-[#8a8a83] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </span>
+          <details>
+            <summary class="flex items-center gap-3 max-[700px]:gap-2.5 h-[52px] px-4 max-[700px]:px-3.5 border border-line rounded-xl hover:border-line-strong transition-colors">
+              <span class="text-[14px] font-medium">Your Potential Earnings</span>
+              <span id="split-badge" class="ml-auto text-[14px] font-semibold">0% split</span>
+              <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5E5E58" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
             </summary>
-            <div class="bg-[#f4f4f0] rounded-[14px] mt-2.5 px-5 py-4">
-              <div class="grid grid-cols-3 gap-x-2 text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-2 px-1">
-                <span>Resale</span>
-                <span class="text-center">Backend</span>
-                <span class="text-right">Total</span>
-              </div>
-              <div id="earnings-table" class="space-y-1"></div>
-              <p class="text-xs text-[#1f1f1f] mt-3">* Resale price not guaranteed.</p>
+            <div class="mt-2.5 border border-line rounded-xl px-4 py-3.5 max-[700px]:p-3">
+              <div class="grid grid-cols-3 text-[11px] font-semibold uppercase tracking-[0.08em] px-1.5 pb-2"><span>Resale</span><span class="text-center">Backend</span><span class="text-right">Total</span></div>
+              <div id="earnings-table"></div>
+              <p class="mt-2.5 text-[12px] text-muted">* Resale price not guaranteed.</p>
             </div>
           </details>
 
           <!-- Est. Net Proceeds callout — base-case total (cash + bonus at projected resale) -->
-          <div class="mt-5 rounded-2xl px-5 py-4 flex items-center justify-between" style="background: linear-gradient(135deg, #1f1f1f 0%, #1f1f1f 100%); box-shadow: 0 8px 22px rgba(31,31,31,0.25);">
-            <div>
-              <div class="text-[11px] font-bold tracking-widest uppercase" style="color: rgba(255,255,255,0.85);">Est. Net Proceeds</div>
-              <div class="text-[10px] mt-0.5" style="color: rgba(255,255,255,0.65);">Cash at closing + bonus check later</div>
+          <div class="mt-4 max-[700px]:mt-3.5 bg-ink text-white rounded-xl px-[18px] py-4 max-[700px]:px-4">
+            <div class="flex justify-between items-center gap-3 max-[700px]:gap-2.5">
+              <div>
+                <div class="text-[11px] font-semibold uppercase tracking-[0.08em]">Est. Net Proceeds</div>
+                <div class="text-[12px] max-[700px]:text-[11px] text-[#BDBDB6] mt-0.5">Cash at closing + potential bonus check later</div>
+              </div>
+              <div id="net-proceeds" class="tnum text-[30px] max-[700px]:text-[26px] font-semibold tracking-[-0.03em]">$465,000</div>
             </div>
-            <div id="net-proceeds" class="text-2xl sm:text-3xl font-black" style="color:#ffffff; font-family:'General Sans','General Sans',sans-serif;">$465,000</div>
           </div>
         </div>
       </div>
@@ -279,137 +222,115 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   </section>
 
   <!-- ─── TWO PAYMENTS, ONE SALE ─── -->
-  <section class="py-20 lg:py-24 px-6 bg-white">
-    <div class="max-w-[1500px] mx-auto rounded-3xl p-10 sm:p-14 lg:p-20" style="background:#f6f7ed;">
-      <div class="text-center mb-14">
-        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] text-brand-dark mb-5">
-          Two payments. One simple sale.
-        </h2>
-        <p class="text-[#1f1f1f] text-lg max-w-2xl mx-auto leading-relaxed">
-          Every other home buyer pays you once. With FlipSplit, you get cash now <em>and</em> share the upside when your home resells.
-        </p>
+  <section id="sell" class="py-[88px] max-[700px]:py-12">
+    <div class="wrap-wide">
+      <div class="text-center max-w-[680px] mx-auto">
+        <h2 class="fs-h2 max-[700px]:text-[30px] max-[700px]:leading-[1.1]">Two payments. One simple sale.</h2>
+        <p class="fs-lede mt-3.5 max-[700px]:mt-3 max-[700px]:text-[15px]">Every other home buyer pays you once. With FlipSplit, you get cash now <em>and</em> share the upside when your home resells.</p>
       </div>
-
-      <div class="max-w-[1500px] mx-auto grid md:grid-cols-2 gap-6 lg:gap-8">
-        <!-- Payment 1: cash at closing (white now that outer card is gray) -->
-        <div class="rounded-3xl p-10 lg:p-12 bg-white">
-          <div class="text-sm font-bold tracking-widest uppercase mb-4" style="color:#1f1f1f;">Payment 1 · At closing</div>
-          <div class="text-5xl sm:text-6xl font-black mb-3 text-brand-dark" style="font-family:'General Sans','General Sans',sans-serif;">$900k</div>
-          <p class="text-[#1f1f1f] leading-relaxed">A guaranteed cash payment, wired the day we close. Use it however you want — buy your next home, pay down debt, retire early.</p>
+      <div class="mt-11 max-[700px]:mt-6 grid grid-cols-2 gap-5 max-[700px]:grid-cols-1 max-[700px]:gap-3">
+        <div class="bg-white border border-line rounded-2xl max-[700px]:rounded-[14px] p-9 max-[700px]:p-6">
+          <div class="flex justify-between items-center"><span class="text-[12px] max-[700px]:text-[11px] font-semibold uppercase tracking-[0.1em]">Payment 1 · At closing</span><span class="chip">01</span></div>
+          <div class="tnum mt-[18px] max-[700px]:mt-3.5 text-[60px] max-[700px]:text-[48px] leading-none font-semibold tracking-[-0.045em]">$900k</div>
+          <div class="mt-[18px] max-[700px]:mt-3.5 h-2 rounded bg-ink"></div>
+          <p class="mt-[18px] max-[700px]:mt-3.5 text-[16px] max-[700px]:text-[15px] leading-[1.6] text-muted">A guaranteed cash payment, wired the day we close. Use it however you want — buy your next home, pay down debt, retire early.</p>
         </div>
-
-        <!-- Payment 2: bonus after resale -->
-        <div class="rounded-3xl p-10 lg:p-12 text-white" style="background:linear-gradient(135deg,#1f1f1f 0%,#1f1f1f 100%);">
-          <div class="text-sm font-bold tracking-widest uppercase mb-4" style="color:rgba(255,255,255,0.85);">Payment 2 · After resale</div>
-          <div class="text-5xl sm:text-6xl font-black mb-3" style="color:#fff; font-family:'General Sans','General Sans',sans-serif;">+$125k</div>
-          <p class="leading-relaxed" style="color:rgba(255,255,255,0.92);">A bonus check after we renovate and resell. Most sellers walk away with a six-figure backend.</p>
+        <div class="bg-ink text-white rounded-2xl max-[700px]:rounded-[14px] p-9 max-[700px]:p-6">
+          <div class="flex justify-between items-center"><span class="text-[12px] max-[700px]:text-[11px] font-semibold uppercase tracking-[0.1em]">Payment 2 · After resale</span><span class="chip border-[#3A3A36]">02</span></div>
+          <div class="tnum mt-[18px] max-[700px]:mt-3.5 text-[60px] max-[700px]:text-[48px] leading-none font-semibold tracking-[-0.045em]">+$125k</div>
+          <div class="hatch-w mt-[18px] max-[700px]:mt-3.5 h-2 rounded w-[40%]"></div>
+          <p class="mt-[18px] max-[700px]:mt-3.5 text-[16px] max-[700px]:text-[15px] leading-[1.6] text-[#D4D4CE]">A potential bonus check after we renovate and resell, if the home sells above our projection.</p>
         </div>
       </div>
+      <p class="mt-6 max-[700px]:mt-[18px] text-center text-[12px] text-muted italic">Example scenario · actual numbers vary by property</p>
+    </div>
+  </section>
 
-      <p class="text-center text-xs text-[#1f1f1f] mt-8 italic">Example scenario · actual numbers vary by property</p>
+  <!-- ─── HOW IT WORKS: four-stage board ─── -->
+  <section id="how" class="border-y border-line py-[88px] max-[700px]:py-12 bg-wash">
+    <div class="wrap-wide">
+      <div class="flex justify-between items-end gap-6 flex-wrap max-[700px]:block">
+        <div>
+          <div class="eyebrow max-[700px]:text-[12px]">How it works</div>
+          <h2 class="fs-h2 mt-2 max-[700px]:leading-[1.1]">From offer to potential bonus,<br class="max-[700px]:hidden" /> in four stages.</h2>
+        </div>
+        <p class="m-0 max-[700px]:mt-3 text-[16px] max-[700px]:text-[15px] text-muted max-w-[360px] max-[700px]:max-w-none leading-[1.55]">You see every stage in your dashboard, from the first offer to the day a potential bonus lands.</p>
+      </div>
+
+      <div class="mt-10 max-[700px]:mt-7 grid grid-cols-4 gap-4 max-[1000px]:grid-cols-2 max-[700px]:grid-cols-1 max-[700px]:gap-7">
+        {stages.map((s) => (
+          <div class="flex flex-col gap-2.5">
+            <div class="flex justify-between items-center h-9 max-[700px]:h-8">
+              <h3 class="m-0 text-[18px] font-medium tracking-[-0.01em]">{s.title}</h3>
+              <span class="chip">{s.n}</span>
+            </div>
+            {s.cards.map((c) => (
+              <div class:list={["rounded-xl p-4 flex flex-col gap-2 min-h-[132px] max-[700px]:min-h-0 box-border border", c.bg, c.fg, c.line]}>
+                <span class="text-[15px] font-semibold">{c.title}</span>
+                <span class:list={["text-[14px] leading-[1.45]", c.sub]}>{c.body}</span>
+                <span class:list={["mt-auto max-[700px]:mt-1 self-start inline-flex items-center gap-1.5 text-[12px] px-2 py-1 rounded-md border", c.line2]}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18"></path><path d="M8 3v4"></path><path d="M16 3v4"></path></svg>
+                  {c.meta}
+                </span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
   <!-- ─── CASE STUDIES — Real homes. Real numbers. ─── -->
-  <section class="py-28 px-6 bg-white">
-    <div class="max-w-[1500px] mx-auto grid lg:grid-cols-[5fr_6fr] gap-12 lg:gap-20 items-start">
-
-      <!-- Left: copy + experience stats -->
-      <div class="lg:sticky lg:top-24">
-        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] text-brand-dark mb-5">
-          Real homes.<br/>Real numbers.
-        </h2>
-        <p class="text-[#1f1f1f] text-lg leading-relaxed mb-10 max-w-md">
-          Here's what a typical FlipSplit sale looks like end-to-end. Drag any photo to see the transformation.
-        </p>
-
-        <!-- Experience stats -->
-        <div class="grid grid-cols-2 gap-8 mb-2 max-w-md">
-          <div>
-            <div class="text-4xl sm:text-5xl font-black leading-none mb-2 text-brand-dark" style="font-family:'General Sans','General Sans',sans-serif;">2,500+</div>
-            <div class="text-sm text-[#1f1f1f] leading-snug">Homes renovated and resold</div>
-          </div>
-          <div>
-            <div class="text-4xl sm:text-5xl font-black leading-none mb-2" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">20 yrs</div>
-            <div class="text-sm text-[#1f1f1f] leading-snug">Of home-flipping experience</div>
+  <section class="pt-10 pb-[104px] max-[700px]:pt-6 max-[700px]:pb-12">
+    <div class="wrap-wide">
+      <div class="grid grid-cols-[minmax(0,5fr)_minmax(0,6fr)] gap-[72px] items-start max-[1000px]:grid-cols-1 max-[1000px]:gap-10 max-[700px]:gap-5">
+        <div>
+          <h2 class="fs-h2 max-[700px]:leading-[1.1]">Real homes.<br />Real numbers.</h2>
+          <p class="fs-lede mt-[18px] max-[700px]:mt-3 max-[700px]:text-[16px] max-w-[440px] max-[700px]:max-w-none">Here's what a typical FlipSplit sale looks like end-to-end. Drag any photo to see the transformation.</p>
+          <div class="mt-9 max-[700px]:mt-5 grid grid-cols-2 gap-3 max-[700px]:gap-2.5 max-w-[440px] max-[700px]:max-w-none">
+            <div class="border border-line rounded-[14px] p-[18px] max-[700px]:p-4">
+              <div class="tnum text-[40px] max-[700px]:text-[32px] leading-none font-semibold tracking-[-0.04em]">2,500+</div>
+              <div class="mt-2 max-[700px]:mt-1.5 text-[13px] max-[700px]:text-[12px] text-muted">Homes renovated and resold</div>
+            </div>
+            <div class="border border-line rounded-[14px] p-[18px] max-[700px]:p-4">
+              <div class="tnum text-[40px] max-[700px]:text-[32px] leading-none font-semibold tracking-[-0.04em]">20 yrs</div>
+              <div class="mt-2 max-[700px]:mt-1.5 text-[13px] max-[700px]:text-[12px] text-muted">Of home-flipping experience</div>
+            </div>
           </div>
         </div>
+        <div class="flex flex-col gap-6 max-[700px]:gap-4">
+          {cases.map((c) => (
+            <article class="border border-line rounded-2xl overflow-hidden bg-white">
+              <div class="ba-slider relative aspect-[3/2] bg-mute overflow-hidden cursor-ew-resize select-none touch-none [--pos:50%]" role="img" aria-label={c.label}>
+                <img src={c.after} alt={c.afterAlt} draggable="false" class="absolute inset-0 w-full h-full object-cover pointer-events-none" />
+                <img src={c.before} alt={c.beforeAlt} draggable="false" class="absolute inset-0 w-full h-full object-cover pointer-events-none [clip-path:inset(0_calc(100%-var(--pos))_0_0)]" />
+                <div class="absolute top-0 bottom-0 w-0.5 bg-white left-(--pos) -translate-x-px pointer-events-none" aria-hidden="true"></div>
+                <div class="absolute top-1/2 left-(--pos) w-10 h-10 -mt-5 -ml-5 max-[700px]:w-9 max-[700px]:h-9 max-[700px]:-mt-[18px] max-[700px]:-ml-[18px] rounded-full bg-white flex items-center justify-center shadow-[0_4px_14px_rgba(0,0,0,0.22)] pointer-events-none" aria-hidden="true">
+                  <svg class="w-4 h-4 max-[700px]:w-3.5 max-[700px]:h-3.5" viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l-6-6 6-6"></path><path d="M15 6l6 6-6 6"></path></svg>
+                </div>
+                <span class="absolute top-3 left-3 max-[700px]:top-2.5 max-[700px]:left-2.5 text-[11px] max-[700px]:text-[10px] font-semibold uppercase tracking-[0.08em] px-[9px] max-[700px]:px-2 py-1 rounded-md bg-[rgba(18,18,18,0.72)] text-white pointer-events-none">Before</span>
+                <span class="absolute top-3 right-3 max-[700px]:top-2.5 max-[700px]:right-2.5 text-[11px] max-[700px]:text-[10px] font-semibold uppercase tracking-[0.08em] px-[9px] max-[700px]:px-2 py-1 rounded-md bg-white text-ink pointer-events-none">After</span>
+              </div>
+              <div class="px-6 py-[22px] max-[700px]:p-[18px]">
+                <div class="flex justify-between items-center gap-3">
+                  <span class="text-[12px] max-[700px]:text-[11px] font-semibold uppercase tracking-[0.1em]">{c.title}</span>
+                  <span class="inline-flex items-center gap-1.5 text-[12px] px-2 py-1 rounded-md border border-line max-[700px]:hidden"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>Sold</span>
+                </div>
+                <div class="tnum mt-4 max-[700px]:mt-3 grid grid-cols-3 gap-3 max-[700px]:gap-2">
+                  <div><div class="text-[11px] max-[700px]:text-[10px] uppercase tracking-[0.06em] text-muted">Cash now</div><div class="mt-1 max-[700px]:mt-[3px] text-[22px] max-[700px]:text-[19px] font-semibold tracking-[-0.02em]">{c.cash}</div></div>
+                  <div><div class="text-[11px] max-[700px]:text-[10px] uppercase tracking-[0.06em] text-muted">Potential bonus check</div><div class="mt-1 max-[700px]:mt-[3px] text-[22px] max-[700px]:text-[19px] font-semibold tracking-[-0.02em]">{c.bonus}</div></div>
+                  <div><div class="text-[11px] max-[700px]:text-[10px] uppercase tracking-[0.06em] text-muted">Total to seller</div><div class="mt-1 max-[700px]:mt-[3px] text-[22px] max-[700px]:text-[19px] font-semibold tracking-[-0.02em]">{c.total}</div></div>
+                </div>
+                <div class="mt-3.5 max-[700px]:mt-3 flex gap-[3px] h-1.5" aria-hidden="true">
+                  <div class="bg-ink rounded-l-[3px]" style={`flex: ${c.cashFlex}`}></div>
+                  <div class="hatch rounded-r-[3px]" style={`flex: ${c.bonusFlex}`}></div>
+                </div>
+              </div>
+            </article>
+          ))}
+          <p class="m-0 text-[12px] text-muted italic">Example scenarios · representative of typical FlipSplit deal outcomes</p>
+        </div>
       </div>
-
-      <!-- Right: stacked case-study cards with draggable before/after sliders -->
-      <div class="flex flex-col gap-8">
-
-        <!-- Case 1: Kimball -->
-        <article class="rounded-3xl overflow-hidden bg-white border border-[#e6e6e2]">
-          <div class="ba-slider" role="img" aria-label="Kimball Ave kitchen — drag to compare before and after">
-            <img class="ba-after"  src="/casestudies/kimball-kitchen-after.jpg"  alt="Kimball Ave kitchen after renovation"  draggable="false" />
-            <img class="ba-before" src="/casestudies/kimball-kitchen-before.jpg" alt="Kimball Ave kitchen before renovation" draggable="false" />
-            <div class="ba-handle" aria-hidden="true">
-              <div class="ba-handle-line"></div>
-              <div class="ba-handle-grip">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f1f1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 3 12 9 6"/>
-                  <polyline points="15 6 21 12 15 18"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div class="p-7 lg:p-8">
-            <div class="text-xs font-bold tracking-widest uppercase text-[#1f1f1f] mb-4">Kimball Ave · 4 bed · single-family</div>
-            <div class="grid grid-cols-3 gap-3">
-              <div>
-                <div class="text-[10px] uppercase tracking-wide text-[#1f1f1f] mb-1">Cash now</div>
-                <div class="text-xl font-black text-brand-dark" style="font-family:'General Sans','General Sans',sans-serif;">$850k</div>
-              </div>
-              <div>
-                <div class="text-[10px] uppercase tracking-wide text-[#1f1f1f] mb-1">Bonus check</div>
-                <div class="text-xl font-black" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">+$128k</div>
-              </div>
-              <div>
-                <div class="text-[10px] uppercase tracking-wide text-[#1f1f1f] mb-1">Total to seller</div>
-                <div class="text-xl font-black text-brand-dark" style="font-family:'General Sans','General Sans',sans-serif;">$978k</div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Case 2: Via Viente -->
-        <article class="rounded-3xl overflow-hidden bg-white border border-[#e6e6e2]">
-          <div class="ba-slider" role="img" aria-label="Via Viente kitchen — drag to compare before and after">
-            <img class="ba-after"  src="/casestudies/viaviente-kitchen-after.jpg"  alt="Via Viente kitchen after renovation"  draggable="false" />
-            <img class="ba-before" src="/casestudies/viaviente-kitchen-before.jpg" alt="Via Viente kitchen before renovation" draggable="false" />
-            <div class="ba-handle" aria-hidden="true">
-              <div class="ba-handle-line"></div>
-              <div class="ba-handle-grip">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f1f1f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 3 12 9 6"/>
-                  <polyline points="15 6 21 12 15 18"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div class="p-7 lg:p-8">
-            <div class="text-xs font-bold tracking-widest uppercase text-[#1f1f1f] mb-4">Via Viente · 5 bed · luxury</div>
-            <div class="grid grid-cols-3 gap-3">
-              <div>
-                <div class="text-[10px] uppercase tracking-wide text-[#1f1f1f] mb-1">Cash now</div>
-                <div class="text-xl font-black text-brand-dark" style="font-family:'General Sans','General Sans',sans-serif;">$1.14M</div>
-              </div>
-              <div>
-                <div class="text-[10px] uppercase tracking-wide text-[#1f1f1f] mb-1">Bonus check</div>
-                <div class="text-xl font-black" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">+$162k</div>
-              </div>
-              <div>
-                <div class="text-[10px] uppercase tracking-wide text-[#1f1f1f] mb-1">Total to seller</div>
-                <div class="text-xl font-black text-brand-dark" style="font-family:'General Sans','General Sans',sans-serif;">$1.30M</div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <p class="text-xs text-[#1f1f1f] italic">Example scenarios · representative of typical FlipSplit deal outcomes</p>
-      </div>
-
     </div>
   </section>
 
@@ -463,99 +384,41 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
     }
   </script>
 
-
   <!-- ─── SO-CAL TRACK RECORD ─── -->
-  <section class="relative overflow-hidden py-20 px-6">
-    <!-- Illustrated-map style background: pastel blocks divided by white streets + pink pins -->
-    <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-      <svg class="w-full h-full" preserveAspectRatio="xMidYMid slice" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-        <!-- Base + irregular color blocks -->
-        <rect width="100%" height="100%" fill="#f6f7ed" />
-        <polygon points="0,0 280,-20 250,170 80,200 0,180" fill="#f6f7ed" />
-        <polygon points="280,-20 820,-10 820,140 580,240 360,210" fill="#f6f7ed" />
-        <polygon points="80,200 250,170 360,210 320,420 50,440 -20,300" fill="#f6f7ed" />
-        <polygon points="360,210 580,240 720,420 460,520 280,460 320,300" fill="#f6f7ed" />
-        <polygon points="580,240 820,140 820,470 720,420" fill="#f6f7ed" />
-        <polygon points="50,440 280,460 460,520 250,640 -20,640" fill="#f6f7ed" />
-        <polygon points="460,520 720,420 820,470 820,640 250,640" fill="#f6f7ed" />
-
-        <!-- Wide white streets at varying angles -->
-        <g stroke="#ffffff" stroke-linecap="round" fill="none">
-          <path d="M-40 110 L860 220" stroke-width="28" />
-          <path d="M-40 380 L860 320" stroke-width="22" />
-          <path d="M-40 540 L860 510" stroke-width="20" />
-          <path d="M280 -40 L160 660" stroke-width="22" />
-          <path d="M520 -40 L580 660" stroke-width="20" />
-          <path d="M740 -40 L780 660" stroke-width="16" />
-          <!-- secondary thinner streets -->
-          <path d="M60 -40 L100 660" stroke-width="10" />
-          <path d="M-40 250 L860 270" stroke-width="8" />
-          <path d="M-40 450 L860 440" stroke-width="8" />
-          <path d="M400 -40 L380 660" stroke-width="10" />
-        </g>
-
-        <!-- Pink/red map pins (with subtle white inner circle) -->
-        <g opacity="0.8">
-          <g transform="translate(120 90)">
-            <path d="M16 0C9 0 3 6 3 13c0 8 13 23 13 23s13-15 13-23C29 6 23 0 16 0z" fill="#f4f4f0" />
-            <circle cx="16" cy="13" r="5" fill="#ffffff" />
-          </g>
-          <g transform="translate(660 130)">
-            <path d="M16 0C9 0 3 6 3 13c0 8 13 23 13 23s13-15 13-23C29 6 23 0 16 0z" fill="#f4f4f0" />
-            <circle cx="16" cy="13" r="5" fill="#ffffff" />
-          </g>
-          <g transform="translate(220 470)">
-            <path d="M16 0C9 0 3 6 3 13c0 8 13 23 13 23s13-15 13-23C29 6 23 0 16 0z" fill="#f4f4f0" />
-            <circle cx="16" cy="13" r="5" fill="#ffffff" />
-          </g>
-          <g transform="translate(580 380)">
-            <path d="M16 0C9 0 3 6 3 13c0 8 13 23 13 23s13-15 13-23C29 6 23 0 16 0z" fill="#f4f4f0" />
-            <circle cx="16" cy="13" r="5" fill="#ffffff" />
-          </g>
-        </g>
-      </svg>
-      <!-- Soft radial wash so the centered card stands out -->
-      <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, rgba(248,250,252,0.65) 70%);"></div>
-    </div>
-
-    <div class="relative max-w-[1500px] mx-auto">
-      <div class="max-w-xl mx-auto bg-white/95 backdrop-blur rounded-2xl shadow-xl border border-[#e6e6e2] p-8 lg:p-10 text-center">
-        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4b4b45;">Trusted across Southern California</p>
-        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight leading-[1.1] text-brand-dark mb-4">
-          Over <span style="color: #1f1f1f;">2,500 homes</span> renovated and resold <span class="text-[#1f1f1f] font-normal">(and counting)</span>
-        </h2>
-        <p class="text-[#1f1f1f] text-base lg:text-lg leading-relaxed mb-6">
-          FlipSplit has helped 2,500+ Southern California homeowners unlock the equity in their home — without the stress of repairs, showings, or staging.
-        </p>
-        <AddressForm id="track-record-form" align="center" showTrust={false} />
+  <section id="where" class="relative overflow-hidden py-[88px] px-6 max-[700px]:py-12 max-[700px]:px-3 bg-cream">
+    <svg class="absolute inset-0 w-full h-full" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g stroke="#FFFFFF" stroke-linecap="round" fill="none">
+        <path d="M-40 110 L860 220" stroke-width="22"></path><path d="M-40 380 L860 320" stroke-width="18"></path><path d="M-40 540 L860 510" stroke-width="16"></path>
+        <path d="M280 -40 L160 660" stroke-width="18"></path><path d="M520 -40 L580 660" stroke-width="16"></path><path d="M740 -40 L780 660" stroke-width="12"></path>
+        <path d="M60 -40 L100 660" stroke-width="7"></path><path d="M-40 250 L860 270" stroke-width="6"></path><path d="M-40 450 L860 440" stroke-width="6"></path><path d="M400 -40 L380 660" stroke-width="7"></path>
+      </g>
+      <g fill="#121212"><circle cx="136" cy="104" r="5"></circle><circle cx="676" cy="144" r="5"></circle><circle cx="236" cy="484" r="5"></circle><circle cx="596" cy="394" r="5"></circle><circle cx="430" cy="236" r="5"></circle></g>
+    </svg>
+    <div class="relative max-w-[580px] mx-auto bg-white border border-line rounded-2xl p-9 max-[700px]:px-[18px] max-[700px]:py-6 text-center shadow-[0_24px_48px_-24px_rgba(0,0,0,0.18)]">
+      <div class="eyebrow max-[700px]:text-[12px]">Trusted across Southern California</div>
+      <h2 class="mt-3 max-[700px]:mt-2.5 text-[36px] max-[700px]:text-[28px] leading-[1.1] max-[700px]:leading-[1.12] tracking-[-0.035em] font-semibold">Over 2,500 homes renovated and resold <span class="font-normal text-muted">(and counting)</span></h2>
+      <p class="mt-3.5 max-[700px]:mt-3 text-[16px] max-[700px]:text-[15px] leading-[1.6] text-muted">FlipSplit has helped 2,500+ Southern California homeowners unlock the equity in their home — without the stress of repairs, showings, or staging.</p>
+      <div class="mt-[22px] max-[700px]:mt-[18px] text-left">
+        <AddressForm id="track-record-form" theme="light" align="center" showTrust={false} />
       </div>
     </div>
   </section>
 
   <!-- ─── FAQ ─── -->
-  <section id="faq" class="py-28 px-6">
-    <div class="max-w-3xl mx-auto">
-      <div class="mb-14 text-center">
-        <p class="text-sm font-semibold tracking-wide mb-3" style="color: #4b4b45;">FAQ</p>
-        <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] text-brand-dark mb-5">Common questions.</h2>
+  <section id="faq" class="py-[104px] max-[700px]:py-12">
+    <div class="wrap max-w-[820px]">
+      <div class="text-center">
+        <div class="eyebrow max-[700px]:text-[12px]">FAQ</div>
+        <h2 class="fs-h2 mt-2.5 max-[700px]:mt-2">Common questions.</h2>
       </div>
-      <div>
-        {[
-          { q: "Do I have to pay anything upfront?", a: "No. FlipSplit covers 100% of renovation costs. You don't pay anything until the home sells, and even then it comes out of proceeds — never out of your pocket." },
-          { q: "What if the home doesn't sell for more than expected?", a: "Your guaranteed cash offer is locked in regardless of how the market performs. If the home sells below our projection, you still get your guaranteed amount. FlipSplit absorbs the renovation risk." },
-          { q: "How long does the renovation take?", a: "Most renovations take 4–8 weeks depending on scope. We target a 30–45 day total close timeline — significantly faster than the 60–90 day traditional sale." },
-          { q: "Can I stay in the home during renovation?", a: "In most cases we ask that the home be vacated during active renovation work. We can work around your schedule as part of your offer review." },
-          { q: "Is FlipSplit the same as iBuying?", a: "No. iBuyers give you a discounted cash offer and keep all the upside. FlipSplit renovates your home to maximize its value — and gives you a share of that upside through profit participation." },
-          { q: "What types of homes does FlipSplit work with?", a: "Single-family homes in Southern California. Condition doesn't matter — that's the point. Whether it needs cosmetic updates or significant repairs, we'll make it work." },
-        ].map(({ q, a }) => (
-          <details class="group border-b border-[#e6e6e2] py-1">
-            <summary class="flex justify-between items-center py-5 cursor-pointer font-semibold text-brand-dark hover:text-brand-cyan transition-colors">
-              {q}
-              <span class="faq-icon text-[#1f1f1f] text-2xl leading-none ml-6 shrink-0">+</span>
+      <div class="mt-11 max-[700px]:mt-6 border-t border-line">
+        {faqs.map((f) => (
+          <details class="border-b border-line">
+            <summary class="flex justify-between items-center gap-6 max-[700px]:gap-4 py-5 max-[700px]:py-[18px] text-[17px] max-[700px]:text-[16px] font-medium">
+              {f.q}
+              <span class="faq-plus shrink-0 w-8 h-8 border border-line-strong rounded-lg flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
             </summary>
-            <div class="pb-5 text-[#1f1f1f] leading-relaxed">
-              {a}
-            </div>
+            <p class="m-0 pr-14 pb-[22px] max-[700px]:pr-0 max-[700px]:pb-[18px] text-[16px] max-[700px]:text-[15px] leading-[1.65] text-muted">{f.a}</p>
           </details>
         ))}
       </div>
@@ -563,37 +426,49 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   </section>
 
   <!-- ─── LEAD CAPTURE FORM ─── -->
-  <section id="get-offer" class="py-28 px-6 bg-[#f6f7ed]">
-    <div class="max-w-xl mx-auto text-center">
-      <p class="text-sm font-semibold tracking-wide mb-4" style="color: #4b4b45;">Free. No obligation.</p>
-      <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight leading-[1.1] text-brand-dark mb-5">Get your free offer today.</h2>
-      <p class="text-[#1f1f1f] text-lg leading-relaxed mb-10">
-        Takes 2 minutes. We'll follow up with your cash offer amount, renovation plan, and profit participation projection.
-      </p>
-      <AddressForm id="footer-form" class="flex flex-col items-center" align="center" />
+  <section id="get-offer" class="py-[104px] max-[700px]:py-14 bg-cream">
+    <div class="wrap max-w-[640px] text-center">
+      <span class="inline-flex items-center gap-2 h-[30px] px-3 border border-[#D2D2CB] rounded-full text-[13px] bg-white">Free. No obligation.</span>
+      <h2 class="fs-h2 mt-4 max-[700px]:mt-3.5">Get your free offer today.</h2>
+      <p class="fs-lede mt-3.5 max-[700px]:mt-3 max-[700px]:text-[16px]">Takes 2 minutes. We'll follow up with your cash offer amount, renovation plan, and profit participation projection.</p>
+      <div class="mt-8 max-[700px]:mt-6 [&_.address-modal]:text-left">
+        <AddressForm id="footer-form" theme="light" align="center" />
+      </div>
     </div>
   </section>
 
-  <!-- ─── FOOTER ─── -->
-  <Footer />
+  <Footer current="/" />
 
   <script>
-    // Both the offer calculator and the How-It-Works tour are (re)initialized
-    // on astro:page-load so they work after every ClientRouter swap — landing
-    // here via an in-app link (e.g. the header logo) re-runs these instead of
-    // leaving fresh DOM uninitialized (slider stuck at its default --fill,
-    // no input handlers). Each block re-queries its current elements and uses
-    // a dataset guard so a re-run never double-binds the same instance.
+    // The offer calculator is (re)initialized on astro:page-load so it works
+    // after every ClientRouter swap — landing here via an in-app link (e.g. the
+    // header logo) re-runs it instead of leaving fresh DOM uninitialized. A
+    // dataset guard keeps a re-run from double-binding the same instance.
 
-    // ── Offer calculator ──
+    // Backend Split gauge: 30 radial ticks on a half circle, filled up to pct.
+    function gauge(pct: number) {
+      const n = 30, cx = 80, cy = 84, r1 = 58, r2 = 78;
+      let on = '', off = '';
+      for (let i = 0; i < n; i++) {
+        const a = Math.PI - Math.PI * i / (n - 1);
+        const s = 'M' + (cx + r1 * Math.cos(a)).toFixed(1) + ' ' + (cy - r1 * Math.sin(a)).toFixed(1) +
+                  'L' + (cx + r2 * Math.cos(a)).toFixed(1) + ' ' + (cy - r2 * Math.sin(a)).toFixed(1);
+        if (pct > 0 && i / (n - 1) <= pct) on += s; else off += s;
+      }
+      return { on, off };
+    }
+
     function initDealCalculator() {
-      const slider  = document.getElementById('deal-slider');
-      const offerEl = document.getElementById('offer-amount');
+      const slider  = document.getElementById('deal-slider') as HTMLInputElement | null;
+      const offerEl = document.getElementById('offer-amount') as HTMLInputElement | null;
       const splitEl = document.getElementById('split-pct');
       const badgeEl = document.getElementById('split-badge');
       const tableEl = document.getElementById('earnings-table');
       const netEl   = document.getElementById('net-proceeds');
-      if (!slider || !offerEl || !splitEl || !badgeEl || !tableEl || !netEl) return;
+      const fillEl  = document.getElementById('deal-fill');
+      const gOn     = document.getElementById('gauge-on');
+      const gOff    = document.getElementById('gauge-off');
+      if (!slider || !offerEl || !splitEl || !badgeEl || !tableEl || !netEl || !fillEl || !gOn || !gOff) return;
       if (slider.dataset.dealInit === '1') return;
       slider.dataset.dealInit = '1';
 
@@ -602,35 +477,34 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
       // slider moves — only the upfront/backend mix changes.
       let maxOffer = 465000;
 
-      const fmt = (n) => '$' + Math.round(n).toLocaleString('en-US');
+      const fmt = (n: number) => '$' + Math.round(n).toLocaleString('en-US');
 
-      function updateTable(currentOffer, pct) {
+      function updateTable(currentOffer: number, pct: number) {
         const projected  = Math.round(maxOffer * 1.2);
         const steps      = [0, 20000, 40000, 60000];
         const resaleRows = steps.map(s => projected + s);
 
-        splitEl.textContent = pct + '%';
-        badgeEl.textContent = pct + '% split';
-        slider.style.setProperty('--fill', pct + '%');
+        splitEl!.textContent = pct + '%';
+        badgeEl!.textContent = pct + '% split';
+        fillEl!.style.width = pct + '%';
+        const g = gauge(pct / 100);
+        gOn!.setAttribute('d', g.on);
+        gOff!.setAttribute('d', g.off);
 
         // Net proceeds = base-case total (first row: cash + bonus at projected resale)
         const baseBackend = Math.max(0, resaleRows[0] - currentOffer) * (pct / 100);
-        netEl.textContent = fmt(currentOffer + baseBackend);
+        netEl!.textContent = fmt(currentOffer + baseBackend);
 
-        tableEl.innerHTML = resaleRows.map((resale, i) => {
+        tableEl!.innerHTML = resaleRows.map((resale, i) => {
           const above   = Math.max(0, resale - currentOffer);
           const backend = above * (pct / 100);
           const total   = currentOffer + backend;
           const isBase  = i === 0;
           return `
-            <div class="grid grid-cols-3 gap-x-2 px-1 py-1.5 rounded-lg ${isBase ? 'bg-white' : ''}">
-              <span class="text-brand-dark font-semibold text-xs">
-                ${fmt(resale)}${isBase ? '<span class="ml-1 text-[#1f1f1f] font-normal">proj.</span>' : ''}
-              </span>
-              <span class="text-center text-xs ${backend > 0 ? 'font-semibold' : 'text-[#1f1f1f]'}" style="${backend > 0 ? 'color:var(--brand-cyan)' : ''}">
-                ${backend > 0 ? '+' + fmt(backend) : '—'}
-              </span>
-              <span class="text-right font-bold text-xs text-brand-dark">${fmt(total)}</span>
+            <div class="tnum grid grid-cols-3 text-[13px] max-[700px]:text-[12px] px-1.5 py-[7px] rounded-lg ${isBase ? 'bg-[#F6F6F3]' : ''}">
+              <span class="font-semibold">${fmt(resale)}${isBase ? ' <span class="font-normal text-muted">proj.</span>' : ''}</span>
+              <span class="text-center ${backend > 0 ? 'font-semibold' : 'font-normal'}">${backend > 0 ? '+' + fmt(backend) : '—'}</span>
+              <span class="text-right font-semibold">${fmt(total)}</span>
             </div>`;
         }).join('');
       }
@@ -641,7 +515,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         const raw = offerEl.value.replace(/[^0-9]/g, '');
         offerEl.value = parseInt(raw || '0').toLocaleString('en-US');
         maxOffer = parseInt(raw) || 465000;
-        slider.value = 0;
+        slider.value = '0';
         updateTable(maxOffer, 0);
       });
 
@@ -653,62 +527,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         updateTable(currentOffer, pct);
       });
 
-      // Reset to a known state and paint the initial fill/table.
-      slider.value = 0;
+      // Reset to a known state and paint the initial fill/gauge/table.
+      slider.value = '0';
       updateTable(maxOffer, 0);
     }
 
-    // ── How It Works auto-tour ──
-    function initHiwTour() {
-      const hiwSteps = document.querySelectorAll('.hiw-step');
-      if (!hiwSteps.length) return;
-      if (hiwSteps[0].dataset.hiwInit === '1') return;
-      hiwSteps.forEach((s) => { s.dataset.hiwInit = '1'; });
-
-      let hiwIndex = 0;
-      let hiwTimer;
-      let hiwAutoPlay = true;
-
-      function hiwActivate(idx) {
-        hiwIndex = ((idx % hiwSteps.length) + hiwSteps.length) % hiwSteps.length;
-        hiwSteps.forEach((s, i) => {
-          s.classList.toggle('hiw-active', i === hiwIndex);
-          if (i !== hiwIndex) {
-            const bar = s.querySelector('.hiw-bar');
-            bar.style.animation = 'none';
-            bar.style.width = '0%';
-          }
-          if (i === hiwIndex) {
-            const bar = s.querySelector('.hiw-bar');
-            bar.style.animation = 'none';
-            bar.offsetWidth;
-            if (hiwAutoPlay) {
-              bar.style.width = '';
-              bar.style.animation = '';
-            } else {
-              bar.style.width = '100%';
-            }
-          }
-        });
-        clearTimeout(hiwTimer);
-        if (hiwAutoPlay) hiwTimer = setTimeout(() => hiwActivate(hiwIndex + 1), 4000);
-      }
-
-      hiwSteps.forEach((step, i) => step.addEventListener('click', () => {
-        hiwAutoPlay = false;
-        clearTimeout(hiwTimer);
-        hiwActivate(i);
-      }));
-      hiwActivate(0);
-    }
-
-    function initHomeInteractions() {
-      initDealCalculator();
-      initHiwTour();
-    }
-
-    initHomeInteractions();
-    document.addEventListener('astro:page-load', initHomeInteractions);
+    initDealCalculator();
+    document.addEventListener('astro:page-load', initDealCalculator);
   </script>
 
 </body>

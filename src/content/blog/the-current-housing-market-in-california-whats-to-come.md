@@ -1,5 +1,5 @@
 ---
-title: "The Current Housing Market in California &#038; What’s to Come in 2023"
+title: "The Current Housing Market in California & What’s to Come in 2023"
 description: "Wondering, what's on the horizon for the California real estate market in 2023? Check out our blog to learn what to consider as a home seller in the year ahead."
 pubDate: 2022-08-28
 updatedDate: 2024-01-25

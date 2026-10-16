@@ -47,14 +47,14 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
   .nav-btn { background: #1f1f1f; color: #fff; font-weight: 700; font-size: 0.875rem; padding: 0.625rem 1.25rem; border-radius: 8px; transition: filter 0.15s; white-space: nowrap; }
   .nav-btn:hover { filter: brightness(1.08); }
   .nav-dropdown-wrap { position: relative; }
-  .nav-dropdown { position: absolute; top: calc(100% + 12px); left: 0; width: 14rem; border-radius: 12px; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s; z-index: 60; background: #1f1f1f; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 16px 40px rgba(0,0,0,0.2); }
+  .nav-dropdown { position: absolute; top: calc(100% + 12px); left: 0; width: 14rem; border-radius: 12px; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s; z-index: 60; background: #fff; border: 1px solid var(--color-line); box-shadow: var(--shadow-e2); }
   .nav-dropdown-wrap:hover .nav-dropdown,
   .nav-dropdown-wrap:focus-within .nav-dropdown { opacity: 1; visibility: visible; }
   .nav-chevron { transition: transform 0.2s; display: inline-block; }
   .nav-dropdown-wrap:hover .nav-chevron { transform: rotate(180deg); }
-  .nav-drop-item { display: block; padding: 0.75rem 1rem; font-size: 0.875rem; color: rgba(255,255,255,0.8); transition: background 0.15s, color 0.15s; border-top: 1px solid rgba(255,255,255,0.08); }
+  .nav-drop-item { display: block; padding: 0.75rem 1rem; font-size: 0.875rem; color: var(--color-ink); transition: background 0.15s; border-top: 1px solid var(--color-hairline); }
   .nav-drop-item:first-child { border-top: none; }
-  .nav-drop-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .nav-drop-item:hover { background: var(--color-wash); }
   .mobile-dropdown > summary { list-style: none; cursor: pointer; }
   .mobile-dropdown > summary::-webkit-details-marker { display: none; }
   .mobile-dropdown[open] .mobile-chevron { transform: rotate(90deg); }
@@ -289,100 +289,88 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
   </script>
 ) : (
   <!-- ─── SOLID NAV (all other pages — mirrors homepage scroll behavior) ─── -->
-  <nav id="solid-nav" class="sticky top-0 z-50 bg-white border-b border-[#e6e6e2] transition-all duration-300">
-    <div class="max-w-[1500px] mx-auto px-6 h-16 flex items-center gap-3 md:gap-0">
-      <div class="shrink-0 md:flex-1">
-        <a href="/" class="inline-flex items-center">
-          <img src="/logo-mark.png" alt="FlipSplit" class="h-11 md:hidden" />
-          <img id="solid-nav-logo" src="/wordmark-on-white.png" alt="FlipSplit" class="hidden md:block h-9" />
-        </a>
-      </div>
-
-      <div id="solid-nav-links" class="hidden md:flex items-center gap-8 text-[15px] text-[#1f1f1f] font-medium">
-        <a href="/how-it-works/" class="hover:text-[#1f1f1f] transition-colors">Sell</a>
+  <nav id="solid-nav" class="sticky top-0 z-50 bg-white border-b border-line">
+    <div class="wrap-wide h-[72px] flex items-center justify-between gap-6 max-[700px]:gap-3">
+      <a href="/" class="flex items-center gap-2.5 text-ink no-underline shrink-0">
+        <img src="/logo-mark.png" alt="" width="34" height="34" class="block w-[34px] h-[34px] object-contain" />
+        <span class="text-[19px] font-semibold tracking-[-0.02em]">FlipSplit</span>
+      </a>
+      <div id="solid-nav-links" class="flex items-center gap-7 text-[15px] text-ink max-[1000px]:hidden">
+        <a href="/how-it-works/" class="hover:text-muted transition-colors">Sell</a>
         <div class="nav-dropdown-wrap">
-          <button class="flex items-center gap-1 text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors text-[15px] font-medium">
-            Where We Buy <svg class="nav-chevron mt-0.5" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          <button type="button" class="flex items-center gap-1 text-ink hover:text-muted transition-colors text-[15px]" aria-haspopup="true">
+            Where We Buy <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="nav-dropdown">
             <a href="/location-la-county/" class="nav-drop-item">Los Angeles County</a>
             <a href="/location-orange-county/" class="nav-drop-item">Orange County</a>
+            <a href="/location-san-diego-county/" class="nav-drop-item">San Diego County</a>
             <a href="/location-riverside-county/" class="nav-drop-item">Riverside County</a>
             <a href="/location-san-bernardino-county/" class="nav-drop-item">San Bernardino County</a>
-            <a href="/location-san-diego-county/" class="nav-drop-item">San Diego County</a>
+            <a href="/location-long-beach/" class="nav-drop-item">Long Beach</a>
+            <a href="/location-anaheim/" class="nav-drop-item">Anaheim</a>
           </div>
         </div>
-        <a href="/reviews/" class="hover:text-[#1f1f1f] transition-colors">Reviews</a>
+        <a href="/reviews/" class="hover:text-muted transition-colors">Reviews</a>
       </div>
-
-      <div id="solid-nav-offer-form-wrap" class="hidden min-w-0 flex-1 md:flex-1 md:max-w-md md:mx-auto">
-        <form action="/" method="get" class="w-full">
-          <div class="field flex items-center rounded-xl overflow-hidden border border-white/20" style="background: rgba(255,255,255,0.1);">
-            <input type="text" name="address" placeholder="Enter home address" class="flex-1 min-w-0 bg-transparent text-white text-sm placeholder:text-white/60 focus:outline-none px-3 md:px-4 py-2.5" />
-            <button type="submit" class="submit-icon md:hidden shrink-0 w-9 h-9 mr-1.5 flex items-center justify-center rounded-lg transition-transform active:scale-95" aria-label="Search">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </button>
-            <button type="submit" class="desktop-cta hidden md:inline-flex shrink-0 text-white text-xs font-bold px-4 py-2.5 transition-all hover:bg-white/10 whitespace-nowrap rounded-lg" style="border: 1.5px solid rgba(255,255,255,0.7); background: transparent;">
-              Get My Offer
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <div id="solid-nav-right" class="shrink-0 md:flex-1 ml-auto md:ml-0 flex items-center justify-end gap-3 md:gap-5">
-        <a id="s-signin-link" href="/sign-in/" class="hidden md:inline-block text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors text-[15px] font-medium">Sign in</a>
+      <div id="solid-nav-right" class="shrink-0 flex items-center justify-end gap-2.5">
+        <a id="s-signin-link" href="/sign-in/" class="inline-flex items-center h-11 px-3 text-[15px] text-ink hover:text-muted transition-colors max-[700px]:hidden">Sign in</a>
         <ProfileMenu prefix="s" />
-        <button id="solid-menu-toggle" class="md:hidden p-2 text-[#1f1f1f]" aria-label="Toggle menu">
-          <svg id="solid-icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-          <svg id="solid-icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <a href="/request-offer/" class="btn-ink h-11 px-[18px] whitespace-nowrap">Get My Offer</a>
+        <button id="solid-menu-toggle" type="button" class="hidden max-[1000px]:inline-flex items-center justify-center w-11 h-11 -mr-2 text-ink" aria-label="Open menu">
+          <svg id="solid-icon-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>
         </button>
       </div>
     </div>
-
-    <div id="solid-mobile-menu" class="fs-drawer md:hidden fixed inset-0 bg-white z-[60] flex flex-col">
-      <div class="flex items-center justify-between px-6 h-16 border-b border-[#e6e6e2] shrink-0">
-        <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
-        <button id="solid-menu-close" class="p-2 text-[#1f1f1f]" aria-label="Close menu">
+    <div id="solid-mobile-menu" class="fs-drawer min-[1001px]:hidden fixed inset-0 bg-white z-[60] flex flex-col">
+      <div class="flex items-center justify-between px-4 h-[72px] border-b border-line shrink-0">
+        <a href="/" class="flex items-center gap-2.5 text-ink no-underline">
+          <img src="/logo-mark.png" alt="" width="34" height="34" class="block w-[34px] h-[34px] object-contain" />
+          <span class="text-[19px] font-semibold tracking-[-0.02em]">FlipSplit</span>
+        </a>
+        <button id="solid-menu-close" class="p-2 text-ink" aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <div id="s-mobile-profile" class="hidden items-center gap-3 px-6 py-5 border-b border-[#e6e6e2] shrink-0" style="background:#f6f7ed;">
+      <div id="s-mobile-profile" class="hidden items-center gap-3 px-6 py-5 border-b border-line shrink-0" style="background:var(--color-cream);">
         <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden shrink-0" style="background:#1f1f1f;">
           <img id="s-mobile-profile-avatar" alt="" class="w-full h-full object-cover hidden" />
           <span id="s-mobile-profile-initial" class="text-sm font-bold text-white">U</span>
         </div>
-        <p id="s-mobile-profile-email" class="font-semibold text-[#1f1f1f] truncate"></p>
+        <p id="s-mobile-profile-email" class="font-semibold text-ink truncate"></p>
       </div>
       <div class="flex-1 overflow-y-auto px-6">
-        <a href="/how-it-works/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Sell</a>
-        <details class="mobile-dropdown border-b border-[#e6e6e2]">
-          <summary class="flex items-center justify-between py-6 text-2xl font-medium text-[#1f1f1f] cursor-pointer">
+        <a href="/how-it-works/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-line text-[22px] font-medium tracking-[-0.01em] text-ink">Sell</a>
+        <details class="mobile-dropdown border-b border-line">
+          <summary class="flex items-center justify-between py-6 text-[22px] font-medium tracking-[-0.01em] text-ink cursor-pointer">
             <span>Where We Buy</span>
-            <svg class="mobile-chevron text-[#1f1f1f]" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+            <svg class="mobile-chevron text-ink" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
           </summary>
           <div class="pb-5 ml-1 space-y-1">
-            <a href="/location-la-county/" class="solid-mobile-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">Los Angeles County</a>
-            <a href="/location-orange-county/" class="solid-mobile-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">Orange County</a>
-            <a href="/location-riverside-county/" class="solid-mobile-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">Riverside County</a>
-            <a href="/location-san-bernardino-county/" class="solid-mobile-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">San Bernardino County</a>
-            <a href="/location-san-diego-county/" class="solid-mobile-link block text-base text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors py-2">San Diego County</a>
+            <a href="/location-la-county/" class="solid-mobile-link block text-base text-ink hover:text-ink transition-colors py-2">Los Angeles County</a>
+            <a href="/location-orange-county/" class="solid-mobile-link block text-base text-ink hover:text-ink transition-colors py-2">Orange County</a>
+            <a href="/location-riverside-county/" class="solid-mobile-link block text-base text-ink hover:text-ink transition-colors py-2">Riverside County</a>
+            <a href="/location-san-bernardino-county/" class="solid-mobile-link block text-base text-ink hover:text-ink transition-colors py-2">San Bernardino County</a>
+            <a href="/location-san-diego-county/" class="solid-mobile-link block text-base text-ink hover:text-ink transition-colors py-2">San Diego County</a>
+            <a href="/location-long-beach/" class="solid-mobile-link block text-base text-ink transition-colors py-2">Long Beach</a>
+            <a href="/location-anaheim/" class="solid-mobile-link block text-base text-ink transition-colors py-2">Anaheim</a>
           </div>
         </details>
-        <a href="/reviews/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Reviews</a>
-        <a id="s-mobile-signin-link" href="/sign-in/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Sign in</a>
+        <a href="/reviews/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-line text-[22px] font-medium tracking-[-0.01em] text-ink">Reviews</a>
+        <a id="s-mobile-signin-link" href="/sign-in/" class="solid-mobile-link flex items-center justify-between py-6 border-b border-line text-[22px] font-medium tracking-[-0.01em] text-ink">Sign in</a>
         <div id="s-mobile-account-links" class="hidden">
-          <a href={`${APP_URL}/settings`} class="mobile-nav-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Account</a>
-          <a href="/faq/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Help center</a>
+          <a href={`${APP_URL}/settings`} class="mobile-nav-link flex items-center justify-between py-6 border-b border-line text-[22px] font-medium tracking-[-0.01em] text-ink">Account</a>
+          <a href="/faq/" class="mobile-nav-link flex items-center justify-between py-6 border-b border-line text-[22px] font-medium tracking-[-0.01em] text-ink">Help center</a>
         </div>
-        <button id="s-mobile-signout-btn" class="hidden w-full text-left flex items-center justify-between py-6 border-b border-[#e6e6e2] text-2xl font-medium text-[#1f1f1f]">Sign out</button>
+        <button id="s-mobile-signout-btn" class="hidden w-full text-left flex items-center justify-between py-6 border-b border-line text-[22px] font-medium tracking-[-0.01em] text-ink">Sign out</button>
       </div>
       <div class="p-6 shrink-0">
-        <a href="/request-offer/" class="solid-mobile-link flex items-center justify-between gap-3 p-4 rounded-xl bg-[#f6f7ed] hover:bg-[#f4f4f0] transition-colors">
+        <a href="/request-offer/" class="solid-mobile-link flex items-center justify-between gap-3 p-4 rounded-xl bg-[var(--color-cream)] hover:bg-[#f4f4f0] transition-colors">
           <div>
-            <div class="font-bold text-[#1f1f1f] text-base">Ready to get started?</div>
-            <div class="text-sm text-[#1f1f1f] mt-0.5">Get your free offer in 24–48 hours</div>
+            <div class="font-bold text-ink text-base">Ready to get started?</div>
+            <div class="text-sm text-ink mt-0.5">Get your free offer in 24–48 hours</div>
           </div>
-          <svg class="text-[#1f1f1f] shrink-0" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+          <svg class="text-ink shrink-0" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
         </a>
       </div>
     </div>
@@ -457,16 +445,9 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
         if (form) form.style.display = scrolled ? 'flex' : 'none';
       }
 
-      // Solid variant (every other page).
-      const solidNav = document.getElementById('solid-nav');
-      if (solidNav) {
-        const links = document.getElementById('solid-nav-links');
-        const form = document.getElementById('solid-nav-offer-form-wrap');
-        solidNav.classList.toggle('nav-light', scrolled);
-        solidNav.style.background = scrolled ? '#ffffff' : '';
-        if (links) links.style.display = scrolled ? 'none' : '';
-        if (form) form.style.display = scrolled ? 'flex' : 'none';
-      }
+      // The solid variant (every page since the 2026-10 reskin) is static:
+      // "Get My Offer" sits in the bar permanently, so it no longer swaps its
+      // links for an address form on scroll.
     };
 
     window.addEventListener('scroll', fsApplyNavScroll, { passive: true });

@@ -1,5 +1,5 @@
 ---
-title: "What Is a Mother-in-Law Suite? Cost, Types &#038; Value"
+title: "What Is a Mother-in-Law Suite? Cost, Types & Value"
 description: "Learn what a mother-in-law suite is, common layouts, how much it costs to build, and whether adding one increases your home’s value."
 pubDate: 2026-01-28
 updatedDate: 2026-03-16

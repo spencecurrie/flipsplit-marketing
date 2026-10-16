@@ -21,12 +21,16 @@ interface Props {
   testimonialsName?: string;
   heroHeadline: string;
   heroSub: string;
-  stats: Array<{ label: string; value: string }>;
-  step1Body: string;
+  /** Kept for the pages' data; not rendered by the current design. */
+  stats?: Array<{ label: string; value: string }>;
+  /** Kept for the pages' data; not rendered by the current design. */
+  step1Body?: string;
   testimonials?: Array<{ quote: string; name: string; location: string }>;
   faqs: Array<{ q: string; a: string }>;
   places: string[];
+  /** Kept for the pages' data; not rendered by the current design. */
   placesHeading?: string;
+  /** Kept for the pages' data; not rendered by the current design. */
   placesDescription?: string;
   caseStudies?: CaseStudy[];
   showValueProp?: boolean;
@@ -38,46 +42,92 @@ interface Props {
   /** Offset (0–16) into the 17-photo home pool. Each location page picks a
    *  different offset so photos rotate across the site instead of repeating. */
   homePhotosStart?: number;
-  /** OpenStreetMap bbox string ("west,south,east,north") for the hero map.
-   *  Each location page passes the bbox of a representative city in its area. */
+  /** OpenStreetMap bbox string ("west,south,east,north") for the hero map. */
   mapBbox?: string;
   /** Display name for the map (used in iframe title for a11y). */
   mapDisplayName?: string;
 }
 
 // Master pool of 17 home photos (in /public/homes/). The hero map renders
-// 6 offer pins, each picking a photo from this pool starting at homePhotosStart
-// and wrapping. Spread evenly across all location pages by choosing a
-// different starting offset on each page.
+// 5 offer pins, each picking a photo from this pool starting at homePhotosStart
+// and wrapping.
 const HOME_PHOTOS = Array.from({ length: 17 }, (_, i) => `/homes/home-${i + 1}.png`);
 
 const {
   title, description, slug, city, shortName,
   testimonialsName = shortName,
-  heroHeadline, heroSub, stats, step1Body,
+  heroHeadline, heroSub,
   testimonials = [],
   faqs, places,
-  placesHeading = `Serving all of ${city}.`,
-  placesDescription = `We buy homes in every city and neighborhood across ${city}.`,
   caseStudies,
   showValueProp = false,
   howItWorksVideoUrl = "https://www.youtube.com/embed/3YIU7W5GULA",
   marketOverview,
   marketHeading = `The ${city} real estate market in 2026.`,
-  serviceAreaBody = `Whether you're looking to sell a single-family home, an inherited property, a rental with tenants, or a house that needs major work — FlipSplit buys homes throughout ${city} in any condition. We specialize in situations traditional buyers won't touch: deferred maintenance, outdated systems, fire or water damage, difficult tenant situations, and full estate cleanouts.\n\nOur team has deep knowledge of every corner of ${city}. No matter where your property is located, we can evaluate it and deliver a fair offer within 24–48 hours.`,
-  whySellBody = `If you want to sell your home in ${city}, the traditional path means paying for repairs upfront, managing contractors, sitting through weeks of showings, and hoping a buyer doesn't walk after inspection. A cash buyer solves the hassle — but discounts your home 20–30% below market and keeps every dollar of renovation profit for themselves.\n\nFlipSplit is a third option. We buy your home as-is, fund and manage the entire renovation at zero cost to you, and split the profit when the updated home sells for more. You get a guaranteed cash offer at closing and a backend check once the renovated home sells. No repairs. No showings. No surprises.`,
+  serviceAreaBody = `Whether you’re looking to sell a single-family home, an inherited property, a rental with tenants, or a house that needs major work — FlipSplit buys homes throughout ${city} in any condition. We specialize in situations traditional buyers won’t touch: deferred maintenance, outdated systems, fire or water damage, difficult tenant situations, and full estate cleanouts.\n\nOur team has deep knowledge of every corner of ${city}. No matter where your property is located, we can evaluate it and deliver a fair offer within 24–48 hours.`,
+  whySellBody = `If you want to sell your home in ${city}, the traditional path means paying for repairs upfront, managing contractors, sitting through weeks of showings, and hoping a buyer doesn’t walk after inspection. A cash buyer solves the hassle — but discounts your home 20–30% below market and keeps every dollar of renovation profit for themselves.\n\nFlipSplit is a third option. We buy your home as-is, fund and manage the entire renovation at zero cost to you, and split the profit when the updated home sells for more. You get a guaranteed cash offer at closing and a potential backend check if the renovated home sells above projection. No repairs. No showings. No surprises.`,
   homePhotosStart = 0,
   mapBbox = '-118.4300,34.0400,-118.2200,34.1300',
   mapDisplayName = city,
 } = Astro.props;
 
-const displayTestimonials = !(caseStudies && caseStudies.length > 0) && testimonials.length > 0;
 const mapQuery = encodeURIComponent(`${city}, CA`);
+const paras = (s: string) => s.split(/\n\s*\n/).map(t => t.trim()).filter(Boolean);
 
-// Pick 5 photos starting at the page's offset, wrapping around the pool.
-const heroHomePhotos = Array.from({ length: 5 }, (_, i) =>
-  HOME_PHOTOS[(homePhotosStart + i) % HOME_PHOTOS.length]
-);
+const hasCases = !!(caseStudies && caseStudies.length > 0);
+const showTestimonials = !hasCases && testimonials.length > 0;
+
+const pins = [
+  { top: '15%', left: '24%', amount: '$875K', delay: '1s' },
+  { top: '22%', left: '68%', amount: '$1.2M', delay: '2s' },
+  { top: '50%', left: '42%', amount: '$640K', delay: '3s' },
+  { top: '70%', left: '18%', amount: '$1.05M', delay: '4s' },
+  { top: '74%', left: '70%', amount: '$750K', delay: '5s' },
+].map((p, i) => ({ ...p, photo: HOME_PHOTOS[(homePhotosStart + i) % HOME_PHOTOS.length] }));
+
+const compare = [
+  { label: 'Best for', flip: 'Homes needing renovation', trad: 'Move-in ready homes', cash: 'Distressed properties' },
+  { label: 'Time to close', flip: '7–30 days', trad: '45–90 days', cash: '7–14 days' },
+  { label: 'Upfront costs', flip: '$0 to you', trad: '$15K–$60K+ in repairs', cash: '$0' },
+  { label: 'Renovation', flip: 'FlipSplit handles everything', trad: 'You manage it all', cash: 'Buyer’s responsibility' },
+  { label: 'Share of upside', flip: '0–100% profit split', trad: 'Yours (after all costs)', cash: '0% — buyer keeps it all' },
+  { label: 'Contingencies', flip: 'None', trad: 'Inspection, financing, appraisal', cash: 'Low' },
+  { label: 'Net to seller', flip: 'Competitive offer + upside', trad: 'Below market after costs', cash: 'Deeply discounted' },
+];
+
+const steps = [
+  { n: '1', title: 'Share your address', bullets: [
+    `Takes 2 minutes — we just need your ${city} address`,
+    'We analyze your home using current local market data',
+    'Receive a guaranteed cash offer within 24–48 hours',
+  ] },
+  { n: '2', title: 'Review your offer', bullets: [
+    'We walk through comparable sales and your renovation plan',
+    'Your profit participation percentage is fully negotiable',
+    'No obligation — take all the time you need to decide',
+  ] },
+  { n: '3', title: 'We renovate', bullets: [
+    'FlipSplit funds 100% of all renovation costs',
+    'We manage every contractor, permit, and material',
+    'You move out on your timeline — we handle the rest',
+  ] },
+  { n: '4', title: 'You get paid twice', bullets: [
+    'Guaranteed cash hits your account at first closing',
+    'Potential second check if the renovated home sells above projection',
+    'Your full agreed profit share with no hidden deductions',
+  ] },
+];
+
+const valueProps = [
+  { stat: '0', label: 'Upfront costs to you', sub: 'We fund 100% of all renovation work' },
+  { stat: '30–50%', label: 'Profit split for you', sub: 'Of the amount above your guaranteed offer' },
+  { stat: '7 days', label: 'Minimum close time', sub: 'Cash in hand in as little as 7 days' },
+];
+
+const trust = ['No repairs needed', 'Cash offer in 24–48 hours', 'Zero upfront costs'];
+
+const eyebrow = 'text-[12px] font-semibold uppercase tracking-[0.1em] text-muted';
+const h2 = 'm-0 text-[36px] max-[700px]:text-[28px] leading-[1.1] tracking-[-0.035em] font-semibold';
 
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
@@ -94,150 +144,79 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   <link rel="canonical" href={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style is:global>
-    :root { --brand-cyan: #1f1f1f; --brand-dark: #1f1f1f; --brand-body: #2a2a27; }
-    body { font-family: 'General Sans', sans-serif; color: var(--brand-body); }
-    h1, h2, h3, h4 { font-family: 'General Sans', 'General Sans', sans-serif; color: var(--brand-dark); }
-    .btn-primary { background: var(--brand-cyan); color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
-    .btn-primary:hover { filter: brightness(1.08); }
-    details > summary { list-style: none; }
-    details > summary::-webkit-details-marker { display: none; }
-    .faq-icon { transition: transform 0.2s ease; display: inline-block; }
-    details[open] .faq-icon { transform: rotate(45deg); }
-    .step-chevron { transition: transform 0.2s ease; }
-    details[open] .step-chevron { transform: rotate(180deg); }
-    a, button, summary, select, [role="button"] { cursor: pointer !important; }
-
-    /* Floating offer pins over the city map */
     @keyframes loc-pin-pop {
-      0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+      0%   { opacity: 0; transform: translate(-50%, -50%) scale(.4); }
       60%  { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
       100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
     }
-    .loc-pin {
-      position: absolute;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #ffffff;
-      border-radius: 999px;
-      padding: 5px 14px 5px 5px;
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
-      z-index: 2;
-      transform: translate(-50%, -50%);
-      white-space: nowrap;
-      pointer-events: none;
-      opacity: 0;
-      animation: loc-pin-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .loc-pin { animation: none; opacity: 1; }
-    }
-    .loc-pin-photo {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      background-color: #dcdcd4;
-      background-size: cover;
-      background-position: center;
-      box-shadow: 0 0 0 2px #ffffff;
-    }
-    .loc-pin-text { line-height: 1; }
-    .loc-pin-amount {
-      font-size: 14px;
-      font-weight: 800;
-      color: #1f1f1f;
-      font-family: 'General Sans', 'General Sans', sans-serif;
-      line-height: 1;
-    }
-    .loc-pin-label {
-      font-size: 10px;
-      color: #8a8a83;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 600;
-      margin-top: 3px;
-    }
+    .loc-pin { position: absolute; transform: translate(-50%, -50%); opacity: 0; animation: loc-pin-pop .55s cubic-bezier(.34,1.56,.64,1) forwards; }
+    @media (prefers-reduced-motion: reduce) { .loc-pin { animation: none; opacity: 1; } }
   </style>
   <ClientRouter />
 </head>
-<body class="bg-white antialiased">
+<body class="bg-white text-ink antialiased">
 
-  <!-- NAV -->
   <Nav />
 
-  <!-- HERO -->
-  <section class="py-20 px-6 bg-white border-b border-[#e6e6e2]">
-    <div class="max-w-[1500px] mx-auto grid lg:grid-cols-2 gap-16 lg:gap-32 xl:gap-40 items-center">
+  <!-- Hero -->
+  <section id="top" class="py-20 border-b border-line">
+    <div class="wrap-wide grid grid-cols-2 gap-24 items-center max-[1100px]:grid-cols-1 max-[1100px]:gap-10">
       <div>
-        <span class="inline-block text-xs font-semibold tracking-wide mb-5 px-4 py-1.5 rounded-full" style="background:rgba(31,31,31,0.1); color:#1f1f1f;">{city}</span>
-        <h1 class="text-4xl sm:text-5xl font-semibold leading-tight mb-6" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">
-          {heroHeadline}
-        </h1>
-        <p class="text-[#1f1f1f] text-lg leading-relaxed mb-8">{heroSub}</p>
-        <AddressForm id={`loc-${slug}-hero`} class="max-w-lg w-full" />
+        <span class="inline-flex items-center gap-2 h-[30px] px-3 border border-line rounded-full text-[13px]">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>{city}
+        </span>
+        <h1 class="mt-5 mb-0 text-[52px] max-[700px]:text-[38px] leading-[1.06] tracking-[-0.04em] font-semibold">{heroHeadline}</h1>
+        <p class="mt-5 mb-0 text-[18px] leading-[1.55] text-muted">{heroSub}</p>
+        <div class="mt-7 max-w-[520px]">
+          <AddressForm id={`loc-${slug}-hero`} theme="light" align="left" showTrust={true} />
+        </div>
       </div>
-      <div class="loc-map-frame rounded-3xl overflow-hidden border border-[#e6e6e2] shadow-md relative" style="height:520px; background:#e6e6e2;">
+
+      <!-- Map with offer pins -->
+      <div class="relative h-[520px] border border-line rounded-2xl overflow-hidden bg-mute">
         <iframe
           src={`https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(mapBbox)}&layer=mapnik`}
           style="border:0; display:block; pointer-events:none; filter:saturate(0.9); position:absolute; top:0; left:0; width:calc(100% + 60px); height:calc(100% + 35px);"
           loading="lazy"
           title={`Map of ${mapDisplayName}`}
         ></iframe>
-
-        {[
-          { top: '15%', left: '24%', amount: '$875K', delay: '1s', photo: heroHomePhotos[0] },
-          { top: '22%', left: '68%', amount: '$1.2M', delay: '2s', photo: heroHomePhotos[1] },
-          { top: '50%', left: '42%', amount: '$640K', delay: '3s', photo: heroHomePhotos[2] },
-          { top: '70%', left: '18%', amount: '$1.05M',delay: '4s', photo: heroHomePhotos[3] },
-          { top: '74%', left: '70%', amount: '$750K', delay: '5s', photo: heroHomePhotos[4] },
-        ].map(p => (
-          <div class="loc-pin" style={`top:${p.top}; left:${p.left}; animation-delay:${p.delay};`}>
-            <div class="loc-pin-photo" style={`background-image:url('${p.photo}');`}></div>
-            <div class="loc-pin-text">
-              <div class="loc-pin-amount">{p.amount}</div>
-              <div class="loc-pin-label">offer</div>
-            </div>
+        {pins.map(p => (
+          <div class="loc-pin flex items-center gap-2 py-[5px] pr-[14px] pl-[5px] bg-white border border-line rounded-full shadow-[0_10px_24px_-12px_rgba(18,18,18,0.35)] whitespace-nowrap" style={`top:${p.top}; left:${p.left}; animation-delay:${p.delay};`}>
+            <img src={p.photo} alt="" width="36" height="36" loading="lazy" class="w-9 h-9 rounded-full object-cover bg-line" />
+            <span class="leading-none">
+              <span class="tnum block text-[14px] font-semibold">{p.amount}</span>
+              <span class="block mt-[3px] text-[10px] font-semibold uppercase tracking-[0.08em] text-[#6B6B65]">offer</span>
+            </span>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- WHY FLIPSPLIT -->
-  <section class="py-20 px-6 bg-white">
-    <div class="max-w-4xl mx-auto">
-      <p class="text-xs font-semibold tracking-widest uppercase text-[#1f1f1f] mb-3">Your options</p>
-      <h2 class="text-3xl font-semibold mb-6" style="color:#1f1f1f;">Why {city} homeowners choose FlipSplit.</h2>
-      <div class="space-y-4 mb-12">
-        {whySellBody.split('\\n\\n').map(para => (
-          <p class="text-[#1f1f1f] leading-relaxed text-base">{para}</p>
+  <!-- Why FlipSplit -->
+  <section class="py-20">
+    <div class="wrap-wide max-w-[1000px]">
+      <div class={eyebrow}>Your options</div>
+      <h2 class={`${h2} mt-2.5`}>Why {city} homeowners choose FlipSplit.</h2>
+      <div class="mt-[22px] flex flex-col gap-4">
+        {paras(whySellBody).map(para => (
+          <p class="m-0 text-[16px] leading-[1.65] text-ink-soft">{para}</p>
         ))}
       </div>
-      <div class="overflow-x-auto rounded-2xl border border-[#e6e6e2] shadow-sm">
-        <div class="min-w-[560px]">
-          <!-- Header -->
-          <div class="grid grid-cols-4 text-sm font-bold text-center" style="background:#f6f7ed;">
-            <div class="px-5 py-4 text-left text-[#1f1f1f] text-xs uppercase tracking-widest font-semibold border-b border-[#e6e6e2]"></div>
-            <div class="px-5 py-5 text-center font-black text-lg border-b border-[#e6e6e2]" style="color:var(--brand-cyan);">FlipSplit</div>
-            <div class="px-5 py-4 text-[#1f1f1f] font-semibold text-sm flex items-center justify-center border-b border-[#e6e6e2]">Traditional Sale</div>
-            <div class="px-5 py-4 text-[#1f1f1f] font-semibold text-sm flex items-center justify-center border-b border-[#e6e6e2]">Cash Buyer</div>
+      <div class="mt-10 border border-line rounded-2xl overflow-x-auto">
+        <div class="min-w-[600px]">
+          <div class="grid grid-cols-4 border-b border-line">
+            <div class="py-4 px-5"></div>
+            <div class="py-[18px] px-5 text-center text-[17px] font-semibold bg-ink text-white">FlipSplit</div>
+            <div class="py-[18px] px-5 text-center text-[14px] font-semibold">Traditional Sale</div>
+            <div class="py-[18px] px-5 text-center text-[14px] font-semibold">Cash Buyer</div>
           </div>
-          <!-- Rows -->
-          {[
-            { label: "Best for",            flip: "Homes needing renovation",   trad: "Move-in ready homes",         cash: "Distressed properties" },
-            { label: "Time to close",       flip: "7–30 days",                  trad: "45–90 days",                  cash: "7–14 days" },
-            { label: "Upfront costs",       flip: "$0 to you",                  trad: "$15K–$60K+ in repairs",       cash: "$0" },
-            { label: "Renovation",          flip: "FlipSplit handles everything",trad: "You manage it all",           cash: "Buyer's responsibility" },
-            { label: "Share of upside",     flip: "0–100% profit split",        trad: "Yours (after all costs)",     cash: "0% — buyer keeps it all" },
-            { label: "Contingencies",       flip: "None",                       trad: "Inspection, financing, appraisal", cash: "Low" },
-            { label: "Net to seller",       flip: "Competitive offer + upside", trad: "Below market after costs",    cash: "Deeply discounted" },
-          ].map((row, i) => (
-            <div class={`grid grid-cols-4 text-sm items-start ${i % 2 === 0 ? 'bg-white' : 'bg-[#f6f7ed]'}`}>
-              <div class="px-5 py-4 font-bold text-[#1f1f1f]">{row.label}</div>
-              <div class="px-5 py-4 font-semibold text-center" style="color:#1f1f1f; background:rgba(31,31,31,0.06);">{row.flip}</div>
-              <div class="px-5 py-4 text-[#1f1f1f] text-center">{row.trad}</div>
-              <div class="px-5 py-4 text-[#1f1f1f] text-center">{row.cash}</div>
+          {compare.map(r => (
+            <div class="grid grid-cols-4 border-t border-hairline text-[14px]">
+              <div class="py-4 px-5 font-semibold">{r.label}</div>
+              <div class="py-4 px-5 text-center font-semibold bg-wash border-x border-hairline">{r.flip}</div>
+              <div class="py-4 px-5 text-center text-muted">{r.trad}</div>
+              <div class="py-4 px-5 text-center text-muted">{r.cash}</div>
             </div>
           ))}
         </div>
@@ -245,152 +224,113 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
     </div>
   </section>
 
-  <!-- PROCESS CTA -->
-  <section class="py-20 px-6 bg-white">
-    <div class="max-w-2xl mx-auto text-center rounded-2xl border border-[#e6e6e2] py-12 px-8" style="background:#f6f7ed;">
-      <h2 class="text-2xl font-semibold mb-3" style="color:#1f1f1f;">Ready to see what your {city} home is worth?</h2>
-      <p class="text-[#1f1f1f] text-sm mb-7">Get a guaranteed cash offer in 24–48 hours. No repairs, no showings, no obligation.</p>
-      <a href="#get-offer" class="btn-primary inline-flex items-center justify-center gap-2 whitespace-nowrap max-w-full px-6 sm:px-8 py-4 rounded-xl text-sm sm:text-base font-bold">Get My Free Offer <span aria-hidden="true">→</span></a>
+  <!-- Process CTA -->
+  <section class="pb-20">
+    <div class="wrap-wide max-w-[760px]">
+      <div class="text-center border border-line rounded-2xl py-12 px-8">
+        <h2 class="m-0 text-[26px] leading-[1.2] tracking-[-0.025em] font-semibold">Ready to see what your {city} home is worth?</h2>
+        <p class="mt-2.5 mb-0 text-[15px] text-muted">Get a guaranteed cash offer in 24–48 hours. No repairs, no showings, no obligation.</p>
+        <a href="#get-offer" class="mt-6 no-underline text-white hover:text-white bg-ink hover:bg-black transition-colors text-[16px] font-medium px-[26px] h-[52px] rounded-xl inline-flex items-center gap-2.5">Get My Free Offer<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></a>
+      </div>
     </div>
   </section>
 
-  <!-- SERVICE AREA -->
-  <section class="py-20 px-6 bg-white">
-    <div class="max-w-[1500px] mx-auto grid lg:grid-cols-2 gap-12 items-start">
+  <!-- Service area -->
+  <section id="where" class="py-20 border-t border-line">
+    <div class="wrap-wide grid grid-cols-2 gap-14 items-start max-[1100px]:grid-cols-1 max-[1100px]:gap-10">
       <div>
-        <p class="text-xs font-semibold tracking-widest uppercase text-[#1f1f1f] mb-3">Where we buy</p>
-        <h2 class="text-3xl font-semibold mb-5" style="color:#1f1f1f;">We help {city} homeowners sell as-is.</h2>
-        <div class="space-y-4 mb-8">
-          {serviceAreaBody.split('\\n\\n').map(para => (
-            <p class="text-[#1f1f1f] leading-relaxed text-base">{para}</p>
+        <div class={eyebrow}>Where we buy</div>
+        <h2 class={`${h2} mt-2.5`}>We help {city} homeowners sell as-is.</h2>
+        <div class="mt-5 flex flex-col gap-4">
+          {paras(serviceAreaBody).map(para => (
+            <p class="m-0 text-[16px] leading-[1.65] text-ink-soft">{para}</p>
           ))}
         </div>
-        <p class="text-xs font-semibold uppercase tracking-widest text-[#1f1f1f] mb-4">Cities &amp; areas we serve</p>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2">
-          {places.map(p => (
-            <div class="flex items-center gap-2 text-sm text-[#1f1f1f] py-0.5">
-              <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background:var(--brand-cyan);"></span>
-              {p}
-            </div>
-          ))}
+        <div class="mt-8 flex justify-between items-center">
+          <span class="text-[12px] font-semibold uppercase tracking-[0.1em]">Cities &amp; areas we serve</span>
+          <span class="chip">{places.length} areas</span>
         </div>
+        <ul class="list-none mt-3.5 mb-0 pt-4 px-0 border-t border-hairline grid grid-cols-3 gap-x-4 gap-y-2 max-[700px]:grid-cols-2">
+          {places.map(pl => (
+            <li class="flex items-center gap-2 text-[14px] py-0.5"><span class="w-[5px] h-[5px] rounded-full bg-ink shrink-0" aria-hidden="true"></span>{pl}</li>
+          ))}
+        </ul>
       </div>
-      <div class="rounded-2xl overflow-hidden border border-[#e6e6e2] shadow-sm lg:sticky lg:top-24" style="height:480px;">
+      <div class="relative h-[480px] border border-line rounded-2xl overflow-hidden bg-mute">
         <iframe
           src={`https://maps.google.com/maps?q=${mapQuery}&output=embed`}
           width="100%"
           height="100%"
-          style="border:0;"
+          style="border:0; display:block;"
           allowfullscreen
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
+          title={`Map of ${city}, CA`}
         ></iframe>
       </div>
     </div>
   </section>
 
-  <!-- HOW IT WORKS -->
-  <section id="how-it-works" class="py-24 px-6 bg-white">
-    <div class="max-w-[1500px] mx-auto grid lg:grid-cols-2 gap-16 items-center">
-
-      <!-- Left: heading + accordion steps -->
+  <!-- How it works -->
+  <section id="how-it-works" class="py-24 border-t border-line">
+    <div class="wrap-wide grid grid-cols-2 gap-24 items-center max-[1100px]:grid-cols-1 max-[1100px]:gap-10">
       <div>
-        <p class="text-xs font-semibold tracking-widest uppercase text-[#1f1f1f] mb-3">The process</p>
-        <h2 class="text-3xl font-semibold mb-10 leading-snug" style="color:#1f1f1f;">How FlipSplit works in {city}.</h2>
-
-        {[
-          { n: "1", title: "Share your address", bullets: [
-            `Takes 2 minutes — we just need your ${city} address`,
-            "We analyze your home using current local market data",
-            "Receive a guaranteed cash offer within 24–48 hours",
-          ]},
-          { n: "2", title: "Review your offer", bullets: [
-            "We walk through comparable sales and your renovation plan",
-            "Your profit participation percentage is fully negotiable",
-            "No obligation — take all the time you need to decide",
-          ]},
-          { n: "3", title: "We renovate", bullets: [
-            "FlipSplit funds 100% of all renovation costs",
-            "We manage every contractor, permit, and material",
-            "You move out on your timeline — we handle the rest",
-          ]},
-          { n: "4", title: "You get paid twice", bullets: [
-            "Guaranteed cash hits your account at first closing",
-            "Second check issued when the renovated home sells",
-            "Your full agreed profit share with no hidden deductions",
-          ]},
-        ].map(({ n, title, bullets }, i) => (
-          <details open={i === 0} class="group border-t border-[#e6e6e2]">
-            <summary class="flex items-center gap-4 py-5 cursor-pointer list-none">
-              <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shrink-0" style="background:#f4f4f0; color:#1f1f1f;">{n}</span>
-              <span class="flex-1 font-black text-base" style="color:#1f1f1f;">{title}</span>
-              <svg class="step-chevron shrink-0 text-[#1f1f1f]" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class={eyebrow}>The process</div>
+        <h2 class={`${h2} mt-2.5 mb-8 leading-[1.12]`}>How FlipSplit works in {city}.</h2>
+        {steps.map((s, i) => (
+          <details open={i === 0} class="border-t border-line">
+            <summary class="flex items-center gap-3.5 py-[18px]">
+              <span class="font-mono w-8 h-8 border border-line-strong rounded-lg flex items-center justify-center text-[13px] shrink-0">{s.n}</span>
+              <span class="flex-1 text-[17px] font-semibold">{s.title}</span>
+              <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
             </summary>
-            <div class="pb-5 pl-12">
-              <ul class="space-y-2">
-                {bullets.map(b => (
-                  <li class="flex items-start gap-2.5 text-sm text-[#1f1f1f]">
-                    <svg class="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#1f1f1f" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#1f1f1f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    {b}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <ul class="list-none m-0 pt-0 pr-0 pb-5 pl-[46px] flex flex-col gap-[9px]">
+              {s.bullets.map(b => (
+                <li class="flex items-start gap-2.5 text-[15px] leading-[1.5] text-ink-soft"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"></circle><path d="M8 12l3 3 5-5"></path></svg>{b}</li>
+              ))}
+            </ul>
           </details>
         ))}
-        <div class="border-t border-[#e6e6e2]"></div>
+        <div class="border-t border-line"></div>
       </div>
-
-      <!-- Right: video or placeholder -->
-      <div class="rounded-2xl overflow-hidden w-full border border-[#e6e6e2]" style="aspect-ratio:16/9; background:#f6f7ed;">
-        {howItWorksVideoUrl ? (
-          <iframe src={howItWorksVideoUrl} width="100%" height="100%" style="border:0;" allow="autoplay; fullscreen" allowfullscreen></iframe>
-        ) : (
-          <div class="w-full h-full flex flex-col items-center justify-center gap-4">
-            <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background:rgba(31,31,31,0.15); border:2px solid rgba(31,31,31,0.3);">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 4l12 6-12 6V4z" fill="#1f1f1f"/></svg>
-            </div>
-            <p class="text-sm font-semibold" style="color:#1f1f1f;">How It Works Video</p>
-            <p class="text-xs text-[#1f1f1f]">Coming soon</p>
-          </div>
-        )}
+      <div class="loc-video relative aspect-video rounded-2xl overflow-hidden bg-ink" data-src={howItWorksVideoUrl}>
+        <a href={howItWorksVideoUrl} class="loc-video-play absolute inset-0 no-underline flex flex-col items-center justify-center gap-3.5 text-white hover:text-white" aria-label="Watch the How It Works video">
+          <span class="w-16 h-16 rounded-full bg-white flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M6 4l12 6-12 6V4z" fill="#121212"></path></svg></span>
+          <span class="text-[14px] font-semibold">How It Works Video</span>
+          <span class="font-mono absolute left-4 bottom-3.5 text-[11px] text-[#BDBDB6] border border-[#3A3A36] rounded-md px-[7px] py-[3px]">YouTube</span>
+        </a>
       </div>
-
     </div>
   </section>
 
-  <!-- MARKET OVERVIEW -->
+  <!-- Market overview (only when the page has one) -->
   {marketOverview && (
-    <section class="py-20 px-6" style="background:#f6f7ed;">
-      <div class="max-w-[1500px] mx-auto lg:grid lg:grid-cols-[1fr_2fr] lg:gap-16 lg:items-start">
-        <div class="mb-8 lg:mb-0 lg:sticky lg:top-24">
-          <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color: var(--brand-cyan);">2026 Market Overview</p>
-          <h2 class="text-3xl font-semibold leading-snug" style="color: #1f1f1f;">{marketHeading}</h2>
+    <section class="py-20 bg-cream">
+      <div class="wrap-wide grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)] gap-16 items-start max-[1100px]:grid-cols-1 max-[1100px]:gap-10">
+        <div>
+          <div class={eyebrow}>2026 Market Overview</div>
+          <h2 class={`${h2} mt-2.5 leading-[1.12]`}>{marketHeading}</h2>
         </div>
-        <div class="space-y-5">
-          {marketOverview.split('\n\n').map(para => (
-            <p class="text-[#1f1f1f] leading-relaxed text-base">{para}</p>
+        <div class="flex flex-col gap-[18px]">
+          {paras(marketOverview).map(para => (
+            <p class="m-0 text-[16px] leading-[1.7] text-ink-soft">{para}</p>
           ))}
         </div>
       </div>
     </section>
   )}
 
-  <!-- VALUE PROP CALLOUT (Anaheim) -->
+  <!-- At a glance (pages with showValueProp) -->
   {showValueProp && (
-    <section class="py-16 px-6" style="background:#f6f7ed;">
-      <div class="max-w-4xl mx-auto">
-        <p class="text-xs font-semibold tracking-widest uppercase text-[#1f1f1f] mb-3 text-center">At a glance</p>
-        <div class="grid md:grid-cols-3 gap-6">
-          {[
-            { stat: "0", label: "Upfront costs to you", sub: "We fund 100% of all renovation work" },
-            { stat: "30–50%", label: "Profit split for you", sub: "Of the amount above your guaranteed offer" },
-            { stat: "7 days", label: "Minimum close time", sub: "Cash in hand in as little as 7 days" },
-          ].map(({ stat, label, sub }) => (
-            <div class="text-center bg-white rounded-2xl p-8 border border-[#e6e6e2] shadow-sm">
-              <div class="text-4xl font-black mb-2 text-[#1f1f1f]">{stat}</div>
-              <div class="font-bold text-[#1f1f1f] mb-1">{label}</div>
-              <div class="text-xs text-[#1f1f1f]">{sub}</div>
+    <section class="py-16">
+      <div class="wrap-wide max-w-[1000px]">
+        <div class={`${eyebrow} text-center`}>At a glance</div>
+        <div class="mt-5 grid grid-cols-3 gap-4 max-[700px]:grid-cols-1">
+          {valueProps.map(v => (
+            <div class="text-center border border-line rounded-[14px] p-7">
+              <div class="tnum text-[40px] font-semibold tracking-[-0.035em]">{v.stat}</div>
+              <div class="mt-1.5 text-[15px] font-semibold">{v.label}</div>
+              <div class="mt-1 text-[13px] text-muted">{v.sub}</div>
             </div>
           ))}
         </div>
@@ -398,23 +338,23 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
     </section>
   )}
 
-  <!-- CASE STUDIES (Long Beach) -->
-  {caseStudies && caseStudies.length > 0 && (
-    <section class="py-20 px-6 bg-[#f6f7ed]">
-      <div class="max-w-[1500px] mx-auto">
-        <div class="text-center mb-12">
-          <p class="text-xs font-semibold tracking-widest uppercase text-[#1f1f1f] mb-3">Real cases</p>
-          <h2 class="text-4xl font-semibold text-[#1f1f1f]">{city} homes we've bought.</h2>
+  <!-- Case studies (pages with caseStudies) -->
+  {hasCases && (
+    <section class="py-20 border-t border-line">
+      <div class="wrap-wide">
+        <div class="text-center">
+          <div class={eyebrow}>Real cases</div>
+          <h2 class={`${h2} mt-2.5`}>{city} homes we've bought.</h2>
         </div>
-        <div class="grid md:grid-cols-2 gap-6">
-          {caseStudies.map(c => (
-            <div class="bg-white rounded-2xl border border-[#e6e6e2] p-8">
-              <span class="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4" style="background: rgba(31,31,31,0.12); color: #1f1f1f;">{c.tag}</span>
-              <h3 class="text-xl font-semibold text-[#1f1f1f] mb-3">{c.headline}</h3>
-              <p class="text-[#1f1f1f] text-sm leading-relaxed mb-5">{c.body}</p>
-              <div class="rounded-xl px-5 py-4 border border-[#e6e6e2]" style="background:#f6f7ed;">
-                <span class="text-xs font-semibold uppercase tracking-widest" style="color: var(--brand-cyan);">Result</span>
-                <p class="font-bold mt-1" style="color:#1f1f1f;">{c.result}</p>
+        <div class="mt-10 grid grid-cols-2 gap-4 max-[700px]:grid-cols-1">
+          {caseStudies!.map(c => (
+            <div class="border border-line rounded-2xl p-7">
+              <span class="chip">{c.tag}</span>
+              <h3 class="mt-4 mb-0 text-[20px] font-semibold tracking-[-0.02em]">{c.headline}</h3>
+              <p class="mt-2.5 mb-0 text-[15px] leading-[1.6] text-muted">{c.body}</p>
+              <div class="mt-[18px] pt-4 border-t border-hairline">
+                <div class="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">Result</div>
+                <div class="mt-1 text-[16px] font-semibold">{c.result}</div>
               </div>
             </div>
           ))}
@@ -423,28 +363,27 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
     </section>
   )}
 
-
-  <!-- TESTIMONIALS -->
-  {displayTestimonials && (
-    <section class="py-24 px-6">
-      <div class="max-w-[1500px] mx-auto">
-        <div class="text-center mb-12">
-          <p class="text-xs font-semibold tracking-widest uppercase text-[#1f1f1f] mb-3">What homeowners say</p>
-          <h2 class="text-4xl font-semibold text-[#1f1f1f]">Real {testimonialsName} homeowners, real results.</h2>
+  <!-- Testimonials -->
+  {showTestimonials && (
+    <section id="reviews" class="py-24 border-t border-line">
+      <div class="wrap-wide">
+        <div class="text-center">
+          <div class={eyebrow}>What homeowners say</div>
+          <h2 class={`${h2} mt-2.5`}>Real {testimonialsName} homeowners, real results.</h2>
         </div>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="mt-10 grid grid-cols-4 gap-4 max-[1100px]:grid-cols-2 max-[700px]:grid-cols-1">
           {testimonials.map(t => (
-            <div class="bg-white rounded-2xl border border-[#e6e6e2] p-6 flex flex-col">
-              <div class="flex gap-0.5 mb-4" style="color: #1f1f1f;">★★★★★</div>
-              <p class="text-sm text-[#1f1f1f] leading-relaxed flex-1 mb-5">"{t.quote}"</p>
-              <div class="flex items-center gap-3 mt-auto">
-                <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-[#1f1f1f] shrink-0" style="background: rgba(31,31,31,0.2);">{t.name.charAt(0)}</div>
-                <div>
-                  <div class="text-sm font-bold text-[#1f1f1f]">{t.name}</div>
-                  <div class="text-xs text-[#1f1f1f]">{t.location}</div>
-                </div>
+            <figure class="m-0 border border-line rounded-[14px] p-[22px] flex flex-col gap-4">
+              <div class="flex justify-between items-center">
+                <span aria-label="5 out of 5 stars" role="img" class="text-[13px] tracking-[1px]">★★★★★</span>
+                <span class="chip">5.0</span>
               </div>
-            </div>
+              <blockquote class="m-0 flex-1 text-[15px] leading-[1.6] text-ink-soft">“{t.quote}”</blockquote>
+              <figcaption class="flex items-center gap-2.5 pt-3.5 border-t border-hairline">
+                <span aria-hidden="true" class="w-[34px] h-[34px] rounded-full border border-line-strong flex items-center justify-center text-[13px] font-semibold shrink-0">{t.name.charAt(0)}</span>
+                <span><span class="block text-[14px] font-semibold">{t.name}</span><span class="block text-[12px] text-muted">{t.location}</span></span>
+              </figcaption>
+            </figure>
           ))}
         </div>
       </div>
@@ -452,50 +391,66 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   )}
 
   <!-- FAQ -->
-  <section class="py-20 px-6 bg-[#f6f7ed]">
-    <div class="max-w-3xl mx-auto">
-      <div class="text-center mb-12">
-        <p class="text-xs font-semibold tracking-widest uppercase text-[#1f1f1f] mb-3">FAQ</p>
-        <h2 class="text-4xl font-semibold text-[#1f1f1f]">Questions about selling in {city}.</h2>
+  <section id="faq" class="py-[88px] border-t border-line">
+    <div class="wrap-wide max-w-[820px]">
+      <div class="text-center">
+        <div class={eyebrow}>FAQ</div>
+        <h2 class={`${h2} mt-2.5`}>Questions about selling in {city}.</h2>
       </div>
-      <div>
-        {faqs.map(({ q, a }) => (
-          <details class="group border-b border-[#e6e6e2] py-1">
-            <summary class="flex justify-between items-center py-5 cursor-pointer font-semibold text-[#1f1f1f]">
-              {q}
-              <span class="faq-icon text-[#1f1f1f] text-2xl leading-none ml-6 shrink-0">+</span>
+      <div class="mt-10 border-t border-line">
+        {faqs.map(f => (
+          <details class="border-b border-line">
+            <summary class="flex justify-between items-center gap-6 py-5 text-[17px] font-medium">
+              {f.q}
+              <span class="faq-plus shrink-0 w-8 h-8 border border-line-strong rounded-lg flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
             </summary>
-            <div class="pb-5 text-[#1f1f1f] leading-relaxed text-sm">{a}</div>
+            <p class="m-0 pr-14 pb-[22px] text-[15px] leading-[1.65] text-muted max-[700px]:pr-0">{f.a}</p>
           </details>
         ))}
       </div>
     </div>
   </section>
 
-
-  <!-- GET OFFER -->
-  <section id="get-offer" class="py-20 px-6" style="background: #1f1f1f;">
-    <div class="max-w-2xl mx-auto text-center">
-      <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color: #a8a8a2;">Free. No obligation.</p>
-      <h2 class="text-3xl sm:text-4xl font-semibold mb-4 leading-tight" style="color: white;">Get your free {shortName} offer today.</h2>
-      <p class="text-[#c8c8c2] text-base leading-relaxed mb-7">Enter your address below. We'll respond within 24–48 hours with a guaranteed cash offer, renovation plan, and profit projection.</p>
-
-      <AddressForm id={`loc-${slug}-bottom`} theme="dark" class="flex flex-col items-center mb-6" align="center" />
-
-      <!-- Trust signals -->
-      <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mt-4">
-        {["No repairs needed", "Cash offer in 24–48 hours", "Zero upfront costs"].map(t => (
-          <span class="flex items-center gap-2 text-sm text-[#c8c8c2]">
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#f6f7ed" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#f6f7ed" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            {t}
-          </span>
+  <!-- Get offer -->
+  <section id="get-offer" class="py-[88px] bg-ink text-white">
+    <div class="wrap-wide max-w-[680px] text-center">
+      <span class="inline-flex items-center h-[30px] px-3 border border-[#3A3A36] rounded-full text-[13px] text-[#BDBDB6]">Free. No obligation.</span>
+      <h2 class={`${h2} mt-4 !text-white`}>Get your free {shortName} offer today.</h2>
+      <p class="mt-3.5 mb-0 text-[16px] leading-[1.6] text-[#C8C8C2]">Enter your address below. We'll respond within 24–48 hours with a guaranteed cash offer, renovation plan, and profit projection.</p>
+      <div class="mt-7 mx-auto max-w-[480px] text-left">
+        <AddressForm id={`loc-${slug}-bottom`} theme="dark" align="center" showTrust={true} />
+      </div>
+      <div class="mt-6 flex flex-wrap justify-center gap-x-7 gap-y-3">
+        {trust.map(t => (
+          <span class="inline-flex items-center gap-2 text-[14px] text-[#C8C8C2]"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M8 12l3 3 5-5"></path></svg>{t}</span>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <Footer />
+  <Footer current={`/${slug}/`} />
 
+  <script>
+    // How It Works video: the design shows a black poster with a play button.
+    // Clicking swaps in the YouTube embed (autoplaying) instead of navigating away.
+    document.addEventListener('astro:page-load', () => {
+      document.querySelectorAll<HTMLElement>('.loc-video').forEach((box) => {
+        const link = box.querySelector<HTMLAnchorElement>('.loc-video-play');
+        const src = box.dataset.src;
+        if (!link || !src || box.dataset.bound) return;
+        box.dataset.bound = '1';
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const iframe = document.createElement('iframe');
+          iframe.src = src + (src.includes('?') ? '&' : '?') + 'autoplay=1';
+          iframe.title = 'How FlipSplit works';
+          iframe.allow = 'autoplay; fullscreen; encrypted-media; picture-in-picture';
+          iframe.allowFullscreen = true;
+          iframe.className = 'absolute inset-0 w-full h-full border-0';
+          box.replaceChildren(iframe);
+        });
+      });
+    });
+  </script>
 </body>
 </html>

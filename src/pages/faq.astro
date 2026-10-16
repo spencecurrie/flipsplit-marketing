@@ -44,7 +44,7 @@ const faqs = [
   },
   {
     q: "Will I know what FlipSplit intends to resell the property for?",
-    a: "Yes. We share our projected resale price upfront as part of your offer. This number also sets the Profit Participation Threshold — the price above which your backend bonus kicks in.",
+    a: "Yes. We share our projected resale price upfront as part of your offer. This number also sets the Profit Participation Threshold — the price above which a potential backend bonus could kick in.",
   },
   {
     q: "Can I visit the property during renovations?",
@@ -67,8 +67,8 @@ const faqs = [
     a: "Yes. After inspections are complete, we can advance up to $20,000 prior to the official closing date if you need it.",
   },
   {
-    q: "When do I receive my profit-split payment?",
-    a: "Within 10 days after the renovated home sells. This is a separate check from your initial offer payment — you don't need to do anything to receive it.",
+    q: "When would I receive a potential profit-split payment?",
+    a: "If the renovated home sells above the projected resale value, a potential bonus payment is issued within 10 days after the sale. This would be a separate check from your initial offer payment — you don't need to do anything to receive it.",
   },
   {
     q: "Can I leave furniture or belongings behind?",
@@ -102,86 +102,77 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   <meta name="description" content="Get answers to the most common questions about selling your home to FlipSplit — fees, timelines, the profit-split model, and more." />
   <link rel="canonical" href={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <style>
-    :root { --brand-blue: #1f1f1f; --brand-dark: #1f1f1f; --brand-body: #2a2a27; }
-    body { font-family: 'General Sans', sans-serif; color: var(--brand-body); }
-    h1, h2, h3, h4 { font-family: 'General Sans', 'General Sans', sans-serif; color: var(--brand-dark); }
-    .btn-primary { background: #1f1f1f; color: #ffffff; font-weight: 700; transition: filter 0.15s ease; }
-    .btn-primary:hover { filter: brightness(1.08); }
-    details > summary { list-style: none; cursor: pointer; }
-    details > summary::-webkit-details-marker { display: none; }
-    .faq-icon { transition: transform 0.2s ease; display: inline-block; }
-    details[open] .faq-icon { transform: rotate(45deg); }
-    a, button, summary { cursor: pointer; }
-  </style>
   <ClientRouter />
 </head>
-<body class="bg-white antialiased">
+<body class="bg-white text-ink font-sans antialiased">
 
-  <!-- NAV -->
   <Nav />
 
-  <!-- HERO -->
-  <section class="py-20 px-6 bg-white border-b border-[#e6e6e2]">
-    <div class="max-w-3xl mx-auto text-center">
-      <span class="inline-block text-xs font-bold uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full" style="background:rgba(31,31,31,0.1); color:#1f1f1f;">Got Questions?</span>
-      <h1 class="text-5xl font-semibold leading-tight mb-4" style="color:#1f1f1f; font-family:'General Sans','General Sans',sans-serif;">
-        Frequently asked<br/><span style="color:#1f1f1f;">questions.</span>
-      </h1>
-      <p class="text-[#1f1f1f] text-lg">Everything you need to know about selling your home to FlipSplit.</p>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="py-20 px-6 bg-white">
-    <div class="max-w-3xl mx-auto">
-      <div class="divide-y divide-slate-100">
-        {faqs.map(({ q, a }) => (
-          <details class="group py-1">
-            <summary class="flex items-start justify-between gap-4 py-5 font-semibold text-[#1f1f1f] hover:text-[#1f1f1f] transition-colors">
-              <span class="flex-1 text-left">{q}</span>
-              <span class="faq-icon shrink-0 mt-0.5 text-[#1f1f1f] text-xl leading-none">+</span>
-            </summary>
-            <div class="pb-6 text-[#1f1f1f] leading-relaxed text-sm pr-8">
-              {a}
-            </div>
-          </details>
-        ))}
+  <main>
+    <!-- Hero -->
+    <section id="top" class="pt-[88px] pb-[72px] border-b border-line">
+      <div class="wrap max-w-[820px]! text-center">
+        <span class="pill"><span class="pill-dot bg-ink"></span>Got Questions?</span>
+        <h1 class="mt-5 text-[60px] max-[700px]:text-[40px] leading-[1.04] tracking-[-0.045em] font-semibold">Frequently asked<br />questions.</h1>
+        <p class="mt-[18px] text-[18px] leading-[1.55] text-muted">Everything you need to know about selling your home to FlipSplit.</p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- STILL HAVE QUESTIONS -->
-  <section class="py-16 px-6 border-t border-[#e6e6e2]" style="background:#f6f7ed;">
-    <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center gap-8 justify-between">
-      <div>
-        <h3 class="text-xl font-semibold mb-2" style="color:#1f1f1f;">Still have questions?</h3>
-        <p class="text-[#1f1f1f] text-sm">Call us or send an email — a real person will respond.</p>
+    <!-- FAQ list -->
+    <section class="pt-[72px] pb-24">
+      <div class="wrap max-w-[820px]!">
+        <div class="flex justify-between items-center pb-3.5">
+          <span class="eyebrow">All questions</span>
+          <span class="chip">{faqs.length}</span>
+        </div>
+        <div class="border-t border-line">
+          {faqs.map(({ q, a }, i) => (
+            <details class="border-b border-line">
+              <summary class="flex items-start gap-4 py-5">
+                <span class="font-mono shrink-0 mt-0.5 text-[12px] text-muted w-6">{String(i + 1).padStart(2, '0')}</span>
+                <span class="flex-1 text-[17px] font-medium leading-[1.45]">{q}</span>
+                <span class="faq-plus shrink-0 w-8 h-8 border border-line-strong rounded-lg flex items-center justify-center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+              </summary>
+              <p class="m-0 pr-14 pb-[22px] pl-10 text-[15px] leading-[1.65] text-muted">{a}</p>
+            </details>
+          ))}
+        </div>
       </div>
-      <div class="flex flex-wrap gap-3 shrink-0">
-        <a href="tel:18006617489" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-[#e6e6e2] text-sm font-semibold text-[#1f1f1f] hover:border-[#1f1f1f] transition-colors">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .99h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          1-800-661-7489
-        </a>
-        <a href="mailto:info@flipsplit.com" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-[#e6e6e2] text-sm font-semibold text-[#1f1f1f] hover:border-[#1f1f1f] transition-colors">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          info@flipsplit.com
-        </a>
+    </section>
+
+    <!-- Still have questions -->
+    <section class="pb-24">
+      <div class="wrap max-w-[820px]!">
+        <div class="border border-line rounded-2xl px-8 py-7 flex justify-between items-center gap-8 max-[700px]:flex-col max-[700px]:items-start">
+          <div>
+            <h3 class="text-[20px] font-semibold tracking-[-0.02em]">Still have questions?</h3>
+            <p class="mt-1.5 text-[14px] text-muted">Call us or send an email — a real person will respond.</p>
+          </div>
+          <div class="flex flex-wrap gap-2.5">
+            <a href="tel:18006617489" class="no-underline text-ink hover:text-muted inline-flex items-center gap-2 h-[46px] px-4 border border-line-strong rounded-[10px] text-[14px] font-medium">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>1-800-661-7489
+            </a>
+            <a href="mailto:info@flipsplit.com" class="no-underline text-ink hover:text-muted inline-flex items-center gap-2 h-[46px] px-4 border border-line-strong rounded-[10px] text-[14px] font-medium">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M22 6l-10 7L2 6"></path></svg>info@flipsplit.com
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CTA -->
-  <section class="py-24 px-6" style="background: linear-gradient(135deg, #1f1f1f 0%, #1f1f1f 100%);">
-    <div class="max-w-2xl mx-auto text-center">
-      <h2 class="text-4xl font-semibold mb-4 leading-tight" style="color:white; font-family:'General Sans','General Sans',sans-serif;">Ready to get your free offer?</h2>
-      <p class="text-[#c8c8c2] mb-10">No fees. No repairs. No obligation. Results in 24–48 hours.</p>
-      <AddressForm id="faq-form" theme="dark" align="center" />
-    </div>
-  </section>
+    <!-- CTA -->
+    <section id="get-offer" class="py-24 bg-ink text-white">
+      <div class="wrap max-w-[640px]! text-center">
+        <h2 class="fs-h2 text-white">Ready to get your free offer?</h2>
+        <p class="mt-3.5 text-[17px] text-[#BDBDB6]">No fees. No repairs. No obligation. Results in 24–48 hours.</p>
+        <div class="mt-8">
+          <AddressForm id="faq-form" theme="dark" align="center" showTrust={true} />
+        </div>
+      </div>
+    </section>
+  </main>
 
-  <!-- FOOTER -->
-  <Footer />
+  <Footer current="/faq/" />
 
 </body>
 </html>

@@ -1,5 +1,5 @@
 ---
-title: "How Much Are Escrow Fees in California? Cost &#038; Closing Guide"
+title: "How Much Are Escrow Fees in California? Cost & Closing Guide"
 description: "Learn how much escrow fees cost in California, what they include, who pays them, and how cash buyers like FlipSplit can help reduce overall closing costs."
 pubDate: 2025-12-21
 updatedDate: 2026-01-15

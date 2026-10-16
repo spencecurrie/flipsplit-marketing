@@ -1,5 +1,5 @@
 ---
-title: "101 Handbook To Selling Inherited Property: Taxes &#038; Timing"
+title: "101 Handbook To Selling Inherited Property: Taxes & Timing"
 description: "Have inherited property on your hands that you aren't sure what to do with? If you are interested in selling inherited property, check out our blog to learn how!"
 pubDate: 2022-06-14
 updatedDate: 2024-01-25
