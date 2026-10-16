@@ -47,78 +47,83 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <ClientRouter />
 </head>
-<body class="bg-mute">
+<body class="bg-cream text-ink font-sans antialiased">
 
-  <header class="px-6 py-5 max-w-6xl mx-auto w-full">
-    <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
+  <header class="max-w-[1152px] mx-auto px-6 py-5">
+    <a href="/" class="inline-flex items-center gap-2.5 h-11 no-underline text-ink">
+      <img src="/logo-mark.png" alt="" width="34" height="34" class="block w-[34px] h-[34px] object-contain" />
+      <span class="text-[19px] font-semibold tracking-[-0.02em]">FlipSplit</span>
+    </a>
   </header>
 
-  <main class="min-h-[calc(100vh-5.5rem)] flex items-start justify-center px-6 pb-12">
-    <div class="w-full max-w-[420px]">
+  <main class="flex justify-center px-4 pt-2 pb-12">
+    <div class="w-full max-w-[440px]">
 
-      <div class="bg-surface rounded-card border border-line px-8 py-[34px]">
+      <div class="bg-white border border-line rounded-[16px] px-8 py-[34px] max-[420px]:px-5 max-[420px]:py-7">
 
-        <h1 class="text-h2 text-ink text-center">
+        <h1 class="m-0 text-center text-[26px] leading-[1.2] tracking-[-0.03em] font-semibold text-ink">
           We'll text you when your offer is ready
         </h1>
-        <p class="text-body text-muted mb-7 text-center mt-1.5">
+        <p class="mt-2 mb-7 text-center text-[15px] leading-[1.55] text-muted">
           One last step. Drop your phone number so we can reach out within 24–48 hours.
         </p>
 
         <form id="phone-form" novalidate>
-          <label for="ph-phone" class="block text-small font-semibold text-ink mb-2">Mobile phone</label>
+          <label for="ph-phone" class="block text-[13px] font-medium text-ink mb-1.5">Mobile phone</label>
           <input
             id="ph-phone"
             type="tel"
             inputmode="numeric"
             autocomplete="tel"
             placeholder="(555) 000-0000"
-            class="w-full border border-line rounded-control px-4 py-3.5 text-body text-ink bg-surface outline-none focus:border-ink transition-colors duration-[180ms] disabled:bg-mute mb-5"
+            class="w-full h-12 px-3.5 border border-line-strong rounded-[12px] bg-white text-[15px] text-ink placeholder:text-faint outline-none focus:border-ink transition-colors disabled:bg-mute mb-5"
           />
 
           <!-- TCPA opt-in. Unchecked on load, optional, and next to the
                disclosure it applies to — all three are 10DLC requirements. -->
-          <label class="flex items-start gap-3 cursor-pointer mb-2">
-            <input
-              id="ph-consent"
-              type="checkbox"
-              class="mt-0.5 w-5 h-5 accent-[#1f1f1f] cursor-pointer flex-shrink-0"
-            />
-            <span class="text-small text-muted leading-relaxed">
-              By checking this box, you agree to receive SMS customer care,
-              product or service delivery notifications, and marketing or
-              promotional messages from FlipSplit LLC at the phone number
-              provided. Message frequency may vary. Standard message and data
-              rates may apply. Reply STOP to opt out. Reply HELP for help.
-              Consent is not a condition of purchase. See our
-              <a
-                href={PRIVACY_POLICY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="underline hover:text-ink transition-colors duration-[180ms]"
-              >Privacy Policy</a>. Your mobile information will not be sold or
-              shared with third parties for promotional or marketing purposes.
-            </span>
-          </label>
+          <div class="border border-line rounded-[12px] p-3.5">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input
+                id="ph-consent"
+                type="checkbox"
+                class="mt-0.5 w-5 h-5 accent-ink cursor-pointer flex-shrink-0"
+              />
+              <span class="text-[13px] leading-[1.6] text-muted">
+                By checking this box, you agree to receive SMS customer care,
+                product or service delivery notifications, and marketing or
+                promotional messages from FlipSplit LLC at the phone number
+                provided. Message frequency may vary. Standard message and data
+                rates may apply. Reply STOP to opt out. Reply HELP for help.
+                Consent is not a condition of purchase. See our
+                <a
+                  href={PRIVACY_POLICY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-ink underline hover:text-muted"
+                >Privacy Policy</a>. Your mobile information will not be sold or
+                shared with third parties for promotional or marketing purposes.
+              </span>
+            </label>
+          </div>
 
-          <p class="text-small text-faint leading-relaxed">
+          <p class="mt-2.5 text-[13px] leading-[1.6] text-[#6B6B65]">
             Optional — you can leave this unchecked and still continue. We'll
             call or email you about your offer either way.
           </p>
 
-          <p id="ph-error" class="hidden text-small mt-4" style="color: var(--color-danger);"></p>
+          <p id="ph-error" class="hidden text-[14px] text-danger mt-4"></p>
 
           <button
             id="ph-submit"
             type="submit"
             disabled
-            class="w-full bg-ink hover:bg-ink-soft disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold h-12 rounded-control text-body transition-colors duration-[180ms] mt-6"
+            class="w-full h-12 mt-6 rounded-[12px] bg-ink hover:bg-ink-soft text-white text-[15px] font-medium transition-colors disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-ink"
           >Confirm and finish</button>
         </form>
 
       </div>
 
-      <p class="text-small text-faint text-center mt-5 leading-relaxed">
+      <p class="mt-5 text-center text-[13px] leading-[1.6] text-[#6B6B65]">
         You can update or remove your number anytime from Settings.
       </p>
 

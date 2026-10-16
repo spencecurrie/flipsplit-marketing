@@ -19,7 +19,7 @@ const options = [
   nextHref="/offer/step-4/"
   autoAdvance={true}
 >
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
+  <div class="grid grid-cols-3 gap-5 max-w-[896px] mx-auto max-[1000px]:grid-cols-2 max-[640px]:grid-cols-1 max-[640px]:gap-3" role="group" aria-label="Home category">
     {options.map((opt) => (
       <button type="button" class="offer-card-btn" data-value={opt.value} aria-pressed="false">
         {opt.label}

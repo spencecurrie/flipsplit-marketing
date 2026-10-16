@@ -19,69 +19,59 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   {/* auth page, no search value */}
   <meta name="robots" content="noindex, follow" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <style>
-    :root { --brand-cyan: #1f1f1f; --brand-dark: #1f1f1f; --brand-body: #2a2a27; }
-    body { font-family: 'General Sans', sans-serif; color: var(--brand-body); }
-    h1, h2, h3 { font-family: 'General Sans', 'General Sans', sans-serif; color: var(--brand-dark); }
-    a, button { cursor: pointer; }
-  </style>
   <ClientRouter />
 </head>
-<body class="bg-[#f6f7ed] antialiased">
+<body class="bg-cream text-ink font-sans antialiased">
 
   <Nav />
 
-  <main class="min-h-[calc(100vh-4rem)] flex items-center justify-center px-6 py-12">
-    <div class="w-full max-w-md">
-      <div class="bg-white rounded-2xl shadow-sm border border-[#e6e6e2] p-8">
+  <main class="flex items-center justify-center px-4 py-[72px]">
+    <div class="w-full max-w-[440px]">
+      <div class="bg-white border border-line rounded-[16px] px-8 py-9 max-[700px]:px-5 max-[700px]:py-7">
 
-        <div class="w-12 h-12 rounded-full mx-auto mb-5 flex items-center justify-center" style="background: rgba(31,31,31,0.1);">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1f1f1f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-            <polyline points="10 17 15 12 10 7"/>
-            <line x1="15" y1="12" x2="3" y2="12"/>
-          </svg>
+        <div class="w-12 h-12 mx-auto mb-5 border border-line rounded-[12px] flex items-center justify-center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
         </div>
 
-        <h1 id="auth-title" class="text-2xl font-semibold text-center mb-1.5" style="color:#1f1f1f;">Sign in</h1>
-        <p id="auth-sub" class="text-sm text-[#1f1f1f] text-center mb-6">Welcome back to FlipSplit.</p>
+        <h1 id="auth-title" class="m-0 text-center text-[28px] leading-[1.15] tracking-[-0.03em] font-semibold text-ink">Sign in</h1>
+        <p id="auth-sub" class="mt-1.5 mb-6 text-center text-[15px] text-muted">Welcome back to FlipSplit.</p>
 
         <!-- Google OAuth -->
         <button
           id="google-btn"
           type="button"
-          class="w-full flex items-center justify-center gap-3 border border-[#e6e6e2] rounded-xl py-3 text-sm font-semibold text-[#1f1f1f] hover:bg-[#f6f7ed] transition-colors disabled:opacity-50 disabled:cursor-wait"
+          class="w-full h-12 flex items-center justify-center gap-3 border border-line rounded-[12px] bg-white text-[15px] font-medium text-ink hover:bg-wash transition-colors disabled:opacity-50 disabled:cursor-wait"
         >
           <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
             <path fill="#4285f4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
             <path fill="#34a853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
-            <path fill="#1f1f1f" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/>
+            <path fill="#fbbc05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/>
             <path fill="#ea4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
           </svg>
           <span id="google-label">Continue with Google</span>
         </button>
 
         <div class="flex items-center gap-3 my-6">
-          <div class="flex-1 h-px bg-[#1f1f1f]"></div>
-          <span class="text-xs uppercase tracking-widest text-[#1f1f1f] font-semibold">or</span>
-          <div class="flex-1 h-px bg-[#1f1f1f]"></div>
+          <div class="flex-1 h-px bg-line"></div>
+          <span class="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#6B6B65]">or</span>
+          <div class="flex-1 h-px bg-line"></div>
         </div>
 
         <!-- Email/password form -->
-        <form id="auth-form" class="space-y-4" novalidate>
+        <form id="auth-form" class="flex flex-col gap-4" novalidate>
           <div>
-            <label for="auth-email" class="block text-sm font-semibold text-[#1f1f1f] mb-1.5">Email address</label>
+            <label for="auth-email" class="block text-[13px] font-medium text-ink mb-1.5">Email address</label>
             <input
               id="auth-email"
               type="email"
               required
               autocomplete="email"
               placeholder="you@example.com"
-              class="w-full border border-[#e6e6e2] rounded-xl px-4 py-3 text-sm text-[#1f1f1f] focus:outline-none focus:border-[#1f1f1f] transition-colors disabled:bg-[#f6f7ed]"
+              class="w-full h-12 px-3.5 border border-line-strong rounded-[12px] bg-white text-[15px] text-ink placeholder:text-faint outline-none focus:border-ink transition-colors disabled:bg-mute"
             />
           </div>
           <div>
-            <label for="auth-password" class="block text-sm font-semibold text-[#1f1f1f] mb-1.5">Password</label>
+            <label for="auth-password" class="block text-[13px] font-medium text-ink mb-1.5">Password</label>
             <div class="relative">
               <input
                 id="auth-password"
@@ -90,34 +80,33 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
                 minlength="6"
                 autocomplete="current-password"
                 placeholder="At least 6 characters"
-                class="w-full border border-[#e6e6e2] rounded-xl px-4 py-3 pr-20 text-sm text-[#1f1f1f] focus:outline-none focus:border-[#1f1f1f] transition-colors disabled:bg-[#f6f7ed]"
+                class="w-full h-12 pl-3.5 pr-[72px] border border-line-strong rounded-[12px] bg-white text-[15px] text-ink placeholder:text-faint outline-none focus:border-ink transition-colors disabled:bg-mute"
               />
               <button
                 id="toggle-password"
                 type="button"
                 tabindex="-1"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-[#1f1f1f] hover:text-[#1f1f1f]"
+                class="absolute right-1.5 top-1.5 h-9 px-2.5 rounded-[8px] bg-transparent text-[13px] font-medium text-muted hover:text-ink"
               >Show</button>
             </div>
           </div>
 
-          <p id="auth-error" class="hidden text-sm text-red-600 font-medium"></p>
-          <p id="auth-success" class="hidden text-sm font-medium" style="color:#1f1f1f;"></p>
+          <p id="auth-error" class="hidden text-[14px] text-danger font-medium"></p>
+          <p id="auth-success" class="hidden text-[14px] font-medium text-ink"></p>
 
           <button
             id="submit-btn"
             type="submit"
-            class="w-full text-white font-bold py-3 rounded-xl text-sm transition-all hover:brightness-110 disabled:opacity-60 disabled:cursor-wait"
-            style="background:#1f1f1f;"
+            class="w-full h-12 mt-1 rounded-[12px] bg-ink hover:bg-ink-soft text-white text-[15px] font-medium transition-colors disabled:opacity-60 disabled:cursor-wait"
           >
             <span id="submit-label">Sign in</span>
           </button>
         </form>
       </div>
 
-      <p class="text-sm text-[#1f1f1f] text-center mt-6">
+      <p class="mt-6 text-center text-[14px] text-muted">
         New to FlipSplit?
-        <a href="/signup/" class="font-semibold ml-1 hover:opacity-80 transition-opacity" style="color:#1f1f1f;">Create an account</a>
+        <a href="/signup/" class="ml-1 font-medium text-ink underline underline-offset-[3px] hover:text-muted">Create an account</a>
       </p>
     </div>
   </main>

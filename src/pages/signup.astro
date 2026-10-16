@@ -29,18 +29,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <ClientRouter />
 </head>
-<body class="bg-mute">
+<body class="bg-cream text-ink font-sans antialiased">
 
-  <header class="px-6 py-5 max-w-6xl mx-auto w-full">
-    <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
+  <header class="max-w-[1152px] mx-auto px-6 py-5">
+    <a href="/" class="inline-flex items-center gap-2.5 h-11 no-underline text-ink">
+      <img src="/logo-mark.png" alt="" width="34" height="34" class="block w-[34px] h-[34px] object-contain" />
+      <span class="text-[19px] font-semibold tracking-[-0.02em]">FlipSplit</span>
+    </a>
   </header>
 
-  <main class="min-h-[calc(100vh-5.5rem)] flex items-start justify-center px-6 pb-12">
-    <div class="w-full max-w-[420px]">
+  <main class="flex justify-center px-4 pt-2 pb-12">
+    <div class="w-full max-w-[440px]">
 
-      <div class="bg-surface rounded-card border border-line px-8 py-[34px]">
-        <h1 class="text-h2 text-ink text-center">Create your account</h1>
-        <p class="text-body text-muted mb-7 text-center mt-1.5">
+      <div class="bg-white border border-line rounded-[16px] px-8 py-[34px] max-[420px]:px-5 max-[420px]:py-7">
+        <h1 class="m-0 text-center text-[26px] leading-[1.2] tracking-[-0.03em] font-semibold text-ink">Create your account</h1>
+        <p class="mt-1.5 mb-7 text-center text-[15px] text-muted">
           We'll text you the moment your offer is ready.
         </p>
 
@@ -48,7 +51,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         <button
           id="google-btn"
           type="button"
-          class="w-full flex items-center justify-center gap-3 border border-line rounded-control h-12 text-body font-semibold text-ink hover:bg-mute transition-colors duration-[180ms] disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full h-12 flex items-center justify-center gap-3 border border-line rounded-[12px] bg-white text-[15px] font-medium text-ink hover:bg-wash transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
             <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
@@ -61,49 +64,49 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 
         <div class="flex items-center gap-3 my-6">
           <div class="flex-1 h-px bg-line"></div>
-          <span class="text-micro uppercase tracking-[0.09em] text-faint font-semibold">or</span>
+          <span class="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#6B6B65]">or</span>
           <div class="flex-1 h-px bg-line"></div>
         </div>
 
         <!-- Email/password -->
-        <form id="signup-form" class="space-y-4" novalidate>
-          <div class="grid grid-cols-2 gap-3">
+        <form id="signup-form" class="flex flex-col gap-4" novalidate>
+          <div class="grid grid-cols-2 gap-3 max-[420px]:grid-cols-1">
             <div>
-              <label for="su-first" class="block text-small font-semibold text-ink mb-2">First name</label>
+              <label for="su-first" class="block text-[13px] font-medium text-ink mb-1.5">First name</label>
               <input
                 id="su-first"
                 type="text"
                 required
                 autocomplete="given-name"
                 placeholder="Jane"
-                class="w-full border border-line rounded-control px-4 py-3.5 text-body text-ink bg-surface outline-none focus:border-ink transition-colors duration-[180ms] disabled:bg-mute"
+                class="w-full h-12 px-3.5 border border-line-strong rounded-[12px] bg-white text-[15px] text-ink placeholder:text-faint outline-none focus:border-ink transition-colors disabled:bg-mute"
               />
             </div>
             <div>
-              <label for="su-last" class="block text-small font-semibold text-ink mb-2">Last name</label>
+              <label for="su-last" class="block text-[13px] font-medium text-ink mb-1.5">Last name</label>
               <input
                 id="su-last"
                 type="text"
                 required
                 autocomplete="family-name"
                 placeholder="Smith"
-                class="w-full border border-line rounded-control px-4 py-3.5 text-body text-ink bg-surface outline-none focus:border-ink transition-colors duration-[180ms] disabled:bg-mute"
+                class="w-full h-12 px-3.5 border border-line-strong rounded-[12px] bg-white text-[15px] text-ink placeholder:text-faint outline-none focus:border-ink transition-colors disabled:bg-mute"
               />
             </div>
           </div>
           <div>
-            <label for="su-email" class="block text-small font-semibold text-ink mb-2">Email address</label>
+            <label for="su-email" class="block text-[13px] font-medium text-ink mb-1.5">Email address</label>
             <input
               id="su-email"
               type="email"
               required
               autocomplete="email"
               placeholder="you@example.com"
-              class="w-full border border-line rounded-control px-4 py-3.5 text-body text-ink bg-surface outline-none focus:border-ink transition-colors duration-[180ms] disabled:bg-mute"
+              class="w-full h-12 px-3.5 border border-line-strong rounded-[12px] bg-white text-[15px] text-ink placeholder:text-faint outline-none focus:border-ink transition-colors disabled:bg-mute"
             />
           </div>
           <div>
-            <label for="su-password" class="block text-small font-semibold text-ink mb-2">Password</label>
+            <label for="su-password" class="block text-[13px] font-medium text-ink mb-1.5">Password</label>
             <div class="relative">
               <input
                 id="su-password"
@@ -112,36 +115,36 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
                 minlength="8"
                 autocomplete="new-password"
                 placeholder="At least 8 characters"
-                class="w-full border border-line rounded-control px-4 py-3.5 pr-20 text-body text-ink bg-surface outline-none focus:border-ink transition-colors duration-[180ms] disabled:bg-mute"
+                class="w-full h-12 pl-3.5 pr-[72px] border border-line-strong rounded-[12px] bg-white text-[15px] text-ink placeholder:text-faint outline-none focus:border-ink transition-colors disabled:bg-mute"
               />
               <button
                 id="su-toggle-password"
                 type="button"
                 tabindex="-1"
-                class="absolute right-4 top-1/2 -translate-y-1/2 text-small font-semibold text-muted hover:text-ink"
+                class="absolute right-1.5 top-1.5 h-9 px-2.5 rounded-[8px] bg-transparent text-[13px] font-medium text-muted hover:text-ink"
               >Show</button>
             </div>
           </div>
 
-          <p id="su-error" class="hidden text-small" style="color: var(--color-danger);"></p>
+          <p id="su-error" class="hidden text-[14px] text-danger"></p>
 
           <button
             id="su-submit"
             type="submit"
-            class="w-full bg-ink hover:bg-ink-soft disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold h-12 rounded-control text-body transition-colors duration-[180ms]"
+            class="w-full h-12 mt-1 rounded-[12px] bg-ink hover:bg-ink-soft text-white text-[15px] font-medium transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >Create account</button>
         </form>
 
-        <p class="text-small text-faint mt-5 leading-relaxed text-center">
+        <p class="mt-5 text-center text-[13px] leading-[1.6] text-[#6B6B65]">
           By creating an account you agree to FlipSplit's
-          <a href="/terms-and-conditions/" class="underline hover:text-ink">Terms of Service</a> and
-          <a href="/privacy-policy/" class="underline hover:text-ink">Privacy Policy</a>.
+          <a href="/terms-and-conditions/" class="text-muted underline hover:text-ink">Terms of Service</a> and
+          <a href="/privacy-policy/" class="text-muted underline hover:text-ink">Privacy Policy</a>.
         </p>
       </div>
 
-      <p class="text-body text-muted text-center mt-6">
+      <p class="mt-6 text-center text-[14px] text-muted">
         Already have an account?
-        <a id="su-signin-link" href="/sign-in/" class="font-semibold text-ink underline underline-offset-[3px] decoration-line-strong hover:decoration-ink">Sign in</a>
+        <a id="su-signin-link" href="/sign-in/" class="font-medium text-ink underline underline-offset-[3px] hover:text-muted">Sign in</a>
       </p>
 
     </div>

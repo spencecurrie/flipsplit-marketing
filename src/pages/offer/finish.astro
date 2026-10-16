@@ -19,26 +19,28 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   <ClientRouter />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style>
-    body { font-family: 'General Sans', sans-serif; color: #2a2a27; background: #fff; min-height: 100vh; display: flex; flex-direction: column; }
-    h1 { font-family: 'General Sans', 'General Sans', sans-serif; color: #1f1f1f; }
-    .progress-bar { height: 4px; background: #1f1f1f; }
-    .spinner { width: 56px; height: 56px; border-radius: 50%; border: 4px solid #e6e6e2; border-top-color: #1f1f1f; animation: spin 0.85s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .preview-note { background: #f6f7ed; border: 1px solid #1f1f1f; color: #1f1f1f; padding: 1rem 1.25rem; border-radius: 12px; font-size: 0.875rem; max-width: 32rem; margin: 1.5rem auto 0; }
+    .finish-spin { animation: fsspin 0.85s linear infinite; }
+    @keyframes fsspin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .finish-spin { animation: none; } }
   </style>
 </head>
-<body>
-  <div class="progress-bar"></div>
-  <header class="px-6 py-5 max-w-6xl mx-auto w-full">
-    <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
+<body class="bg-white text-ink min-h-screen flex flex-col">
+  <div class="h-1 bg-ink"></div>
+  <header class="w-full max-w-[1152px] mx-auto px-6 box-border h-[76px] flex items-center">
+    <a href="/" class="flex items-center gap-2.5 no-underline text-ink">
+      <img src="/logo-mark.png" alt="" width="34" height="34" class="block w-[34px] h-[34px] object-contain" />
+      <span class="text-[19px] font-semibold tracking-[-0.02em]">FlipSplit</span>
+    </a>
   </header>
 
-  <main class="flex-1 flex flex-col items-center justify-center px-6 text-center">
-    <div class="spinner mb-8" aria-hidden="true"></div>
-    <h1 class="text-3xl md:text-4xl font-semibold mb-3">Preparing your offer…</h1>
-    <p class="text-base md:text-lg text-[#1f1f1f] max-w-md">We're saving your details and taking you to create an account so we can text you when your offer is ready.</p>
-    <p id="finish-error" class="hidden text-sm text-red-500 font-medium mt-6"></p>
-    <div id="preview-note" class="preview-note hidden"></div>
+  <main class="w-full max-w-[1152px] mx-auto px-6 box-border flex-1 flex flex-col items-center justify-center text-center pb-[76px]">
+    <div class="w-[88px] h-[88px] rounded-[20px] border border-line flex items-center justify-center mb-8">
+      <div class="finish-spin w-11 h-11 rounded-full border-[3px] border-line border-t-ink box-border" aria-hidden="true"></div>
+    </div>
+    <h1 class="m-0 mb-3 text-[40px] max-[640px]:text-[30px] leading-[1.1] tracking-[-0.035em] font-semibold">Preparing your offer…</h1>
+    <p class="m-0 max-w-[448px] text-[18px] leading-[1.55] text-muted">We're saving your details and taking you to create an account so we can text you when your offer is ready.</p>
+    <p id="finish-error" class="hidden text-[14px] text-danger font-medium mt-6"></p>
+    <div id="preview-note" class="hidden mt-6 mx-auto max-w-[32rem] bg-cream border border-line rounded-xl px-5 py-4 text-[14px] text-ink"></div>
   </main>
 
   <script>
@@ -78,7 +80,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
       if (isPreview) {
         if (previewEl) {
           previewEl.classList.remove('hidden');
-          previewEl.innerHTML = `Preview mode — would generate a claim token and redirect to <code style="background:#fff;padding:2px 6px;border-radius:4px;">/signup/?claim=&lt;token&gt;</code>`;
+          previewEl.innerHTML = `Preview mode — would generate a claim token and redirect to <code style="background:#fff;padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:13px;">/signup/?claim=&lt;token&gt;</code>`;
         }
         return;
       }

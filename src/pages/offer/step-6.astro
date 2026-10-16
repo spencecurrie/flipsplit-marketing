@@ -37,7 +37,7 @@ const options = [
   nextHref="/offer/step-7/"
   autoAdvance={true}
 >
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+  <div class="grid grid-cols-3 gap-5 max-w-[1024px] mx-auto max-[860px]:grid-cols-1 max-[860px]:gap-3" role="group" aria-label="Your goal">
     {options.map((opt) => (
       <button
         type="button"
@@ -45,125 +45,29 @@ const options = [
         data-value={opt.value}
         aria-pressed="false"
       >
-        <div class="goal-card-icon">
+        <span class="goal-card-icon w-[52px] h-[52px] rounded-xl flex items-center justify-center mb-[18px]">
           {opt.icon === 'bolt' && (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
           )}
           {opt.icon === 'trending' && (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
           )}
           {opt.icon === 'calendar' && (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>
           )}
-        </div>
+        </span>
 
-        <span class="goal-card-pill">{opt.pill}</span>
+        <span class="goal-card-pill self-start font-mono text-[11px] uppercase tracking-[0.06em] px-2 py-1 rounded-[6px] mb-3.5">{opt.pill}</span>
 
-        <h3 class="goal-card-label">{opt.label}</h3>
-        <p class="goal-card-desc">{opt.description}</p>
+        <span class="goal-card-label block text-[20px] font-semibold leading-[1.25] tracking-[-0.01em] mb-2">{opt.label}</span>
+        <span class="goal-card-desc block text-[15px] leading-[1.55]">{opt.description}</span>
 
-        <span class="goal-card-arrow" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <span class="goal-card-arrow absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center" aria-hidden="true">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
         </span>
       </button>
     ))}
   </div>
-
-  <style>
-    .goal-card {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      text-align: left;
-      background: #ffffff;
-      border: 1.5px solid #e6e6e2;
-      border-radius: 1.25rem;
-      padding: 2rem 1.75rem 1.75rem;
-      cursor: pointer;
-      transition: border-color 0.15s ease, box-shadow 0.18s ease, transform 0.1s ease;
-      font-family: 'General Sans', sans-serif;
-    }
-    .goal-card:hover { transform: translateY(-2px); }
-    .goal-card:active { transform: scale(0.995); }
-    .goal-card[disabled] { cursor: not-allowed; opacity: 0.6; }
-
-    .goal-card--blue { --accent: #1f1f1f; --accent-soft: #f6f7ed; --accent-deep: #1f1f1f; }
-    .goal-card--emerald { --accent: #1f1f1f; --accent-soft: #f6f7ed; --accent-deep: #1f1f1f; }
-
-    .goal-card:hover {
-      border-color: var(--accent);
-      box-shadow: 0 10px 28px -8px color-mix(in srgb, var(--accent) 28%, transparent);
-    }
-    .goal-card[aria-pressed="true"] {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent), 0 10px 28px -8px color-mix(in srgb, var(--accent) 30%, transparent);
-    }
-
-    .goal-card-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 14px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1.1rem;
-    }
-    .goal-card-icon svg { width: 28px; height: 28px; }
-
-    .goal-card-pill {
-      display: inline-block;
-      align-self: flex-start;
-      background: var(--accent-soft);
-      color: var(--accent-deep);
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 999px;
-      margin-bottom: 0.85rem;
-    }
-
-    .goal-card-label {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #1f1f1f;
-      line-height: 1.25;
-      margin-bottom: 0.55rem;
-    }
-    .goal-card-desc {
-      font-size: 0.95rem;
-      color: #8a8a83;
-      line-height: 1.55;
-      margin-bottom: 0;
-    }
-
-    .goal-card-arrow {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #dcdcd4;
-      transition: color 0.15s ease, background 0.15s ease, transform 0.15s ease;
-    }
-    .goal-card-arrow svg { width: 16px; height: 16px; }
-    .goal-card:hover .goal-card-arrow {
-      color: var(--accent);
-      background: var(--accent-soft);
-      transform: translateX(2px);
-    }
-    .goal-card[aria-pressed="true"] .goal-card-arrow {
-      color: #ffffff;
-      background: var(--accent);
-    }
-  </style>
 </OfferLayout>
 
 <script>

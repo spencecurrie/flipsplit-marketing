@@ -21,10 +21,10 @@ const sqftOptions = [
   backHref="/offer/step-1/"
   nextHref="/offer/step-3/"
 >
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8 max-w-4xl mx-auto" id="details-grid">
+  <div class="grid grid-cols-3 gap-7 max-w-[896px] mx-auto max-[1000px]:grid-cols-2 max-[640px]:grid-cols-1 max-[640px]:gap-[18px]" id="details-grid">
 
     <div>
-      <label class="block text-base font-bold text-[#1f1f1f] mb-2">Bedrooms</label>
+      <label for="f-bedrooms" class="block text-[15px] font-semibold mb-2">Bedrooms</label>
       <select id="f-bedrooms" class="offer-select">
         <option value="">Select one…</option>
         {numericOptions.map((n) => <option value={n}>{numericLabel(n)}</option>)}
@@ -32,7 +32,7 @@ const sqftOptions = [
     </div>
 
     <div>
-      <label class="block text-base font-bold text-[#1f1f1f] mb-2">Full Bathrooms</label>
+      <label for="f-full-baths" class="block text-[15px] font-semibold mb-2">Full Bathrooms</label>
       <select id="f-full-baths" class="offer-select">
         <option value="">Select one…</option>
         {numericOptions.map((n) => <option value={n}>{numericLabel(n)}</option>)}
@@ -40,8 +40,8 @@ const sqftOptions = [
     </div>
 
     <div>
-      <label class="block text-base font-bold text-[#1f1f1f] mb-2">
-        Partial Bathrooms <span class="text-[#1f1f1f] font-normal text-sm">(toilet + sink)</span>
+      <label for="f-partial-baths" class="block text-[15px] font-semibold mb-2">
+        Partial Bathrooms <span class="font-normal text-[13px] text-muted">(toilet + sink)</span>
       </label>
       <select id="f-partial-baths" class="offer-select">
         <option value="">Select one…</option>
@@ -51,7 +51,7 @@ const sqftOptions = [
     </div>
 
     <div>
-      <label class="block text-base font-bold text-[#1f1f1f] mb-2">Square Footage</label>
+      <label for="f-sqft" class="block text-[15px] font-semibold mb-2">Square Footage</label>
       <select id="f-sqft" class="offer-select">
         <option value="">Select one…</option>
         {sqftOptions.map((o) => <option value={o.value}>{o.label}</option>)}
@@ -59,7 +59,7 @@ const sqftOptions = [
     </div>
 
     <div>
-      <label class="block text-base font-bold text-[#1f1f1f] mb-2">Pool</label>
+      <label for="f-pool" class="block text-[15px] font-semibold mb-2">Pool</label>
       <select id="f-pool" class="offer-select">
         <option value="">Select one…</option>
         <option value="true">Yes</option>
@@ -68,7 +68,7 @@ const sqftOptions = [
     </div>
 
     <div>
-      <label class="block text-base font-bold text-[#1f1f1f] mb-2">Floors (above ground)</label>
+      <label for="f-floors" class="block text-[15px] font-semibold mb-2">Floors (above ground)</label>
       <select id="f-floors" class="offer-select">
         <option value="">Select one…</option>
         {numericOptions.map((n) => <option value={n}>{numericLabel(n)}</option>)}
@@ -77,19 +77,14 @@ const sqftOptions = [
 
   </div>
 
-  <!-- Required-fields hint — appears when any dropdown is unanswered -->
-  <p id="details-hint" class="hidden text-center text-sm font-medium mt-8 text-[#1f1f1f] bg-[#f6f7ed] border border-[#e6e6e2] rounded-xl px-4 py-3 max-w-2xl mx-auto">
-    Please complete <span id="details-missing"></span> before continuing.
+  <!-- Required-fields hint — appears when any dropdown is unanswered
+       (JS toggles `hidden` on the <p>; the inner span carries the flex layout) -->
+  <p id="details-hint" class="hidden mt-8 mx-auto max-w-[672px] box-border text-[14px] font-medium text-center border border-line rounded-xl px-4 py-3">
+    <span class="flex items-center justify-center gap-2">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" class="shrink-0"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
+      <span>Please complete <span id="details-missing"></span> before continuing.</span>
+    </span>
   </p>
-
-  <style is:global>
-    /* Empty dropdowns get an amber outline so it's obvious what still needs an answer. */
-    .offer-select.is-empty {
-      border-color: #1f1f1f !important;
-      background-color: #f6f7ed !important;
-      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
-    }
-  </style>
 </OfferLayout>
 
 <script>

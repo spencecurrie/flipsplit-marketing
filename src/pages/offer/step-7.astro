@@ -37,7 +37,7 @@ const programs = [
   nextHref="/offer/finish/"
   autoAdvance={true}
 >
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+  <div class="grid grid-cols-2 gap-5 max-w-[896px] mx-auto max-[760px]:grid-cols-1 max-[760px]:gap-3" role="group" aria-label="Program">
     {programs.map((p) => (
       <button
         type="button"
@@ -46,93 +46,36 @@ const programs = [
         aria-pressed="false"
       >
         {p.recommended && (
-          <span class="program-card-badge">★ Recommended</span>
+          <span class="program-card-badge absolute top-[18px] right-[18px] inline-flex items-center gap-[5px] text-[12px] font-semibold px-[9px] py-1 rounded-[6px] bg-cream">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#121212" aria-hidden="true"><path d="M12 2l3 6.6 7.2.7-5.4 4.8 1.6 7.1L12 17.5 5.6 21.2l1.6-7.1L1.8 9.3 9 8.6z"/></svg>Recommended
+          </span>
         )}
-        <h3 class="text-2xl font-bold text-[#1f1f1f] mb-1.5">{p.name}</h3>
-        <p class="text-sm text-[#1f1f1f] mb-5">{p.tagline}</p>
+        <span class={`block text-[24px] font-semibold tracking-[-0.02em] mb-1.5 ${p.recommended ? 'pr-32' : ''}`}>{p.name}</span>
+        <span class="block text-[14px] text-muted mb-[22px]">{p.tagline}</span>
 
-        <p class="text-xs font-bold uppercase tracking-widest text-[#1f1f1f] mb-2">Best for</p>
-        <p class="text-sm text-[#1f1f1f] mb-5 leading-relaxed">{p.bestFor}</p>
+        <span class="block text-[11px] font-semibold uppercase tracking-[0.1em] mb-2">Best for</span>
+        <span class="block text-[14px] leading-[1.55] mb-[22px]">{p.bestFor}</span>
 
-        <p class="text-xs font-bold uppercase tracking-widest text-[#1f1f1f] mb-3 mt-auto">Feature highlights</p>
-        <ul class="space-y-2.5 mb-6">
+        <span class="block text-[11px] font-semibold uppercase tracking-[0.1em] mb-2.5 mt-auto pt-4 border-t border-hairline">Feature highlights</span>
+        <span class="flex flex-col gap-2.5 mb-6">
           {p.highlights.map((h) => (
-            <li class="flex items-start gap-2 text-sm text-[#1f1f1f]">
-              <svg class="w-4 h-4 text-[#1f1f1f] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            <span class="flex items-start gap-2 text-[14px]">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0 mt-px"><path d="M5 13l4 4L19 7"/></svg>
               <span>{h}</span>
-            </li>
+            </span>
           ))}
-        </ul>
+        </span>
 
-        <span class="program-card-cta">
+        <span class="program-card-cta flex items-center justify-center h-[46px] rounded-[10px] text-[14px] font-medium">
           <span class="program-card-cta-default">Select option</span>
           <span class="program-card-cta-selected">
-            <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>
             Selected
           </span>
         </span>
       </button>
     ))}
   </div>
-
-  <style>
-    .program-card {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      text-align: left;
-      background: #ffffff;
-      border: 1.5px solid #e6e6e2;
-      border-radius: 1rem;
-      padding: 1.75rem 1.5rem;
-      cursor: pointer;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
-    }
-    .program-card:hover {
-      border-color: #1f1f1f;
-      box-shadow: 0 6px 18px rgba(31,31,31,0.10);
-    }
-    .program-card:active { transform: scale(0.995); }
-    .program-card[aria-pressed="true"] {
-      border-color: #1f1f1f;
-      box-shadow: 0 0 0 3px rgba(31,31,31,0.15);
-      background: #f6f7ed;
-    }
-
-    .program-card-badge {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: #f6f7ed;
-      color: #1f1f1f;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 999px;
-      letter-spacing: 0.02em;
-    }
-
-    .program-card-cta {
-      display: block;
-      text-align: center;
-      padding: 0.75rem 1rem;
-      border-radius: 0.75rem;
-      font-size: 0.875rem;
-      font-weight: 700;
-      border: 1px solid #e6e6e2;
-      background: #ffffff;
-      color: #5a5a54;
-      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-    }
-    .program-card[aria-pressed="true"] .program-card-cta {
-      background: #1f1f1f;
-      color: #ffffff;
-      border-color: #1f1f1f;
-    }
-    .program-card-cta-selected { display: none; }
-    .program-card[aria-pressed="true"] .program-card-cta-default  { display: none; }
-    .program-card[aria-pressed="true"] .program-card-cta-selected { display: inline-flex; align-items: center; justify-content: center; }
-  </style>
 </OfferLayout>
 
 <script>

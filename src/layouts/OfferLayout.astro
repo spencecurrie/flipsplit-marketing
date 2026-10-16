@@ -17,6 +17,8 @@ interface Props {
 const { step, title, subtitle, backHref, nextHref, autoAdvance = false } = Astro.props;
 const totalSteps = 7;
 const progressPct = Math.round((step / totalSteps) * 100);
+const stepLabel = String(step).padStart(2, '0');
+const totalLabel = String(totalSteps).padStart(2, '0');
 
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
@@ -37,172 +39,219 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   <ClientRouter />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style is:global>
-    :root {
-      --brand-cyan: #1f1f1f;
-      --brand-dark: #1f1f1f;
-      --brand-body: #2a2a27;
-    }
-    body { font-family: 'General Sans', sans-serif; color: var(--brand-body); background: #fff; overflow-x: hidden; }
-    .offer-progress-bar {
-      height: 4px;
-      background: linear-gradient(to right, #1f1f1f var(--pct, 0%), #e6e6e2 var(--pct, 0%));
-      transition: background 0.4s ease;
-    }
-    .offer-shell { min-height: calc(100vh - 4px); display: flex; flex-direction: column; }
+    /* ── Funnel option cards (presentation only; JS toggles aria-pressed
+       and disabled). State colours live here, not in utilities, so the
+       selected state can't lose a specificity fight. ── */
 
-    /* Card-style option button used in steps 1, 3, 4, 5 */
+    /* Text option used in steps 1, 3, 4, 5 */
     .offer-card-btn {
       display: block;
       width: 100%;
-      border: 1.5px solid #e6e6e2;
+      min-height: 104px;
+      padding: 28px 20px;
+      border: 1px solid #e6e6e1;
       border-radius: 14px;
-      padding: 1.75rem 1.25rem;
-      font-size: 1.125rem;
+      background: #ffffff;
+      color: #121212;
+      font: inherit;
+      font-size: 18px;
       font-weight: 600;
-      color: #1f1f1f;
-      background: #fff;
-      cursor: pointer;
-      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
-      text-align: center;
-      font-family: 'General Sans', sans-serif;
       line-height: 1.3;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color var(--dur-state) var(--ease-fs), background var(--dur-state) var(--ease-fs), color var(--dur-state) var(--ease-fs);
     }
-    .offer-card-btn:hover {
-      border-color: #1f1f1f;
-      background: #f6f7ed;
-      box-shadow: 0 4px 12px rgba(31,31,31,0.08);
+    .offer-card-btn:hover { border-color: #121212; }
+    .offer-card-btn:focus-visible { outline: 2px solid #121212; outline-offset: 2px; }
+    .offer-card-btn[aria-pressed="true"],
+    .offer-card-btn[aria-pressed="true"]:hover {
+      border-color: #121212;
+      background: #121212;
+      color: #ffffff;
     }
-    .offer-card-btn:active { transform: scale(0.98); }
+    .offer-card-btn[disabled] { cursor: default; }
+    .offer-card-btn[disabled]:not([aria-pressed="true"]) { opacity: 0.6; }
+
+    /* Goal card (step 6) */
+    .goal-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      padding: 28px 24px 26px;
+      border: 1px solid #e6e6e1;
+      border-radius: 16px;
+      background: #ffffff;
+      color: #121212;
+      font: inherit;
+      cursor: pointer;
+      transition: border-color var(--dur-state) var(--ease-fs), background var(--dur-state) var(--ease-fs), color var(--dur-state) var(--ease-fs);
+    }
+    .goal-card:hover { border-color: #121212; }
+    .goal-card:focus-visible { outline: 2px solid #121212; outline-offset: 2px; }
+    .goal-card-icon, .goal-card-pill, .goal-card-arrow { border: 1px solid #e6e6e1; }
+    .goal-card-desc { color: #5e5e58; }
+    .goal-card-arrow { color: #b9b9b2; background: transparent; }
+    .goal-card[aria-pressed="true"] { border-color: #121212; background: #121212; color: #ffffff; }
+    .goal-card[aria-pressed="true"] .goal-card-icon,
+    .goal-card[aria-pressed="true"] .goal-card-pill,
+    .goal-card[aria-pressed="true"] .goal-card-arrow { border-color: #3a3a36; }
+    .goal-card[aria-pressed="true"] .goal-card-desc { color: #bdbdb6; }
+    .goal-card[aria-pressed="true"] .goal-card-arrow { background: #ffffff; color: #121212; }
+    .goal-card[disabled] { cursor: default; }
+    .goal-card[disabled]:not([aria-pressed="true"]) { opacity: 0.6; }
+
+    /* Program card (step 7). Selected = 2px ink border, drawn with an inset
+       ring so the card doesn't shift by a pixel. */
+    .program-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      padding: 28px 24px 24px;
+      border: 1px solid #e6e6e1;
+      border-radius: 16px;
+      background: #ffffff;
+      color: #121212;
+      font: inherit;
+      cursor: pointer;
+      transition: border-color var(--dur-state) var(--ease-fs), box-shadow var(--dur-state) var(--ease-fs);
+    }
+    .program-card:hover { border-color: #121212; }
+    .program-card:focus-visible { outline: 2px solid #121212; outline-offset: 2px; }
+    .program-card[aria-pressed="true"] {
+      border-color: #121212;
+      box-shadow: inset 0 0 0 1px #121212, 0 10px 24px -12px rgba(18,18,18,0.25);
+    }
+    .program-card-cta { border: 1px solid #e6e6e1; background: #ffffff; color: #5e5e58; transition: background var(--dur-state) var(--ease-fs), color var(--dur-state) var(--ease-fs); }
+    .program-card[aria-pressed="true"] .program-card-cta { border-color: #121212; background: #121212; color: #ffffff; }
+    .program-card-cta-selected { display: none; }
+    .program-card[aria-pressed="true"] .program-card-cta-default { display: none; }
+    .program-card[aria-pressed="true"] .program-card-cta-selected { display: inline-flex; align-items: center; gap: 6px; }
+    .program-card[disabled] { cursor: default; }
+    .program-card[disabled]:not([aria-pressed="true"]) { opacity: 0.6; }
 
     /* Suppress hover/focus visuals until the user moves the mouse on this page.
-       Prevents the first card from looking pre-selected after auto-advance. */
-    body.no-hover .offer-card-btn:hover,
-    body.no-hover .offer-card-btn:focus,
-    body.no-hover .offer-card-btn:focus-visible,
-    body.no-hover .goal-card:hover,
-    body.no-hover .goal-card:focus,
-    body.no-hover .goal-card:focus-visible,
-    body.no-hover .program-card:hover,
-    body.no-hover .program-card:focus,
-    body.no-hover .program-card:focus-visible {
-      border-color: #e6e6e2;
-      background: #ffffff;
-      color: #1f1f1f;
-      box-shadow: none;
-      transform: none;
+       Prevents the first card from looking pre-selected after auto-advance.
+       Selected cards are excluded so their state always shows. */
+    body.no-hover .offer-card-btn:not([aria-pressed="true"]):hover,
+    body.no-hover .goal-card:not([aria-pressed="true"]):hover,
+    body.no-hover .program-card:not([aria-pressed="true"]):hover {
+      border-color: #e6e6e1;
     }
     body.no-hover .offer-card-btn:focus,
     body.no-hover .goal-card:focus,
     body.no-hover .program-card:focus { outline: none; }
-    /* Selected state still wins over no-hover */
-    body.no-hover .offer-card-btn[aria-pressed="true"] {
-      border-color: #1f1f1f;
-      background: #f6f7ed;
-      color: #1f1f1f;
-      box-shadow: 0 0 0 3px rgba(31,31,31,0.22), 0 10px 28px -8px rgba(31,31,31,0.30);
-    }
-    .offer-card-btn[aria-pressed="true"] {
-      border-color: #1f1f1f;
-      background: #f6f7ed;
-      color: #1f1f1f;
-      box-shadow: 0 0 0 3px rgba(31,31,31,0.22), 0 10px 28px -8px rgba(31,31,31,0.30);
-    }
-    .offer-card-btn[aria-pressed="true"]:hover {
-      background: #f6f7ed;
-      color: #1f1f1f;
-    }
-    .offer-card-btn[disabled] { opacity: 0.6; cursor: not-allowed; }
 
-    /* Footer Next button (only shown when autoAdvance=false) */
+    /* Footer Back / Next */
     .offer-next {
-      background: #1f1f1f;
-      color: #fff;
-      font-weight: 700;
-      padding: 0.75rem 1.75rem;
-      border-radius: 10px;
-      transition: filter 0.15s, opacity 0.15s;
-      border: none;
-      cursor: pointer;
-    }
-    .offer-next:hover { filter: brightness(1.08); }
-    .offer-next:disabled { opacity: 0.4; cursor: not-allowed; filter: none; }
-
-    .offer-back {
-      background: transparent;
-      color: #8a8a83;
-      font-weight: 600;
-      padding: 0.75rem 1rem;
-      border-radius: 10px;
-      transition: color 0.15s, background 0.15s;
-      text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 0.375rem;
+      height: 48px;
+      padding: 0 28px;
+      border: 0;
+      border-radius: 10px;
+      background: #121212;
+      color: #ffffff;
+      font: inherit;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity var(--dur-state) var(--ease-fs);
     }
-    .offer-back:hover { color: #1f1f1f; background: #f6f7ed; }
+    .offer-next:hover { opacity: 0.88; }
+    .offer-next:disabled { opacity: 0.4; cursor: not-allowed; }
+    .offer-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 44px;
+      padding: 0 14px;
+      border: 1px solid #e6e6e1;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #121212;
+      font: inherit;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color var(--dur-state) var(--ease-fs), border-color var(--dur-state) var(--ease-fs);
+    }
+    .offer-back:hover { color: #5e5e58; border-color: #d9d9d3; }
 
     /* Dropdown used in step 2 */
     .offer-select {
-      width: 100%;
-      border: 1.5px solid #e6e6e2;
-      border-radius: 12px;
-      padding: 0.875rem 2.5rem 0.875rem 1rem;
-      font-size: 0.95rem;
-      color: #1f1f1f;
-      background-color: #fff;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
       -webkit-appearance: none;
       appearance: none;
+      display: block;
+      width: 100%;
+      height: 52px;
+      padding: 0 40px 0 14px;
+      border: 1px solid #e6e6e1;
+      border-radius: 12px;
+      font: inherit;
+      font-size: 15px;
+      color: #121212;
+      background-color: #ffffff;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235E5E58' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      box-sizing: border-box;
       cursor: pointer;
-      font-family: 'General Sans', sans-serif;
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color var(--dur-state) var(--ease-fs), box-shadow var(--dur-state) var(--ease-fs);
     }
-    .offer-select:focus { border-color: #1f1f1f; }
+    .offer-select:focus { box-shadow: 0 0 0 3px rgba(18,18,18,0.12); }
+    /* Unanswered dropdown — ink outline so it's obvious what still needs an answer */
+    .offer-select.is-empty { border: 1.5px solid #121212; }
     /* Locked while we're pulling RentCast pre-fill — read-only light-gray look */
     .offer-select:disabled {
-      background-color: #f4f4f0;
-      border-color: #e6e6e2;
-      color: #8a8a83;
+      background-color: #f4f4f1;
+      border: 1px solid #e6e6e1;
+      color: #8a8a84;
       cursor: default;
       opacity: 1;
     }
   </style>
 </head>
-<body>
+<body class="bg-white text-ink">
 <TapFeedback />
-  <div class="offer-shell">
+  <div class="min-h-screen flex flex-col">
     <!-- Top progress bar -->
-    <div class="offer-progress-bar" style={`--pct: ${progressPct}%`} role="progressbar" aria-valuenow={progressPct} aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="h-1 bg-line" role="progressbar" aria-label="Offer progress" aria-valuenow={progressPct} aria-valuemin="0" aria-valuemax="100">
+      <div class="h-1 bg-ink" style={`width: ${progressPct}%`}></div>
+    </div>
 
-    <!-- Header (logo only) -->
-    <header class="px-6 py-5 max-w-6xl mx-auto w-full">
-      <a href="/"><img src="/wordmark-on-white.png" alt="FlipSplit" class="h-9" /></a>
+    <!-- Header: logo + step counter -->
+    <header class="w-full max-w-[1152px] mx-auto px-6 box-border h-[76px] flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2.5 no-underline text-ink">
+        <img src="/logo-mark.png" alt="" width="34" height="34" class="block w-[34px] h-[34px] object-contain" />
+        <span class="text-[19px] font-semibold tracking-[-0.02em]">FlipSplit</span>
+      </a>
+      <span class="font-mono text-[12px] leading-[1.4] border border-line-strong rounded-[6px] px-2 py-1 tnum" aria-label={`Step ${step} of ${totalSteps}`}>{stepLabel} / {totalLabel}</span>
     </header>
 
     <!-- Question content -->
-    <main class="flex-1 px-6 pt-8 pb-8 lg:pt-20 max-w-6xl mx-auto w-full">
+    <main class="w-full max-w-[1152px] mx-auto px-6 box-border flex-1 pt-[72px] pb-10">
       <div class="text-center mb-14">
-        <h1 id="offer-title" class="text-4xl md:text-5xl font-semibold mb-4" style="color: var(--brand-dark);">{title}</h1>
-        {subtitle && <p id="offer-subtitle" class="text-base md:text-lg text-[#1f1f1f] max-w-2xl mx-auto leading-relaxed">{subtitle}</p>}
+        <h1 id="offer-title" class="m-0 text-[48px] max-[640px]:text-[34px] leading-[1.08] tracking-[-0.04em] font-semibold">{title}</h1>
+        {subtitle && <p id="offer-subtitle" class="mt-4 mx-auto max-w-[640px] text-[18px] leading-[1.55] text-muted">{subtitle}</p>}
       </div>
 
       <slot />
 
-      <p id="offer-error" class="hidden text-sm text-red-500 font-medium mt-6 text-center"></p>
+      <p id="offer-error" class="hidden text-[14px] text-danger font-medium mt-6 text-center"></p>
     </main>
 
     <!-- Address breadcrumb -->
-    <p id="offer-address-display" class="px-6 pb-4 text-base text-[#1f1f1f] max-w-6xl mx-auto w-full"></p>
+    <p id="offer-address-display" class="w-full max-w-[1152px] mx-auto px-6 box-border m-0 pb-4 text-[15px] text-muted"></p>
 
     <!-- Footer with Back / Next -->
-    <footer class="px-6 py-4 border-t border-[#e6e6e2] bg-[#f6f7ed]">
-      <div class="max-w-6xl mx-auto flex items-center justify-between">
-        <button id="offer-back" type="button" data-back-href={backHref} class="offer-back">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-          <span class="hidden sm:inline">Back</span>
+    <footer class="border-t border-line bg-white">
+      <div class="max-w-[1152px] mx-auto px-6 box-border h-[76px] flex items-center justify-between">
+        <button id="offer-back" type="button" data-back-href={backHref} class="offer-back" aria-label="Back">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+          <span class="max-[640px]:hidden">Back</span>
         </button>
         <button
           id="offer-next"

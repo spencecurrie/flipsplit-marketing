@@ -3,8 +3,8 @@
 
 /* Self-hosted fonts. Geist (body + headings) and Geist Mono (step numbers,
    chips) are the 2026-10 reskin faces; both are variable, one file each.
-   General Sans stays loaded for the pages not yet reskinned (sign-in, signup,
-   offer funnel) — drop it once those move over. */
+   General Sans is now only used by the internal /brand/ page — drop these
+   faces once that page is updated. */
 @font-face { font-family: 'Geist'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('/fonts/geist-latin-wght.woff2') format('woff2-variations'); }
 @font-face { font-family: 'Geist Mono'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('/fonts/geist-mono-latin-wght.woff2') format('woff2-variations'); }
 @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/general-sans-400.woff2') format('woff2'); }
