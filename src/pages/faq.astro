@@ -60,7 +60,7 @@ const faqs = [
   },
   {
     q: "How quickly can FlipSplit buy my house?",
-    a: "We can close in as few as 48–72 hours in expedited situations. Typical timelines range from 7 to 30 days. If you need more time, we can extend closing up to 90 days — you set the schedule.",
+    a: "We can close in as few as 7 days. If you need more time, we can extend closing up to 90 days — you set the schedule.",
   },
   {
     q: "Can I receive money before closing?",
@@ -91,6 +91,16 @@ const faqs = [
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
 ---
 
 <!DOCTYPE html>
@@ -103,6 +113,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   <link rel="canonical" href={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <ClientRouter />
+  <!-- FAQPage structured data, built from the same list the page renders so
+       the two can't drift. -->
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 </head>
 <body class="bg-white text-ink font-sans antialiased">
 

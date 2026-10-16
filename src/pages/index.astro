@@ -35,15 +35,15 @@ const light: Tone = { bg: 'bg-white', fg: 'text-ink', sub: 'text-muted', line: '
 const dark: Tone  = { bg: 'bg-ink', fg: 'text-white', sub: 'text-[#BDBDB6]', line: 'border-ink', line2: 'border-[#3A3A36]' };
 const card = (title: string, body: string, meta: string, tone: Tone = light) => ({ title, body, meta, ...tone });
 
-// "Close on your timeline" meta: the design had a "[X] days" placeholder; the
-// live site's stated close window (faq.astro) is 7 to 30 days.
+// "Close on your timeline" meta: the design had a "[X] days" placeholder. The
+// site-wide close claim is "as few as 7 days" (Spencer, 2026-10-16).
 const stages = [
   { title: 'Get your offer', n: '01', cards: [
     card('Tell us about your home', 'Your address, a few photos and a quick walkthrough.', 'Day 1'),
     card('Review your offer', 'One clear number, valid for 30 days.', 'Within 48 hrs') ] },
   { title: 'Close & get paid', n: '02', cards: [
     card('Pick your plan', 'All cash, or cash plus a potential share of the resale profit.', 'Your choice'),
-    card('Close on your timeline', 'Cash wired at closing. No repairs, no showings.', 'Your timeline') ] },
+    card('Close on your timeline', 'Cash wired at closing. No repairs, no showings.', 'As few as 7 days') ] },
   { title: 'We renovate', n: '03', cards: [
     card('We fund the fix-up', 'Our crew, our budget, our risk. Never yours.', 'After closing'),
     card('Follow along', 'Photos and updates in your dashboard as work happens.', 'Weekly') ] },
@@ -66,7 +66,7 @@ const cases = [
 const faqs = [
   { q: "Do I have to pay anything upfront?", a: "No. FlipSplit covers 100% of renovation costs. You don’t pay anything until the home sells, and even then it comes out of proceeds — never out of your pocket." },
   { q: "What if the home doesn’t sell for more than expected?", a: "Your guaranteed cash offer is locked in regardless of how the market performs. If the home sells below our projection, you still get your guaranteed amount. FlipSplit absorbs the renovation risk." },
-  { q: "How long does the renovation take?", a: "Most renovations take 4–8 weeks depending on scope. We target a 30–45 day total close timeline — significantly faster than the 60–90 day traditional sale." },
+  { q: "How long does the renovation take?", a: "Most renovations take 4–8 weeks depending on scope. The cash purchase can close in as few as 7 days — significantly faster than the 60–90 day traditional sale." },
   { q: "Can I stay in the home during renovation?", a: "In most cases we ask that the home be vacated during active renovation work. We can work around your schedule as part of your offer review." },
   { q: "Is FlipSplit the same as iBuying?", a: "No. iBuyers give you a discounted cash offer and keep all the upside. FlipSplit renovates your home to maximize its value — and gives you a share of that upside through profit participation." },
   { q: "What types of homes does FlipSplit work with?", a: "Single-family homes in Southern California. Condition doesn’t matter — that’s the point. Whether it needs cosmetic updates or significant repairs, we’ll make it work." },

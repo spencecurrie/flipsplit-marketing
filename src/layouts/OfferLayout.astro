@@ -290,6 +290,30 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
     window.addEventListener('touchstart', _clearNoHover, { once: true });
     window.addEventListener('keydown', _clearNoHover, { once: true });
 
+    // Each step's script only binds its option buttons on `funnel-ready`,
+    // which waits on the Supabase session lookup. A tap that landed before
+    // that (a quick tap on a slow phone) used to be silently dropped. Hold the
+    // latest early tap, show it as selected, and replay it once the step is
+    // wired up.
+    const OPTION_SEL = '.offer-card-btn, .goal-card, .program-card';
+    let pendingTap: HTMLElement | null = null;
+    const holdEarlyTap = (e: Event) => {
+      const el = (e.target instanceof Element ? e.target.closest(OPTION_SEL) : null) as HTMLElement | null;
+      if (!el) return;
+      pendingTap = el;
+      document.querySelectorAll(OPTION_SEL).forEach((b) => b.setAttribute('aria-pressed', b === el ? 'true' : 'false'));
+    };
+    document.addEventListener('click', holdEarlyTap, true);
+    window.addEventListener('funnel-ready', () => {
+      document.removeEventListener('click', holdEarlyTap, true);
+      // This listener was registered before the page's own, so defer: by the
+      // time this runs, the page's setup() has bound its buttons.
+      setTimeout(() => {
+        if (pendingTap?.isConnected) pendingTap.click();
+        pendingTap = null;
+      }, 0);
+    }, { once: true });
+
     (async () => {
       const supabase = getSupabase();
       const errorEl = document.getElementById('offer-error');
