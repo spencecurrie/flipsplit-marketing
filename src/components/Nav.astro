@@ -314,9 +314,8 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
         <a href="/reviews/" class="hover:text-muted transition-colors">Reviews</a>
       </div>
       <div id="solid-nav-right" class="shrink-0 flex items-center justify-end gap-2.5">
-        <a id="s-signin-link" href="/sign-in/" class="inline-flex items-center h-11 px-3 text-[15px] text-ink hover:text-muted transition-colors max-[700px]:hidden">Sign in</a>
+        <a id="s-signin-link" href="/sign-in/" class="inline-flex items-center h-11 px-3 text-[15px] text-ink hover:text-muted transition-colors">Sign in</a>
         <ProfileMenu prefix="s" />
-        <a href="/request-offer/" class="btn-ink h-11 px-[18px] whitespace-nowrap">Get My Offer</a>
         <button id="solid-menu-toggle" type="button" class="hidden max-[1000px]:inline-flex items-center justify-center w-11 h-11 -mr-2 text-ink" aria-label="Open menu">
           <svg id="solid-icon-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>
         </button>
@@ -445,9 +444,8 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
         if (form) form.style.display = scrolled ? 'flex' : 'none';
       }
 
-      // The solid variant (every page since the 2026-10 reskin) is static:
-      // "Get My Offer" sits in the bar permanently, so it no longer swaps its
-      // links for an address form on scroll.
+      // The solid variant (every page since the 2026-10 reskin) is static: it
+      // no longer swaps its links for an address form on scroll.
     };
 
     window.addEventListener('scroll', fsApplyNavScroll, { passive: true });
