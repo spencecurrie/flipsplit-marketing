@@ -23,10 +23,6 @@
    here, change it there in the same commit. The two files drifted once
    already (--color-muted was #6b6b66 here and #6b6b64 there) — that is the
    failure this header exists to prevent.
-
-   ⚠ KNOWN DRIFT (2026-10-16): the 2026-10 reskin (Geist, #121212 ink, new
-   greys) landed here first, marketing pages only. The app's copy still holds
-   the old values until the app pages are reskinned — sync it then.
    ══════════════════════════════════════════════════════════════════════════ */
 @theme static {
   --font-sans: 'Geist', 'Helvetica Neue', system-ui, sans-serif;
