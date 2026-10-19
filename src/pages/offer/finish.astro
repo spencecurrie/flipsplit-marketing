@@ -45,7 +45,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 
   <script>
     import { getSupabase } from '../../lib/supabase';
-    import { handoffToApp } from '../../lib/handoff';
 
     // crypto.randomUUID() only exists in "secure contexts" — HTTPS or
     // localhost — so it's missing when the site is opened over a plain-HTTP LAN
@@ -95,9 +94,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
           return;
         }
         const userId = userData.user.id;
-        // Anonymous users came in via the homepage funnel without an account
-        // and need to create one (claim-token flow). Existing users have a
-        // real account already; we skip the claim/signup detour entirely.
+        // Recorded on the funnel_completed event only; both kinds of visitor
+        // take the same claim-token route below.
         const isAnonymous = !!userData.user.is_anonymous;
 
         // 2. Find the user's most-recent in-progress session
@@ -123,58 +121,37 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
           .invoke('sync-attio', { body: { session_id: session.id } })
           .then(() => {}, () => {});
 
-        if (isAnonymous) {
-          // ── Anonymous user path: generate claim token, redirect to /signup ──
-          const claimToken = genUUID();
-          const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+        // Everyone goes through /signup with a claim token — signed in or not.
+        // Each new address is a new lead, and the homeowner picks which account
+        // it belongs to (the browser may be signed in as someone else). An
+        // existing account skips the phone step there (its number is copied
+        // over); a new one has to give one. See routeAfterClaim in signup.astro.
+        const claimToken = genUUID();
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
 
-          const { error: updErr } = await supabase
-            .from('qualification_sessions')
-            .update({
-              claim_token: claimToken,
-              claim_token_expires_at: expiresAt,
-              current_step: 5,
-            })
-            .eq('id', session.id);
-          if (updErr) throw updErr;
+        const { error: updErr } = await supabase
+          .from('qualification_sessions')
+          .update({
+            claim_token: claimToken,
+            claim_token_expires_at: expiresAt,
+            current_step: 5,
+          })
+          .eq('id', session.id);
+        if (updErr) throw updErr;
 
-          await supabase.from('events').insert({
-            session_id: session.id,
-            user_id: userId,
-            event_name: 'funnel_completed',
-            payload: { auth_state: 'anonymous' },
-          });
+        await supabase.from('events').insert({
+          session_id: session.id,
+          user_id: userId,
+          event_name: 'funnel_completed',
+          payload: { auth_state: isAnonymous ? 'anonymous' : 'existing_account' },
+        });
 
-          // Sign out the anonymous session so signup creates a genuinely new
-          // account rather than converting this throwaway one — the claim token
-          // is what carries the funnel answers over to it.
-          await supabase.auth.signOut();
-          window.location.assign(`/signup/?claim=${claimToken}`);
-        } else {
-          // ── Existing FlipSplit user: session is already tied to their
-          //    account. Skip the claim/signup flow. Mark the funnel complete
-          //    and hand off straight to the dashboard, pointing at this
-          //    specific session so the dashboard opens this property's offer.
-          const { error: updErr } = await supabase
-            .from('qualification_sessions')
-            .update({ current_step: 5 })
-            .eq('id', session.id);
-          if (updErr) throw updErr;
-
-          await supabase.from('events').insert({
-            session_id: session.id,
-            user_id: userId,
-            event_name: 'funnel_completed',
-            payload: { auth_state: 'existing_account' },
-          });
-
-          // Carry their session across to the app. Same Supabase project, but a
-          // different origin — and localStorage doesn't cross origins, so the
-          // dashboard cannot see this sign-in unless we hand the tokens over.
-          // Land on the Overview (/) so they see the preliminary offer range
-          // for this new property, not the final-offer page.
-          await handoffToApp(supabase, `/?session_id=${session.id}`);
-        }
+        // Sign out so /signup asks who this is. For an anonymous visitor this
+        // also means signup creates a genuinely new account rather than
+        // converting the throwaway one — the claim token is what carries the
+        // funnel answers over to whichever account they choose.
+        await supabase.auth.signOut();
+        window.location.assign(`/signup/?claim=${claimToken}`);
       } catch (err: any) {
         console.error('Finish step failed:', err);
         showError(err?.message || 'Something went wrong preparing your offer. Please try again.');

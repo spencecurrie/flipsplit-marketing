@@ -248,6 +248,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
             .invoke('compute-offer-range', { body: { session_id: session.id } })
             .catch((e: any) => console.warn('compute-offer-range invoke failed:', e));
         }
+        return session?.id as string | undefined;
 
         try {
           const { data: { user: authedUser } } = await supabase.auth.getUser();
@@ -259,6 +260,53 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         } catch (e) {
           console.warn('Could not record account_created event:', e);
         }
+      }
+
+      // After a claim: a returning homeowner has given us their number before,
+      // so the new property takes it (and whatever SMS consent they gave with
+      // it) from their latest completed one and they go straight to the app.
+      // A brand-new account has no number on file and must give one.
+      //
+      // Copying the number completes the session exactly as the phone page
+      // would, so the new-lead rep alert and the welcome texts fire for this
+      // property just as they did for the first.
+      async function routeAfterClaim(userId: string, sessionId?: string) {
+        if (!sessionId) { window.location.assign('/signup/phone/'); return; }
+        const { data: prior } = await supabase
+          .from('qualification_sessions')
+          .select('phone, tcpa_consent_accepted_at, tcpa_consent_text, tcpa_consent_ip')
+          .eq('user_id', userId)
+          .neq('id', sessionId)
+          .not('phone', 'is', null)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        if (!prior?.phone) { window.location.assign('/signup/phone/'); return; }
+
+        const now = new Date().toISOString();
+        const { error: updErr } = await supabase
+          .from('qualification_sessions')
+          .update({
+            phone: prior.phone,
+            // The consent record stays what it was: when and how they agreed.
+            tcpa_consent_accepted_at: prior.tcpa_consent_accepted_at,
+            tcpa_consent_text: prior.tcpa_consent_text,
+            tcpa_consent_ip: prior.tcpa_consent_ip,
+            status: 'completed',
+            completed_at: now,
+            current_step: 6,
+          })
+          .eq('id', sessionId);
+        // Couldn't copy it: fall back to asking, rather than land them in the
+        // app with a lead we can't call.
+        if (updErr) { console.warn('Could not reuse phone:', updErr); window.location.assign('/signup/phone/'); return; }
+
+        await supabase.from('events').insert([
+          { session_id: sessionId, user_id: userId, event_name: 'phone_captured',
+            payload: { reused_from_account: true, consent_given: !!prior.tcpa_consent_accepted_at } },
+          { session_id: sessionId, user_id: userId, event_name: 'funnel_completed', payload: {} },
+        ]);
+        await handoffToApp(supabase, `/?session_id=${sessionId}`);
       }
 
       // Where an authenticated user *should* be, based on whether they have
@@ -301,8 +349,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
           }
 
           try {
-            await runClaim(claim, 'google');
-            window.location.assign('/signup/phone/');
+            const sessionId = await runClaim(claim, 'google');
+            await routeAfterClaim(data.user.id, sessionId);
           } catch (claimErr: any) {
             // Token already consumed (e.g. they came back here after a
             // successful first signup). Treat as "already done" and route
@@ -383,8 +431,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
             return;
           }
 
-          if (claim) await runClaim(claim, 'email_password');
-          window.location.assign('/signup/phone/');
+          // A brand-new account never has a number on file, so this always
+          // lands on the phone step; routeAfterClaim keeps one rule for both.
+          const sessionId = claim ? await runClaim(claim, 'email_password') : undefined;
+          if (sessionId) await routeAfterClaim(data.user!.id, sessionId);
+          else window.location.assign('/signup/phone/');
         } catch (err: any) {
           console.error(err);
           showError(err?.message || 'Something went wrong. Please try again.');
