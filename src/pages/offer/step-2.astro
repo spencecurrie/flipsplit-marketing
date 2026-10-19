@@ -154,7 +154,7 @@ const sqftOptions = [
       if (missEl) missEl.textContent = joinList(missing);
     };
 
-    // Fill any blank dropdown from the (possibly RentCast-prefilled) session
+    // Fill any blank dropdown from the (possibly Zillow/RentCast-prefilled) session
     // row — never overwrite a value the user has already picked.
     const applyValues = (src: Record<string, any>) => {
       for (const [id, col] of FIELDS) {
@@ -168,20 +168,34 @@ const sqftOptions = [
 
     applyValues(session);
 
-    // If the RentCast pre-fill (kicked off from the homepage) hasn't landed
-    // yet, lock the dropdowns and poll for it — so the user can't start picking
-    // values that are about to be overwritten. They re-enable the moment the
-    // data lands (or after the fallback below). Only if it never shows up do we
-    // invoke the lookup ourselves (so we don't double-charge RentCast).
+    // If the pre-fill (kicked off from the homepage) hasn't landed yet, lock
+    // the dropdowns and poll for it — so the user can't start picking values
+    // that are about to be overwritten. They re-enable the moment the data
+    // lands (or after the fallback below). Only if it never shows up do we
+    // invoke the lookup ourselves (so we don't pay for the same lookup twice).
     const allBlank = () => els().every((el) => el.value === '');
+
+    // A unit typed into the address modal re-runs the lookup for the unit;
+    // until it lands, the values on the row are the building's. Clear the ones
+    // the earlier lookup filled (never the homeowner's own picks) and wait.
+    const relooking = !!session?.property_lookup_started_at && !session?.rentcast_property_fetched_at;
+    if (relooking) {
+      const filledByLookup = session.property_lookup_filled ?? {};
+      for (const [id, col] of FIELDS) {
+        const el = document.getElementById(id) as HTMLSelectElement;
+        if (col in filledByLookup && el.value === String(filledByLookup[col])) el.value = '';
+      }
+      update();
+    }
+
     if (allBlank() && session?.id && session.id !== 'preview') {
       const supabase = getSupabase();
 
       const setLoading = (on: boolean) => {
         els().forEach((el) => { el.disabled = on; });
       };
-      // RentCast's coverage is per-address, not per-market: neighbouring houses
-      // on the same street can differ. When it has nothing, every dropdown is
+      // Record coverage is per-address, not per-market: neighbouring houses on
+      // the same street can differ. When it has nothing, every dropdown is
       // still blank here, and the default "we've filled in what we could find"
       // copy reads as though the page is broken. Say what actually happened.
       const NO_RECORDS_TITLE = "Tell us about your home";
@@ -205,28 +219,43 @@ const sqftOptions = [
       };
       setLoading(true);
 
-      let tries = 0;
-      const MAX_TRIES = 7; // ≈ 5s at 700ms
-      const poll = setInterval(async () => {
-        tries++;
-        try {
-          const { data } = await supabase
-            .from('qualification_sessions').select('*').eq('id', session.id).maybeSingle();
-          if (data && (data.rentcast_property_fetched_at || data.bedrooms != null || data.square_footage_range)) {
-            clearInterval(poll); finish(data); return;
-          }
-        } catch { /* keep polling */ }
-        if (tries >= MAX_TRIES) {
-          clearInterval(poll);
-          // Pre-fill never landed — try once ourselves, then fall back to manual entry.
+      // The finished stamp, not "has values": mid re-lookup the row still
+      // holds the building's values.
+      const landed = (d: any) => !!d?.rentcast_property_fetched_at;
+      const readRow = async () => {
+        const { data } = await supabase
+          .from('qualification_sessions').select('*').eq('id', session.id).maybeSingle();
+        return data;
+      };
+      // Poll every 700ms, up to `max` times; resolves with the row once the
+      // lookup has landed, else null.
+      const waitForLookup = (max: number) => new Promise<any>((resolve) => {
+        let tries = 0;
+        const poll = setInterval(async () => {
+          tries++;
           try {
-            await supabase.functions.invoke('lookup-property', { body: { session_id: session.id } });
-            const { data } = await supabase
-              .from('qualification_sessions').select('*').eq('id', session.id).maybeSingle();
-            finish(data);
-          } catch { finish(); }
-        }
-      }, 700);
+            const data = await readRow();
+            if (landed(data)) { clearInterval(poll); resolve(data); return; }
+          } catch { /* keep polling */ }
+          if (tries >= max) { clearInterval(poll); resolve(null); }
+        }, 700);
+      });
+
+      (async () => {
+        // ≈12s: Zillow (via HasData) takes 3–5s, plus RentCast when Zillow
+        // has nothing. The lookup starts at the address pick, so this is
+        // usually already done.
+        const early = await waitForLookup(17);
+        if (early) return finish(early);
+        // Pre-fill never landed — try once ourselves, then fall back to manual
+        // entry. `pending` means a lookup is still running; wait for it rather
+        // than start (and pay for) another.
+        try {
+          const { data: res } = await supabase.functions.invoke('lookup-property', { body: { session_id: session.id } });
+          if (res?.pending) return finish(await waitForLookup(15));
+          finish(await readRow());
+        } catch { finish(); }
+      })();
     }
 
     FIELDS.forEach(([id]) => document.getElementById(id)!.addEventListener('change', update));
