@@ -208,7 +208,6 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
 <script>
   import { getSupabase } from '../lib/supabase';
-  import { navigate } from 'astro:transitions/client';
 
   // Frontmatter runs at build time on the server — its consts do NOT exist in
   // this bundle. Two lines below referenced the frontmatter's APP_URL and threw
@@ -561,9 +560,10 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
           }
           await new Promise((r) => setTimeout(r, 1500));
 
-          // Off to step 1 — use Astro's transition router so the
-          // homepage cross-fades into the funnel layout.
-          navigate('/offer/step-1/');
+          // Off to step 1 as a full page load, never a client-side swap: the
+          // funnel layout's script must run fresh against this new session
+          // (see the note in OfferLayout.astro).
+          window.location.assign('/offer/step-1/');
         } catch (err: any) {
           console.error('Funnel start failed:', err);
           if (modalError) {

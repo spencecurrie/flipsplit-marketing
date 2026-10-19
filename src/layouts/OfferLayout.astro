@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import { ClientRouter } from 'astro:transitions';
 import TapFeedback from '../components/TapFeedback.astro';
 
 interface Props {
@@ -36,7 +35,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   {/* Funnel steps are not landing pages: 7 near-identical screens that only
       work mid-session. `follow` keeps the outbound links crawlable. */}
   <meta name="robots" content="noindex, follow" />
-  <ClientRouter />
+  {/* No <ClientRouter /> here, deliberately. With it, arriving at a step by a
+      client-side swap (the address modal, or the logo out to / and back in)
+      does not re-run this layout's script — so window.__funnel kept the
+      PREVIOUS visit's session and step: answers were saved to an old session,
+      step 2 was skipped, or step 1 wouldn't advance. Every funnel page is a
+      full load, so the script always runs against the current session. */}
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style is:global>
     /* ── Funnel option cards (presentation only; JS toggles aria-pressed
