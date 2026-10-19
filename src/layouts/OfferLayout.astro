@@ -272,6 +272,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 
   <script>
     import { getSupabase } from '../lib/supabase';
+    import { readFunnelSessionId } from '../lib/funnelSession';
 
     declare global {
       interface Window {
@@ -376,16 +377,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
       }
       const userId = userData.user.id;
 
-      // 2. Load the user's most-recent in-progress session
+      // 2. Load the row the address modal chose (created or resumed), falling
+      //    back to the user's most-recent unfinished one.
       const { data: sessions } = await supabase
         .from('qualification_sessions')
         .select('*')
         .eq('user_id', userId)
         .eq('status', 'in_progress')
-        .order('created_at', { ascending: false })
-        .limit(1);
+        .order('created_at', { ascending: false });
 
-      const session = sessions?.[0];
+      const chosenId = readFunnelSessionId();
+      const session = sessions?.find((s: any) => s.id === chosenId) ?? sessions?.[0];
       if (!session) {
         window.location.replace('/');
         return;
@@ -395,8 +397,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
       if (addrEl) addrEl.textContent = session.address;
 
       // 4. Determine the event name for advancing (e.g. step_1_completed)
+      // Step 7's next is /offer/finish/, which has no number — it completes 7.
       const nextMatch = (nextBtn.dataset.nextHref || '').match(/step-(\d+)/);
-      const completedStepNum = (nextMatch ? parseInt(nextMatch[1]) : 6) - 1;
+      const completedStepNum = nextMatch ? parseInt(nextMatch[1]) - 1 : 7;
       const stepDoneEvent = `step_${completedStepNum}_completed`;
 
       // Reusable: save current answers + fire event + redirect

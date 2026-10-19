@@ -45,6 +45,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 
   <script>
     import { getSupabase } from '../../lib/supabase';
+    import { readFunnelSessionId } from '../../lib/funnelSession';
 
     // crypto.randomUUID() only exists in "secure contexts" — HTTPS or
     // localhost — so it's missing when the site is opened over a plain-HTTP LAN
@@ -98,28 +99,25 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         // take the same claim-token route below.
         const isAnonymous = !!userData.user.is_anonymous;
 
-        // 2. Find the user's most-recent in-progress session
+        // 2. The row the funnel was working on (see OfferLayout), falling back
+        //    to the user's most-recent unfinished one.
         const { data: sessions, error: selErr } = await supabase
           .from('qualification_sessions')
           .select('id')
           .eq('user_id', userId)
           .eq('status', 'in_progress')
-          .order('created_at', { ascending: false })
-          .limit(1);
+          .order('created_at', { ascending: false });
         if (selErr) throw selErr;
-        const session = sessions?.[0];
+        const chosenId = readFunnelSessionId();
+        const session = sessions?.find((s: any) => s.id === chosenId) ?? sessions?.[0];
         if (!session) {
           window.location.replace('/');
           return;
         }
 
-        // Push the completed lead to Attio. Fire-and-forget: the CRM must
-        // never delay or block the handoff to the app. The anonymous branch
-        // syncs here too — the session already carries every funnel answer,
-        // and the claim only changes which account owns it.
-        supabase.functions
-          .invoke('sync-attio', { body: { session_id: session.id } })
-          .then(() => {}, () => {});
+        // No Attio push here: it would go out before the account step, with no
+        // name or email (or the wrong person's). The database pushes the lead
+        // when it completes — see migration 0060.
 
         // Everyone goes through /signup with a claim token — signed in or not.
         // Each new address is a new lead, and the homeowner picks which account
@@ -127,14 +125,15 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         // existing account skips the phone step there (its number is copied
         // over); a new one has to give one. See routeAfterClaim in signup.astro.
         const claimToken = genUUID();
-        const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+        // A day, not an hour: someone who wanders off mid-signup keeps their lead.
+        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
         const { error: updErr } = await supabase
           .from('qualification_sessions')
           .update({
             claim_token: claimToken,
             claim_token_expires_at: expiresAt,
-            current_step: 5,
+            current_step: 7,
           })
           .eq('id', session.id);
         if (updErr) throw updErr;
@@ -150,7 +149,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         // also means signup creates a genuinely new account rather than
         // converting the throwaway one — the claim token is what carries the
         // funnel answers over to whichever account they choose.
-        await supabase.auth.signOut();
+        // scope 'local': sign out of THIS site only. The default ('global')
+        // revokes the account's sessions everywhere, logging them out of the
+        // app on every device too.
+        await supabase.auth.signOut({ scope: 'local' });
         window.location.assign(`/signup/?claim=${claimToken}`);
       } catch (err: any) {
         console.error('Finish step failed:', err);

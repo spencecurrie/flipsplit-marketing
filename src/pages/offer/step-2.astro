@@ -203,12 +203,17 @@ const sqftOptions = [
         "We couldn't find public records for this address, so there's nothing to " +
         "pre-fill. Enter your home's details below and we'll take it from there.";
 
+      // When the lookup itself failed or was refused (e.g. the daily limit),
+      // "no public records" would be untrue — just ask for the details.
+      const LOOKUP_FAILED_SUBTITLE = "Enter your home's details below and we'll take it from there.";
+      let lookupFailed = false;
+
       const tellThemNothingWasFound = () => {
         if (!allBlank()) return;
         const titleEl = document.getElementById('offer-title');
         const subEl = document.getElementById('offer-subtitle');
         if (titleEl) titleEl.textContent = NO_RECORDS_TITLE;
-        if (subEl) subEl.textContent = NO_RECORDS_SUBTITLE;
+        if (subEl) subEl.textContent = lookupFailed ? LOOKUP_FAILED_SUBTITLE : NO_RECORDS_SUBTITLE;
       };
 
       const finish = (data?: any) => {
@@ -251,8 +256,9 @@ const sqftOptions = [
         // entry. `pending` means a lookup is still running; wait for it rather
         // than start (and pay for) another.
         try {
-          const { data: res } = await supabase.functions.invoke('lookup-property', { body: { session_id: session.id } });
+          const { data: res, error: lookupErr } = await supabase.functions.invoke('lookup-property', { body: { session_id: session.id } });
           if (res?.pending) return finish(await waitForLookup(15));
+          lookupFailed = !!lookupErr;
           finish(await readRow());
         } catch { finish(); }
       })();

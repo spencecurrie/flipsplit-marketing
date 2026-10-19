@@ -267,13 +267,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
           const acceptedAt = new Date().toISOString();
           const e164 = `+1${phoneDigits}`;
 
-          const { data: rows, error: selErr } = await supabase
+          // The lead signup just claimed (?session=), else the newest
+          // unfinished one. RLS keeps a forged id from touching anyone else's.
+          const claimedId = new URL(window.location.href).searchParams.get('session');
+          let q = supabase
             .from('qualification_sessions')
             .select('id')
             .eq('user_id', user!.id)
-            .eq('status', 'in_progress')
-            .order('created_at', { ascending: false })
-            .limit(1);
+            .eq('status', 'in_progress');
+          q = claimedId ? q.eq('id', claimedId) : q.order('created_at', { ascending: false });
+          const { data: rows, error: selErr } = await q.limit(1);
           if (selErr) throw selErr;
 
           const patch = {
@@ -285,7 +288,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
             tcpa_consent_ip: consent ? ip : null,
             status: 'completed',
             completed_at: acceptedAt,
-            current_step: 6,
+            current_step: 7,
           };
 
           let sessionId: string;
@@ -327,7 +330,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
             payload: {},
           });
 
-          await handoffToApp(supabase, '/');
+          // Open the property they just finished, not whichever one the app
+          // last had selected.
+          await handoffToApp(supabase, `/?session_id=${sessionId}`);
         } catch (err: any) {
           console.error(err);
           showError(err?.message || 'Could not save your phone number. Please try again.');

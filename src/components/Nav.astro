@@ -558,25 +558,30 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
       )).join('');
     };
 
-    // Fetch the user's submitted offer requests once per sign-in. Deduped by
-    // normalized address the same way the portal does, so repeated funnel runs
-    // on one property don't show up as duplicates.
+    // Fetch the user's submitted offer requests once per sign-in. Finished
+    // funnel runs only — an unfinished one is a draft, resumed by entering the
+    // address again, never opened from here. Deduped by normalized address +
+    // unit (two units are two homes) the same way the portal does.
     const fsLoadRequests = async () => {
       if (!fsUser || fsUser.is_anonymous) { fsRequests = null; return; }
       const { data, error } = await fsSupabase
         .from('qualification_sessions')
-        .select('id, address, street, lead_stage, status, offer_amount_cents, offer_accepted_at, photos_submitted_at, walkthrough_scheduled_at, walkthrough_completed_at, renovation_started_at, sold_at, first_contact_at, created_at')
+        .select('id, address, street, unit_number, lead_stage, status, offer_amount_cents, offer_accepted_at, photos_submitted_at, walkthrough_scheduled_at, walkthrough_completed_at, renovation_started_at, sold_at, first_contact_at, created_at')
         .eq('user_id', fsUser.id)
+        .eq('status', 'completed')
+        .neq('address', '(no funnel address)')
         .order('created_at', { ascending: false });
       if (error) { fsRequests = []; fsApplyAuth(); return; }
       const norm = (a: string) => (a || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
       const seen = new Set<string>();
       fsRequests = [];
       for (const row of (data || [])) {
-        const key = norm(row.address) || row.id;
+        const unit = (row.unit_number || '').replace(/^\s*#\s*/, '').trim();
+        const key = (norm(row.address) || row.id) + '#' + norm(unit);
         if (seen.has(key)) continue;
         seen.add(key);
-        fsRequests.push({ id: row.id, address: fsStreet(row) || 'Your property', status: fsStatus(row) });
+        const street = fsStreet(row) || 'Your property';
+        fsRequests.push({ id: row.id, address: unit ? `${street} #${unit}` : street, status: fsStatus(row) });
       }
       fsApplyAuth();
     };

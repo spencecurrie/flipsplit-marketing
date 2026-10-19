@@ -112,10 +112,10 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
       <!-- Soft-block state: address already belongs to a real account -->
       <div class="address-modal-state-blocked hidden">
-        <h2 class="text-2xl font-semibold mb-3 pr-8" style="color:#121212; font-family:var(--font-sans);letter-spacing:-0.02em;">
+        <h2 class="address-modal-blocked-title text-2xl font-semibold mb-3 pr-8" style="color:#121212; font-family:var(--font-sans);letter-spacing:-0.02em;">
           Looks like this home is already on FlipSplit
         </h2>
-        <p class="text-sm text-[#121212] leading-relaxed mb-5">
+        <p class="address-modal-blocked-body text-sm text-[#121212] leading-relaxed mb-5">
           You've already started selling this property. Sign in to pick up where you left off.
         </p>
 
@@ -208,6 +208,7 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
 <script>
   import { getSupabase } from '../lib/supabase';
+  import { FUNNEL_SESSION_KEY, resumeHref } from '../lib/funnelSession';
 
   // Frontmatter runs at build time on the server — its consts do NOT exist in
   // this bundle. Two lines below referenced the frontmatter's APP_URL and threw
@@ -260,7 +261,7 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
       // modal, so by the time they click Confirm the data is usually ready.
       // For existing/soft-block addresses we never set bgWork — those branches
       // either redirect or surface a sign-in prompt without a session row.
-      let bgWork: { promise: Promise<string>; address: string } | null = null;
+      let bgWork: { promise: Promise<FunnelRow>; address: string } | null = null;
 
       // Self-healing auth bootstrap. Reads existing session; falls back to a
       // fresh anonymous sign-in if the stored JWT points to a deleted user.
@@ -284,31 +285,53 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
       // Kicked off at place-picked. Auth → insert qualification_sessions row →
       // fire lookup-property (non-awaited). Resolves with the new session id.
-      async function startEagerLookup(place: google.maps.places.PlaceResult): Promise<string> {
+      // Kicked off at place-picked. Auth → this visitor's unfinished run for
+      // the same address if there is one (resumed where they left off), else a
+      // new qualification_sessions row → lookup-property (non-awaited; cached
+      // server-side if this home was already looked up). Resolves with the row.
+      type FunnelRow = { id: string; step: number; unit: string | null };
+      async function startEagerLookup(place: google.maps.places.PlaceResult): Promise<FunnelRow> {
         const supabase = getSupabase();
         const userId = await ensureUserId();
-        const parts = parseAddressParts(place);
-        const { data: row, error: insertErr } = await supabase
+        const { data: draft } = await supabase
           .from('qualification_sessions')
-          .insert({
-            user_id: userId,
-            address: place.formatted_address!,
-            street: parts.street,
-            city: parts.city,
-            state: parts.state,
-            zip: parts.zip,
-            county: parts.county,
-            current_step: 0,
-          })
-          .select('id')
-          .single();
-        if (insertErr) throw insertErr;
-        // Fire the RentCast lookup immediately — non-awaited, runs server-side
+          .select('id, current_step, unit_number')
+          .eq('user_id', userId)
+          .eq('status', 'in_progress')
+          .eq('address', place.formatted_address!)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        let row: FunnelRow;
+        if (draft) {
+          row = { id: draft.id, step: draft.current_step ?? 0, unit: draft.unit_number ?? null };
+        } else {
+          const parts = parseAddressParts(place);
+          const { data: inserted, error: insertErr } = await supabase
+            .from('qualification_sessions')
+            .insert({
+              user_id: userId,
+              address: place.formatted_address!,
+              street: parts.street,
+              city: parts.city,
+              state: parts.state,
+              zip: parts.zip,
+              county: parts.county,
+              current_step: 0,
+            })
+            .select('id')
+            .single();
+          if (insertErr) throw insertErr;
+          row = { id: inserted.id, step: 0, unit: null };
+        }
+        // The funnel pages work on THIS row, not "the newest unfinished one".
+        try { localStorage.setItem(FUNNEL_SESSION_KEY, row.id); } catch { /* private mode */ }
+        // Fire the property lookup immediately — non-awaited, runs server-side
         // while the user reads the modal.
         supabase.functions
           .invoke('lookup-property', { body: { session_id: row.id } })
           .catch((e: any) => console.warn('lookup-property invoke failed:', e));
-        return row.id;
+        return row;
       }
 
       const ac = new (window as any).google.maps.places.Autocomplete(input, {
@@ -344,8 +367,26 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
         stateDefault?.classList.remove('hidden');
         stateBlocked?.classList.add('hidden');
       }
-      function showModalBlocked(place: google.maps.places.PlaceResult) {
-        if (blockedAddr) blockedAddr.textContent = place.formatted_address || '';
+      // Two variants of the same panel. Someone else's home: sign in (it may be
+      // yours under another account) or contact us. Your own finished home:
+      // say so and point at the account menu — entering an address never opens
+      // the app; the account menu is the only way into a property.
+      const blockedTitle = wrap.querySelector<HTMLElement>('.address-modal-blocked-title');
+      const blockedBody  = wrap.querySelector<HTMLElement>('.address-modal-blocked-body');
+      const blockedContact = wrap.querySelector<HTMLElement>('.address-modal-contact');
+      const BLOCKED_COPY = {
+        other: ['Looks like this home is already on FlipSplit',
+                "You've already started selling this property. Sign in to pick up where you left off."],
+        owner: ['This home is already on your account',
+                'You already have an offer for this property. Open it any time from your account menu at the top right.'],
+      };
+      function showModalBlocked(place: google.maps.places.PlaceResult, owner = false, unit: string | null = null) {
+        const [title, body] = BLOCKED_COPY[owner ? 'owner' : 'other'];
+        if (blockedTitle) blockedTitle.textContent = title;
+        if (blockedBody) blockedBody.textContent = body;
+        wrap?.querySelector<HTMLElement>('.address-modal-signin')?.classList.toggle('hidden', owner);
+        blockedContact?.classList.toggle('hidden', owner);
+        if (blockedAddr) blockedAddr.textContent = (place.formatted_address || '') + (unit ? `\nUnit ${unit}` : '');
         // Carry the address through to the app's /login so that after sign-in
         // the dashboard can resolve it to *this user's* matching session
         // (instead of silently defaulting to their most-recent property).
@@ -418,24 +459,12 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
         // result we have is stale — discard it.
         if (pickedPlace !== place) return;
 
-        // Existing property owned by this signed-in caller → skip the modal
-        // entirely and drop straight onto its dashboard view.
-        if (status?.exists && status.is_owner && status.session_id) {
-          const overlay = wrap.querySelector<HTMLElement>('.address-loading-overlay');
-          if (overlay) {
-            overlay.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-          }
-          await new Promise((r) => setTimeout(r, 800));
-          window.location.assign(`${APP_URL}/?session_id=${status.session_id}`);
-          return;
-        }
-
-        // Address already belongs to a different real account → open the
-        // modal directly in the soft-block state. No flip.
-        if (status?.exists && !status.is_owner) {
+        // A finished home (no unit — unit homes are checked on Confirm, once
+        // the unit is known). Never jump into the app from here: tell them it's
+        // theirs (or someone else's) and leave the rest to them.
+        if (status?.exists) {
           if (!modal) return;
-          showModalBlocked(place);
+          showModalBlocked(place, !!status.is_owner);
           modal.classList.remove('hidden');
           document.body.style.overflow = 'hidden';
           return;
@@ -522,12 +551,27 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
             };
           }
 
-          const sessionId = await bgWork.promise;
+          const { id: sessionId, step: resumeStep, unit: draftUnit } = await bgWork.promise;
           const supabase = getSupabase();
 
-          // If the user typed a unit number, update the row and re-invoke the
-          // lookup so it can fetch with the unit-aware address. (~10% of users.)
+          // A unit makes it a different home, so the "already on FlipSplit"
+          // check runs again now that we know it (the pick-time check only
+          // covered unit-less homes).
           if (unitNumber) {
+            const { data: unitStatus } = await supabase.rpc('check_address_status', {
+              p_address: pickedPlace.formatted_address, p_unit: unitNumber,
+            });
+            if ((unitStatus as any)?.exists) {
+              showModalBlocked(pickedPlace, !!(unitStatus as any).is_owner, unitNumber);
+              modalConfirm.removeAttribute('disabled');
+              if (modalLabel) modalLabel.textContent = 'Confirm address';
+              return;
+            }
+          }
+
+          // If the user typed a (different) unit number, update the row and
+          // re-invoke the lookup so it can fetch with the unit-aware address.
+          if (unitNumber && unitNumber !== draftUnit) {
             await supabase
               .from('qualification_sessions')
               .update({ unit_number: unitNumber })
@@ -563,7 +607,8 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
           // Off to step 1 as a full page load, never a client-side swap: the
           // funnel layout's script must run fresh against this new session
           // (see the note in OfferLayout.astro).
-          window.location.assign('/offer/step-1/');
+          // A resumed draft picks up after its last answered step.
+          window.location.assign(resumeHref(resumeStep));
         } catch (err: any) {
           console.error('Funnel start failed:', err);
           if (modalError) {
