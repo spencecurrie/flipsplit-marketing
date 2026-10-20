@@ -289,7 +289,9 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
       // the same address if there is one (resumed where they left off), else a
       // new qualification_sessions row → lookup-property (non-awaited; cached
       // server-side if this home was already looked up). Resolves with the row.
-      type FunnelRow = { id: string; step: number; unit: string | null };
+      // `lookup` settles when lookup-property answers: done, cached, or
+      // { pending } when another call already holds the lookup.
+      type FunnelRow = { id: string; step: number; unit: string | null; lookup: Promise<any> };
       async function startEagerLookup(place: google.maps.places.PlaceResult): Promise<FunnelRow> {
         const supabase = getSupabase();
         const userId = await ensureUserId();
@@ -304,7 +306,7 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
           .maybeSingle();
         let row: FunnelRow;
         if (draft) {
-          row = { id: draft.id, step: draft.current_step ?? 0, unit: draft.unit_number ?? null };
+          row = { id: draft.id, step: draft.current_step ?? 0, unit: draft.unit_number ?? null, lookup: Promise.resolve() };
         } else {
           const parts = parseAddressParts(place);
           const { data: inserted, error: insertErr } = await supabase
@@ -322,13 +324,13 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
             .select('id')
             .single();
           if (insertErr) throw insertErr;
-          row = { id: inserted.id, step: 0, unit: null };
+          row = { id: inserted.id, step: 0, unit: null, lookup: Promise.resolve() };
         }
         // The funnel pages work on THIS row, not "the newest unfinished one".
         try { localStorage.setItem(FUNNEL_SESSION_KEY, row.id); } catch { /* private mode */ }
-        // Fire the property lookup immediately — non-awaited, runs server-side
-        // while the user reads the modal.
-        supabase.functions
+        // Fire the property lookup immediately — not awaited here, runs
+        // server-side while the user reads the modal. Confirm waits on it.
+        row.lookup = supabase.functions
           .invoke('lookup-property', { body: { session_id: row.id } })
           .catch((e: any) => console.warn('lookup-property invoke failed:', e));
         return row;
@@ -551,7 +553,8 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
             };
           }
 
-          const { id: sessionId, step: resumeStep, unit: draftUnit } = await bgWork.promise;
+          const { id: sessionId, step: resumeStep, unit: draftUnit, lookup: firstLookup } = await bgWork.promise;
+          let lookup = firstLookup;
           const supabase = getSupabase();
 
           // A unit makes it a different home, so the "already on FlipSplit"
@@ -576,7 +579,7 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
               .from('qualification_sessions')
               .update({ unit_number: unitNumber })
               .eq('id', sessionId);
-            supabase.functions
+            lookup = supabase.functions
               .invoke('lookup-property', { body: { session_id: sessionId } })
               .catch((e: any) => console.warn('re-lookup-property invoke failed:', e));
           }
@@ -592,17 +595,33 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
             })
             .then((res: any) => { if (res?.error) console.warn('funnel_started event failed:', res.error); });
 
-          // Hide the modal and show a full-screen loading overlay so the
-          // jump from "Confirm" → step 1 has perceived weight (~1.5s). The
-          // actual backend work is already done by this point — this is pure
-          // UX pacing.
+          // Hide the modal and hold a full-screen loading overlay until the
+          // property lookup has landed, so the details step opens already
+          // filled in instead of values popping into the dropdowns while the
+          // homeowner is picking them. Timed by the data alone, capped at
+          // ~15s: past that, step 2's own wait-and-retry takes over.
           closeModal();
           const overlay = wrap.querySelector<HTMLElement>('.address-loading-overlay');
           if (overlay) {
             overlay.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
           }
-          await new Promise((r) => setTimeout(r, 1500));
+          const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+          const lookupLanded = async () => {
+            const res: any = await lookup;
+            if (!res?.data?.pending) return;
+            // Another call holds the lookup: watch for its finished stamp.
+            for (let i = 0; i < 20; i++) {
+              await sleep(700);
+              const { data: row } = await supabase
+                .from('qualification_sessions')
+                .select('rentcast_property_fetched_at')
+                .eq('id', sessionId)
+                .maybeSingle();
+              if (row?.rentcast_property_fetched_at) return;
+            }
+          };
+          await Promise.race([lookupLanded().catch(() => {}), sleep(15000)]);
 
           // Off to step 1 as a full page load, never a client-side swap: the
           // funnel layout's script must run fresh against this new session
