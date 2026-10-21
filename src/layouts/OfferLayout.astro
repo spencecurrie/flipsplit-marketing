@@ -12,8 +12,11 @@ interface Props {
   nextHref: string;
   /** If true, hide the Next button — page will call window.__funnel.advance() on selection */
   autoAdvance?: boolean;
+  /** If true, keep the question hidden until the session row has loaded — for
+   *  steps that pre-fill from it, so the user never sees them blank first. */
+  waitForSession?: boolean;
 }
-const { step, title, subtitle, backHref, nextHref, autoAdvance = false } = Astro.props;
+const { step, title, subtitle, backHref, nextHref, autoAdvance = false, waitForSession = false } = Astro.props;
 const totalSteps = 7;
 const progressPct = Math.round((step / totalSteps) * 100);
 const stepLabel = String(step).padStart(2, '0');
@@ -216,6 +219,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
       cursor: default;
       opacity: 1;
     }
+    /* waitForSession steps: hidden until funnel-ready, then fade in already
+       filled. The delayed animation is a safety net — if the script never
+       gets there, the page still shows after 4s. */
+    .funnel-pending { opacity: 0; animation: funnel-reveal 0s 4s forwards; }
+    .funnel-revealed { transition: opacity 200ms var(--ease-fs); }
+    @keyframes funnel-reveal { to { opacity: 1; } }
   </style>
 </head>
 <body class="bg-white text-ink">
@@ -236,7 +245,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
     </header>
 
     <!-- Question content -->
-    <main class="w-full max-w-[1152px] mx-auto px-6 box-border flex-1 pt-[72px] pb-10">
+    <main class:list={["w-full max-w-[1152px] mx-auto px-6 box-border flex-1 pt-[72px] pb-10", waitForSession && "funnel-pending"]}>
       <div class="text-center mb-14">
         <h1 id="offer-title" class="m-0 text-[48px] max-[640px]:text-[34px] leading-[1.08] tracking-[-0.04em] font-semibold">{title}</h1>
         {subtitle && <p id="offer-subtitle" class="mt-4 mx-auto max-w-[640px] text-[18px] leading-[1.55] text-muted">{subtitle}</p>}
@@ -248,7 +257,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
     </main>
 
     <!-- Address breadcrumb -->
-    <p id="offer-address-display" class="w-full max-w-[1152px] mx-auto px-6 box-border m-0 pb-4 text-[15px] text-muted"></p>
+    <p id="offer-address-display" class:list={["w-full max-w-[1152px] mx-auto px-6 box-border m-0 pb-4 text-[15px] text-muted", waitForSession && "funnel-pending"]}></p>
 
     <!-- Footer with Back / Next -->
     <footer class="border-t border-line bg-white">
@@ -272,7 +281,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 
   <script>
     import { getSupabase } from '../lib/supabase';
-    import { readFunnelSessionId } from '../lib/funnelSession';
+    import { readFunnelSessionId, cacheFunnelRow, readCachedFunnelRow } from '../lib/funnelSession';
 
     declare global {
       interface Window {
@@ -311,6 +320,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
     document.addEventListener('click', holdEarlyTap, true);
     window.addEventListener('funnel-ready', () => {
       document.removeEventListener('click', holdEarlyTap, true);
+      // Registered before the page's own listener, but both run in this same
+      // dispatch, so the page has filled its fields before anything paints.
+      document.querySelectorAll('.funnel-pending').forEach((el) => {
+        el.classList.add('funnel-revealed');
+        el.classList.remove('funnel-pending');
+      });
       // This listener was registered before the page's own, so defer: by the
       // time this runs, the page's setup() has bound its buttons.
       setTimeout(() => {
@@ -369,25 +384,31 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         return;
       }
 
-      // 1. Verify there's a session — if not, send back home
-      const { data: userData } = await supabase.auth.getUser();
-      if (!userData.user) {
+      // 1. Verify there's a session — if not, send back home. getSession reads
+      //    the stored login instead of a round trip to the auth server (that
+      //    wait is what made step 2 show up blank); RLS still checks the
+      //    token on every query below.
+      const { data: { session: authSession } } = await supabase.auth.getSession();
+      if (!authSession?.user) {
         window.location.replace('/');
         return;
       }
-      const userId = userData.user.id;
+      const userId = authSession.user.id;
 
       // 2. Load the row the address modal chose (created or resumed), falling
-      //    back to the user's most-recent unfinished one.
-      const { data: sessions } = await supabase
-        .from('qualification_sessions')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('status', 'in_progress')
-        .order('created_at', { ascending: false });
-
+      //    back to the user's most-recent unfinished one. The copy saved by
+      //    the previous page skips the read, so pre-filled steps paint full.
       const chosenId = readFunnelSessionId();
-      const session = sessions?.find((s: any) => s.id === chosenId) ?? sessions?.[0];
+      let session = readCachedFunnelRow(chosenId, userId);
+      if (!session) {
+        const { data: sessions } = await supabase
+          .from('qualification_sessions')
+          .select('*')
+          .eq('user_id', userId)
+          .eq('status', 'in_progress')
+          .order('created_at', { ascending: false });
+        session = sessions?.find((s: any) => s.id === chosenId) ?? sessions?.[0];
+      }
       if (!session) {
         window.location.replace('/');
         return;
@@ -409,11 +430,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         clearError();
         nextBtn.disabled = true;
         try {
-          const { error: updErr } = await supabase
+          const { data: saved, error: updErr } = await supabase
             .from('qualification_sessions')
             .update({ ...patch, current_step: completedStepNum })
-            .eq('id', session.id);
+            .eq('id', session.id)
+            .select('*')
+            .maybeSingle();
           if (updErr) throw updErr;
+          cacheFunnelRow(saved);
 
           await supabase.from('events').insert({
             session_id: session.id,

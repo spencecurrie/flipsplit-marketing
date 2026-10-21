@@ -208,7 +208,7 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
 <script>
   import { getSupabase } from '../lib/supabase';
-  import { FUNNEL_SESSION_KEY, resumeHref } from '../lib/funnelSession';
+  import { FUNNEL_SESSION_KEY, resumeHref, cacheFunnelRow } from '../lib/funnelSession';
 
   // Frontmatter runs at build time on the server — its consts do NOT exist in
   // this bundle. Two lines below referenced the frontmatter's APP_URL and threw
@@ -265,10 +265,12 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
       // Self-healing auth bootstrap. Reads existing session; falls back to a
       // fresh anonymous sign-in if the stored JWT points to a deleted user.
-      async function ensureUserId(): Promise<string> {
+      async function ensureUser(): Promise<{ id: string; anonymous: boolean }> {
         const supabase = getSupabase();
         const { data: existing, error: getUserErr } = await supabase.auth.getUser();
-        if (existing?.user?.id && !getUserErr) return existing.user.id;
+        if (existing?.user?.id && !getUserErr) {
+          return { id: existing.user.id, anonymous: !!existing.user.is_anonymous };
+        }
         try { await supabase.auth.signOut(); } catch { /* ignore */ }
         const { data: signin, error: authErr } = await supabase.auth.signInAnonymously();
         if (authErr) {
@@ -280,22 +282,23 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
         }
         const userId = signin?.user?.id;
         if (!userId) throw new Error('Could not establish a session. Please refresh and try again.');
-        return userId;
+        return { id: userId, anonymous: true };
       }
 
-      // Kicked off at place-picked. Auth → insert qualification_sessions row →
-      // fire lookup-property (non-awaited). Resolves with the new session id.
-      // Kicked off at place-picked. Auth → this visitor's unfinished run for
-      // the same address if there is one (resumed where they left off), else a
-      // new qualification_sessions row → lookup-property (non-awaited; cached
+      // Kicked off at place-picked. Auth → a signed-in account's unfinished run
+      // for the same address if there is one (resumed where they left off),
+      // else a new qualification_sessions row → lookup-property (non-awaited; cached
       // server-side if this home was already looked up). Resolves with the row.
       // `lookup` settles when lookup-property answers: done, cached, or
       // { pending } when another call already holds the lookup.
       type FunnelRow = { id: string; step: number; unit: string | null; lookup: Promise<any> };
       async function startEagerLookup(place: google.maps.places.PlaceResult): Promise<FunnelRow> {
         const supabase = getSupabase();
-        const userId = await ensureUserId();
-        const { data: draft } = await supabase
+        const { id: userId, anonymous } = await ensureUser();
+        // Only real accounts resume a draft. A signed-out visitor still carries
+        // an anonymous login in this browser; re-entering an address they
+        // abandoned starts over at step 1 rather than dropping them mid-funnel.
+        const { data: draft } = anonymous ? { data: null } : await supabase
           .from('qualification_sessions')
           .select('id, current_step, unit_number')
           .eq('user_id', userId)
@@ -440,8 +443,26 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
       async function handlePlacePicked(place: google.maps.places.PlaceResult) {
         if (!place?.formatted_address) return;
         input.value = place.formatted_address;
-        pickedPlace = place;
         input.setCustomValidity('');
+
+        // Only a house we could buy goes any further: every address that
+        // passes starts a paid property lookup. Google's suggestions include
+        // other states, whole streets and highways.
+        const errorEl = wrap.querySelector<HTMLElement>('.address-error');
+        const parts = parseAddressParts(place);
+        const hasNumber = (place.address_components || []).some((c) => c.types.includes('street_number'));
+        const problem = parts.state !== 'CA'
+          ? 'FlipSplit only buys homes in Southern California right now.'
+          : !hasNumber
+            ? 'Please choose a home address with a house number.'
+            : null;
+        if (problem) {
+          pickedPlace = null;
+          if (errorEl) { errorEl.textContent = problem; errorEl.classList.remove('hidden'); }
+          return;
+        }
+        errorEl?.classList.add('hidden');
+        pickedPlace = place;
 
         setChecking(true);
         const supabase = getSupabase();
@@ -527,7 +548,11 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
         };
         errorEl?.classList.add('hidden');
         if (!input.value.trim()) return showError('Please enter your property address.');
-        if (!pickedPlace) return showError('Please select an address from the dropdown suggestions.');
+        if (!pickedPlace) {
+          // A pick the check above turned down keeps its own message showing.
+          if (errorEl && !errorEl.classList.contains('hidden') && errorEl.textContent) return;
+          return showError('Please select an address from the dropdown suggestions.');
+        }
         handlePlacePicked(pickedPlace);
       });
 
@@ -622,6 +647,12 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
             }
           };
           await Promise.race([lookupLanded().catch(() => {}), sleep(15000)]);
+
+          // Hand the first step the finished row so it paints filled instead
+          // of reading it again (step 2's dropdowns used to show up blank).
+          const { data: fullRow } = await supabase
+            .from('qualification_sessions').select('*').eq('id', sessionId).maybeSingle();
+          cacheFunnelRow(fullRow);
 
           // Off to step 1 as a full page load, never a client-side swap: the
           // funnel layout's script must run fresh against this new session
