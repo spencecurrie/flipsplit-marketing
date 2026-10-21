@@ -258,6 +258,19 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 
     <!-- Address breadcrumb -->
     <p id="offer-address-display" class:list={["w-full max-w-[1152px] mx-auto px-6 box-border m-0 pb-4 text-[15px] text-muted", waitForSession && "funnel-pending"]}></p>
+    {waitForSession && (
+      /* The step's inline script already filled it from the saved row: show
+         it now rather than after the bundled script loads. */
+      <script is:inline>
+        (function () {
+          var row = window.__funnelPainted;
+          if (!row) return;
+          var addr = document.getElementById('offer-address-display');
+          if (addr) addr.textContent = row.address || '';
+          document.querySelectorAll('.funnel-pending').forEach(function (el) { el.classList.remove('funnel-pending'); });
+        })();
+      </script>
+    )}
 
     <!-- Footer with Back / Next -->
     <footer class="border-t border-line bg-white">
@@ -277,6 +290,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
         </button>
       </div>
     </footer>
+    {waitForSession && (
+      /* Pre-painted and complete: Next is ready too. A click before the
+         bundled script has wired it is held and replayed (see step 7 below). */
+      <script is:inline>
+        (function () {
+          if (!window.__funnelPainted) return;
+          var selects = document.querySelectorAll('main select');
+          for (var i = 0; i < selects.length; i++) if (selects[i].value === '') return;
+          var next = document.getElementById('offer-next');
+          if (!next) return;
+          next.disabled = false;
+          next.addEventListener('click', function () { window.__funnelEarlyNext = true; }, { once: true });
+        })();
+      </script>
+    )}
   </div>
 
   <script>
@@ -470,6 +498,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
       // 7. Tell the page script the session is ready. Defer so listeners
       //    registered after this script runs still receive the event.
       setTimeout(() => window.dispatchEvent(new CustomEvent('funnel-ready', { detail: session })), 0);
+      setTimeout(() => { if ((window as any).__funnelEarlyNext) advance(); }, 0);
     })();
   </script>
 </body>

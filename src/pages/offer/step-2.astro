@@ -86,6 +86,32 @@ const sqftOptions = [
       <span>Please complete <span id="details-missing"></span> before continuing.</span>
     </span>
   </p>
+
+  <!-- Paint the dropdowns before first render. The bundled script below needs
+       ~0.5s to download before it can run, so this inline one fills them from
+       the row the previous page saved (cacheFunnelRow in lib/funnelSession.ts;
+       keep the storage keys in sync) and flags the layout to show the page.
+       Only a finished lookup counts — mid re-lookup the row holds the
+       building's values. Everything is checked again once the script loads. -->
+  <script is:inline>
+    (function () {
+      try {
+        var id = localStorage.getItem('flipsplit:funnelSessionId');
+        var row = JSON.parse(sessionStorage.getItem('flipsplit:funnelRow') || 'null');
+        if (!row || row.id !== id || row.status !== 'in_progress' || !row.rentcast_property_fetched_at) return;
+        var cols = {
+          'f-bedrooms': 'bedrooms', 'f-full-baths': 'full_bathrooms', 'f-partial-baths': 'partial_bathrooms',
+          'f-sqft': 'square_footage_range', 'f-pool': 'has_pool', 'f-floors': 'floors_above_ground',
+        };
+        for (var elId in cols) {
+          var el = document.getElementById(elId);
+          var v = row[cols[elId]];
+          if (el && v !== null && v !== undefined && v !== '') el.value = String(v);
+        }
+        window.__funnelPainted = row;
+      } catch (e) { /* storage blocked: the bundled script takes over */ }
+    })();
+  </script>
 </OfferLayout>
 
 <script>
