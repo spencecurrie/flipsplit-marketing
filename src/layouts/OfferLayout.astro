@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import TapFeedback from '../components/TapFeedback.astro';
+import SocialMeta from '../components/SocialMeta.astro';
 
 interface Props {
   step: 1 | 2 | 3 | 4 | 5 | 6 | 7;
@@ -25,6 +26,8 @@ const totalLabel = String(totalSteps).padStart(2, '0');
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const pageTitle = `Step ${step} of ${totalSteps} — Get Your Offer | FlipSplit`;
+const pageDescription = `Step ${step} of ${totalSteps} of the FlipSplit offer request.`;
 ---
 
 <!DOCTYPE html>
@@ -32,9 +35,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Step {step} of {totalSteps} — Get Your Offer | FlipSplit</title>
-  <meta name="description" content={`Step ${step} of ${totalSteps} of the FlipSplit offer request.`} />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
+  <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
   {/* Funnel steps are not landing pages: 7 near-identical screens that only
       work mid-session. `follow` keeps the outbound links crawlable. */}
   <meta name="robots" content="noindex, follow" />

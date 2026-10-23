@@ -1,6 +1,7 @@
 ---
 import '../../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
+import SocialMeta from '../../components/SocialMeta.astro';
 
 // TCPA-compliant phone capture, fired after account creation. Moved here from
 // the dashboard app so the whole funnel runs on one origin; on success it hands
@@ -32,6 +33,8 @@ const PRIVACY_POLICY_URL = 'https://www.flipsplit.com/privacy-policy/';
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const pageTitle = "We'll text you when your offer is ready | FlipSplit";
+const pageDescription = 'Add your mobile number so FlipSplit can reach you the moment your cash offer is ready.';
 ---
 
 <!DOCTYPE html>
@@ -39,9 +42,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>We'll text you when your offer is ready | FlipSplit</title>
-  <meta name="description" content="Add your mobile number so FlipSplit can reach you the moment your cash offer is ready." />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
+  <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
   {/* 10DLC disclosure URL - noindex ONLY, never robots.txt Disallow, so carrier fetchers can still read it */}
   <meta name="robots" content="noindex, follow" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

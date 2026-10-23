@@ -4,10 +4,13 @@ import '../styles/global.css';
 import AddressForm from '../components/AddressForm.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import SocialMeta from '../components/SocialMeta.astro';
 
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const pageTitle = 'Request a Free Cash Offer | FlipSplit';
+const pageDescription = 'Request your free cash offer from FlipSplit. Enter your address and get a no-obligation offer within 24–48 hours. No repairs, no fees, no pressure.';
 ---
 
 <!DOCTYPE html>
@@ -15,9 +18,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Request a Free Cash Offer | FlipSplit</title>
-  <meta name="description" content="Request your free cash offer from FlipSplit. Enter your address and get a no-obligation offer within 24–48 hours. No repairs, no fees, no pressure." />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
+  <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <ClientRouter />
 </head>

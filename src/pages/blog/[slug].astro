@@ -4,6 +4,7 @@ import Nav from '../../components/Nav.astro'
 import { getCollection, render } from 'astro:content';
 import '../../styles/global.css';
 import Footer from '../../components/Footer.astro';
+import SocialMeta from '../../components/SocialMeta.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -53,12 +54,7 @@ const chevR = '<path d="M9 6l6 6-6 6"></path>';
   <link rel="canonical" href={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content={title} />
-  {description && <meta property="og:description" content={description} />}
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content={canonicalURL} />
-  {heroImage && <meta property="og:image" content={heroImage} />}
+  <SocialMeta title={title} description={description} url={canonicalURL} image={heroImage} type="article" />
 
   <style>
     .ph { background: repeating-linear-gradient(135deg, #E9E9E4 0 1px, #F4F4F1 1px 7px); }

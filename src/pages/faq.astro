@@ -4,6 +4,7 @@ import '../styles/global.css';
 import AddressForm from '../components/AddressForm.astro'
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import SocialMeta from '../components/SocialMeta.astro';
 
 const faqs = [
   {
@@ -91,6 +92,8 @@ const faqs = [
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const pageTitle = 'FAQ | FlipSplit — Frequently Asked Questions';
+const pageDescription = 'Get answers to the most common questions about selling your home to FlipSplit — fees, timelines, the profit-split model, and more.';
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -108,9 +111,10 @@ const faqSchema = {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FAQ | FlipSplit — Frequently Asked Questions</title>
-  <meta name="description" content="Get answers to the most common questions about selling your home to FlipSplit — fees, timelines, the profit-split model, and more." />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
+  <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <ClientRouter />
   <!-- FAQPage structured data, built from the same list the page renders so

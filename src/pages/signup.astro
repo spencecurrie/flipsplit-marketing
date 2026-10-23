@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
+import SocialMeta from '../components/SocialMeta.astro';
 
 // Account creation, moved here from the dashboard app so the whole funnel —
 // steps 1-7, finish, signup, phone — runs on one origin. The app is now only
@@ -15,6 +16,8 @@ import { ClientRouter } from 'astro:transitions';
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const pageTitle = 'Create your account | FlipSplit';
+const pageDescription = 'Create your FlipSplit account to track your cash offer and manage your home sale.';
 ---
 
 <!DOCTYPE html>
@@ -22,9 +25,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Create your account | FlipSplit</title>
-  <meta name="description" content="Create your FlipSplit account to track your cash offer and manage your home sale." />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
+  <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
   <meta name="robots" content="noindex, follow" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <ClientRouter />

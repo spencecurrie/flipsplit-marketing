@@ -6,6 +6,7 @@ import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import SocialMeta from '../components/SocialMeta.astro';
 
 interface Props {
   /** <title> */
@@ -34,6 +35,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalURL} />
+  <SocialMeta title={title} description={description} url={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <ClientRouter />
 </head>

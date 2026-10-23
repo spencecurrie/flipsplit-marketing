@@ -2,18 +2,21 @@
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import TapFeedback from '../components/TapFeedback.astro';
+import SocialMeta from '../components/SocialMeta.astro';
 
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const pageTitle = 'Brand Guidelines — FlipSplit';
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Brand Guidelines — FlipSplit</title>
+  <title>{pageTitle}</title>
   <link rel="canonical" href={canonicalURL} />
+  <SocialMeta title={pageTitle} url={canonicalURL} />
   {/* internal brand reference */}
   <meta name="robots" content="noindex, follow" />
   <style>

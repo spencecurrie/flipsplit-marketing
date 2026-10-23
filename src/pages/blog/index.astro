@@ -4,6 +4,7 @@ import Nav from '../../components/Nav.astro'
 import { getCollection } from 'astro:content';
 import '../../styles/global.css';
 import Footer from '../../components/Footer.astro';
+import SocialMeta from '../../components/SocialMeta.astro';
 
 const allPosts = await getCollection('blog');
 allPosts.sort((a, b) => +new Date(b.data.pubDate) - +new Date(a.data.pubDate));
@@ -28,6 +29,8 @@ const catSlug = (c: string) => c.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const pageTitle = 'Blog — FlipSplit';
+const pageDescription = 'Home selling guides, market trends, and expert advice from the FlipSplit team.';
 
 // Card shell shared by every post link: hairline border that goes ink on hover.
 const card = 'text-ink no-underline border border-line hover:border-ink hover:text-ink transition-colors duration-[180ms] ease-[cubic-bezier(.2,0,0,1)]';
@@ -39,9 +42,10 @@ const arrow = '<path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path>';
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Blog — FlipSplit</title>
-  <meta name="description" content="Home selling guides, market trends, and expert advice from the FlipSplit team." />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
+  <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style>
     /* Hatched placeholder behind every cover image (shows while it loads, or

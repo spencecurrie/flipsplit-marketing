@@ -1,0 +1,31 @@
+---
+// Open Graph + Twitter card tags, one copy per page's <head>. Pages pass the
+// same title/description they already set, so a shared link previews with the
+// page's own copy. og:image must be absolute — crawlers don't resolve paths.
+interface Props {
+  title: string;
+  description?: string;
+  /** The page's canonical URL. */
+  url: string;
+  /** Absolute image URL. Defaults to the homepage hero. */
+  image?: string;
+  type?: 'website' | 'article';
+}
+// The homepage hero (1800×1006, close to the 1.91:1 cards use).
+const DEFAULT_IMAGE = new URL('/reskin/hero-family.jpg', Astro.site).href;
+const { title, description, url, image, type = 'website' } = Astro.props;
+const ogImage = image || DEFAULT_IMAGE;
+---
+
+<meta property="og:site_name" content="FlipSplit" />
+<meta property="og:title" content={title} />
+{description && <meta property="og:description" content={description} />}
+<meta property="og:type" content={type} />
+<meta property="og:url" content={url} />
+<meta property="og:image" content={ogImage} />
+{ogImage === DEFAULT_IMAGE && <meta property="og:image:width" content="1800" />}
+{ogImage === DEFAULT_IMAGE && <meta property="og:image:height" content="1006" />}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+{description && <meta name="twitter:description" content={description} />}
+<meta name="twitter:image" content={ogImage} />

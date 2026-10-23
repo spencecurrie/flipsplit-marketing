@@ -4,10 +4,13 @@ import '../styles/global.css';
 import AddressForm from '../components/AddressForm.astro'
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import SocialMeta from '../components/SocialMeta.astro';
 
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const pageTitle = 'Sell My Home Fast | Cash Offer in 24–48 Hours | FlipSplit';
+const pageDescription = 'Sell your home fast with FlipSplit. Get a guaranteed cash offer in 24–48 hours, close in as few as 7 days, and share in the profit when your home resells.';
 
 const stats = [
   { n: '01', value: '24–48 hrs', label: 'Offer turnaround', dark: false },
@@ -46,9 +49,10 @@ const compare: [string, ...[boolean, string][]][] = [
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sell My Home Fast | Cash Offer in 24–48 Hours | FlipSplit</title>
-  <meta name="description" content="Sell your home fast with FlipSplit. Get a guaranteed cash offer in 24–48 hours, close in as few as 7 days, and share in the profit when your home resells." />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
+  <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <ClientRouter />
 </head>
