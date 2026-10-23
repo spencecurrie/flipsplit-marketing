@@ -483,7 +483,7 @@ const pageDescription = `Step ${step} of ${totalSteps} of the FlipSplit offer re
           window.location.assign(nextBtn.dataset.nextHref!);
         } catch (err: any) {
           console.error(err);
-          setError(err?.message || 'Could not save your answer. Please try again.');
+          setError("We couldn't save your answer. Please try again, or email us at hello@flipsplit.com.");
           nextBtn.disabled = false;
         }
       };

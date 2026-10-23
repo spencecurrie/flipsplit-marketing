@@ -341,7 +341,7 @@ const pageDescription = 'Add your mobile number so FlipSplit can reach you the m
           await handoffToApp(supabase, `/?session_id=${sessionId}`);
         } catch (err: any) {
           console.error(err);
-          showError(err?.message || 'Could not save your phone number. Please try again.');
+          showError("We couldn't save your phone number. Please try again, or email us at hello@flipsplit.com.");
           setBusy(false);
         }
       });

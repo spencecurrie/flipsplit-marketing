@@ -377,7 +377,7 @@ const pageDescription = 'Create your FlipSplit account to track your cash offer 
             setBusy(false);
             return;
           }
-          showError(err?.message || 'Could not link your funnel data. Please contact support.');
+          showError('Something went wrong on our end. Please try again, or email us at hello@flipsplit.com.');
           setBusy(false);
         }
       }
@@ -404,7 +404,7 @@ const pageDescription = 'Create your FlipSplit account to track your cash offer 
           // Browser is redirecting to Google now…
         } catch (err: any) {
           console.error(err);
-          showError(err?.message || 'Could not start Google sign-in.');
+          showError("We couldn't start Google sign-in. Please try again, or email us at hello@flipsplit.com.");
         }
       });
 
@@ -447,7 +447,13 @@ const pageDescription = 'Create your FlipSplit account to track your cash offer 
           else window.location.assign('/signup/phone/');
         } catch (err: any) {
           console.error(err);
-          showError(err?.message || 'Something went wrong. Please try again.');
+          // Supabase's own wording is fine for the ones a homeowner can fix;
+          // anything else gets the generic line.
+          showError(err?.code === 'user_already_exists' || err?.code === 'email_exists'
+            ? 'An account with this email already exists. Please sign in instead.'
+            : err?.code === 'weak_password' || err?.code === 'email_address_invalid'
+              ? err.message
+              : 'Something went wrong on our end. Please try again, or email us at hello@flipsplit.com.');
           setBusy(false);
         }
       });

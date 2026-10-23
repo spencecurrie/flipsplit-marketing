@@ -276,15 +276,10 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
         }
         try { await supabase.auth.signOut(); } catch { /* ignore */ }
         const { data: signin, error: authErr } = await supabase.auth.signInAnonymously();
-        if (authErr) {
-          throw new Error(
-            authErr.message?.includes('Anonymous sign-ins are disabled')
-              ? 'Anonymous sign-ins are disabled for this project. Enable them in Supabase → Authentication → Sign In/Up → "Allow anonymous sign-ins".'
-              : `Sign-in failed: ${authErr.message}`
-          );
-        }
+        // These messages only reach the console; the modal shows a friendly line.
+        if (authErr) throw new Error(`Anonymous sign-in failed: ${authErr.message}`);
         const userId = signin?.user?.id;
-        if (!userId) throw new Error('Could not establish a session. Please refresh and try again.');
+        if (!userId) throw new Error('Anonymous sign-in returned no user.');
         return { id: userId, anonymous: true };
       }
 
@@ -665,7 +660,7 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
         } catch (err: any) {
           console.error('Funnel start failed:', err);
           if (modalError) {
-            modalError.textContent = err?.message || 'Something went wrong. Please try again.';
+            modalError.textContent = 'Something went wrong on our end. Please try again, or email us at hello@flipsplit.com.';
             modalError.classList.remove('hidden');
           }
           modalConfirm.removeAttribute('disabled');

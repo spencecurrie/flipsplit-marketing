@@ -217,7 +217,7 @@ const pageDescription = 'Sign in to your FlipSplit account or create one to trac
         // Browser is redirecting to Google now…
       } catch (err: any) {
         console.error('Google OAuth failed:', err);
-        showError(err?.message || 'Could not start Google sign-in. Try again.');
+        showError("We couldn't start Google sign-in. Please try again, or email us at hello@flipsplit.com.");
         setBusy(false);
       }
     });
@@ -240,7 +240,12 @@ const pageDescription = 'Sign in to your FlipSplit account or create one to trac
         window.location.assign(resolveNext());
       } catch (err: any) {
         console.error('Auth failed:', err);
-        showError(err?.message || 'Could not sign you in. Check your email and password.');
+        // Wrong password is worth saying plainly; anything else gets the generic line.
+        showError(err?.code === 'invalid_credentials'
+          ? "That email and password don't match. Please try again."
+          : err?.code === 'email_not_confirmed'
+            ? 'Please confirm your email first, then sign in.'
+            : 'Something went wrong on our end. Please try again, or email us at hello@flipsplit.com.');
         setBusy(false);
       }
     });
