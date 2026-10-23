@@ -3,6 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import TapFeedback from '../components/TapFeedback.astro';
 import SocialMeta from '../components/SocialMeta.astro';
+import Analytics from '@vercel/analytics/astro';
 
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
@@ -17,6 +18,7 @@ const pageTitle = 'Brand Guidelines — FlipSplit';
   <title>{pageTitle}</title>
   <link rel="canonical" href={canonicalURL} />
   <SocialMeta title={pageTitle} url={canonicalURL} />
+  <Analytics />
   {/* internal brand reference */}
   <meta name="robots" content="noindex, follow" />
   <style>

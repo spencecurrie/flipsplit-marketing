@@ -5,6 +5,7 @@ import { getCollection } from 'astro:content';
 import '../../styles/global.css';
 import Footer from '../../components/Footer.astro';
 import SocialMeta from '../../components/SocialMeta.astro';
+import Analytics from '@vercel/analytics/astro';
 
 const allPosts = await getCollection('blog');
 allPosts.sort((a, b) => +new Date(b.data.pubDate) - +new Date(a.data.pubDate));
@@ -46,6 +47,7 @@ const arrow = '<path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path>';
   <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
   <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
+  <Analytics />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style>
     /* Hatched placeholder behind every cover image (shows while it loads, or

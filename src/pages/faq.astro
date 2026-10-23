@@ -5,6 +5,7 @@ import AddressForm from '../components/AddressForm.astro'
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import SocialMeta from '../components/SocialMeta.astro';
+import Analytics from '@vercel/analytics/astro';
 
 const faqs = [
   {
@@ -115,6 +116,7 @@ const faqSchema = {
   <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
   <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
+  <Analytics />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <ClientRouter />
   <!-- FAQPage structured data, built from the same list the page renders so

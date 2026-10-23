@@ -5,6 +5,7 @@ import Nav from '../components/Nav.astro'
 import Footer from '../components/Footer.astro';
 import { ClientRouter } from 'astro:transitions';
 import SocialMeta from '../components/SocialMeta.astro';
+import Analytics from '@vercel/analytics/astro';
 
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
@@ -86,6 +87,7 @@ const faqs = [
   <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
   <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
+  <Analytics />
   <ClientRouter />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style>

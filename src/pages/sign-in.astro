@@ -3,6 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import SocialMeta from '../components/SocialMeta.astro';
+import Analytics from '@vercel/analytics/astro';
 
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
@@ -20,6 +21,7 @@ const pageDescription = 'Sign in to your FlipSplit account or create one to trac
   <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
   <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
+  <Analytics />
   {/* auth page, no search value */}
   <meta name="robots" content="noindex, follow" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import SocialMeta from '../components/SocialMeta.astro';
+import Analytics from '@vercel/analytics/astro';
 
 // Account creation, moved here from the dashboard app so the whole funnel —
 // steps 1-7, finish, signup, phone — runs on one origin. The app is now only
@@ -29,6 +30,7 @@ const pageDescription = 'Create your FlipSplit account to track your cash offer 
   <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
   <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
+  <Analytics />
   <meta name="robots" content="noindex, follow" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <ClientRouter />
