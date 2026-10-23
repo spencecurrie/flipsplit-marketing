@@ -108,6 +108,15 @@
   h1, h2, h3, h4 { font-family: var(--font-sans); color: #121212; }
 }
 
+/* iOS Safari zooms the page when a focused field's text is under 16px.
+   Unlayered on purpose: it beats every Tailwind utility (those live in
+   @layer utilities), so a text-[15px] on an input can't undo it. A class
+   rule that sets font-size on a field (e.g. .offer-select) still wins and
+   needs its own bump. 1000px covers phones in landscape and iPad portrait. */
+@media (max-width: 1000px) {
+  input, select, textarea { font-size: 16px; }
+}
+
 /* Every dollar figure, percentage, and date range. Shared. */
 .tnum { font-variant-numeric: tabular-nums; }
 

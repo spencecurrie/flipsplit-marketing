@@ -214,6 +214,8 @@ const pageDescription = `Step ${step} of ${totalSteps} of the FlipSplit offer re
       outline: none;
       transition: border-color var(--dur-state) var(--ease-fs), box-shadow var(--dur-state) var(--ease-fs);
     }
+    /* 16px or iOS Safari zooms on focus (see global.css). */
+    @media (max-width: 1000px) { .offer-select { font-size: 16px; } }
     .offer-select:focus { box-shadow: 0 0 0 3px rgba(18,18,18,0.12); }
     /* Unanswered dropdown — ink outline so it's obvious what still needs an answer */
     .offer-select.is-empty { border: 1.5px solid #121212; }
