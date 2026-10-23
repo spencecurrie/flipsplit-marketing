@@ -1,0 +1,7 @@
+---
+import Analytics from '@vercel/analytics/astro';
+// Vercel Web Analytics, path only. Funnel URLs carry ?claim= and ?session=
+// tokens, so the query string and hash are dropped before anything is sent.
+---
+<script is:inline>window.webAnalyticsBeforeSend = (e) => ({ ...e, url: e.url.split(/[?#]/)[0] });</script>
+<Analytics />

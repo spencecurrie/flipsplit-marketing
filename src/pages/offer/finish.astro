@@ -2,7 +2,7 @@
 import '../../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import SocialMeta from '../../components/SocialMeta.astro';
-import Analytics from '@vercel/analytics/astro';
+import SiteAnalytics from '../../components/SiteAnalytics.astro';
 
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
@@ -18,7 +18,7 @@ const pageTitle = 'FlipSplit — Preparing your offer';
   <title>{pageTitle}</title>
   <link rel="canonical" href={canonicalURL} />
   <SocialMeta title={pageTitle} url={canonicalURL} />
-  <Analytics />
+  <SiteAnalytics />
   {/* transient post-submit screen */}
   <meta name="robots" content="noindex, follow" />
   <ClientRouter />
@@ -46,7 +46,7 @@ const pageTitle = 'FlipSplit — Preparing your offer';
     <p id="finish-body" class="m-0 max-w-[448px] text-[18px] leading-[1.55] text-muted">We're saving your details and taking you to create an account so we can text you when your offer is ready.</p>
     <div id="finish-error" class="hidden mt-7 flex-col items-center gap-3">
       <button id="finish-retry" type="button" class="h-12 px-7 rounded-[12px] bg-ink hover:bg-ink-soft text-white text-[15px] font-medium transition-colors disabled:opacity-60 disabled:cursor-not-allowed">Try again</button>
-      <a href="mailto:hello@flipsplit.com?subject=Trouble finishing my offer request" class="text-[14px] text-muted hover:text-ink">Still stuck? Email us at hello@flipsplit.com</a>
+      <a href="mailto:info@flipsplit.com?subject=Trouble finishing my offer request" class="text-[14px] text-muted hover:text-ink">Still stuck? Email us at info@flipsplit.com</a>
     </div>
     <div id="preview-note" class="hidden mt-6 mx-auto max-w-[32rem] bg-cream border border-line rounded-xl px-5 py-4 text-[14px] text-ink"></div>
   </main>

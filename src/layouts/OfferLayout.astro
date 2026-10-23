@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import TapFeedback from '../components/TapFeedback.astro';
 import SocialMeta from '../components/SocialMeta.astro';
-import Analytics from '@vercel/analytics/astro';
+import SiteAnalytics from '../components/SiteAnalytics.astro';
 
 interface Props {
   step: 1 | 2 | 3 | 4 | 5 | 6 | 7;
@@ -40,7 +40,7 @@ const pageDescription = `Step ${step} of ${totalSteps} of the FlipSplit offer re
   <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
   <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
-  <Analytics />
+  <SiteAnalytics />
   {/* Funnel steps are not landing pages: 7 near-identical screens that only
       work mid-session. `follow` keeps the outbound links crawlable. */}
   <meta name="robots" content="noindex, follow" />
@@ -485,7 +485,7 @@ const pageDescription = `Step ${step} of ${totalSteps} of the FlipSplit offer re
           window.location.assign(nextBtn.dataset.nextHref!);
         } catch (err: any) {
           console.error(err);
-          setError("We couldn't save your answer. Please try again, or email us at hello@flipsplit.com.");
+          setError("We couldn't save your answer. Please try again, or email us at info@flipsplit.com.");
           nextBtn.disabled = false;
         }
       };

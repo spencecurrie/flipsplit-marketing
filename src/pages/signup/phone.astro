@@ -2,7 +2,7 @@
 import '../../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import SocialMeta from '../../components/SocialMeta.astro';
-import Analytics from '@vercel/analytics/astro';
+import SiteAnalytics from '../../components/SiteAnalytics.astro';
 
 // TCPA-compliant phone capture, fired after account creation. Moved here from
 // the dashboard app so the whole funnel runs on one origin; on success it hands
@@ -47,7 +47,7 @@ const pageDescription = 'Add your mobile number so FlipSplit can reach you the m
   <meta name="description" content={pageDescription} />
   <link rel="canonical" href={canonicalURL} />
   <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
-  <Analytics />
+  <SiteAnalytics />
   {/* 10DLC disclosure URL - noindex ONLY, never robots.txt Disallow, so carrier fetchers can still read it */}
   <meta name="robots" content="noindex, follow" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -341,7 +341,7 @@ const pageDescription = 'Add your mobile number so FlipSplit can reach you the m
           await handoffToApp(supabase, `/?session_id=${sessionId}`);
         } catch (err: any) {
           console.error(err);
-          showError("We couldn't save your phone number. Please try again, or email us at hello@flipsplit.com.");
+          showError("We couldn't save your phone number. Please try again, or email us at info@flipsplit.com.");
           setBusy(false);
         }
       });

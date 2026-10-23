@@ -4,7 +4,7 @@ import '../styles/global.css';
 import AddressForm from '../components/AddressForm.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import Analytics from '@vercel/analytics/astro';
+import SiteAnalytics from '../components/SiteAnalytics.astro';
 
 // Built to dist/404.html, which Vercel serves for any unknown URL. No
 // canonical or social tags: this page has no URL of its own.
@@ -17,7 +17,7 @@ import Analytics from '@vercel/analytics/astro';
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Page not found | FlipSplit</title>
   <meta name="robots" content="noindex, follow" />
-  <Analytics />
+  <SiteAnalytics />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <ClientRouter />
 </head>
