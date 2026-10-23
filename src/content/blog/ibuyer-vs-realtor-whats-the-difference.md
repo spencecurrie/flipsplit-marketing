@@ -33,7 +33,7 @@ A real estate agent, also known as a realtor, serves as a facilitator of the hom
 -   Facilitating negotiations with buyers
 -   Preparing purchase contracts
 
-Since realtors work _one-on-one_ with sellers, they can customize their services to their client’s unique goals. But [what is an iBuyer](https://flipsplit.com/blog/what-is-an-ibuyer--do-i-need-one)?
+Since realtors work _one-on-one_ with sellers, they can customize their services to their client’s unique goals. But [what is an iBuyer](https://flipsplit.com/blog/what-is-an-ibuyer-do-i-need-one/)?
 
 ## **iBuyers**
 

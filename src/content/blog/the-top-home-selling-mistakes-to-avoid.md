@@ -70,7 +70,7 @@ And while realtors have knowledge of the real estate market, they’re also cost
 
 This is where [FlipSplit](https://flipsplit.com/how-it-works/) comes in. FlipSplit sells your home like a traditional real estate agent _without_ charging commission and closing cost fees. This means more knowledge about market trends—and more money in your pocket.
 
-Looking for more information on the [closing process for sellers?](https://flipsplit.com/what-is-the-house-closing-process-for-a-seller) Or perhaps you’re wondering [what are the typical closing costs paid by sellers?](https://flipsplit.com/seller-closing-cost-breakdown-what-are-typical-closing-costs-paid-by-seller) At FlipSplit, we’ve got you covered. 
+Looking for more information on the [closing process for sellers?](https://flipsplit.com/blog/what-is-the-house-closing-process-for-a-seller/) Or perhaps you’re wondering [what are the typical closing costs paid by sellers?](https://flipsplit.com/blog/seller-closing-cost-breakdown-what-are-typical-closing-costs-paid-by-seller/) At FlipSplit, we’ve got you covered. 
 
 ## FlipSplit: The Right Way to Sell Your Home
 
@@ -78,7 +78,7 @@ Selling your home can be a hassle. However, by knowing the top home selling mist
 
 [FlipSplit](https://flipsplit.com/how-it-works/) makes the process of selling your home even easier. We operate in locations across Southern California, from [buying homes in Riverside](https://flipsplit.com/location-riverside-county/) to flipping houses in San Diego. As a trusted [off-market buyer](https://flipsplit.com/blog/off-market-meaning/), we’re dedicated to maximizing your home’s value to ensure you receive top dollar for your home.
 
-By paying for your home’s fair market value upfront with cash, renovating it, and sharing any profits from the resale with you, FlipSplit helps you focus on what matters: making memories in your new home. For further insight on [selling a house to a cash buyer](https://flipsplit.com/cash-home-buyers-guide-selling-a-house-to-a-cash-buyer), visit FlipSplit today.   
+By paying for your home’s fair market value upfront with cash, renovating it, and sharing any profits from the resale with you, FlipSplit helps you focus on what matters: making memories in your new home. For further insight on [selling a house to a cash buyer](https://flipsplit.com/blog/cash-home-buyers-guide-selling-a-house-to-a-cash-buyer/), visit FlipSplit today.   
 
 1.  **Sources:**
 2.  U.S. News. _12 Mistakes To Avoid When Selling Your Home_. [https://realestate.usnews.com/real-estate/articles/mistakes-to-avoid-when-selling-your-home](https://realestate.usnews.com/real-estate/articles/mistakes-to-avoid-when-selling-your-home)

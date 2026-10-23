@@ -45,7 +45,7 @@ Therefore, it may be wiser to use the fall and winter to boost the value of your
 
 Though mortgage rates have steadily decreased, making it even more affordable to own and finance a home, this has increased the number of buyers looking to enjoy higher levels of appreciation. Asking prices are at incredible highs, which means any improvements made to your home will increase its value substantially.
 
-By renovating and [selling your San Diego home](https://flipsplit.com/location/), you can:
+By renovating and [selling your San Diego home](https://flipsplit.com/location-san-diego-county/), you can:
 
 -   Substantially profit off of high-value real estate
 -   Upgrade to a more impressive home in a new location of Southern California and beyond

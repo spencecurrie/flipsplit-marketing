@@ -11,7 +11,7 @@ heroImage: "https://flipsplit.com/wp-content/uploads/2021/09/Blog-Featured-Tile-
 
 You’re planning to sell your home within the next year but, before you do, you want to maximize the return you’ll get on the sale. So, what features can help sell a home?
 
-Lately, the popular opinion in the [current housing market trends](https://flipsplit.com/what-are-the-current-housing-market-trends/) has been that you must have a top-of-the-line, high-end kitchen and fancy bathrooms. While both of these are important, a 2020 survey by the National Association of Homebuilders shows that the top selling features are:1
+Lately, the popular opinion in the [current housing market trends](https://flipsplit.com/blog/what-are-the-current-housing-market-trends/) has been that you must have a top-of-the-line, high-end kitchen and fancy bathrooms. While both of these are important, a 2020 survey by the National Association of Homebuilders shows that the top selling features are:1
 
 -   Energy efficiency
 -   Usable outdoor space
@@ -180,7 +180,7 @@ FlipSplit will be your home improvement partner. 
 
 Whether you’re looking to [sell your Los Angeles home](https://flipsplit.com/location-la-county/) or get rid of an inherited property in San Diego, [we buy houses](https://flipsplit.com/) for cash across Southern California. We’ll make a reasonable cash offer for your home. Then, we make the improvements that maximize the property’s value. When we resell the home, we split the profit with you. It’s a winning choice that saves you time, hassle, and money. 
 
-For more insight on today’s buyer, visit FlipSplit today. Questions regarding [how to respond to a low ball offer](https://flipsplit.com/how-to-respond-to-a-low-ball-offer) or what does [house in contingent](https://flipsplit.com/blog/what-does-house-in-contingent-mean/) mean? We’ve got you covered. Call today!
+For more insight on today’s buyer, visit FlipSplit today. Questions regarding [how to respond to a low ball offer](https://flipsplit.com/blog/how-to-respond-to-a-low-ball-offer/) or what does [house in contingent](https://flipsplit.com/blog/what-does-house-in-contingent-mean/) mean? We’ve got you covered. Call today!
 
 **Sources:** 
 

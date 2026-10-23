@@ -105,7 +105,7 @@ If this sounds complicated, it’s because it is. Hiring an attorney could poten
 
 When you’re facing foreclosure, it’s possible that you’ll lose your home _and_ all the money you’ve invested in it over the years. Besides this significant loss, your credit score takes a substantial hit. This mark on your financial record can make it difficult to secure financing for another home loan in the future.
 
-In these cases, looking into different [home selling options](https://flipsplit.com/a-complete-guide-home-selling-options/) can be the best way to avoid foreclosure and its consequences.
+In these cases, looking into different [home selling options](https://flipsplit.com/blog/a-complete-guide-home-selling-options/) can be the best way to avoid foreclosure and its consequences.
 
 How can you sell your home before foreclosure?
 
@@ -133,7 +133,7 @@ That’s why we keep things simple.
 
 Input your address and a few details about your home, and we’ll make you a cash offer. If you like what you see, it’s possible to close within days—_without_ realtor’s fees or legal costs. Then, we’ll make upgrades and repairs and put your home on the market. Any excess profit we’ll split it with you! If not, you can rest easy knowing you got top-dollar for your home. If you’re in a rush and are looking to [sell your house fast](https://flipsplit.com/how-it-works/), let FlipSplit take care of the home-selling process, quickly and hassle-free.
 
-The world of real estate often leaves people with several unanswered questions. Be sure to explore our blog articles on “[Selling a House That Needs Work](https://flipsplit.com/blog/how-to-sell-a-house-that-needs-work/)” and “[What Does It Mean When a House Is Off Market?](https://flipsplit.com/off-market-meaning)”
+The world of real estate often leaves people with several unanswered questions. Be sure to explore our blog articles on “[Selling a House That Needs Work](https://flipsplit.com/blog/how-to-sell-a-house-that-needs-work/)” and “[What Does It Mean When a House Is Off Market?](https://flipsplit.com/blog/off-market-meaning/)”
 
 **Sources:** 
 

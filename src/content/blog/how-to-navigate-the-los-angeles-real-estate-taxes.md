@@ -19,7 +19,7 @@ Let’s take a look at how Los Angeles real estate taxes are calculated and pote
 
 ## California Property Tax
 
-If you are researching [where to buy in Los Angeles](https://flipsplit.com/blog/how--where-to-buy-in-los-angeles) considering tax rate, keep in mind that California property tax is an ad valorem tax, which means the tax amount is based on the assessed value of the item being taxed. The starting point is a 1% statewide tax levy before additions by more localized tax bodies, although the effective property tax rate (what people are actually paying) is 0.74% in California.1 
+If you are researching [where to buy in Los Angeles](https://flipsplit.com/blog/how-where-to-buy-in-los-angeles/) considering tax rate, keep in mind that California property tax is an ad valorem tax, which means the tax amount is based on the assessed value of the item being taxed. The starting point is a 1% statewide tax levy before additions by more localized tax bodies, although the effective property tax rate (what people are actually paying) is 0.74% in California.1 
 
 What keeps California property tax rates from skyrocketing is Proposition 13, a constitutional article passed in 1978 that:2
 

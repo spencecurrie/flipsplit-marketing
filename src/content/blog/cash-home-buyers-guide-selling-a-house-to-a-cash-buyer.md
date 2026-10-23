@@ -134,7 +134,7 @@ You and the buyer will set up a meeting to sign documents like:
 -   Settlement statement
 -   Property disclosures
 
-When all is said and done, the procedure should feel comfortable, professional, and friendly. Home selling is a major life decision and the [closing process for a seller](https://flipsplit.com/what-is-the-house-closing-process-for-a-seller) should reflect that significance.
+When all is said and done, the procedure should feel comfortable, professional, and friendly. Home selling is a major life decision and the [closing process for a seller](https://flipsplit.com/blog/what-is-the-house-closing-process-for-a-seller/) should reflect that significance.
 
 ## **Potential Risks When Selling Home To Cash Buyer**
 

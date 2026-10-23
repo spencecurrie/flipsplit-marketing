@@ -35,7 +35,7 @@ If you’re not sure exactly when to sell your house and you have a flexible tim
 
 If you’re selling your home and want to avoid hiring a real estate agent, consider working with [FlipSplit](https://flipsplit.com/). FlipSplit acts as both an off-market cash buyer and a house flipping company, making us the right buyer for almost any house regardless of condition. This means you can sell your home at a fair price with the ease of no-hassle renovations that increase your market value, which you in turn can benefit from after the home is resold. 
 
-We operate all across Southern California, servicing areas from Ventura to Orange County. Whether you’re looking to sell your [San Diego home](https://flipsplit.com/location/) or your Los Angeles property, FlipSplit is here to help. For more information, request [an offer today](https://flipsplit.com/)! 
+We operate all across Southern California, servicing areas from Ventura to Orange County. Whether you’re looking to sell your [San Diego home](https://flipsplit.com/location-san-diego-county/) or your Los Angeles property, FlipSplit is here to help. For more information, request [an offer today](https://flipsplit.com/)! 
 
 In fact, if you are looking for additional information around [staging your house to sell](https://flipsplit.com/blog/tips-for-staging-your-home-to-sell/), the ideal [timeline for selling a house](https://flipsplit.com/blog/timeline-for-selling-a-house/), and [how to get the asking price for your home](https://flipsplit.com/blog/how-to-get-asking-price-for-your-home/), be sure to check out our blog.
 

@@ -21,7 +21,7 @@ Selling to an investor, for all cash, is not a new thing and its popularity is i
 
 What does this mean?
 
-Well market adoption is always a sign that something positive lies in the process. With [cash home buying](https://flipsplit.com/pricing/), _there are numerous benefits that are pushing more and more homeowners to choose this route when selling their home._
+Well market adoption is always a sign that something positive lies in the process. With [cash home buying](https://flipsplit.com/how-it-works/), _there are numerous benefits that are pushing more and more homeowners to choose this route when selling their home._
 
 ### **Benefits of Selling to a Cash Buyer**
 

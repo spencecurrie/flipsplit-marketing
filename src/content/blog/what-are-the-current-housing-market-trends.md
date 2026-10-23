@@ -86,7 +86,7 @@ Despite real estate market trends indicating that there are calm waters ahead, y
 
 Here at FlipSplit, [we buy houses](https://flipsplit.com/). We’ll make a reasonable cash offer to buy your home and then we’ll make repairs and upgrades that align with the top selling features of a home to maximize the property value. When we resell the house, we’ll split the profits with you, leaving nothing but smooth sailing ahead.
 
-For more information on housing market trends, visit FlipSplit today. Questions regarding [how to respond to a low ball offer](https://flipsplit.com/how-to-respond-to-a-low-ball-offer) or what does [house in contingent](https://flipsplit.com/blog/what-does-house-in-contingent-mean/) mean? We’ve got you covered. Call today!
+For more information on housing market trends, visit FlipSplit today. Questions regarding [how to respond to a low ball offer](https://flipsplit.com/blog/how-to-respond-to-a-low-ball-offer/) or what does [house in contingent](https://flipsplit.com/blog/what-does-house-in-contingent-mean/) mean? We’ve got you covered. Call today!
 
 **Sources:** 
 

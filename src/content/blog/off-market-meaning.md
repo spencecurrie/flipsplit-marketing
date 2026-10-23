@@ -29,7 +29,7 @@ Before we dive into the benefits of buying or selling off-market, it’s importa
 
 ## Why Sell Off-Market?
 
-First things first—of all the [home selling options,](https://flipsplit.com/a-complete-guide-home-selling-options/) why would a homeowner choose to sell their real estate off-market, risking the appearance that their property is not for sale?
+First things first—of all the [home selling options,](https://flipsplit.com/blog/a-complete-guide-home-selling-options/) why would a homeowner choose to sell their real estate off-market, risking the appearance that their property is not for sale?
 
 Today’s current real estate market has more buyers than it does inventory.1 This means great opportunities for sellers since there’s always the potential for multiple offers and bidding wars.
 
@@ -91,7 +91,7 @@ A realtor can help with the following steps:
 
 -   **Setting a sale price** – Setting the right price for your home is key. You don’t want to leave money on the table. At the same time, setting the price too high can scare off qualified buyers. If you’re selling off-market, you can take your time finding the happy medium and the right buyer. But if you’re concerned about selling quickly, work with a professional or choose an iBuyer.
 
--   **Weighing and negotiating offers** – Are you looking for a seller who will waive inspection contingencies in the purchase agreement? How much would you negotiate down over a safety issue like radon? Do you need a [cash offer](https://flipsplit.com/cash-home-buyers-guide-selling-a-house-to-a-cash-buyer/), or can you wait for a prospective buyer’s financing to come through? If even contemplating these questions starts to stress you out, you might want a real estate agent to help streamline the process.
+-   **Weighing and negotiating offers** – Are you looking for a seller who will waive inspection contingencies in the purchase agreement? How much would you negotiate down over a safety issue like radon? Do you need a [cash offer](https://flipsplit.com/blog/cash-home-buyers-guide-selling-a-house-to-a-cash-buyer/), or can you wait for a prospective buyer’s financing to come through? If even contemplating these questions starts to stress you out, you might want a real estate agent to help streamline the process.
 
 ### Step 2: Get the Word Out
 
@@ -165,7 +165,7 @@ In the best-case scenario, they’ll keep you in mind if they _do_ ever choose t
 
 There are more ways than ever to sell your home.
 
-Don’t want to deal with realtors, lawyers, stages, photographers… or even potential buyers? At FlipSplit, we make your real estate fantasy a reality. When you sell your home to us off-market, we aim to provide the highest cash offer possible to ensure you’re getting the fair market value for your home. Then, we make repairs and upgrades, sell the home, and split any excess profit with you. Unlike other [cash home buyers](https://flipsplit.com/pricing/), we conduct our business with the homeowner’s best interests in mind, with the goal of maximizing your home’s value and final resell profits.
+Don’t want to deal with realtors, lawyers, stages, photographers… or even potential buyers? At FlipSplit, we make your real estate fantasy a reality. When you sell your home to us off-market, we aim to provide the highest cash offer possible to ensure you’re getting the fair market value for your home. Then, we make repairs and upgrades, sell the home, and split any excess profit with you. Unlike other [cash home buyers](https://flipsplit.com/how-it-works/), we conduct our business with the homeowner’s best interests in mind, with the goal of maximizing your home’s value and final resell profits.
 
 Because we buy homes as-is, there’s no lengthy inspection or appraisal process. In fact, you can sell your home in _days_ rather than weeks or months. [Learn more about how it works](https://flipsplit.com/).
 

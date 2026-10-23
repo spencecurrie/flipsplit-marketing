@@ -9,7 +9,7 @@ readingTime: 6
 heroImage: "https://flipsplit.com/wp-content/uploads/2021/06/Blog-Featured-Tile-11.jpg"
 ---
 
-Is your home teetering on the brink of disarray? Or at least a couple days away from kids throwing paint on the walls? Well, if you own a home that’s in need of repairs and you’re looking to sell, you generally have a few different [home selling options](https://flipsplit.com/a-complete-guide-home-selling-options/). You could put in the work yourself to shape up your home, fix only the critical repairs, or sell your home as-is.
+Is your home teetering on the brink of disarray? Or at least a couple days away from kids throwing paint on the walls? Well, if you own a home that’s in need of repairs and you’re looking to sell, you generally have a few different [home selling options](https://flipsplit.com/blog/a-complete-guide-home-selling-options/). You could put in the work yourself to shape up your home, fix only the critical repairs, or sell your home as-is.
 
 Follow this quick guide to learn everything you need to know about selling a house that needs work. 
 
@@ -65,7 +65,7 @@ Here’s how it works: FlipSplit pays for your house in cash, then tells you how
 
 Protect yourself against market downturn by working with FlipSplit. No matter how the final sale goes, you keep 100% of the money we paid upfront for your house. Conversely, protect yourself from FOMO and have a hook in the water with our profit participation. If the market continues to rise after your sale and the rehab looks amazing  you’ll stand to gain. To get started today, simply [enter your home address](https://flipsplit.com/) and we’ll make you an offer as soon as possible.
 
-The process of home buying and selling is intimidating for new-comers and veterans alike. Continue exploring our blogs on “[What Does It Mean When a House Is Off Market?](https://flipsplit.com/off-market-meaning)” and “[Ways to Avoid Foreclosure](https://flipsplit.com/blog/how-to-avoid-foreclosure-on-your-home/)” to get a better understanding of the industry and best practices when you’re in it. 
+The process of home buying and selling is intimidating for new-comers and veterans alike. Continue exploring our blogs on “[What Does It Mean When a House Is Off Market?](https://flipsplit.com/blog/off-market-meaning/)” and “[Ways to Avoid Foreclosure](https://flipsplit.com/blog/how-to-avoid-foreclosure-on-your-home/)” to get a better understanding of the industry and best practices when you’re in it. 
 
 **Sources:** 
 

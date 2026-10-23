@@ -77,7 +77,7 @@ Who is responsible for any repairs that come up? Will serious issues affect your
 
 ## Step 5: Lender Appraisal
 
-Unless you’re [selling a house to a cash buyer](https://flipsplit.com/cash-home-buyers-guide-selling-a-house-to-a-cash-buyer), there’s another party involved with the sale of your home—the mortgage lender. 
+Unless you’re [selling a house to a cash buyer](https://flipsplit.com/blog/cash-home-buyers-guide-selling-a-house-to-a-cash-buyer/), there’s another party involved with the sale of your home—the mortgage lender. 
 
 The mortgage lender will conduct an appraisal on your home to establish that the amount of money they are loaning to the buyer coincides with the price of the home. If you’ve priced out your house based on its specific features and comparable sales in the area, this should be a quick and painless procedure. The lender will match your price and the closing will continue.
 
@@ -123,7 +123,7 @@ But with [FlipSplit](https://flipsplit.com/), it doesn’t have to be. 
 
 As an off-market cash home buyer and a house flipping company, we can make selling your house more profitable than ever before. [We buy houses in San Bernardino](https://flipsplit.com/location-san-bernardino-county/), Riverside, and many more locations throughout California to help homeowners get the most out of their home’s value. Plus, with profit-splitting options for resales, repair-cost sharing for renovations, and closing times that can be as short as three days, selling a home is finally as easy as it should be.
 
-Discover a better way to sell your home on FlipSplit. Wondering [what are the typical closing costs for a seller](https://flipsplit.com/seller-closing-cost-breakdown-what-are-typical-closing-costs-paid-by-seller) or the most common [home selling mistakes](https://flipsplit.com/the-top-home-selling-mistakes-to-avoid)? Visit FlipSplit today for more information. 
+Discover a better way to sell your home on FlipSplit. Wondering [what are the typical closing costs for a seller](https://flipsplit.com/blog/seller-closing-cost-breakdown-what-are-typical-closing-costs-paid-by-seller/) or the most common [home selling mistakes](https://flipsplit.com/blog/the-top-home-selling-mistakes-to-avoid/)? Visit FlipSplit today for more information. 
 
 **Sources:** 
 

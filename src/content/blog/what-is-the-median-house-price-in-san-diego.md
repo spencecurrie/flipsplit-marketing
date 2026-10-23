@@ -190,7 +190,7 @@ Are you looking for the [best time to sell a house in San Diego](https://flipspl
 
 Because [we buy houses](https://flipsplit.com/) professionally, we can help you skip the market altogether. 
 
-Looking to [sell your home fast in San Diego](https://flipsplit.com/location/)? FlipSplit is an off-market solution to sell your home as is—even if it needs a lot of love. We offer you the highest value for your home, flip it, then split the profits when we sell it.
+Looking to [sell your home fast in San Diego](https://flipsplit.com/location-san-diego-county/)? FlipSplit is an off-market solution to sell your home as is—even if it needs a lot of love. We offer you the highest value for your home, flip it, then split the profits when we sell it.
 
 Our mission is to provide you with an easier way to sell. And whether you’re looking to sell quickly or take your time finding your next dream home, we’ll work with you to create a free assessment with an open and honest renovation plan. 
 

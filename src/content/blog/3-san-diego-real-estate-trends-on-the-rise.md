@@ -37,7 +37,7 @@ According to the most recent forecasts, home values aren’t done appreciating, 
 
 One of the primary reasons for increasing home prices in the San Diego market is related to Covid-19. 
 
-Put simply, there’s been a massive influx of non-San Diego residents flooding into the county with cash to burn. According to the San Diego Reader:3 “Local realtors say one of the most significant factors of heightened home sales is the arrival of interested [San Diego home buyers](https://flipsplit.com/location/) from the San Francisco Bay Area and Silicon Valley, where the tech explosion years ago sent home prices skyrocketing.” 
+Put simply, there’s been a massive influx of non-San Diego residents flooding into the county with cash to burn. According to the San Diego Reader:3 “Local realtors say one of the most significant factors of heightened home sales is the arrival of interested [San Diego home buyers](https://flipsplit.com/location-san-diego-county/) from the San Francisco Bay Area and Silicon Valley, where the tech explosion years ago sent home prices skyrocketing.” 
 
 The pandemic demonstrated that employees—especially in high-end occupations, such as tech—could effectively work remotely from anywhere. And with onerous lockdown restrictions in tightly-packed metros like San Francisco and Los Angeles, there was a diaspora of wealthy people fleeing such places in favor of:
 

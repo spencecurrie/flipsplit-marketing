@@ -31,7 +31,7 @@ While trusts are similar to wills in this regard, trusts differ in the following
 -   **Trusts can give further instructions** – While a will functions like a playbill in that it simply tells beneficiaries who’s who when dividing assets, a trust is more like a complete play with stage directions. It can give beneficiaries detailed instructions about how, when, and under what conditions they can receive their assets.
     
 
-If you find yourself wondering about the process of [selling inherited property](https://flipsplit.com/blog/101-handbook-to-selling-inherited-property-taxes--timing) compared to selling properties held in trust, we’ve got you covered here as well.
+If you find yourself wondering about the process of [selling inherited property](https://flipsplit.com/blog/101-handbook-to-selling-inherited-property-taxes-timing/) compared to selling properties held in trust, we’ve got you covered here as well.
 
 Now that you know what a trust is, let’s explore the two types of trust and how they affect the real estate process.
 

@@ -70,7 +70,7 @@ What will buyers be looking for? They may favor larger homes over one bedroom ap
 
 You couldn’t blink in 2020 without coming across content about how to survive and thrive in your home. With outside socializing and events canceled, people jumped into cooking at home, gardening, interior decorating, and other home-based hobbies. They needed more space to grow, to move, and to find quiet time away from family members. 
 
-The demand for homes that can stand up to 24/7 work and home life continues to be a strong trend, especially amongst those searching for [where to buy in Los Angeles](https://flipsplit.com/blog/how--where-to-buy-in-los-angeles). 
+The demand for homes that can stand up to 24/7 work and home life continues to be a strong trend, especially amongst those searching for [where to buy in Los Angeles](https://flipsplit.com/blog/how-where-to-buy-in-los-angeles/). 
 
 Along with looking for dedicated work spaces, homes that come with quality-of-life features will have an edge. These may include: 
 

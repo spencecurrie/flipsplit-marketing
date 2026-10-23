@@ -33,7 +33,7 @@ Not all neighborhoods come with coastal or metropolitan sale price tags. Next, w
 
 ![Luxury house with a swimming pool in LA](https://flipsplit.com/wp-content/uploads/2021/12/How-Much-Is-A-House-In-LA1.png)
 
-You may be looking at [where to buy in Los Angeles](https://flipsplit.com/blog/how--where-to-buy-in-los-angeles). Keep in mind, some neighborhoods within the city of Los Angeles currently have houses listed for under $400,000, while some go for well above the million-dollar mark. 
+You may be looking at [where to buy in Los Angeles](https://flipsplit.com/blog/how-where-to-buy-in-los-angeles/). Keep in mind, some neighborhoods within the city of Los Angeles currently have houses listed for under $400,000, while some go for well above the million-dollar mark. 
 
 So, let’s take a look at some of the various housing options in neighborhoods across the city to answer the question: “how much is a house in Los Angeles?”2
 

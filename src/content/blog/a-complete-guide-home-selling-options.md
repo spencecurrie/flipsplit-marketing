@@ -80,7 +80,7 @@ At FlipSplit, we purchase your home as-is, no matter what kind of condition it�
 
 With FlipSplit, you can sell your home with no fees, no closing costs, no showings, and no hassle. To start the process today, simply [enter your home address](https://flipsplit.com/) and get an offer on your home! 
 
-If you’re looking to learn more about proper home owning and the real estate market, check out our blog articles on “[What Does It Mean When a House Is Off Market?](https://flipsplit.com/off-market-meaning)” and “[Ways to Avoid Foreclosure](https://flipsplit.com/blog/how-to-avoid-foreclosure-on-your-home/)” 
+If you’re looking to learn more about proper home owning and the real estate market, check out our blog articles on “[What Does It Mean When a House Is Off Market?](https://flipsplit.com/blog/off-market-meaning/)” and “[Ways to Avoid Foreclosure](https://flipsplit.com/blog/how-to-avoid-foreclosure-on-your-home/)” 
 
 **Sources:** 
 

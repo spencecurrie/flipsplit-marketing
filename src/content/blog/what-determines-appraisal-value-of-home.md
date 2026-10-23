@@ -78,7 +78,7 @@ While a home’s existing design has an effect on the appraisal value, home appr
 
 The general rule of thumb: if it’s nailed down, it’s considered part of the house. That means that anything moveable or otherwise not directly attached to the house is considered personal property and won’t factor into the appraisal. That said, items like utility sheds and hot tubs, which are considered personal property, will not add appraisal value, but most real estate agents agree that they still contribute to the marketability of your home.
 
-Home appraisal isn’t an exact science, but knowing the factors at play can help you understand what to expect and how to prepare, whether you’re buying or selling. At [FlipSplit](https://flipsplit.com/), we can help you formulate a [home appraisal preparation checklist](https://flipsplit.com/home-appraisal-preparation-checklist) and will guide you every step of the way. Interested in [strategies to sell a house quickly?](https://flipsplit.com/blog/strategies-to-sell-a-house-quickly/) We’ve got you covered.
+Home appraisal isn’t an exact science, but knowing the factors at play can help you understand what to expect and how to prepare, whether you’re buying or selling. At [FlipSplit](https://flipsplit.com/), we can help you formulate a [home appraisal preparation checklist](https://flipsplit.com/blog/home-appraisal-preparation-checklist/) and will guide you every step of the way. Interested in [strategies to sell a house quickly?](https://flipsplit.com/blog/strategies-to-sell-a-house-quickly/) We’ve got you covered.
 
 Contact us today to [get your appraisal started](https://flipsplit.com/request-offer/)!
 

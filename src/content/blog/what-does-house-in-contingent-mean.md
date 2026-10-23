@@ -127,7 +127,7 @@ A home with contingent status can quickly turn into a house without an offer. Wh
 
 At FlipSplit, [we buy houses](https://flipsplit.com/). We make a cash offer to buy your home in any condition with no real estate contingencies. Then, we make upgrades and adjustments to the [top selling features of a home](https://flipsplit.com/blog/what-are-the-top-selling-features-of-a-home/) designed to maximize returns. When we sell the property, we split the profits with you. No hassles over financing, inspections, or repairs. Contact us today to get an offer on your house.
 
-For more insight on selling your house, visit our website. Questions regarding the [current housing market trends](https://flipsplit.com/what-are-the-current-housing-market-trends/) or [how to respond to a low ball offer?](https://flipsplit.com/how-to-respond-to-a-low-ball-offer) We’ve got you covered. Call today!
+For more insight on selling your house, visit our website. Questions regarding the [current housing market trends](https://flipsplit.com/blog/what-are-the-current-housing-market-trends/) or [how to respond to a low ball offer?](https://flipsplit.com/blog/how-to-respond-to-a-low-ball-offer/) We’ve got you covered. Call today!
 
 **Sources:** 
 

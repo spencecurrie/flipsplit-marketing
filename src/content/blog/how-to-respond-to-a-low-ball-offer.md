@@ -76,7 +76,7 @@ Even though the process didn’t result in the sale of your home, you can still 
 
 ### **Bypass the Emotional Roller Coaster with FlipSplit**
 
-Between the back and forth with home buyers and constant analysis of the [current housing market trends](https://flipsplit.com/what-are-the-current-housing-market-trends/), selling your home can be exhausting. Even though you can always decline an offer and extend your [timeline for selling a house](https://flipsplit.com/blog/timeline-for-selling-a-house/), wouldn’t you rather avoid the process altogether if you could?
+Between the back and forth with home buyers and constant analysis of the [current housing market trends](https://flipsplit.com/blog/what-are-the-current-housing-market-trends/), selling your home can be exhausting. Even though you can always decline an offer and extend your [timeline for selling a house](https://flipsplit.com/blog/timeline-for-selling-a-house/), wouldn’t you rather avoid the process altogether if you could?
 
 If you don’t want to deal with navigating low ball offers in the real estate market, [FlipSplit](https://flipsplit.com/) can help.
 
