@@ -250,7 +250,10 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 
   // ── Form lifecycle ──────────────────────────────────────────────────────
   function attachAutocomplete() {
-    document.querySelectorAll<HTMLInputElement>('input[name="address"]').forEach((input) => {
+    // Only this component's own inputs: each needs the sibling modal below. A
+    // bare input[name="address"] elsewhere (the nav box) used to be bound too,
+    // and a pick there created a lead row and a paid lookup with nothing shown.
+    document.querySelectorAll<HTMLInputElement>('form.address-form input[name="address"]').forEach((input) => {
       if (input.dataset.placesInit) return;
       input.dataset.placesInit = '1';
 
@@ -708,7 +711,27 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
     }
   }
 
+  // /?address=<text> (the nav box on a page with no form of its own): put the
+  // text in the first form and focus it, so the visitor picks a suggestion
+  // there. Never submitted from the URL — a Places pick is still required.
+  function prefillFromQuery() {
+    const params = new URLSearchParams(window.location.search);
+    const text = params.get('address');
+    if (text === null) return;
+    const input = document.querySelector<HTMLInputElement>('form.address-form input[name="address"]');
+    if (!input) return;
+    params.delete('address');
+    const qs = params.toString();
+    history.replaceState(history.state, '', window.location.pathname + (qs ? `?${qs}` : '') + window.location.hash);
+    input.value = text.trim();
+    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    input.focus({ preventScroll: true });
+    // Lets Places offer suggestions for the carried-over text.
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
   bootPlaces();
+  prefillFromQuery();
   // Re-run after Astro view transitions (e.g. user navigates from /about back
   // to / where another AddressForm renders). With <ClientRouter /> the page's
   // <script> modules execute only ONCE per session — on a client-side
@@ -718,5 +741,6 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
   // the Google dropdown work without a hard refresh.
   document.addEventListener('astro:page-load', () => {
     bootPlaces();
+    prefillFromQuery();
   });
 </script>

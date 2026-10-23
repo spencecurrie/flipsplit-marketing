@@ -174,7 +174,11 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
       </div>
 
       <div id="nav-offer-form-wrap" class="hidden min-w-0 flex-1 md:flex-1 md:max-w-md md:mx-auto">
-        <form action="/" method="get" class="w-full">
+        {/* Not an address form itself — no confirm modal lives here. The
+            script below hands the visitor to the page's own AddressForm, or
+            (no form on the page) this GET lands on /?address=, which prefills
+            the homepage form. */}
+        <form id="nav-offer-form" action="/" method="get" class="w-full">
           <div class="field flex items-center rounded-xl overflow-hidden border border-white/20" style="background: rgba(255,255,255,0.1);">
             <input type="text" name="address" placeholder="Enter home address" class="flex-1 min-w-0 bg-transparent text-white text-sm placeholder:text-white/60 focus:outline-none px-3 md:px-4 py-2.5" />
             <!-- Compact icon submit (visible on mobile) -->
@@ -447,6 +451,35 @@ const APP_URL = import.meta.env.PUBLIC_APP_URL || 'https://app.flipsplit.com';
       // The solid variant (every page since the 2026-10 reskin) is static: it
       // no longer swaps its links for an address form on scroll.
     };
+
+    // ── Nav address box → the page's own AddressForm. Focusing or submitting
+    //    it scrolls to the first real form, carries over any typed text and
+    //    focuses it, so the Google pick (and its confirm modal) happens there.
+    //    With no form on the page the native GET to /?address= runs instead. ──
+    const fsToPageForm = (text: string) => {
+      const target = document.querySelector<HTMLInputElement>('form.address-form input[name="address"]');
+      if (!target) return false;
+      if (text) {
+        target.value = text;
+        target.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target.focus({ preventScroll: true });
+      return true;
+    };
+    document.addEventListener('focusin', (e) => {
+      const el = e.target instanceof HTMLInputElement ? e.target : null;
+      if (el?.closest('#nav-offer-form') && fsToPageForm(el.value.trim())) el.value = '';
+    });
+    document.addEventListener('submit', (e) => {
+      const form = e.target instanceof HTMLFormElement ? e.target : null;
+      if (form?.id !== 'nav-offer-form') return;
+      const input = form.querySelector<HTMLInputElement>('input[name="address"]');
+      if (fsToPageForm(input?.value.trim() || '')) {
+        e.preventDefault();
+        if (input) input.value = '';
+      }
+    }, true); // capture: runs before ClientRouter's submit handler, which skips defaultPrevented
 
     window.addEventListener('scroll', fsApplyNavScroll, { passive: true });
     window.addEventListener('resize', fsApplyNavScroll);
