@@ -8,6 +8,11 @@ import Analytics from '@vercel/analytics/astro';
 // on .flipsplit.com, which the dashboard's lead conversion (flipsplit-app
 // src/lib/googleAds.js) reads back on app.flipsplit.com.
 const adsId = /^AW-\d+$/.test(import.meta.env.PUBLIC_GOOGLE_ADS_ID ?? '') ? import.meta.env.PUBLIC_GOOGLE_ADS_ID : null;
+// Meta pixel: same gating, PUBLIC_META_PIXEL_ID (digits, from Events Manager).
+// Sets _fbp/_fbc on .flipsplit.com on an ad click; the address form copies
+// them onto the lead row (lib/attribution.ts) and the dashboard's Lead event
+// (flipsplit-app src/lib/metaPixel.js) reads them back on app.flipsplit.com.
+const pixelId = /^\d{6,}$/.test(import.meta.env.PUBLIC_META_PIXEL_ID ?? '') ? import.meta.env.PUBLIC_META_PIXEL_ID : null;
 ---
 <script is:inline>window.webAnalyticsBeforeSend = (e) => ({ ...e, url: e.url.split(/[?#]/)[0] });</script>
 <Analytics />
@@ -20,6 +25,16 @@ const adsId = /^AW-\d+$/.test(import.meta.env.PUBLIC_GOOGLE_ADS_ID ?? '') ? impo
       gtag('js', new Date());
       gtag('config', adsId);
     </script>
+  </>
+)}
+{pixelId && (
+  <>
+    <script is:inline define:vars={{ pixelId }}>
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', pixelId);
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" alt="" src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`} /></noscript>
   </>
 )}
 <!-- Lead attribution: remember how this visit started so the address form can
@@ -40,6 +55,8 @@ const adsId = /^AW-\d+$/.test(import.meta.env.PUBLIC_GOOGLE_ADS_ID ?? '') ? impo
       // gbraid/wbraid are Google's consent-mode stand-ins for gclid.
       var gclid = clip(p.get('gclid') || p.get('gbraid') || p.get('wbraid'), 200);
       if (gclid) click.gclid = gclid;
+      var fbclid = clip(p.get('fbclid'), 500);
+      if (fbclid) click.fbclid = fbclid;
       var hasClick = Object.keys(click).length > 0;
 
       var prev = null;
