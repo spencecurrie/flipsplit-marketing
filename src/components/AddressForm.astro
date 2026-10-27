@@ -209,6 +209,7 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
 <script>
   import { getSupabase } from '../lib/supabase';
   import { FUNNEL_SESSION_KEY, resumeHref, cacheFunnelRow } from '../lib/funnelSession';
+  import { readAttribution } from '../lib/attribution';
 
   // Frontmatter runs at build time on the server — its consts do NOT exist in
   // this bundle. Two lines below referenced the frontmatter's APP_URL and threw
@@ -321,6 +322,10 @@ const textCenter  = centerOnly ? 'text-center' : centerResp ? 'text-center lg:te
               zip: parts.zip,
               county: parts.county,
               current_step: 0,
+              // Where this visit came from (utm_*, gclid, landing page) —
+              // stamped at creation so the CRM can say "Google Ads". See
+              // lib/attribution.ts and migration 0073.
+              ...readAttribution(),
             })
             .select('id')
             .single();
