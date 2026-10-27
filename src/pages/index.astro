@@ -272,7 +272,7 @@ const faqs = [
         <p class="m-0 max-[700px]:mt-3 text-[16px] max-[700px]:text-[15px] text-muted max-w-[360px] max-[700px]:max-w-none leading-[1.55]">You see every stage in your dashboard, from the first offer to the day a potential bonus lands.</p>
       </div>
 
-      <div class="mt-10 max-[700px]:mt-7 grid grid-cols-4 gap-4 max-[1000px]:grid-cols-2 max-[700px]:grid-cols-1 max-[700px]:gap-7">
+      <div class="mt-10 max-[700px]:mt-7 grid grid-cols-4 gap-4 max-[1000px]:grid-cols-2 max-[700px]:grid-cols-1 max-[700px]:gap-7 min-[701px]:auto-rows-fr">
         {stages.map((s) => (
           <div class="flex flex-col gap-2.5">
             <div class="flex justify-between items-center h-9 max-[700px]:h-8">
@@ -280,7 +280,7 @@ const faqs = [
               <span class="chip">{s.n}</span>
             </div>
             {s.cards.map((c) => (
-              <div class="stage-card rounded-xl p-4 flex flex-col gap-2 min-h-[132px] max-[700px]:min-h-0 box-border border border-line bg-white text-ink">
+              <div class="stage-card flex-1 rounded-xl p-4 flex flex-col gap-2 min-h-[132px] max-[700px]:min-h-0 box-border border border-line bg-white text-ink">
                 <span class="text-[15px] font-semibold">{c.title}</span>
                 <span class="stage-sub text-[14px] leading-[1.45] text-muted">{c.body}</span>
                 <span class="stage-meta mt-auto max-[700px]:mt-1 self-start inline-flex items-center gap-1.5 text-[12px] px-2 py-1 rounded-md border border-line">
