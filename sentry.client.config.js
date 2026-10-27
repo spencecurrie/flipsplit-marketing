@@ -16,6 +16,14 @@ Sentry.init({
     }),
   ],
   tracesSampleRate: 0.1,
+  // Astro's <ClientRouter /> chains .finally() onto document.startViewTransition()
+  // without a .catch(). When the browser skips the animation because the tab is
+  // hidden (background tab, link-preview bots), Chrome rejects with
+  // "InvalidStateError: Transition was aborted because of invalid state. Document
+  // hidden" and it surfaces as an unhandled rejection. The page swap still
+  // completes, so this is pure noise. First seen from a Facebook link-preview
+  // crawler (FLIPSPLIT-MARKETING-2).
+  ignoreErrors: [/Transition was aborted because of invalid state/],
   // Record every session while traffic is low (launch). Lower replaysSessionSampleRate
   // (e.g. 0.1) once we're past the first few hundred sessions or hitting replay quota.
   replaysSessionSampleRate: 1.0,
