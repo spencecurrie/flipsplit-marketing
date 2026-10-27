@@ -249,14 +249,12 @@ const pageDescription = 'Create your FlipSplit account to track your cash offer 
         // be defensive in case PostgREST hands it back as a single-element array.
         const session = Array.isArray(claimed) ? claimed[0] : claimed;
 
-        // Kick off the AVM → preliminary offer range computation. Fire and
-        // forget: the user moves on to phone capture while this runs, and the
-        // dashboard shows a "preparing your estimate" state until it lands.
-        if (session?.id) {
-          supabase.functions
-            .invoke('compute-offer-range', { body: { session_id: session.id } })
-            .catch((e: any) => console.warn('compute-offer-range invoke failed:', e));
-        }
+        // The offer range is NOT computed here. The app's "preparing your
+        // offer" step list (PreparingOffer.jsx) runs compute-offer-range when
+        // the homeowner lands, and only shows while the range is still missing.
+        // Firing it from here raced the phone step: when this call landed
+        // first, the homeowner went phone → dashboard with no loading screen
+        // (Spencer, 2026-10-27).
 
         try {
           const { data: { user: authedUser } } = await supabase.auth.getUser();
