@@ -34,10 +34,9 @@ const reviews = [
   },
 ];
 
-type Tone = { bg: string; fg: string; sub: string; line: string; line2: string };
-const light: Tone = { bg: 'bg-white', fg: 'text-ink', sub: 'text-muted', line: 'border-line', line2: 'border-line' };
-const dark: Tone  = { bg: 'bg-ink', fg: 'text-white', sub: 'text-[#BDBDB6]', line: 'border-ink', line2: 'border-[#3A3A36]' };
-const card = (title: string, body: string, meta: string, tone: Tone = light) => ({ title, body, meta, ...tone });
+// Every tile is light by default and turns into the black "highlight" tile on
+// hover (see .stage-card in <style>). Spencer asked for this on 2026-10-27.
+const card = (title: string, body: string, meta: string) => ({ title, body, meta });
 
 // "Close on your timeline" meta: the design had a "[X] days" placeholder. The
 // site-wide close claim is "as few as 7 days" (Spencer, 2026-10-16).
@@ -51,9 +50,9 @@ const stages = [
   { title: 'We renovate', n: '03', cards: [
     card('We fund the fix-up', 'Our crew, our budget, our risk. Never yours.', 'After closing'),
     card('Follow along', 'Photos and updates in your dashboard as work happens.', 'Weekly') ] },
-  { title: 'Potential bonus', n: '04', cards: [
-    card('Potential bonus paid', 'If the home resells above projection, your share of the profit is paid within 10 days after our resale.', 'After resale', dark),
-    card('Never owe anything back', 'If it sells for less, a potential bonus shrinks, down to $0.', 'Guaranteed') ] },
+  { title: 'Bonus', n: '04', cards: [
+    card('Potential bonus paid', 'If the home resells above projection, your share of the profit is paid within 10 days after our resale.', 'After resale'),
+    card('Never owe anything back', 'If the home sells for less than expected, that’s on us. You keep everything you were paid at closing and never owe a dollar back.', 'Guaranteed') ] },
 ];
 
 const cases = [
@@ -89,8 +88,24 @@ const faqs = [
   <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
   <SiteAnalytics />
   <ClientRouter />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <style>
+    /* How-it-works stage tiles: light at rest, the black highlight tile on
+       hover, nudged slightly larger. Hover-only so touch devices stay static. */
+    .stage-card { transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .2s ease; }
+    .stage-card .stage-sub, .stage-card .stage-meta { transition: color .2s ease, border-color .2s ease; }
+    @media (hover: hover) {
+      .stage-card:hover { background: var(--color-ink); color: #fff; border-color: var(--color-ink); transform: scale(1.03); }
+      .stage-card:hover .stage-sub { color: #BDBDB6; }
+      .stage-card:hover .stage-meta { border-color: #3A3A36; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .stage-card, .stage-card .stage-sub, .stage-card .stage-meta { transition: none; }
+      .stage-card:hover { transform: none; }
+    }
     /* Offer-calculator range: transparent native track over the painted
        track/fill divs; the thumb is the design's ringed black dot. */
     .range { -webkit-appearance: none; appearance: none; width: 100%; height: 28px; background: transparent; margin: 0; cursor: pointer; }
@@ -115,10 +130,7 @@ const faqs = [
       <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(18,18,18,0.82)_0%,rgba(18,18,18,0.55)_50%,rgba(18,18,18,0.12)_100%)] max-[700px]:bg-none max-[700px]:bg-[rgba(18,18,18,0.62)]"></div>
       <div class="relative min-h-[640px] max-[700px]:min-h-0 box-border px-16 py-[72px] max-[700px]:px-[18px] max-[700px]:pt-8 max-[700px]:pb-7 flex flex-col justify-center text-left max-[700px]:text-center">
         <div class="max-w-[760px]">
-          <span class="inline-flex items-center gap-2 h-[30px] px-3 border border-white/[.28] rounded-full text-[13px] max-[700px]:text-[12px] text-white">
-            <span class="w-1.5 h-1.5 rounded-full bg-white"></span>Cash now · Potential bonus after resale
-          </span>
-          <h1 class="mt-5 max-[700px]:mt-3.5 text-[64px] max-[1000px]:text-[52px] max-[700px]:text-[34px] leading-[1.04] max-[700px]:leading-[1.08] tracking-[-0.045em] font-semibold text-white">Cash now, plus more<br class="max-[700px]:hidden" /> when your home resells.</h1>
+          <h1 class="text-[64px] max-[1000px]:text-[52px] max-[700px]:text-[34px] leading-[1.04] max-[700px]:leading-[1.08] tracking-[-0.045em] font-semibold text-white">Cash now, plus more<br class="max-[700px]:hidden" /> when your home resells.</h1>
           <p class="mt-5 max-[700px]:mt-3 text-[18px] max-[700px]:text-[15px] leading-[1.55] max-[700px]:leading-[1.5] text-white/[.86] max-[700px]:text-white max-w-[560px]">FlipSplit unlocks your equity instantly while still allowing you to benefit from a newly renovated home.</p>
           <div class="mt-7 max-[700px]:mt-5 max-w-[460px] max-[700px]:max-w-none max-[700px]:[&_.address-form]:mx-auto max-[700px]:[&_.flex-wrap]:justify-center [&_.address-modal]:text-left">
             <AddressForm id="hero-form" theme="dark" />
@@ -263,7 +275,7 @@ const faqs = [
         <p class="m-0 max-[700px]:mt-3 text-[16px] max-[700px]:text-[15px] text-muted max-w-[360px] max-[700px]:max-w-none leading-[1.55]">You see every stage in your dashboard, from the first offer to the day a potential bonus lands.</p>
       </div>
 
-      <div class="mt-10 max-[700px]:mt-7 grid grid-cols-4 gap-4 max-[1000px]:grid-cols-2 max-[700px]:grid-cols-1 max-[700px]:gap-7">
+      <div class="mt-10 max-[700px]:mt-7 grid grid-cols-4 gap-4 max-[1000px]:grid-cols-2 max-[700px]:grid-cols-1 max-[700px]:gap-7 min-[701px]:auto-rows-fr">
         {stages.map((s) => (
           <div class="flex flex-col gap-2.5">
             <div class="flex justify-between items-center h-9 max-[700px]:h-8">
@@ -271,10 +283,10 @@ const faqs = [
               <span class="chip">{s.n}</span>
             </div>
             {s.cards.map((c) => (
-              <div class:list={["rounded-xl p-4 flex flex-col gap-2 min-h-[132px] max-[700px]:min-h-0 box-border border", c.bg, c.fg, c.line]}>
+              <div class="stage-card flex-1 rounded-xl p-4 flex flex-col gap-2 min-h-[132px] max-[700px]:min-h-0 box-border border border-line bg-white text-ink">
                 <span class="text-[15px] font-semibold">{c.title}</span>
-                <span class:list={["text-[14px] leading-[1.45]", c.sub]}>{c.body}</span>
-                <span class:list={["mt-auto max-[700px]:mt-1 self-start inline-flex items-center gap-1.5 text-[12px] px-2 py-1 rounded-md border", c.line2]}>
+                <span class="stage-sub text-[14px] leading-[1.45] text-muted">{c.body}</span>
+                <span class="stage-meta mt-auto max-[700px]:mt-1 self-start inline-flex items-center gap-1.5 text-[12px] px-2 py-1 rounded-md border border-line">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18"></path><path d="M8 3v4"></path><path d="M16 3v4"></path></svg>
                   {c.meta}
                 </span>

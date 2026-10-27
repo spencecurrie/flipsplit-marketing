@@ -28,12 +28,12 @@ const factors = [
 
 const fees = [
   { n: '01', title: 'Closing Costs', body: 'Title insurance, escrow fees, county transfer taxes, and prorated property taxes typically run 1–2% of your sale price. You’ll see every line item itemized before close — no surprise deductions.' },
-  { n: '02', title: 'Program Fee', body: 'If you decide to take a FlipSplit profit split, we charge a 2.5% program fee for managing the renovation project. Pure cash-offer sellers don’t pay this fee.' },
+  { n: '02', title: 'Program Fee', body: 'If you decide to take a FlipSplit profit split, we charge a 3–4% program fee for managing the renovation project. Pure cash-offer sellers don’t pay this fee.' },
   { n: '03', title: 'Net Proceeds', body: 'Your final take-home amount is your offer minus closing costs and any program fee attributed to your sale. We show this number clearly on every offer summary.' },
 ];
 
 const faqs = [
-  { q: 'What fees do I pay to FlipSplit?', a: 'Pure cash-offer sellers pay $0 in FlipSplit fees — you receive 100% of the amount we offer you. If you choose the profit-split path, we charge a 2.5% program fee for managing the renovation. Either way, standard seller closing costs (title, escrow, transfer taxes) apply and are itemized line-by-line before close — no hidden fees.' },
+  { q: 'What fees do I pay to FlipSplit?', a: 'Pure cash-offer sellers pay $0 in FlipSplit fees — you receive 100% of the amount we offer you. If you choose the profit-split path, we charge a 3–4% program fee for managing the renovation. Either way, standard seller closing costs (title, escrow, transfer taxes) apply and are itemized line-by-line before close — no hidden fees.' },
   { q: 'What if the renovated home doesn’t sell for what you projected?', a: 'Your upfront cash offer is yours regardless. FlipSplit carries 100% of the construction and downside market risk. The profit-split bonus only pays out if the renovated home sells above your offer — if the market underperforms, your upfront amount doesn’t change. You’re guaranteed the cash, not guaranteed the bonus.' },
   { q: 'Who decides what gets renovated, and will I see the budget?', a: 'We do — but you receive our estimated renovation budget AND a projected resale price upfront, before you sign. No surprises. Once construction starts, our team manages every contractor, permit, and material.' },
   { q: 'Can I visit the property during construction?', a: 'Unfortunately no — it’s an insurance restriction during active work. Once renovations are complete, we’ll happily schedule a walk-through preview before the home goes back on the market.' },
@@ -89,7 +89,10 @@ const plans = PLANS.map((p, i) => {
   <link rel="canonical" href={canonicalURL} />
   <SocialMeta title={pageTitle} description={pageDescription} url={canonicalURL} />
   <SiteAnalytics />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <ClientRouter />
 </head>
 <body class="bg-white text-ink antialiased">
