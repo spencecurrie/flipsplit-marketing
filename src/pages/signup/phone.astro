@@ -12,22 +12,28 @@ import SiteAnalytics from '../../components/SiteAnalytics.astro';
 // qualification session as `tcpa_consent_text` for legal record. Together with
 // the timestamp and IP, this is the consent log we'd produce in a TCPA dispute.
 //
-// The checkbox is deliberately unchecked on load and does NOT gate the button:
-// the first 10DLC submission was rejected for taking consent from the act of
-// submitting, which leaves nothing separately auditable. A phone number is
-// still required — that is the account's contact detail — but texting it
-// requires the box. Consent columns are written only when it is ticked, and
-// attio-lead-webhook refuses to enqueue an SMS for a session with no
-// tcpa_consent_accepted_at, so an unticked box means no messages.
+// Consent is taken from the submit itself (2026-10-28, replacing the optional
+// checkbox almost nobody ticked): the disclosure sits directly above the
+// "Confirm and finish" button and is scoped to texts ABOUT THE PERSON'S OWN
+// OFFER REQUEST — informational, not marketing. Every submit with a valid
+// number writes tcpa_consent_accepted_at + the exact disclosure text + IP, and
+// that timestamp is what queues the welcome text (migration 0027). Leads
+// captured before this change with no timestamp are NOT backfilled: they never
+// saw this disclosure, so they get rep calls, not automated texts.
+//
+// History: the first 10DLC submission (marketing campaign) was rejected for
+// taking consent from the act of submitting, which is why the checkbox
+// existed. The campaign is being re-registered as offer-request / customer
+// care messaging with this exact flow. If the disclosure wording changes, the
+// Allo campaign registration must change with it.
 //
 // This page is deliberately reachable signed out: carrier reviewers vetting our
 // 10DLC campaign have to be able to open the URL cold and read the opt-in
 // disclosure. Signed out it renders read-only and routes into signup on submit;
 // the consent record is still only ever written for a real account.
 //
-// The wording is the carrier-registered 10DLC copy — it must name marketing
-// messages, since the campaign sends them. Do not reword without re-checking
-// the campaign registration.
+// The wording is byte-identical to flipsplit-app/src/pages/funnel/PhoneStep.jsx
+// (the in-app phone step). Change both together or not at all.
 
 const PRIVACY_POLICY_URL = 'https://www.flipsplit.com/privacy-policy/';
 
@@ -88,45 +94,31 @@ const pageDescription = 'Add your mobile number so FlipSplit can reach you the m
             class="w-full h-12 px-3.5 border border-line-strong rounded-[12px] bg-white text-[15px] text-ink placeholder:text-faint outline-none focus:border-ink transition-colors disabled:bg-mute mb-5"
           />
 
-          <!-- TCPA opt-in. Unchecked on load, optional, and next to the
-               disclosure it applies to — all three are 10DLC requirements. -->
-          <div class="border border-line rounded-[12px] p-3.5">
-            <label class="flex items-start gap-3 cursor-pointer">
-              <input
-                id="ph-consent"
-                type="checkbox"
-                class="mt-0.5 w-5 h-5 accent-ink cursor-pointer flex-shrink-0"
-              />
-              <span class="text-[13px] leading-[1.6] text-muted">
-                By checking this box, you agree to receive SMS customer care,
-                product or service delivery notifications, and marketing or
-                promotional messages from FlipSplit LLC at the phone number
-                provided. Message frequency may vary. Standard message and data
-                rates may apply. Reply STOP to opt out. Reply HELP for help.
-                Consent is not a condition of purchase. See our
-                <a
-                  href={PRIVACY_POLICY_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-ink underline hover:text-muted"
-                >Privacy Policy</a>. Your mobile information will not be sold or
-                shared with third parties for promotional or marketing purposes.
-              </span>
-            </label>
-          </div>
+          <p id="ph-error" class="hidden text-[14px] text-danger mb-4"></p>
 
-          <p class="mt-2.5 text-[13px] leading-[1.6] text-[#6B6B65]">
-            Optional — you can leave this unchecked and still continue. We'll
-            call or email you about your offer either way.
+          <!-- TCPA / 10DLC disclosure. Consent is the tap on the button directly
+               below, so this must stay immediately above it, fully visible,
+               and word-for-word what TCPA_CONSENT_TEXT stores on the session. -->
+          <p id="ph-disclosure" class="text-[13px] leading-[1.6] text-muted">
+            By tapping "Confirm and finish", you agree to receive text messages
+            from FlipSplit LLC about your offer request at the number provided,
+            including automated messages. Message frequency varies. Msg &amp;
+            data rates may apply. Reply STOP to opt out. Reply HELP for help.
+            Consent is not a condition of purchase. See our
+            <a
+              href={PRIVACY_POLICY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-ink underline hover:text-muted"
+            >Privacy Policy</a>. Your mobile information will not be sold or
+            shared with third parties for promotional or marketing purposes.
           </p>
-
-          <p id="ph-error" class="hidden text-[14px] text-danger mt-4"></p>
 
           <button
             id="ph-submit"
             type="submit"
             disabled
-            class="w-full h-12 mt-6 rounded-[12px] bg-ink hover:bg-ink-soft text-white text-[15px] font-medium transition-colors disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-ink"
+            class="w-full h-12 mt-4 rounded-[12px] bg-ink hover:bg-ink-soft text-white text-[15px] font-medium transition-colors disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-ink"
           >Confirm and finish</button>
         </form>
 
@@ -150,17 +142,16 @@ const pageDescription = 'Add your mobile number so FlipSplit can reach you the m
 
     const PRIVACY_POLICY_URL = 'https://www.flipsplit.com/privacy-policy/';
 
-    // Byte-identical to the carrier-registered 10DLC copy and to the visible
-    // disclosure above. Stored on the session as the consent record.
+    // Word-for-word the visible disclosure above the button and the copy in
+    // flipsplit-app PhoneStep.jsx. Stored on the session as the consent record.
     const TCPA_CONSENT_TEXT =
-      "By checking this box, you agree to receive SMS customer care, product or " +
-      "service delivery notifications, and marketing or promotional messages " +
-      "from FlipSplit LLC at the phone number provided. Message frequency may " +
-      "vary. Standard message and data rates may apply. Reply STOP to opt out. " +
-      "Reply HELP for help. Consent is not a condition of purchase. See our " +
-      "Privacy Policy at " + PRIVACY_POLICY_URL + ". Your mobile information " +
-      "will not be sold or shared with third parties for promotional or " +
-      "marketing purposes.";
+      'By tapping "Confirm and finish", you agree to receive text messages from ' +
+      'FlipSplit LLC about your offer request at the number provided, including ' +
+      'automated messages. Message frequency varies. Msg & data rates may apply. ' +
+      'Reply STOP to opt out. Reply HELP for help. Consent is not a condition of ' +
+      'purchase. See our Privacy Policy at ' + PRIVACY_POLICY_URL + '. Your mobile ' +
+      'information will not be sold or shared with third parties for promotional ' +
+      'or marketing purposes.';
 
     function formatPhoneInput(raw: string): string {
       const digits = raw.replace(/\D/g, '').slice(0, 10);
@@ -179,7 +170,6 @@ const pageDescription = 'Add your mobile number so FlipSplit can reach you the m
       form.dataset.phoneInit = '1';
 
       const phoneEl   = document.getElementById('ph-phone')   as HTMLInputElement;
-      const consentEl = document.getElementById('ph-consent') as HTMLInputElement;
       const errorEl   = document.getElementById('ph-error')   as HTMLElement;
       const submitBtn = document.getElementById('ph-submit')  as HTMLButtonElement;
 
@@ -193,14 +183,12 @@ const pageDescription = 'Add your mobile number so FlipSplit can reach you the m
       function clearError() {
         errorEl.classList.add('hidden');
       }
-      // Consent is intentionally absent here: ticking the box is optional.
       function syncSubmitState() {
         submitBtn.disabled = digitsOnly(phoneEl.value).length !== 10 || submitting;
       }
       function setBusy(busy: boolean) {
         submitting = busy;
         phoneEl.disabled = busy;
-        consentEl.disabled = busy;
         submitBtn.textContent = busy ? 'Saving…' : 'Confirm and finish';
         syncSubmitState();
       }
@@ -272,7 +260,6 @@ const pageDescription = 'Add your mobile number so FlipSplit can reach you the m
         setBusy(true);
 
         try {
-          const consent = consentEl.checked;
           const acceptedAt = new Date().toISOString();
           const e164 = `+1${phoneDigits}`;
 
@@ -290,11 +277,11 @@ const pageDescription = 'Add your mobile number so FlipSplit can reach you the m
 
           const patch = {
             phone: e164,
-            // Left null when the box is unticked — that null is what stops the
-            // SMS pipeline from ever texting this number.
-            tcpa_consent_accepted_at: consent ? acceptedAt : null,
-            tcpa_consent_text: consent ? TCPA_CONSENT_TEXT : null,
-            tcpa_consent_ip: consent ? ip : null,
+            // Consent is the tap on "Confirm and finish" under the disclosure.
+            // Setting this timestamp is what queues the welcome text (0027).
+            tcpa_consent_accepted_at: acceptedAt,
+            tcpa_consent_text: TCPA_CONSENT_TEXT,
+            tcpa_consent_ip: ip,
             status: 'completed',
             completed_at: acceptedAt,
             current_step: 7,
@@ -325,9 +312,10 @@ const pageDescription = 'Add your mobile number so FlipSplit can reach you the m
             user_id: user!.id,
             event_name: 'phone_captured',
             payload: {
-              consent_given: consent,
-              consent_accepted_at: consent ? acceptedAt : null,
-              consent_ip: consent ? ip : null,
+              consent_given: true,
+              consent_method: 'submit_disclosure',
+              consent_accepted_at: acceptedAt,
+              consent_ip: ip,
             },
           });
 
