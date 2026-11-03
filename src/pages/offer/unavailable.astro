@@ -1,0 +1,73 @@
+---
+import '../../styles/global.css';
+import SocialMeta from '../../components/SocialMeta.astro';
+import SiteAnalytics from '../../components/SiteAnalytics.astro';
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const pageTitle = 'FlipSplit — We can’t offer on this property';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{pageTitle}</title>
+  <link rel="canonical" href={canonicalURL} />
+  <SocialMeta title={pageTitle} url={canonicalURL} />
+  <SiteAnalytics />
+  {/* Only reached mid-funnel. Full page load, no ClientRouter: see OfferLayout. */}
+  <meta name="robots" content="noindex, follow" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+</head>
+<body class="bg-white text-ink min-h-screen flex flex-col">
+  <div class="h-1 bg-line"></div>
+  <header class="w-full max-w-[1152px] mx-auto px-6 box-border h-[76px] flex items-center">
+    <a href="/" class="flex items-center gap-2.5 no-underline text-ink">
+      <img src="/logo-mark.png" alt="" width="34" height="34" class="block w-[34px] h-[34px] object-contain" />
+      <span class="text-[19px] font-semibold tracking-[-0.02em]">FlipSplit</span>
+    </a>
+  </header>
+
+  <main class="w-full max-w-[1152px] mx-auto px-6 box-border flex-1 flex flex-col items-center justify-center text-center pb-[76px]">
+    <div class="w-[88px] h-[88px] rounded-[20px] border border-line flex items-center justify-center mb-8">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"></path><path d="M5 9.5V20h14V9.5"></path><path d="M10 12l4 4"></path><path d="M14 12l-4 4"></path></svg>
+    </div>
+    <h1 class="m-0 mb-3 max-w-[680px] text-[40px] max-[640px]:text-[30px] leading-[1.1] tracking-[-0.035em] font-semibold">Sorry, we can't offer on your property at this moment</h1>
+    <p class="m-0 max-w-[520px] text-[18px] leading-[1.55] text-muted">Right now we buy single family homes, condos, attached homes, and manufactured or mobile homes when the owner also owns the land.</p>
+    <p id="unavailable-address" class="m-0 mt-5 min-h-[23px] text-[15px] font-medium text-ink"></p>
+  </main>
+
+  <script>
+    import { getSupabase } from '../../lib/supabase';
+    import { readFunnelSessionId, readCachedFunnelRow } from '../../lib/funnelSession';
+
+    (async () => {
+      const addrEl = document.getElementById('unavailable-address');
+      if (!addrEl) return;
+      if (new URL(window.location.href).searchParams.get('preview') === '1') {
+        addrEl.textContent = '33951 Alcazar Dr, Dana Point, CA 92629 (preview)';
+        return;
+      }
+      // The address is a courtesy: with no session the page still says its piece.
+      try {
+        const supabase = getSupabase();
+        const { data: { session } } = await supabase.auth.getSession();
+        const id = readFunnelSessionId();
+        if (!session?.user || !id) return;
+        let row: any = readCachedFunnelRow(id, session.user.id);
+        if (!row) {
+          ({ data: row } = await supabase
+            .from('qualification_sessions').select('address').eq('id', id).maybeSingle());
+        }
+        addrEl.textContent = row?.address ?? '';
+      } catch (err) {
+        console.error('Could not load the address:', err);
+      }
+    })();
+  </script>
+</body>
+</html>

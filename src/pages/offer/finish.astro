@@ -57,6 +57,7 @@ const pageTitle = 'FlipSplit — Preparing your offer';
   <script>
     import { getSupabase } from '../../lib/supabase';
     import { readFunnelSessionId } from '../../lib/funnelSession';
+    import { propertyGate, LAND_HREF, UNAVAILABLE_HREF } from '../../lib/propertyEligibility';
 
     // crypto.randomUUID() only exists in "secure contexts" — HTTPS or
     // localhost — so it's missing when the site is opened over a plain-HTTP LAN
@@ -128,7 +129,7 @@ const pageTitle = 'FlipSplit — Preparing your offer';
           //    to the user's most-recent unfinished one.
           const { data: sessions, error: selErr } = await supabase
             .from('qualification_sessions')
-            .select('id')
+            .select('id, home_category, owns_land')
             .eq('user_id', userId)
             .eq('status', 'in_progress')
             .order('created_at', { ascending: false });
@@ -137,6 +138,14 @@ const pageTitle = 'FlipSplit — Preparing your offer';
           const session = sessions?.find((s: any) => s.id === chosenId) ?? sessions?.[0];
           if (!session) {
             window.location.replace('/');
+            return;
+          }
+
+          // A property we can't offer on must never reach signup: that is what
+          // would turn it into a lead.
+          const gate = propertyGate(session);
+          if (gate !== 'ok') {
+            window.location.replace(gate === 'unavailable' ? UNAVAILABLE_HREF : LAND_HREF);
             return;
           }
 

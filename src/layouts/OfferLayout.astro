@@ -321,6 +321,7 @@ const pageDescription = `Step ${step} of ${totalSteps} of the FlipSplit offer re
   <script>
     import { getSupabase } from '../lib/supabase';
     import { readFunnelSessionId, cacheFunnelRow, readCachedFunnelRow } from '../lib/funnelSession';
+    import { propertyGate, LAND_HREF, UNAVAILABLE_HREF } from '../lib/propertyEligibility';
 
     declare global {
       interface Window {
@@ -406,7 +407,7 @@ const pageDescription = `Step ${step} of ${totalSteps} of the FlipSplit offer re
         const fake = { id: 'preview', address: '33951 Alcazar Dr, Dana Point, CA 92629' };
         if (addrEl) addrEl.textContent = fake.address + ' (preview)';
         const previewAdvance = async () => {
-          const href = nextBtn.dataset.nextHref!;
+          const href = (window.__funnel as any).getRoute?.()?.href ?? nextBtn.dataset.nextHref!;
           window.location.assign(href.includes('?') ? `${href}&preview=1` : `${href}?preview=1`);
         };
         window.__funnel = {
@@ -462,30 +463,45 @@ const pageDescription = `Step ${step} of ${totalSteps} of the FlipSplit offer re
       const completedStepNum = nextMatch ? parseInt(nextMatch[1]) - 1 : 7;
       const stepDoneEvent = `step_${completedStepNum}_completed`;
 
-      // Reusable: save current answers + fire event + redirect
+      // Steps 4 onward only exist for a property we can offer on. Catches a
+      // typed URL, a resumed draft, and anyone mid-funnel when this shipped.
+      if (completedStepNum >= 4) {
+        const gate = propertyGate(session);
+        if (gate !== 'ok') {
+          window.location.replace(gate === 'unavailable' ? UNAVAILABLE_HREF : LAND_HREF);
+          return;
+        }
+      }
+      // A manufactured or mobile home reached step 4 by way of the land question.
+      if (completedStepNum === 4 && session.home_category === 'manufactured_mobile') {
+        backBtn.dataset.backHref = LAND_HREF;
+      }
+
+      // Reusable: save current answers + fire event + redirect. A page can
+      // steer this with getRoute() (see lib/propertyEligibility.ts).
       const advance = async () => {
         const patch = window.__funnel.getSelected();
         if (!patch) return;
+        const route = (window.__funnel as any).getRoute?.() ?? null;
         clearError();
         nextBtn.disabled = true;
         try {
           const { data: saved, error: updErr } = await supabase
             .from('qualification_sessions')
-            .update({ ...patch, current_step: completedStepNum })
+            .update({ ...patch, current_step: route?.currentStep ?? completedStepNum })
             .eq('id', session.id)
             .select('*')
             .maybeSingle();
           if (updErr) throw updErr;
           cacheFunnelRow(saved);
 
-          await supabase.from('events').insert({
-            session_id: session.id,
-            user_id: userId,
-            event_name: stepDoneEvent,
-            payload: patch,
-          });
+          const base = { session_id: session.id, user_id: userId, payload: patch };
+          await supabase.from('events').insert([
+            { ...base, event_name: route?.event ?? stepDoneEvent },
+            ...(route?.declined ? [{ ...base, event_name: 'property_declined' }] : []),
+          ]);
 
-          window.location.assign(nextBtn.dataset.nextHref!);
+          window.location.assign(route?.href ?? nextBtn.dataset.nextHref!);
         } catch (err: any) {
           console.error(err);
           setError("We couldn't save your answer. Please try again, or email us at info@flipsplit.com.");

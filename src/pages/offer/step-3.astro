@@ -29,6 +29,8 @@ const options = [
 </OfferLayout>
 
 <script>
+  import { routeForCategory } from '../../lib/propertyEligibility';
+
   declare global {
     interface Window {
       __funnel: {
@@ -66,7 +68,10 @@ const options = [
       });
     });
 
-    window.__funnel.getSelected = () => (selected ? { home_category: selected } : null);
+    // A new category wipes any earlier land answer: it only means something for
+    // the category it was asked under.
+    window.__funnel.getSelected = () => (selected ? { home_category: selected, owns_land: null } : null);
+    (window.__funnel as any).getRoute = () => (selected ? routeForCategory(selected) : null);
     render();
   };
 
