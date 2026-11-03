@@ -154,7 +154,10 @@ const pageDescription = 'Add your mobile number so FlipSplit can reach you the m
       'or marketing purposes.';
 
     function formatPhoneInput(raw: string): string {
-      const digits = raw.replace(/\D/g, '').slice(0, 10);
+      // US area codes never start with 1, so a leading 1 is the country code
+      // (typed or autofilled). Left in, it became the area code and cost the
+      // last digit.
+      const digits = raw.replace(/\D/g, '').replace(/^1/, '').slice(0, 10);
       if (digits.length < 4) return digits;
       if (digits.length < 7) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
       return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
@@ -286,6 +289,24 @@ const pageDescription = 'Add your mobile number so FlipSplit can reach you the m
             completed_at: acceptedAt,
             current_step: 7,
           };
+
+          // Nothing unfinished means this account already finished signing up
+          // and came back to this page. Don't add another consent-only row:
+          // it only buries their home in admin. Open what they have.
+          if (!rows || rows.length === 0) {
+            const { data: finished, error: finErr } = await supabase
+              .from('qualification_sessions')
+              .select('id, address')
+              .eq('user_id', user!.id)
+              .eq('status', 'completed')
+              .order('created_at', { ascending: false });
+            if (finErr) throw finErr;
+            if (finished && finished.length > 0) {
+              const home = finished.find((r) => r.address !== '(no funnel address)') ?? finished[0];
+              await handoffToApp(supabase, `/?session_id=${home.id}`);
+              return;
+            }
+          }
 
           let sessionId: string;
           if (rows && rows.length > 0) {
