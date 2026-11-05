@@ -5,6 +5,8 @@ import Nav from '../components/Nav.astro';
 import AddressForm from '../components/AddressForm.astro';
 import Footer from '../components/Footer.astro';
 import SocialMeta from '../components/SocialMeta.astro';
+import JsonLd from '../components/JsonLd.astro';
+import { ORG_ID, breadcrumbs, faqPage } from '../lib/schema.js';
 import SiteAnalytics from '../components/SiteAnalytics.astro';
 
 interface CaseStudy {
@@ -134,6 +136,23 @@ const h2 = 'm-0 text-[36px] max-[700px]:text-[28px] leading-[1.1] tracking-[-0.0
 // Canonical URL. Derived from the route and `site` in astro.config.mjs so the
 // host and the trailing slash (trailingSlash: 'always') can never drift.
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+
+// Structured data: this page is FlipSplit's home-buying service in one area.
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${canonicalURL}#service`,
+    name: `Sell your house for cash in ${city}`,
+    serviceType: 'Cash home buying with renovation profit share',
+    description,
+    url: canonicalURL,
+    provider: { '@id': ORG_ID },
+    areaServed: { '@type': 'Place', name: `${city}, CA` },
+  },
+  breadcrumbs([{ name: `We Buy Houses in ${city}`, path: Astro.url.pathname }]),
+  ...(faqs?.length ? [faqPage(faqs)] : []),
+];
 ---
 
 <!DOCTYPE html>
@@ -145,6 +164,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalURL} />
   <SocialMeta title={title} description={description} url={canonicalURL} />
+  <JsonLd data={schema} />
   <SiteAnalytics />
   <link rel="icon" href="/favicon.ico" sizes="48x48" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />

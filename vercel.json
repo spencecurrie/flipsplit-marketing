@@ -200,6 +200,76 @@
       "source": "/pricing/",
       "destination": "/how-it-works/",
       "permanent": false
+    },
+    {
+      "source": "/blog/category",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/category/",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/category/:path*",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/category/:path*/",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/page/:path*",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/page/:path*/",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/101-handbook-to-selling-inherited-property-taxes--timing",
+      "destination": "/blog/101-handbook-to-selling-inherited-property-taxes-timing/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/101-handbook-to-selling-inherited-property-taxes--timing/",
+      "destination": "/blog/101-handbook-to-selling-inherited-property-taxes-timing/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/how--where-to-buy-in-los-angeles",
+      "destination": "/blog/how-where-to-buy-in-los-angeles/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/how--where-to-buy-in-los-angeles/",
+      "destination": "/blog/how-where-to-buy-in-los-angeles/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/what-is-an-ibuyer--do-i-need-one",
+      "destination": "/blog/what-is-an-ibuyer-do-i-need-one/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/what-is-an-ibuyer--do-i-need-one/",
+      "destination": "/blog/what-is-an-ibuyer-do-i-need-one/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/is-title-insurance-worth-it-in-a-cash-offer-2",
+      "destination": "/blog/is-title-insurance-worth-it-in-a-cash-offer/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/is-title-insurance-worth-it-in-a-cash-offer-2/",
+      "destination": "/blog/is-title-insurance-worth-it-in-a-cash-offer/",
+      "permanent": true
     }
   ]
 }

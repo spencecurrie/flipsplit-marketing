@@ -1,0 +1,8 @@
+---
+// Renders one or more schema.org objects as <script type="application/ld+json">.
+// `<` is escaped so text inside the data can never close the script tag.
+interface Props { data: object | object[] }
+const { data } = Astro.props;
+const items = Array.isArray(data) ? data : [data];
+---
+{items.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d).replace(/</g, '\\u003c')} />)}

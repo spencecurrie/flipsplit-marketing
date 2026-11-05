@@ -5,6 +5,8 @@ import { getCollection, render } from 'astro:content';
 import '../../styles/global.css';
 import Footer from '../../components/Footer.astro';
 import SocialMeta from '../../components/SocialMeta.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import { ORG_ID, breadcrumbs } from '../../lib/schema.js';
 import SiteAnalytics from '../../components/SiteAnalytics.astro';
 
 export async function getStaticPaths() {
@@ -42,6 +44,42 @@ function formatDate(d: Date) {
 }
 const reviewerName = reviewer ?? 'Brandon Brown';
 const initials = reviewerName.split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+// Contextual link to the matching local page. Most posts are general; the
+// ones about a specific area should hand readers (and Google) to the page that
+// actually converts for that area. Cities are listed before their county so
+// "Long Beach" wins over "Los Angeles" when a post is really about Long Beach.
+const LOCAL_PAGES = [
+  { href: '/location-long-beach/', name: 'Long Beach', re: /\blong beach\b/gi },
+  { href: '/location-anaheim/', name: 'Anaheim', re: /\banaheim\b/gi },
+  { href: '/location-la-county/', name: 'Los Angeles County', re: /\b(?:[Ll]os [Aa]ngeles|LA)\b/g },
+  { href: '/location-orange-county/', name: 'Orange County', re: /\b(?:[Oo]range [Cc]ounty|OC)\b/g },
+  { href: '/location-san-diego-county/', name: 'San Diego County', re: /\bsan diego\b/gi },
+  { href: '/location-riverside-county/', name: 'Riverside County', re: /\briverside\b/gi },
+  { href: '/location-san-bernardino-county/', name: 'San Bernardino County', re: /\bsan bernardino\b/gi },
+];
+const localText = `${title} ${title} ${post.id.replace(/-/g, ' ')} ${post.body ?? ''}`;
+const localMatch = LOCAL_PAGES
+  .map((l, i) => ({ ...l, i, hits: (localText.match(l.re) || []).length }))
+  .filter(l => l.hits >= 3)
+  .sort((a, b) => b.hits - a.hits || a.i - b.i)[0];
+
+const articleSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': `${canonicalURL}#article`,
+    headline: title,
+    ...(description && { description }),
+    ...(heroImage && { image: [heroImage] }),
+    datePublished: new Date(pubDate).toISOString(),
+    dateModified: new Date(updatedDate ?? pubDate).toISOString(),
+    mainEntityOfPage: canonicalURL,
+    articleSection: category,
+    author: { '@id': ORG_ID },
+    publisher: { '@id': ORG_ID },
+  },
+  breadcrumbs([{ name: 'Blog', path: '/blog/' }, { name: title, path: `/blog/${post.id}/` }]),
+];
 const chevR = '<path d="M9 6l6 6-6 6"></path>';
 ---
 
@@ -59,6 +97,7 @@ const chevR = '<path d="M9 6l6 6-6 6"></path>';
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
   <SocialMeta title={title} description={description} url={canonicalURL} image={heroImage} type="article" />
+  <JsonLd data={articleSchema} />
   <SiteAnalytics />
 
   <style>
@@ -124,6 +163,16 @@ const chevR = '<path d="M9 6l6 6-6 6"></path>';
         <div class="blog-prose">
           <Content />
         </div>
+
+        {localMatch && (
+          <a href={localMatch.href} class="mt-14 max-w-[760px] flex items-center justify-between gap-4 border border-line hover:border-ink rounded-[14px] p-5 no-underline text-ink transition-colors">
+            <span>
+              <span class="block text-[12px] font-semibold uppercase tracking-[0.1em] text-muted">Selling in {localMatch.name}?</span>
+              <span class="block mt-1.5 text-[17px] font-semibold">See how FlipSplit buys houses in {localMatch.name}</span>
+            </span>
+            <svg class="shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
+          </a>
+        )}
 
         <!-- Reviewer bio -->
         <div class="mt-14 pt-10 border-t border-line max-w-[760px]">
