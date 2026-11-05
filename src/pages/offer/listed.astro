@@ -1,0 +1,69 @@
+---
+import OfferLayout from '../../layouts/OfferLayout.astro';
+
+// Asked between step 4 (timeframe) and step 5 (condition). Every answer goes
+// on to step 5 — nobody is turned away. The answer is stored on
+// qualification_sessions.agent_listing (0082) and decides whether this lead is
+// reported to Meta as "Lead" (not listed) or "ListedLead" (already listed),
+// so the ads stop learning to find homes that are already on the market.
+const options = [
+  { value: 'listed', label: 'Yes, it’s listed' },
+  { value: 'signed', label: 'I’ve signed with an agent, not listed yet' },
+  { value: 'no',     label: 'No' },
+];
+---
+
+<OfferLayout
+  step={4}
+  title="Is your home listed with an agent right now?"
+  subtitle="Either answer is fine. It helps us understand where you are in the process."
+  backHref="/offer/step-4/"
+  nextHref="/offer/step-5/"
+  autoAdvance={true}
+>
+  <div class="grid grid-cols-3 gap-5 max-w-[896px] mx-auto max-[640px]:grid-cols-1 max-[640px]:gap-3" role="group" aria-label="Is your home listed with an agent?">
+    {options.map((opt) => (
+      <button type="button" class="offer-card-btn" data-value={opt.value} aria-pressed="false">
+        {opt.label}
+      </button>
+    ))}
+  </div>
+</OfferLayout>
+
+<script>
+  const setup = (session: { agent_listing?: string | null }) => {
+    const funnel = (window as any).__funnel;
+    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.offer-card-btn'));
+    const nextBtn = document.getElementById('offer-next') as HTMLButtonElement;
+    let selected: string | null = null;
+    let advancing = false;
+
+    const render = () => {
+      buttons.forEach((b) => {
+        b.setAttribute('aria-pressed', b.dataset.value === selected ? 'true' : 'false');
+        b.disabled = advancing;
+      });
+      nextBtn.disabled = !selected || advancing;
+    };
+
+    buttons.forEach((b) => {
+      b.addEventListener('click', () => {
+        if (advancing) return;
+        selected = b.dataset.value!;
+        advancing = true;
+        render();
+        setTimeout(() => funnel.advance(), 280);
+      });
+    });
+
+    funnel.getSelected = () => (selected ? { agent_listing: selected } : null);
+    funnel.getRoute = () => (selected ? { href: '/offer/step-5/', currentStep: 4, event: 'agent_listing_answered' } : null);
+    render();
+  };
+
+  if ((window as any).__funnel?.session) {
+    setup((window as any).__funnel.session);
+  } else {
+    window.addEventListener('funnel-ready', (e) => setup((e as CustomEvent).detail), { once: true });
+  }
+</script>

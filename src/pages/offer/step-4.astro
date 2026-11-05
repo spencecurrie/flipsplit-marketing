@@ -66,6 +66,8 @@ const options = [
     });
 
     window.__funnel.getSelected = () => (selected ? { timeframe: selected } : null);
+    // Next comes the listing question (/offer/listed/), then step 5.
+    (window.__funnel as any).getRoute = () => (selected ? { href: '/offer/listed/', currentStep: 4 } : null);
     render();
   };
 

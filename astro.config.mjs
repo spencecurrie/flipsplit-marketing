@@ -23,7 +23,7 @@ const NOINDEX_PATHS = new Set([
   '/brand/', '/sign-in/', '/signup/', '/signup/phone/', '/offer/finish/',
   '/offer/step-1/', '/offer/step-2/', '/offer/step-3/', '/offer/step-4/',
   '/offer/step-5/', '/offer/step-6/', '/offer/step-7/',
-  '/offer/land/', '/offer/unavailable/',
+  '/offer/land/', '/offer/listed/', '/offer/unavailable/',
 ]);
 
 export default defineConfig({
